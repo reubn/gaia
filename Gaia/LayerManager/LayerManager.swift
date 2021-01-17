@@ -45,7 +45,7 @@ class LayerManager {
     let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
 
     do {
-        try managedContext.execute(batchDeleteRequest)
+      try managedContext.execute(batchDeleteRequest)
     } catch {
         print("Detele all data in error :", error)
     }
