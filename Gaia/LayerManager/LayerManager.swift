@@ -4,7 +4,7 @@ import CoreData
 import Mapbox
 
 class LayerManager {
-  let managedContext: NSManagedObjectContext
+  private let managedContext: NSManagedObjectContext
   let mapView: MGLMapView
   var groups: [String: [Layer]]?
 
@@ -39,7 +39,7 @@ class LayerManager {
 
     } catch {print("Failed")}
   }
-  
+
   func clearData(){
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Layer")
     let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
@@ -156,8 +156,6 @@ class LayerManager {
 
       let data = try encoder.encode(rootJSON)
       let json = String(data: data, encoding: .utf8)!
-
-      print(json)
 
       let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
 
