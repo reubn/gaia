@@ -21,7 +21,7 @@ class LayerCell: UITableViewCell {
     
     contentView.backgroundColor = UIColor.clear
     backgroundColor = UIColor.clear
-    
+    tintColor = .label
 
     preview.layer.cornerRadius = 10
     preview.layer.cornerCurve = .continuous
