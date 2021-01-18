@@ -17,6 +17,8 @@ class Section: UIStackView {
     
     super.init(frame: CGRect())
     
+    layerManager.multicastLayersHaveChangedDelegate.add(delegate: self)
+    
     axis = .vertical
     alignment = .leading
     distribution = .fill
@@ -57,6 +59,10 @@ class Section: UIStackView {
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  
+  func layersHaveChanged() {
+    tableView.reloadData()
+  }
 }
 
 extension Section: UITableViewDataSource {
@@ -81,12 +87,16 @@ extension Section: UITableViewDataSource {
     let indexPath = self.tableView.indexPathForRow(at: tapLocation)
     let position = indexPath?.row ?? 0
   
-    for (index, layer) in layers.enumerated() {
-      layer.enabled = index == position ? !layer.enabled : false
-      layerManager.updateLayers()
+    let layer = layers[position]
+    
+    if(layer.enabled) {
+      layerManager.disableLayer(layer: layer)
+    }
+    else {
+      layerManager.enableLayer(layer: layer)
     }
         
-    tableView.reloadData()
+//    tableView.reloadData()
   }
   
 //  func tableView(_ tableView: UITableView, didSelectRowAtindexPath indexPath: IndexPath) {

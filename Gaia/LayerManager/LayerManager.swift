@@ -9,6 +9,7 @@ class LayerManager {
   var groups: [String: [Layer]]?
 
   let multicastMapViewRegionIsChangingDelegate = MulticastDelegate<(LayerCell)>()
+  let multicastLayersHaveChangedDelegate = MulticastDelegate<(Section)>()
 
   let layerGroups = [
     LayerGroup(id: "overlay", name: "Overlays", colour: .systemPink),
@@ -110,7 +111,7 @@ class LayerManager {
     layerD.group = "base"
     layerD.url = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
     layerD.tileSize = "128"
-    layerD.enabled = true
+    layerD.enabled = false
 
     let layerE = Layer.init(context: managedContext)
     layerE.id = "googleSat"
@@ -152,11 +153,32 @@ class LayerManager {
 
   func updateLayers(){
     apply()
+    multicastLayersHaveChangedDelegate.invoke(invocation: {$0.layersHaveChanged()})
     do {
         try managedContext.save()
     } catch {
         print("saving error :", error)
     }
+  }
+  
+  func enableLayer(layer: Layer) {
+    if(layer.group == "overlay") {
+      layer.enabled = true
+    } else {
+      for _layer in layers {
+        if(_layer.group != "overlay") {
+          _layer.enabled = _layer == layer
+        }
+      }
+    }
+    
+    updateLayers()
+  }
+  
+  func disableLayer(layer: Layer) {
+    layer.enabled = false
+    
+    updateLayers()
   }
   
   public func getLayers(layerGroup: LayerGroup) -> [Layer]? {
