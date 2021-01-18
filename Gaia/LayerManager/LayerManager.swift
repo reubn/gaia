@@ -77,7 +77,7 @@ class LayerManager {
   func createData(){
     let layerB = Layer.init(context: managedContext)
     layerB.id = "magicOS"
-    layerB.name = "Ordanace Survey"
+    layerB.name = "Ordnanace Survey"
     layerB.group = "base"
     layerB.url = "https://r3.cedar/magicOS/{z}/{x}/{y}"
     layerB.tileSize = "200"
@@ -113,6 +113,14 @@ class LayerManager {
     layerE.url = "https://r3.cedar/googleSat/{z}/{x}/{y}"
     layerE.tileSize = "128"
     layerE.enabled = false
+
+    let layerF = Layer.init(context: managedContext)
+    layerF.id = "osSat2017"
+    layerF.name = "Ordnance Survey"
+    layerF.group = "aerial"
+    layerF.url = "https://r3.cedar/osSat2017/{z}/{x}/{y}"
+    layerF.tileSize = "128"
+    layerF.enabled = false
 
     do {try managedContext.save()}
     catch let error as NSError {print("Could not save. \(error), \(error.userInfo)")}
