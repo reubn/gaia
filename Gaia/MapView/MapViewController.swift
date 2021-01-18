@@ -23,27 +23,25 @@ class MapViewController: UIViewController, MGLMapViewDelegate{
     
     mapView.userTrackingMode = .followWithHeading
     mapView.compassView.compassVisibility = .visible
-
-    mapView.tintColor = .systemBlue
+    
+    mapView.tintColor = .systemBlue // user location should always be blue
 
     mapView.delegate = self
 
     view.addSubview(mapView)
-    
-    let userLocationButton = UserLocationButton(initialMode: mapView.userTrackingMode, tintColor: mapView.tintColor)
+
+    let userLocationButton = UserLocationButton(initialMode: mapView.userTrackingMode)
     userLocationButton.addTarget(self, action: #selector(locationButtonTapped), for: .touchUpInside)
     userLocationButton.translatesAutoresizingMaskIntoConstraints = false
     self.userLocationButton = userLocationButton
     
     let layersButton = MapButton() ;
     layersButton.setImage(UIImage(systemName: "map"), for: .normal)
-    layersButton.tintColor = mapView.tintColor
     layersButton.addTarget(self, action: #selector(layersButtonTapped), for: .touchUpInside)
     
     let testButton = MapButton() ;
     testButton.setImage(UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
-    testButton.tintColor = mapView.tintColor
-    
+
     let mapButtonGroup = MapButtonGroup(arrangedSubviews: [userLocationButton, layersButton, testButton])
     
     let constraints: [NSLayoutConstraint] = [

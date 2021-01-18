@@ -5,12 +5,11 @@ import Mapbox
 class UserLocationButton: MapButton {
   private var arrow: CAShapeLayer?
   private let iconSize: CGFloat = 18
+  var mode: MGLUserTrackingMode = .none
  
   // Initializer to create the user tracking mode button
-  init(initialMode: MGLUserTrackingMode, tintColor: UIColor) {
+  init(initialMode: MGLUserTrackingMode) {
     super.init()
-    
-    self.tintColor = tintColor
     
     let arrow = CAShapeLayer()
     arrow.path = arrowPath()
@@ -50,6 +49,7 @@ private func arrowPath() -> CGPath {
  
 // Update the arrow's color and rotation when tracking mode is changed.
 func updateArrowForTrackingMode(mode: MGLUserTrackingMode) {
+  self.mode = mode
   let rotatedArrow = CGFloat(0.85)
    
   switch mode {
@@ -80,5 +80,9 @@ func updateArrow(fillColor: UIColor, strokeColor: UIColor, rotation: CGFloat) {
   }
    
   layoutIfNeeded()
+  }
+  
+  override func tintColorDidChange(){
+    updateArrowForTrackingMode(mode: mode)
   }
 }

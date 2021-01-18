@@ -138,7 +138,9 @@ class LayerManager {
     mapView.styleURL = generateStyleURL(sortedLayers: sortedLayers)
     
     DispatchQueue.main.async { [self] in
-      mapView.window?.overrideUserInterfaceStyle = uiShouldBeDark() ? .dark : .light
+      let dark = uiShouldBeDark()
+      mapView.window?.overrideUserInterfaceStyle = dark ? .dark : .light
+      mapView.window?.tintColor = dark ? .white : .systemBlue
     }
   }
 
