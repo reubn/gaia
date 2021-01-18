@@ -4,6 +4,7 @@ import Mapbox
 
 class PopoverLayerSelectViewController: UIViewController {
   let layerManager: LayerManager
+  let label = UILabel()
   let dismissButton = UIButton()
   let layerSelectView: LayerSelectView
   
@@ -48,7 +49,6 @@ class PopoverLayerSelectViewController: UIViewController {
   }
   
   func setupTitle() {
-    let label = UILabel()
     label.text = "Map Layers"
     label.font = UIFont.boldSystemFont(ofSize: 24)
     label.textColor = UIColor.label
@@ -78,8 +78,8 @@ class PopoverLayerSelectViewController: UIViewController {
     dismissButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
     dismissButton.heightAnchor.constraint(equalTo: dismissButton.widthAnchor).isActive = true
     
-    dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 15).isActive = true
-    dismissButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
+    dismissButton.topAnchor.constraint(equalTo: label.topAnchor).isActive = true
+    dismissButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
   }
   
   func setupLayerSelectView() {
@@ -87,7 +87,7 @@ class PopoverLayerSelectViewController: UIViewController {
     layerSelectView.translatesAutoresizingMaskIntoConstraints = false
     layerSelectView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
     layerSelectView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-    layerSelectView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
+    layerSelectView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 55).isActive = true
     layerSelectView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     
     layerSelectView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor).isActive = true

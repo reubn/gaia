@@ -2,7 +2,7 @@ import UIKit
 import Mapbox
 import FloatingPanel
 
-class MapViewController: UIViewController, MGLMapViewDelegate{
+class MapViewController: UIViewController, MGLMapViewDelegate, FloatingPanelControllerDelegate {
   var layerManager: LayerManager?
 
   var mapView: MGLMapView!
@@ -109,28 +109,36 @@ class MapViewController: UIViewController, MGLMapViewDelegate{
   @IBAction func layersButtonTapped(sender: MapButton) {
     if fpc.viewIfLoaded?.window == nil {
       let popoverLayerSelectViewController = PopoverLayerSelectViewController(layerManager: layerManager!)
-
+      
       fpc.layout = MapPopoverPanelLayout()
+      fpc.delegate = self
       fpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
-
+      fpc.isRemovalInteractionEnabled = true
+      fpc.contentMode = .fitToBounds
+      
       let appearance = SurfaceAppearance()
   //    appearance.cornerCurve = CALayerCornerCurve.continuous
       appearance.cornerRadius = 16
       appearance.backgroundColor = .clear
       fpc.surfaceView.appearance = appearance
-
+      
       fpc.set(contentViewController: popoverLayerSelectViewController)
 
-      fpc.isRemovalInteractionEnabled = true
-
-      fpc.track(scrollView: popoverLayerSelectViewController.layerSelectView)
+//      fpc.track(scrollView: popoverLayerSelectViewController.rootScrollView)
 
       self.present(fpc, animated: true, completion: nil)
     } else {
       fpc.dismiss(animated: true, completion: nil)
     }
   }
-
+  
+  func floatingPanelDidMove(_ vc: FloatingPanelController) {
+      if vc.isAttracting == false {
+          let loc = vc.surfaceLocation
+          let minY = vc.surfaceLocation(for: .full).y - 6.0
+          vc.surfaceLocation = CGPoint(x: loc.x, y: max(loc.y, minY))
+      }
+  }
 }
 
 class MapPopoverPanelLayout: FloatingPanelLayout {
