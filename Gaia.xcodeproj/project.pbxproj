@@ -24,12 +24,12 @@
 		1B6638B725B10B530071F03D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B6638B525B10B530071F03D /* LaunchScreen.storyboard */; };
 		1B6638C125B10B610071F03D /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C025B10B610071F03D /* Mapbox.framework */; };
 		1B6638C225B10B610071F03D /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C025B10B610071F03D /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		1B6638C525B10CEB0071F03D /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; };
-		1B6638C625B10CEB0071F03D /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1B6638C825B110340071F03D /* noAccessToken.json in Resources */ = {isa = PBXBuildFile; fileRef = 1B6638C725B110340071F03D /* noAccessToken.json */; };
 		1B6638CA25B19FFF0071F03D /* UserLocationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6638C925B19FFF0071F03D /* UserLocationButton.swift */; };
 		1B6638CC25B1E9BD0071F03D /* MapButtonGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6638CB25B1E9BD0071F03D /* MapButtonGroup.swift */; };
 		1B6638CE25B1EA5F0071F03D /* MapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6638CD25B1EA5F0071F03D /* MapButton.swift */; };
+		1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; };
+		1BBD3FEF25B63B10007B8BC7 /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,7 +39,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				1B6638C625B10CEB0071F03D /* MapboxMobileEvents.framework in Embed Frameworks */,
+				1BBD3FEF25B63B10007B8BC7 /* MapboxMobileEvents.framework in Embed Frameworks */,
 				1B6638C225B10B610071F03D /* Mapbox.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -77,8 +77,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */,
 				1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */,
-				1B6638C525B10CEB0071F03D /* MapboxMobileEvents.framework in Frameworks */,
 				1B6638C125B10B610071F03D /* Mapbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
