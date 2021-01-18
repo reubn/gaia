@@ -38,7 +38,7 @@ class Section: UIStackView {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
     
-    tableView.backgroundColor = UIColor.systemGroupedBackground.withAlphaComponent(0.75)
+    tableView.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(0.75)
     tableView.dataSource = self
 //    tableView.isEditing = true
     tableView.isScrollEnabled = false
