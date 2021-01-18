@@ -8,6 +8,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, FloatingPanelCont
   var mapView: MGLMapView!
   var rasterLayer: MGLRasterStyleLayer?
   var userLocationButton: UserLocationButton?
+  var firstTimeLocating = true
   let fpc = FloatingPanelController()
 
   override func viewDidLoad() {
@@ -20,9 +21,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, FloatingPanelCont
     mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     mapView.logoView.isHidden = true
     mapView.attributionButton.isHidden = true
-
+    
     mapView.userTrackingMode = .followWithHeading
     mapView.compassView.compassVisibility = .visible
+    mapView.zoomLevel = 11
     
     mapView.tintColor = .systemBlue // user location should always be blue
 
@@ -67,6 +69,14 @@ class MapViewController: UIViewController, MGLMapViewDelegate, FloatingPanelCont
 
     view.addSubview(mapButtonGroup)
     view.addConstraints(constraints)
+  }
+  
+  func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?){
+    if(firstTimeLocating && userLocation?.location != nil) {
+      mapView.centerCoordinate = userLocation!.location!.coordinate
+      mapView.userTrackingMode = .followWithHeading
+      firstTimeLocating = false
+    }
   }
 
   func mapViewRegionIsChanging(_ mapView: MGLMapView) {
