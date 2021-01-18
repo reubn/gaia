@@ -15,6 +15,29 @@ class LayerManager {
     LayerGroup(id: "aerial", name: "Aerial Imagery", colour: .systemGreen),
     LayerGroup(id: "base", name: "Base Maps", colour: .systemBlue)
   ]
+  
+  var activeLayers: [Layer]{
+    get {
+      var activeLayers: [Layer] = []
+
+      for (_, group) in groups! {
+        activeLayers.append(contentsOf: group.filter({$0.enabled}))
+      }
+      
+      return activeLayers
+    }
+  }
+  
+  var sortedLayers: [Layer]{
+    get {
+      activeLayers.sorted(by: {a, b in
+        // if($0.type! == $1.type!) {return $0.layerIndex < $1.layerIndex}
+        return layerGroups.firstIndex(where: {layerGroup in a.group! == layerGroup.id}) ?? 0 > layerGroups.firstIndex(where: {layerGroup in b.group! == layerGroup.id}) ?? 0
+      })
+    }
+  }
+  
+  
 
   init(mapView: MGLMapView){
     let appDelegate = UIApplication.shared.delegate as? AppDelegate
@@ -96,7 +119,7 @@ class LayerManager {
   }
 
   func applyLayers() {
-    mapView.styleURL = generateStyleURL()
+    mapView.styleURL = generateStyleURL(sortedLayers: sortedLayers)
   }
 
   func updateLayers(){
@@ -108,23 +131,8 @@ class LayerManager {
     }
   }
 
-  public func generateStyleURL(layers: [Layer]? = nil) -> URL {
+  public func generateStyleURL(sortedLayers: [Layer]) -> URL {
     if(groups == nil) {return Bundle(for: LayerManager.self).url(forResource: "noAccessToken", withExtension: "json")!}
-
-    let sortedLayers: [Layer] = layers ?? {
-
-      var activeLayers: [Layer] = []
-
-      for (_, group) in groups! {
-        activeLayers.append(contentsOf: group.filter({$0.enabled}))
-      }
-
-      return activeLayers.sorted(by: {a, b in
-  //      if($0.type! == $1.type!) {return $0.layerIndex < $1.layerIndex}
-        return layerGroups.firstIndex(where: {layerGroup in a.group! == layerGroup.id}) ?? 0 > layerGroups.firstIndex(where: {layerGroup in b.group! == layerGroup.id}) ?? 0
-      })
-    }()
-
 
     let layerSourcesJSON = sortedLayers.reduce(into: [String: LayerSourceJSON]()) {
       let incoming = $1 as Layer

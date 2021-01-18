@@ -70,7 +70,7 @@ class LayerCell: UITableViewCell {
     self.layerManager = layerManager
     let mapView = layerManager.mapView
     
-    preview.styleURL = layerManager.generateStyleURL(layers: [_layer])
+    preview.styleURL = layerManager.generateStyleURL(sortedLayers: [_layer])
     
     if(first) {
       layerManager.multicastMapViewRegionIsChangingDelegate.add(delegate: self)
