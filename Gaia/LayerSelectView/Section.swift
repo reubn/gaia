@@ -13,7 +13,7 @@ class Section: UIStackView {
   init(group: LayerGroup, layerManager: LayerManager){
     self.group = group
     self.layerManager = layerManager
-    self.layers = layerManager.groups![group.id] ?? []
+    self.layers = layerManager.getLayers(layerGroup: group)!.reversed()
     
     super.init(frame: CGRect())
     
