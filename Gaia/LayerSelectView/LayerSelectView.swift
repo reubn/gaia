@@ -40,6 +40,8 @@ class LayerSelectView: UIScrollView {
     stack.widthAnchor.constraint(equalTo: widthAnchor, constant: -30).isActive = true
     
     layerManager.layerGroups.forEach({
+      if(layerManager.getLayers(layerGroup: $0) == nil) {return}
+      
       let section = Section(group: $0, layerManager: layerManager)
       
       stack.addArrangedSubview(section)

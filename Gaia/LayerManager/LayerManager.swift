@@ -152,6 +152,10 @@ class LayerManager {
         print("saving error :", error)
     }
   }
+  
+  public func getLayers(layerGroup: LayerGroup) -> [Layer]? {
+    groups![layerGroup.id]
+  }
 
   public func generateStyleURL(sortedLayers: [Layer]) -> URL {
     if(groups == nil) {return Bundle(for: LayerManager.self).url(forResource: "noAccessToken", withExtension: "json")!}
