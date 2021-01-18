@@ -16,15 +16,21 @@ class LayerManager {
     LayerGroup(id: "base", name: "Base Maps", colour: .systemBlue)
   ]
   
-  var activeLayers: [Layer]{
+  var layers: [Layer]{
     get {
-      var activeLayers: [Layer] = []
+      var layers: [Layer] = []
 
       for (_, group) in groups! {
-        activeLayers.append(contentsOf: group.filter({$0.enabled}))
+        layers.append(contentsOf: group)
       }
       
-      return activeLayers
+      return layers
+    }
+  }
+  
+  var activeLayers: [Layer]{
+    get {
+      layers.filter({$0.enabled})
     }
   }
   
