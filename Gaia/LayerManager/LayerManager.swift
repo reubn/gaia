@@ -82,6 +82,28 @@ class LayerManager {
   }
 
   func createData(){
+    
+    let layerA = Layer.init(context: managedContext)
+    layerA.id = "stravaA"
+    layerA.name = "Strava Heatmap Run"
+    layerA.group = "overlay"
+    layerA.url = "https://r3.cedar/strava/run/hot/{z}/{x}/{y}"
+    layerA.enabled = true
+
+    let layerAB = Layer.init(context: managedContext)
+    layerAB.id = "stravaB"
+    layerAB.name = "Strava Heatmap Ride"
+    layerAB.group = "overlay"
+    layerAB.url = "https://r3.cedar/strava/ride/purple/{z}/{x}/{y}"
+    layerAB.enabled = true
+
+    let layerAC = Layer.init(context: managedContext)
+    layerAC.id = "stravaC"
+    layerAC.name = "Strava Heatmap Water"
+    layerAC.group = "overlay"
+    layerAC.url = "https://r3.cedar/strava/water/blue/{z}/{x}/{y}"
+    layerAC.enabled = true
+    
     let layerB = Layer.init(context: managedContext)
     layerB.id = "magicOS"
     layerB.name = "Ordnanace Survey"
@@ -89,13 +111,6 @@ class LayerManager {
     layerB.url = "https://r3.cedar/magicOS/{z}/{x}/{y}"
     layerB.tileSize = "200"
     layerB.enabled = true
-
-    let layerA = Layer.init(context: managedContext)
-    layerA.id = "strava"
-    layerA.name = "Strava Heatmap"
-    layerA.group = "overlay"
-    layerA.url = "https://r3.cedar/strava/{z}/{x}/{y}"
-    layerA.enabled = true
 
     let layerC = Layer.init(context: managedContext)
     layerC.id = "bingSat"
