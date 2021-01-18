@@ -125,13 +125,25 @@ class LayerManager {
     do {try managedContext.save()}
     catch let error as NSError {print("Could not save. \(error), \(error.userInfo)")}
   }
+  
+  func uiShouldBeDark() -> Bool {
+    let topNonOverlay = sortedLayers.reversed().first(where: {$0.group != "overlay"})
+    
+    if(topNonOverlay == nil) {return true}
+    
+    return topNonOverlay!.group == "aerial"
+  }
 
-  func applyLayers() {
+  func apply() {
     mapView.styleURL = generateStyleURL(sortedLayers: sortedLayers)
+    
+    DispatchQueue.main.async { [self] in
+      mapView.window?.overrideUserInterfaceStyle = uiShouldBeDark() ? .dark : .light
+    }
   }
 
   func updateLayers(){
-    applyLayers()
+    apply()
     do {
         try managedContext.save()
     } catch {

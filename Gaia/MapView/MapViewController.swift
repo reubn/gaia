@@ -15,7 +15,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate{
     
     mapView = MGLMapView(frame: view.bounds)
     layerManager = LayerManager(mapView: mapView)
-    layerManager!.applyLayers()
+    layerManager!.apply()
     
     mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     mapView.logoView.isHidden = true
