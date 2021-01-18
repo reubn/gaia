@@ -4,7 +4,7 @@ import Mapbox
 
 class PopoverLayerSelectViewController: UIViewController {
   let layerManager: LayerManager
-  let label = UILabel()
+  let popoverTitle = UILabel()
   let dismissButton = UIButton()
   let layerSelectView: LayerSelectView
   
@@ -49,18 +49,15 @@ class PopoverLayerSelectViewController: UIViewController {
   }
   
   func setupTitle() {
-    label.text = "Map Layers"
-    label.font = UIFont.boldSystemFont(ofSize: 24)
-    label.textColor = UIColor.label
+    popoverTitle.text = "Layers"
+    popoverTitle.font = UIFont.boldSystemFont(ofSize: 25)
+    popoverTitle.textColor = UIColor.label
     
-    view.addSubview(label)
+    view.addSubview(popoverTitle)
     
-    label.translatesAutoresizingMaskIntoConstraints = false
-//    label.widthAnchor.constraint(equalToConstant: 30).isActive = true
-//    label.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    
-    label.topAnchor.constraint(equalTo: view.topAnchor, constant: 15).isActive = true
-    label.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
+    popoverTitle.translatesAutoresizingMaskIntoConstraints = false
+    popoverTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: 15).isActive = true
+    popoverTitle.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
   }
   
   func setupDismissButton() {
@@ -78,7 +75,7 @@ class PopoverLayerSelectViewController: UIViewController {
     dismissButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
     dismissButton.heightAnchor.constraint(equalTo: dismissButton.widthAnchor).isActive = true
     
-    dismissButton.topAnchor.constraint(equalTo: label.topAnchor).isActive = true
+    dismissButton.centerYAnchor.constraint(equalTo: popoverTitle.centerYAnchor).isActive = true
     dismissButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
   }
   
