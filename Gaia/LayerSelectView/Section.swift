@@ -42,6 +42,7 @@ class Section: UIStackView {
     tableView.dataSource = self
 //    tableView.isEditing = true
     tableView.isScrollEnabled = false
+    tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
     tableView.register(LayerCell.self, forCellReuseIdentifier: "cell")
     
     
