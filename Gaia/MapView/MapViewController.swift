@@ -151,6 +151,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
   @IBAction func layersButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
     if gestureReconizer.state == UIGestureRecognizer.State.began {
       layerManager!.magic()
+      
+      UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
   }
 }

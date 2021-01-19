@@ -6,6 +6,7 @@ import FloatingPanel
 class MapViewPanelViewController: UIViewController, FloatingPanelControllerDelegate {
   let popoverTitle = UILabel()
   let dismissButton = UIButton()
+  let uiImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
   
   init(title: String){
     super.init(nibName: nil, bundle: nil)
@@ -42,6 +43,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   
   override func viewDidLoad() {
     view.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
+    uiImpactFeedbackGenerator.impactOccurred()
   }
   
   func setupTitle() {
@@ -83,12 +85,26 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     dismiss(animated: true, completion: nil)
   }
   
+  func floatingPanelWillBeginAttracting(_ fpc: FloatingPanelController, to state: FloatingPanelState) {
+    uiImpactFeedbackGenerator.prepare()
+  }
+  
   func floatingPanelDidMove(_ vc: FloatingPanelController) {
       if vc.isAttracting == false {
           let loc = vc.surfaceLocation
           let minY = vc.surfaceLocation(for: .full).y - 6.0
           vc.surfaceLocation = CGPoint(x: loc.x, y: max(loc.y, minY))
       }
+  }
+  
+  func floatingPanelDidEndAttracting(_ fpc: FloatingPanelController) {
+    uiImpactFeedbackGenerator.impactOccurred()
+  }
+  
+  func floatingPanelDidEndDragging(_ fpc: FloatingPanelController, willAttract attract: Bool){
+    if(!attract) {
+      uiImpactFeedbackGenerator.impactOccurred()
+    }
   }
 }
 

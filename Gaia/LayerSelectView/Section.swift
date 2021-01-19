@@ -95,6 +95,8 @@ extension Section: UITableViewDataSource {
     else {
       layerManager.enableLayer(layer: layer)
     }
+    
+    UISelectionFeedbackGenerator().selectionChanged()
         
 //    tableView.reloadData()
   }
