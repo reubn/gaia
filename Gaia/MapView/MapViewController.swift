@@ -10,6 +10,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
   var userLocationButton: UserLocationButton?
   var firstTimeLocating = true
   let lsfpc = FloatingPanelController()
+  let omfpc = FloatingPanelController()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -118,10 +119,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
 
   @IBAction func layersButtonTapped(sender: MapButton) {
     if lsfpc.viewIfLoaded?.window == nil {
-      let popoverLayerSelectViewController = PopoverLayerSelectViewController(layerManager: layerManager!)
+      let layerSelectPanelViewController = LayerSelectPanelViewController(layerManager: layerManager!)
       
-      lsfpc.layout = PopoverLayerSelectPanelLayout()
-      lsfpc.delegate = popoverLayerSelectViewController
+      lsfpc.layout = LayerSelectPanelLayout()
+      lsfpc.delegate = layerSelectPanelViewController
       lsfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
       lsfpc.isRemovalInteractionEnabled = true
       lsfpc.contentMode = .fitToBounds
@@ -132,7 +133,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
       appearance.backgroundColor = .clear
       lsfpc.surfaceView.appearance = appearance
       
-      lsfpc.set(contentViewController: popoverLayerSelectViewController)
+      lsfpc.set(contentViewController: layerSelectPanelViewController)
 
 //      fpc.track(scrollView: popoverLayerSelectViewController.rootScrollView)
 

@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import FloatingPanel
 
-class PopoverLayerSelectPanelLayout: FloatingPanelLayout {
+class LayerSelectPanelLayout: FloatingPanelLayout {
   let position: FloatingPanelPosition = .bottom
   let initialState: FloatingPanelState = .half
   var anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] {

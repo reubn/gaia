@@ -3,17 +3,13 @@ import UIKit
 import Mapbox
 import FloatingPanel
 
-class PopoverLayerSelectViewController: UIViewController, FloatingPanelControllerDelegate {
-  let layerManager: LayerManager
+class MapViewPanelViewController: UIViewController, FloatingPanelControllerDelegate {
   let popoverTitle = UILabel()
   let dismissButton = UIButton()
-  let layerSelectView: LayerSelectView
   
-  init(layerManager: LayerManager){
-    self.layerManager = layerManager
-    self.layerSelectView = LayerSelectView(layerManager: layerManager)
-    
+  init(title: String){
     super.init(nibName: nil, bundle: nil)
+    self.title = title
     
     view.backgroundColor = UIColor.clear
     view.clipsToBounds = false;
@@ -40,7 +36,6 @@ class PopoverLayerSelectViewController: UIViewController, FloatingPanelControlle
   
   override func loadView() {
     super.loadView()
-    setupLayerSelectView()
     setupTitle()
     setupDismissButton()
   }
@@ -50,7 +45,7 @@ class PopoverLayerSelectViewController: UIViewController, FloatingPanelControlle
   }
   
   func setupTitle() {
-    popoverTitle.text = "Layers"
+    popoverTitle.text = title
     popoverTitle.font = UIFont.boldSystemFont(ofSize: 25)
     popoverTitle.textColor = UIColor.label
     
@@ -78,19 +73,6 @@ class PopoverLayerSelectViewController: UIViewController, FloatingPanelControlle
     
     dismissButton.centerYAnchor.constraint(equalTo: popoverTitle.centerYAnchor).isActive = true
     dismissButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
-  }
-  
-  func setupLayerSelectView() {
-    view.addSubview(layerSelectView)
-    layerSelectView.translatesAutoresizingMaskIntoConstraints = false
-    layerSelectView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
-    layerSelectView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-    layerSelectView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 55).isActive = true
-    layerSelectView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-    
-    layerSelectView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor).isActive = true
-    
-//    layerSelectView.heightAnchor.constraint(equalToConstant: 100).isActive = true
   }
   
   required init?(coder aDecoder: NSCoder) {

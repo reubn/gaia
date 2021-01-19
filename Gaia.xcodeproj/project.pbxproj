@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 1B3401C225B33FAD0091FA3B /* FloatingPanel */; };
-		1B3401C525B34AD00091FA3B /* PopoverLayerSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C425B34AD00091FA3B /* PopoverLayerSelectViewController.swift */; };
+		1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */; };
 		1B3401C725B387690091FA3B /* LayerSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C625B387690091FA3B /* LayerSelectView.swift */; };
 		1B3401CC25B473E40091FA3B /* LayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401CB25B473E40091FA3B /* LayerCell.swift */; };
 		1B3401CE25B473FB0091FA3B /* SectionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401CD25B473FB0091FA3B /* SectionLabel.swift */; };
@@ -30,7 +30,8 @@
 		1B6638CE25B1EA5F0071F03D /* MapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6638CD25B1EA5F0071F03D /* MapButton.swift */; };
 		1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; };
 		1BBD3FEF25B63B10007B8BC7 /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		1BBD3FF125B70679007B8BC7 /* PopoverLayerSelectPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF025B70679007B8BC7 /* PopoverLayerSelectPanelLayout.swift */; };
+		1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */; };
+		1BBD3FF325B708A6007B8BC7 /* MapViewPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,7 +50,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1B3401C425B34AD00091FA3B /* PopoverLayerSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverLayerSelectViewController.swift; sourceTree = "<group>"; };
+		1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelViewController.swift; sourceTree = "<group>"; };
 		1B3401C625B387690091FA3B /* LayerSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectView.swift; sourceTree = "<group>"; };
 		1B3401CB25B473E40091FA3B /* LayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerCell.swift; sourceTree = "<group>"; };
 		1B3401CD25B473FB0091FA3B /* SectionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionLabel.swift; sourceTree = "<group>"; };
@@ -71,7 +72,8 @@
 		1B6638C925B19FFF0071F03D /* UserLocationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationButton.swift; sourceTree = "<group>"; };
 		1B6638CB25B1E9BD0071F03D /* MapButtonGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapButtonGroup.swift; sourceTree = "<group>"; };
 		1B6638CD25B1EA5F0071F03D /* MapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapButton.swift; sourceTree = "<group>"; };
-		1BBD3FF025B70679007B8BC7 /* PopoverLayerSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverLayerSelectPanelLayout.swift; sourceTree = "<group>"; };
+		1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelLayout.swift; sourceTree = "<group>"; };
+		1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewPanelViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,9 +109,10 @@
 				1B6638C925B19FFF0071F03D /* UserLocationButton.swift */,
 				1B6638CD25B1EA5F0071F03D /* MapButton.swift */,
 				1B6638CB25B1E9BD0071F03D /* MapButtonGroup.swift */,
-				1B3401C425B34AD00091FA3B /* PopoverLayerSelectViewController.swift */,
-				1BBD3FF025B70679007B8BC7 /* PopoverLayerSelectPanelLayout.swift */,
+				1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */,
+				1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */,
 				1B6638AB25B10B530071F03D /* MapViewController.swift */,
+				1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */,
 			);
 			path = MapView;
 			sourceTree = "<group>";
@@ -258,14 +261,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B3401C525B34AD00091FA3B /* PopoverLayerSelectViewController.swift in Sources */,
+				1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */,
 				1B6638CE25B1EA5F0071F03D /* MapButton.swift in Sources */,
 				1B3401EC25B4F1B00091FA3B /* MulticastDelegate.swift in Sources */,
 				1B6638CC25B1E9BD0071F03D /* MapButtonGroup.swift in Sources */,
-				1BBD3FF125B70679007B8BC7 /* PopoverLayerSelectPanelLayout.swift in Sources */,
+				1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */,
 				1B6638AC25B10B530071F03D /* MapViewController.swift in Sources */,
 				1B3401CE25B473FB0091FA3B /* SectionLabel.swift in Sources */,
 				1B3401C725B387690091FA3B /* LayerSelectView.swift in Sources */,
+				1BBD3FF325B708A6007B8BC7 /* MapViewPanelViewController.swift in Sources */,
 				1B3401CC25B473E40091FA3B /* LayerCell.swift in Sources */,
 				1B3401D225B474420091FA3B /* Section.swift in Sources */,
 				1B6638A825B10B530071F03D /* AppDelegate.swift in Sources */,
