@@ -41,6 +41,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
     let layersButton = MapButton() ;
     layersButton.setImage(UIImage(systemName: "map"), for: .normal)
     layersButton.addTarget(self, action: #selector(layersButtonTapped), for: .touchUpInside)
+    layersButton.addTarget(self, action: #selector(layersButtonLongPressed), for: .touchDownRepeat)
+    
+    let layersButtonLongGR = UILongPressGestureRecognizer(target: self, action: #selector(layersButtonLongPressed))
+    layersButton.addGestureRecognizer(layersButtonLongGR)
 
     let testButton = MapButton() ;
     testButton.setImage(UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
@@ -140,6 +144,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
       self.present(lsfpc, animated: true, completion: nil)
     } else {
       lsfpc.dismiss(animated: true, completion: nil)
+    }
+  }
+  
+  @IBAction func layersButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
+    if gestureReconizer.state == UIGestureRecognizer.State.began {
+      layerManager!.magic()
     }
   }
 }

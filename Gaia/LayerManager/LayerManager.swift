@@ -7,6 +7,7 @@ class LayerManager {
   private let managedContext: NSManagedObjectContext
   let mapView: MGLMapView
   var groups: [String: [Layer]]?
+  var magicLayers: [Layer]?
 
   let multicastMapViewRegionIsChangingDelegate = MulticastDelegate<(LayerCell)>()
   let multicastLayersHaveChangedDelegate = MulticastDelegate<(Section)>()
@@ -198,6 +199,29 @@ class LayerManager {
   
   public func getLayers(layerGroup: LayerGroup) -> [Layer]? {
     groups![layerGroup.id]
+  }
+  
+  public func magic(){
+    let overlayGroup = layerGroups.first(where: {$0.id == "overlay"})!
+    let overlayLayers = getLayers(layerGroup: overlayGroup)!
+    
+    let activeOverlayLayers = overlayLayers.filter({$0.enabled})
+    if(activeOverlayLayers.count > 0) {
+      // active overlays, capture
+      magicLayers = activeOverlayLayers
+      
+      // and hide them
+      activeOverlayLayers.forEach({
+        disableLayer(layer: $0)
+      })
+    } else {
+      // no active overlays, restore
+      (magicLayers ?? overlayLayers).forEach({
+        enableLayer(layer: $0)
+      })
+      
+      magicLayers = nil
+    }
   }
 
   public func generateStyleURL(sortedLayers: [Layer]) -> URL {
