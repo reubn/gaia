@@ -30,6 +30,7 @@
 		1B6638CE25B1EA5F0071F03D /* MapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6638CD25B1EA5F0071F03D /* MapButton.swift */; };
 		1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; };
 		1BBD3FEF25B63B10007B8BC7 /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1BBD3FF125B70679007B8BC7 /* PopoverLayerSelectPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF025B70679007B8BC7 /* PopoverLayerSelectPanelLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -70,6 +71,7 @@
 		1B6638C925B19FFF0071F03D /* UserLocationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationButton.swift; sourceTree = "<group>"; };
 		1B6638CB25B1E9BD0071F03D /* MapButtonGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapButtonGroup.swift; sourceTree = "<group>"; };
 		1B6638CD25B1EA5F0071F03D /* MapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapButton.swift; sourceTree = "<group>"; };
+		1BBD3FF025B70679007B8BC7 /* PopoverLayerSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverLayerSelectPanelLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				1B6638CD25B1EA5F0071F03D /* MapButton.swift */,
 				1B6638CB25B1E9BD0071F03D /* MapButtonGroup.swift */,
 				1B3401C425B34AD00091FA3B /* PopoverLayerSelectViewController.swift */,
+				1BBD3FF025B70679007B8BC7 /* PopoverLayerSelectPanelLayout.swift */,
 				1B6638AB25B10B530071F03D /* MapViewController.swift */,
 			);
 			path = MapView;
@@ -259,6 +262,7 @@
 				1B6638CE25B1EA5F0071F03D /* MapButton.swift in Sources */,
 				1B3401EC25B4F1B00091FA3B /* MulticastDelegate.swift in Sources */,
 				1B6638CC25B1E9BD0071F03D /* MapButtonGroup.swift in Sources */,
+				1BBD3FF125B70679007B8BC7 /* PopoverLayerSelectPanelLayout.swift in Sources */,
 				1B6638AC25B10B530071F03D /* MapViewController.swift in Sources */,
 				1B3401CE25B473FB0091FA3B /* SectionLabel.swift in Sources */,
 				1B3401C725B387690091FA3B /* LayerSelectView.swift in Sources */,

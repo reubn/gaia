@@ -2,14 +2,14 @@ import UIKit
 import Mapbox
 import FloatingPanel
 
-class MapViewController: UIViewController, MGLMapViewDelegate, FloatingPanelControllerDelegate {
+class MapViewController: UIViewController, MGLMapViewDelegate {
   var layerManager: LayerManager?
 
   var mapView: MGLMapView!
   var rasterLayer: MGLRasterStyleLayer?
   var userLocationButton: UserLocationButton?
   var firstTimeLocating = true
-  let fpc = FloatingPanelController()
+  let lsfpc = FloatingPanelController()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -117,55 +117,28 @@ class MapViewController: UIViewController, MGLMapViewDelegate, FloatingPanelCont
   }
 
   @IBAction func layersButtonTapped(sender: MapButton) {
-    if fpc.viewIfLoaded?.window == nil {
+    if lsfpc.viewIfLoaded?.window == nil {
       let popoverLayerSelectViewController = PopoverLayerSelectViewController(layerManager: layerManager!)
       
-      fpc.layout = MapPopoverPanelLayout()
-      fpc.delegate = self
-      fpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
-      fpc.isRemovalInteractionEnabled = true
-      fpc.contentMode = .fitToBounds
+      lsfpc.layout = PopoverLayerSelectPanelLayout()
+      lsfpc.delegate = popoverLayerSelectViewController
+      lsfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+      lsfpc.isRemovalInteractionEnabled = true
+      lsfpc.contentMode = .fitToBounds
       
       let appearance = SurfaceAppearance()
   //    appearance.cornerCurve = CALayerCornerCurve.continuous
       appearance.cornerRadius = 16
       appearance.backgroundColor = .clear
-      fpc.surfaceView.appearance = appearance
+      lsfpc.surfaceView.appearance = appearance
       
-      fpc.set(contentViewController: popoverLayerSelectViewController)
+      lsfpc.set(contentViewController: popoverLayerSelectViewController)
 
 //      fpc.track(scrollView: popoverLayerSelectViewController.rootScrollView)
 
-      self.present(fpc, animated: true, completion: nil)
+      self.present(lsfpc, animated: true, completion: nil)
     } else {
-      fpc.dismiss(animated: true, completion: nil)
+      lsfpc.dismiss(animated: true, completion: nil)
     }
-  }
-  
-  func floatingPanelDidMove(_ vc: FloatingPanelController) {
-      if vc.isAttracting == false {
-          let loc = vc.surfaceLocation
-          let minY = vc.surfaceLocation(for: .full).y - 6.0
-          vc.surfaceLocation = CGPoint(x: loc.x, y: max(loc.y, minY))
-      }
-  }
-}
-
-class MapPopoverPanelLayout: FloatingPanelLayout {
-  let position: FloatingPanelPosition = .bottom
-  let initialState: FloatingPanelState = .half
-  var anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] {
-    return [
-        .full: FloatingPanelLayoutAnchor(absoluteInset: 16.0, edge: .top, referenceGuide: .safeArea),
-        .half: FloatingPanelLayoutAnchor(fractionalInset: 0.5, edge: .bottom, referenceGuide: .safeArea)
-        ]
-  }
-
-  func allowsRubberBanding(for edge: UIRectEdge) -> Bool {
-    return true
-  }
-
-  func backdropAlpha(for state: FloatingPanelState) -> CGFloat {
-    return 0
   }
 }

@@ -1,8 +1,9 @@
 import Foundation
 import UIKit
 import Mapbox
+import FloatingPanel
 
-class PopoverLayerSelectViewController: UIViewController {
+class PopoverLayerSelectViewController: UIViewController, FloatingPanelControllerDelegate {
   let layerManager: LayerManager
   let popoverTitle = UILabel()
   let dismissButton = UIButton()
@@ -99,7 +100,14 @@ class PopoverLayerSelectViewController: UIViewController {
   @IBAction func dismissButtonTapped(_ sender: UIButton) {
     dismiss(animated: true, completion: nil)
   }
-
+  
+  func floatingPanelDidMove(_ vc: FloatingPanelController) {
+      if vc.isAttracting == false {
+          let loc = vc.surfaceLocation
+          let minY = vc.surfaceLocation(for: .full).y - 6.0
+          vc.surfaceLocation = CGPoint(x: loc.x, y: max(loc.y, minY))
+      }
+  }
 }
 
 
