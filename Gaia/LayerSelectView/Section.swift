@@ -42,11 +42,14 @@ class Section: UIStackView {
     
     tableView.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(0.75)
     tableView.dataSource = self
-//    tableView.isEditing = true
+    
+    tableView.dragDelegate = self // empty drag, drop delegate methods needed to enable moveRowAt... bug?
+    tableView.dropDelegate = self // empty drag, drop delegate methods needed to enable moveRowAt... bug?
+    tableView.dragInteractionEnabled = true
+    
     tableView.isScrollEnabled = false
     tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
     tableView.register(LayerCell.self, forCellReuseIdentifier: "cell")
-    
     
     addArrangedSubview(tableView)
     
@@ -65,7 +68,33 @@ class Section: UIStackView {
   }
 }
 
-extension Section: UITableViewDataSource {
+extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDropDelegate {
+  func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+    return [] // empty drag, drop delegate methods needed to enable moveRowAt... bug?
+  }
+  
+  func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {} // empty drag, drop delegate methods needed to enable moveRowAt... bug?
+  
+  func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
+      return false // reject drops between groups
+  }
+  
+  func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+    return true
+  }
+  
+  func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    let movedLayer = layers[sourceIndexPath.row]
+    layers.remove(at: sourceIndexPath.row)
+    layers.insert(movedLayer, at: destinationIndexPath.row)
+    
+    for (index, layer) in layers.enumerated() {
+      layer.groupIndex = Int16(index) // reset indexes on group layers
+    }
+    
+    layerManager.updateLayers()
+  }
+  
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return layers.count
   }
@@ -97,21 +126,5 @@ extension Section: UITableViewDataSource {
     }
     
     UISelectionFeedbackGenerator().selectionChanged()
-        
-//    tableView.reloadData()
   }
-  
-//  func tableView(_ tableView: UITableView, didSelectRowAtindexPath indexPath: IndexPath) {
-//      print(indexPath.row)
-//  }
-  
-//  func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-//      return true // Yes, the table view can be reordered
-//  }
-//  
-//  func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//      let movedObject = layers[sourceIndexPath.row]
-//      layers.remove(at: sourceIndexPath.row)
-//      layers.insert(movedObject, at: destinationIndexPath.row)
-//  }
 }
