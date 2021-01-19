@@ -3,6 +3,7 @@
     <entity name="Layer" representedClassName="Layer" syncable="YES" codeGenerationType="class">
         <attribute name="enabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="group" attributeType="String"/>
+        <attribute name="groupIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="maxZoom" optional="YES" attributeType="String"/>
         <attribute name="minZoom" optional="YES" attributeType="String"/>
