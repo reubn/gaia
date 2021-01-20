@@ -36,6 +36,7 @@
 		1BBD3FF825B88F56007B8BC7 /* OfflineSelectPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF725B88F56007B8BC7 /* OfflineSelectPanelViewController.swift */; };
 		1BBD3FFA25B89181007B8BC7 /* OfflineSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF925B89181007B8BC7 /* OfflineSelectView.swift */; };
 		1BBD3FFD25B8927E007B8BC7 /* OfflineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */; };
+		1BBD3FFF25B8B0B5007B8BC7 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FFE25B8B0B5007B8BC7 /* Style.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -82,6 +83,7 @@
 		1BBD3FF725B88F56007B8BC7 /* OfflineSelectPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectPanelViewController.swift; sourceTree = "<group>"; };
 		1BBD3FF925B89181007B8BC7 /* OfflineSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectView.swift; sourceTree = "<group>"; };
 		1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineManager.swift; sourceTree = "<group>"; };
+		1BBD3FFE25B8B0B5007B8BC7 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				1B3401D425B4A1570091FA3B /* LayerManager.swift */,
+				1BBD3FFE25B8B0B5007B8BC7 /* Style.swift */,
 			);
 			path = LayerManager;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				1B3401D525B4A1570091FA3B /* LayerManager.swift in Sources */,
 				1B6638B225B10B530071F03D /* Gaia.xcdatamodeld in Sources */,
 				1B6638CA25B19FFF0071F03D /* UserLocationButton.swift in Sources */,
+				1BBD3FFF25B8B0B5007B8BC7 /* Style.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
