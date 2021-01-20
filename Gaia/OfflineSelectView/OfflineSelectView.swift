@@ -3,7 +3,7 @@ import UIKit
 
 import Mapbox
 
-class LayerSelectView: UIScrollView {
+class OfflineSelectView: UIScrollView {
   let layerManager: LayerManager
   let stack: UIStackView
   
@@ -22,7 +22,7 @@ class LayerSelectView: UIScrollView {
     stack.spacing = 30
     stack.translatesAutoresizingMaskIntoConstraints = false
     
-//    stack.backgroundColor = UIColor.orange
+    stack.backgroundColor = UIColor.orange
     
     addSubview(stack)
     
@@ -32,16 +32,16 @@ class LayerSelectView: UIScrollView {
     stack.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     stack.widthAnchor.constraint(equalTo: widthAnchor, constant: -30).isActive = true
     
-    layerManager.layerGroups.forEach({
-      if(layerManager.getLayers(layerGroup: $0) == nil) {return}
-      
-      let section = Section(group: $0, layerManager: layerManager)
-      
-      stack.addArrangedSubview(section)
-      
-      section.translatesAutoresizingMaskIntoConstraints = false
-      section.widthAnchor.constraint(equalTo: stack.widthAnchor, constant: -30).isActive = true
-    })
+//    layerManager.layerGroups.forEach({
+//      if(layerManager.getLayers(layerGroup: $0) == nil) {return}
+//
+//      let section = Section(group: $0, layerManager: layerManager)
+//
+//      stack.addArrangedSubview(section)
+//
+//      section.translatesAutoresizingMaskIntoConstraints = false
+//      section.widthAnchor.constraint(equalTo: stack.widthAnchor, constant: -30).isActive = true
+//    })
   }
   
   required init(coder: NSCoder) {

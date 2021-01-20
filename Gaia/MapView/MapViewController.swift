@@ -10,7 +10,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
   var userLocationButton: UserLocationButton?
   var firstTimeLocating = true
   let lsfpc = FloatingPanelController()
-  let omfpc = FloatingPanelController()
+  let osfpc = FloatingPanelController()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -47,10 +47,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
     layersButtonLongGR.minimumPressDuration = 0.4
     layersButton.addGestureRecognizer(layersButtonLongGR)
 
-    let testButton = MapButton() ;
-    testButton.setImage(UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
-
-    let mapButtonGroup = MapButtonGroup(arrangedSubviews: [userLocationButton, layersButton, testButton])
+    let offlineButton = MapButton() ;
+    offlineButton.setImage(UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
+    offlineButton.addTarget(self, action: #selector(offlineButtonTapped), for: .touchUpInside)
+    
+    let mapButtonGroup = MapButtonGroup(arrangedSubviews: [userLocationButton, layersButton, offlineButton])
 
     let constraints: [NSLayoutConstraint] = [
       NSLayoutConstraint(
@@ -123,6 +124,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
   }
 
   @IBAction func layersButtonTapped(sender: MapButton) {
+    if osfpc.viewIfLoaded?.window != nil {
+      osfpc.dismiss(animated: false, completion: nil)
+    }
+    
     if lsfpc.viewIfLoaded?.window == nil {
       let layerSelectPanelViewController = LayerSelectPanelViewController(layerManager: layerManager!)
       
@@ -153,6 +158,36 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
       layerManager!.magic()
       
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+    }
+  }
+  
+  @IBAction func offlineButtonTapped(sender: MapButton) {
+    if lsfpc.viewIfLoaded?.window != nil {
+      lsfpc.dismiss(animated: false, completion: nil)
+    }
+    
+    if osfpc.viewIfLoaded?.window == nil {
+      let offlineSelectPanelViewController = OfflineSelectPanelViewController(layerManager: layerManager!)
+     
+      osfpc.layout = OfflineSelectPanelLayout()
+      osfpc.delegate = offlineSelectPanelViewController
+      osfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+      osfpc.isRemovalInteractionEnabled = true
+      osfpc.contentMode = .fitToBounds
+     
+      let appearance = SurfaceAppearance()
+  //     appearance.cornerCurve = CALayerCornerCurve.continuous
+      appearance.cornerRadius = 16
+      appearance.backgroundColor = .clear
+      osfpc.surfaceView.appearance = appearance
+     
+      osfpc.set(contentViewController: offlineSelectPanelViewController)
+
+  //       fpc.track(scrollView: popoverLayerSelectViewController.rootScrollView)
+
+      self.present(osfpc, animated: true, completion: nil)
+    } else {
+      osfpc.dismiss(animated: true, completion: nil)
     }
   }
 }
