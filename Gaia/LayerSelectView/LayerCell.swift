@@ -17,7 +17,9 @@ class LayerCell: UITableViewCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     autoresizingMask = .flexibleHeight
-    contentView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+    let height = contentView.heightAnchor.constraint(equalToConstant: 100)
+    height.priority = UILayoutPriority(rawValue: 999)
+    height.isActive = true
 
     contentView.backgroundColor = UIColor.clear
     backgroundColor = UIColor.clear
