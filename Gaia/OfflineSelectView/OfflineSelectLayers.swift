@@ -23,7 +23,7 @@ class OfflineSelectLayers: UIView, CoordinatedView {
     
     coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
     coordinatorView.panelViewController.title = "Select Layers"
-    coordinatorView.panelViewController.buttons = [.okay]
+    coordinatorView.panelViewController.buttons = [.previous, .accept]
   }
   
   func viewWillExit(){
@@ -32,8 +32,8 @@ class OfflineSelectLayers: UIView, CoordinatedView {
   
   func panelButtonTapped(button: PanelButton){
     if(button == .accept){
-      coordinatorView.forward()
-    } else if(button == .reject){
+      coordinatorView.done()
+    } else if(button == .previous){
       coordinatorView.back()
     }
   }

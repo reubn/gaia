@@ -19,17 +19,21 @@ class OfflineSelectArea: UIView, CoordinatedView {
     print("enter OSA")
     coordinatorView.mapViewController.osfpc.move(to: .tip, animated: true)
     coordinatorView.panelViewController.title = "Select Area"
-    coordinatorView.panelViewController.buttons = [.accept, .reject]
+    coordinatorView.panelViewController.buttons = [.previous, .next]
+    
+    coordinatorView.selectedArea = nil
   }
   
   func viewWillExit(){
     print("exit OSA")
+    
+    coordinatorView.selectedArea = coordinatorView.mapViewController.mapView.visibleCoordinateBounds
   }
   
   func panelButtonTapped(button: PanelButton){
-    if(button == .accept){
+    if(button == .next){
       coordinatorView.forward()
-    } else if(button == .reject){
+    } else if(button == .previous){
       coordinatorView.back()
     }
   }
@@ -39,5 +43,5 @@ class OfflineSelectArea: UIView, CoordinatedView {
 
 //coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
 //coordinatorView.panelViewController.title = "Select Layers"
-//coordinatorView.panelViewController.buttons = [.okay]
+//coordinatorView.panelViewController.buttons = [.next]
 

@@ -125,7 +125,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
   }
 
-  @IBAction func locationButtonTapped(sender: UserLocationButton) {
+  @objc func locationButtonTapped(sender: UserLocationButton) {
     var mode: MGLUserTrackingMode
 
     switch (mapView.userTrackingMode) {
@@ -144,7 +144,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapView.userTrackingMode = mode
   }
 
-  @IBAction func layersButtonTapped(sender: MapButton) {
+  @objc func layersButtonTapped(sender: MapButton) {
     if osfpc.viewIfLoaded?.window != nil {
       osfpc.dismiss(animated: false, completion: nil)
     }
@@ -174,7 +174,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
   }
   
-  @IBAction func layersButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
+  @objc func layersButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
     if gestureReconizer.state == UIGestureRecognizer.State.began {
       layerManager!.magic()
       
@@ -182,7 +182,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
   }
   
-  @IBAction func offlineButtonTapped(sender: MapButton) {
+  @objc func offlineButtonTapped(sender: MapButton) {
     if lsfpc.viewIfLoaded?.window != nil {
       lsfpc.dismiss(animated: false, completion: nil)
     }

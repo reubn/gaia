@@ -36,8 +36,12 @@ class OfflineSelectPanelViewController: MapViewPanelViewController {
     offlineSelectCoordinatorView.panelButtonTapped(button: .reject)
   }
   
-  @objc override func okayButtonTapped(_ sender: UIButton) {
-    offlineSelectCoordinatorView.panelButtonTapped(button: .okay)
+  @objc override func nextButtonTapped(_ sender: UIButton) {
+    offlineSelectCoordinatorView.panelButtonTapped(button: .next)
+  }
+  
+  @objc override func previousButtonTapped(_ sender: UIButton) {
+    offlineSelectCoordinatorView.panelButtonTapped(button: .previous)
   }
   
   required init?(coder aDecoder: NSCoder) {

@@ -96,7 +96,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     return button
   }()
   
-  lazy var okayButton: UIButton = {
+  lazy var nextButton: UIButton = {
     let button = UIButton()
     button.setImage(UIImage(systemName: "arrow.right", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
     button.contentVerticalAlignment = .fill
@@ -109,7 +109,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     button.layer.cornerCurve = .circular
     
 //    button.isHidden = true
-    button.addTarget(self, action: #selector(okayButtonTapped), for: .touchUpInside)
+    button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     
 //    view.addSubview(button)
 //
@@ -119,6 +119,27 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
 //
 //    button.centerYAnchor.constraint(equalTo: popoverTitle.centerYAnchor).isActive = true
 //    button.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+    
+    return button
+  }()
+  
+  lazy var previousButton: UIButton = {
+    let button = UIButton()
+    button.setImage(UIImage(systemName: "arrow.left", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
+    button.contentVerticalAlignment = .fill
+    button.contentHorizontalAlignment = .fill
+    button.imageView!.contentMode = .scaleAspectFit
+    button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
+    button.tintColor = .systemBlue
+    button.backgroundColor = .white
+    button.layer.cornerRadius = 15
+    button.layer.cornerCurve = .circular
+
+    button.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
+    
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
     
     return button
   }()
@@ -152,7 +173,8 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
         .dismiss: dismissButton,
         .accept: acceptButton,
         .reject: rejectButton,
-        .okay: okayButton
+        .next: nextButton,
+        .previous: previousButton
       ]
       
       for subView in self.buttonsView.arrangedSubviews {
@@ -213,21 +235,14 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     fatalError("init(coder:) has not been implemented")
   }
   
-  @IBAction func dismissButtonTapped(_ sender: UIButton) {
+  @objc func dismissButtonTapped(_ sender: UIButton) {
     dismiss(animated: true, completion: nil)
   }
   
-  @IBAction func acceptButtonTapped(_ sender: UIButton) {
-//    dismiss(animated: true, completion: nil)
-  }
-  
-  @IBAction func rejectButtonTapped(_ sender: UIButton) {
-//    dismiss(animated: true, completion: nil)
-  }
-  
-  @IBAction func okayButtonTapped(_ sender: UIButton) {
-//    dismiss(animated: true, completion: nil)
-  }
+  @objc func acceptButtonTapped(_ sender: UIButton) {}
+  @objc func rejectButtonTapped(_ sender: UIButton) {}
+  @objc func nextButtonTapped(_ sender: UIButton) {}
+  @objc func previousButtonTapped(_ sender: UIButton) {}
   
   func floatingPanelWillBeginAttracting(_ fpc: FloatingPanelController, to state: FloatingPanelState) {
     uiImpactFeedbackGenerator.prepare()
@@ -256,5 +271,6 @@ enum PanelButton {
   case accept
   case dismiss
   case reject
-  case okay
+  case next
+  case previous
 }
