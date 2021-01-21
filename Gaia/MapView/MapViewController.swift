@@ -22,7 +22,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapView = MGLMapView(frame: view.bounds)
     layerManager = LayerManager()
     layerManager!.multicastStyleDidChangeDelegate.add(delegate: self)
-    mapView.styleURL = layerManager!.style.url
+    
+    let initialStyle = layerManager!.style
+    mapView.styleURL = initialStyle.url
+    updateUIColourScheme(style: initialStyle)
 
     mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     mapView.logoView.isHidden = true
@@ -111,7 +114,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   func styleDidChange(style: Style) {
     mapView.styleURL = style.url
-
+    updateUIColourScheme(style: style)
+  }
+  
+  func updateUIColourScheme(style: Style){
     DispatchQueue.main.async { [self] in
       let dark = style.needsDarkUI
       mapView.window?.overrideUserInterfaceStyle = dark ? .dark : .light
