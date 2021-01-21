@@ -173,8 +173,8 @@ class LayerManager {
     }
   }
 
-  func enableLayer(layer: Layer) {
-    if(layer.group == "overlay") {
+  func enableLayer(layer: Layer, mutuallyExclusive: Bool) {
+    if(layer.group == "overlay" || !mutuallyExclusive) {
       layer.enabled = true
     } else {
       for _layer in layers {
@@ -213,7 +213,7 @@ class LayerManager {
     } else {
       // no active overlays, restore
       (magicLayers ?? overlayLayers).forEach({
-        enableLayer(layer: $0)
+        enableLayer(layer: $0, mutuallyExclusive: false)
       })
 
       magicLayers = nil

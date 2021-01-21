@@ -124,7 +124,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       layerManager.disableLayer(layer: layer)
     }
     else {
-      layerManager.enableLayer(layer: layer)
+      layerManager.enableLayer(layer: layer, mutuallyExclusive: true)
     }
     
     UISelectionFeedbackGenerator().selectionChanged()
