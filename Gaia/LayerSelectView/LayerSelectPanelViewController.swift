@@ -6,10 +6,12 @@ import FloatingPanel
 class LayerSelectPanelViewController: MapViewPanelViewController {
   let layerSelectView: LayerSelectView
   
-  init(layerManager: LayerManager, mapViewController: MapViewController){
-    self.layerSelectView = LayerSelectView(layerManager: layerManager, mapViewController: mapViewController)
+  init(mapViewController: MapViewController){
+    self.layerSelectView = LayerSelectView(mapViewController: mapViewController)
     
     super.init(title: "Layers")
+    
+    self.buttons = [.dismiss]
   }
   
   override func loadView() {

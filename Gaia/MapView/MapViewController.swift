@@ -150,7 +150,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
     
     if lsfpc.viewIfLoaded?.window == nil {
-      let layerSelectPanelViewController = LayerSelectPanelViewController(layerManager: layerManager!, mapViewController: self)
+      let layerSelectPanelViewController = LayerSelectPanelViewController(mapViewController: self)
       
       lsfpc.layout = LayerSelectPanelLayout()
       lsfpc.delegate = layerSelectPanelViewController
@@ -188,7 +188,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
     
     if osfpc.viewIfLoaded?.window == nil {
-      let offlineSelectPanelViewController = OfflineSelectPanelViewController(layerManager: layerManager!)
+      let offlineSelectPanelViewController = OfflineSelectPanelViewController(mapViewController: self)
      
       osfpc.layout = OfflineSelectPanelLayout()
       osfpc.delegate = offlineSelectPanelViewController

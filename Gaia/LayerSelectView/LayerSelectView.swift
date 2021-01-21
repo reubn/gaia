@@ -6,10 +6,12 @@ import Mapbox
 class LayerSelectView: UIScrollView {
   let stack: UIStackView
   
-  init(layerManager: LayerManager, mapViewController: MapViewController){
+  init(mapViewController: MapViewController){
     self.stack = UIStackView()
     
     super.init(frame: CGRect())
+    
+    let layerManager = mapViewController.layerManager!
     
 //    self.backgroundColor = UIColor.red
 //    self.isUserInteractionEnabled = false

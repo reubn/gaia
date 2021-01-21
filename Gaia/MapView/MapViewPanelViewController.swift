@@ -4,9 +4,176 @@ import Mapbox
 import FloatingPanel
 
 class MapViewPanelViewController: UIViewController, FloatingPanelControllerDelegate {
-  let popoverTitle = UILabel()
-  let dismissButton = UIButton()
+  lazy var popoverTitle: UILabel = {
+    let label = UILabel()
+    label.text = title
+    label.font = UIFont.boldSystemFont(ofSize: 25)
+    label.textColor = UIColor.label
+    
+    view.addSubview(label)
+    
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.topAnchor.constraint(equalTo: view.topAnchor, constant: 15).isActive = true
+    label.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
+    
+    return label
+  }()
+  
+  lazy var dismissButton: UIButton = {
+    let button = UIButton()
+    button.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+    button.contentVerticalAlignment = .fill
+    button.contentHorizontalAlignment = .fill
+    button.imageView!.contentMode = .scaleAspectFit
+    button.tintColor = UIColor.systemGray2
+    
+//    button.isHidden = true
+    button.addTarget(self, action: #selector(self.dismissButtonTapped), for: .touchUpInside)
+//
+//    self.view.addSubview(button)
+//
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+    button.heightAnchor.constraint(equalTo: button.widthAnchor).isActive = true
+//
+//    button.centerYAnchor.constraint(equalTo: self.popoverTitle.centerYAnchor).isActive = true
+//    button.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+    
+    return button
+  }()
+  
+  lazy var acceptButton: UIButton = {
+    let button = UIButton()
+    button.setImage(UIImage(systemName: "checkmark", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
+    button.contentVerticalAlignment = .fill
+    button.contentHorizontalAlignment = .fill
+    button.imageView!.contentMode = .scaleAspectFit
+    button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
+    button.tintColor = .white
+    button.backgroundColor = .systemGreen
+    button.layer.cornerRadius = 15
+    button.layer.cornerCurve = .circular
+    
+//    button.isHidden = true
+    button.addTarget(self, action: #selector(acceptButtonTapped), for: .touchUpInside)
+    
+//    view.addSubview(button)
+//
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
+//
+//    button.centerYAnchor.constraint(equalTo: popoverTitle.centerYAnchor).isActive = true
+//    button.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+    
+    return button
+  }()
+  
+  lazy var rejectButton: UIButton = {
+    let button = UIButton()
+    button.setImage(UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
+    button.contentVerticalAlignment = .fill
+    button.contentHorizontalAlignment = .fill
+    button.imageView!.contentMode = .scaleAspectFit
+    button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
+    button.tintColor = .white
+    button.backgroundColor = .systemRed
+    button.layer.cornerRadius = 15
+    button.layer.cornerCurve = .circular
+    
+//    button.isHidden = true
+    button.addTarget(self, action: #selector(rejectButtonTapped), for: .touchUpInside)
+    
+//    view.addSubview(button)
+//
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
+//
+//    button.centerYAnchor.constraint(equalTo: popoverTitle.centerYAnchor).isActive = true
+//    button.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+    
+    return button
+  }()
+  
+  lazy var okayButton: UIButton = {
+    let button = UIButton()
+    button.setImage(UIImage(systemName: "arrow.right", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
+    button.contentVerticalAlignment = .fill
+    button.contentHorizontalAlignment = .fill
+    button.imageView!.contentMode = .scaleAspectFit
+    button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
+    button.tintColor = .white
+    button.backgroundColor = .systemBlue
+    button.layer.cornerRadius = 15
+    button.layer.cornerCurve = .circular
+    
+//    button.isHidden = true
+    button.addTarget(self, action: #selector(okayButtonTapped), for: .touchUpInside)
+    
+//    view.addSubview(button)
+//
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
+//
+//    button.centerYAnchor.constraint(equalTo: popoverTitle.centerYAnchor).isActive = true
+//    button.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+    
+    return button
+  }()
+  
+  lazy var buttonsView: UIStackView = {
+    let stack = UIStackView()
+    
+    stack.axis = .horizontal
+    stack.alignment = .leading
+    stack.distribution = .fillProportionally
+    stack.spacing = 10
+    
+    view.addSubview(stack)
+    
+    stack.translatesAutoresizingMaskIntoConstraints = false
+    stack.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    
+    stack.centerYAnchor.constraint(equalTo: popoverTitle.centerYAnchor).isActive = true
+    stack.leftAnchor.constraint(equalTo: popoverTitle.rightAnchor, constant: 10).isActive = true
+    stack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+    
+    
+    return stack
+  }()
+  
   let uiImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+  
+  var buttons: [PanelButton] = [] {
+    didSet {
+      let buttonLookup: [PanelButton: UIButton] = [
+        .dismiss: dismissButton,
+        .accept: acceptButton,
+        .reject: rejectButton,
+        .okay: okayButton
+      ]
+      
+      for subView in self.buttonsView.arrangedSubviews {
+        self.buttonsView.removeArrangedSubview(subView)
+        subView.removeFromSuperview()
+      }
+      
+      for button in buttons {
+        print(button, self.buttonsView.arrangedSubviews)
+        self.buttonsView.addArrangedSubview(buttonLookup[button]!)
+      }
+      
+      self.buttonsView.setNeedsLayout()
+    }
+  }
+  
+  override var title: String? {
+    didSet {
+      popoverTitle.text = title
+    }
+}
   
   init(title: String){
     super.init(nibName: nil, bundle: nil)
@@ -35,47 +202,12 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     subView.clipsToBounds = true
   }
   
-  override func loadView() {
-    super.loadView()
-    setupTitle()
-    setupDismissButton()
-  }
   
   override func viewDidLoad() {
     view.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
     uiImpactFeedbackGenerator.impactOccurred()
   }
   
-  func setupTitle() {
-    popoverTitle.text = title
-    popoverTitle.font = UIFont.boldSystemFont(ofSize: 25)
-    popoverTitle.textColor = UIColor.label
-    
-    view.addSubview(popoverTitle)
-    
-    popoverTitle.translatesAutoresizingMaskIntoConstraints = false
-    popoverTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: 15).isActive = true
-    popoverTitle.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
-  }
-  
-  func setupDismissButton() {
-    dismissButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
-    dismissButton.contentVerticalAlignment = .fill
-    dismissButton.contentHorizontalAlignment = .fill
-    dismissButton.imageView!.contentMode = .scaleAspectFit
-    dismissButton.tintColor = UIColor.systemGray2
-    
-    dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
-    dismissButton.translatesAutoresizingMaskIntoConstraints = false
-    
-    view.addSubview(dismissButton)
-    
-    dismissButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-    dismissButton.heightAnchor.constraint(equalTo: dismissButton.widthAnchor).isActive = true
-    
-    dismissButton.centerYAnchor.constraint(equalTo: popoverTitle.centerYAnchor).isActive = true
-    dismissButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
-  }
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -83,6 +215,18 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   
   @IBAction func dismissButtonTapped(_ sender: UIButton) {
     dismiss(animated: true, completion: nil)
+  }
+  
+  @IBAction func acceptButtonTapped(_ sender: UIButton) {
+//    dismiss(animated: true, completion: nil)
+  }
+  
+  @IBAction func rejectButtonTapped(_ sender: UIButton) {
+//    dismiss(animated: true, completion: nil)
+  }
+  
+  @IBAction func okayButtonTapped(_ sender: UIButton) {
+//    dismiss(animated: true, completion: nil)
   }
   
   func floatingPanelWillBeginAttracting(_ fpc: FloatingPanelController, to state: FloatingPanelState) {
@@ -108,4 +252,9 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   }
 }
 
-
+enum PanelButton {
+  case accept
+  case dismiss
+  case reject
+  case okay
+}

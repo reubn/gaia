@@ -4,30 +4,40 @@ import Mapbox
 import FloatingPanel
 
 class OfflineSelectPanelViewController: MapViewPanelViewController {
-  let layerManager: LayerManager
-  let offlineSelectView: OfflineSelectView
+  let mapViewController: MapViewController
+  lazy var offlineSelectCoordinatorView = OfflineSelectCoordinatorView(mapViewController: mapViewController, panelViewController: self)
   
-  init(layerManager: LayerManager){
-    self.layerManager = layerManager
-    self.offlineSelectView = OfflineSelectView(layerManager: layerManager)
-    
+  init(mapViewController: MapViewController){
+    self.mapViewController = mapViewController
     super.init(title: "Downloads")
-  }
-  
-  override func loadView() {
-    super.loadView()
-    setupOfflineSelectView()
-  }
-  
-  func setupOfflineSelectView() {
-    view.addSubview(offlineSelectView)
-    offlineSelectView.translatesAutoresizingMaskIntoConstraints = false
-    offlineSelectView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
-    offlineSelectView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-    offlineSelectView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 55).isActive = true
-    offlineSelectView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    
+    self.buttons = [.dismiss]
+    
+    
+    view.addSubview(offlineSelectCoordinatorView)
+    offlineSelectCoordinatorView.translatesAutoresizingMaskIntoConstraints = false
+    offlineSelectCoordinatorView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 30).isActive = true
+    offlineSelectCoordinatorView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -30).isActive = true
+    offlineSelectCoordinatorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 55).isActive = true
+    offlineSelectCoordinatorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
 
-    offlineSelectView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor).isActive = true
+//    offlineSelectCoordinatorView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor).isActive = true
+  }
+  
+  @objc override func dismissButtonTapped(_ sender: UIButton) {
+    offlineSelectCoordinatorView.panelButtonTapped(button: .dismiss)
+  }
+  
+  @objc override func acceptButtonTapped(_ sender: UIButton) {
+    offlineSelectCoordinatorView.panelButtonTapped(button: .accept)
+  }
+  
+  @objc override func rejectButtonTapped(_ sender: UIButton) {
+    offlineSelectCoordinatorView.panelButtonTapped(button: .reject)
+  }
+  
+  @objc override func okayButtonTapped(_ sender: UIButton) {
+    offlineSelectCoordinatorView.panelButtonTapped(button: .okay)
   }
   
   required init?(coder aDecoder: NSCoder) {
