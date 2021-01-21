@@ -55,8 +55,8 @@ class LayerManager {
     let appDelegate = UIApplication.shared.delegate as? AppDelegate
     self.managedContext = appDelegate!.persistentContainer.viewContext
 
-    clearData()
-    createData()
+//    clearData()
+//    createData()
     loadData()
   }
 
