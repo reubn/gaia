@@ -7,6 +7,14 @@ class Style {
     self.sortedLayers = sortedLayers
   }
   
+  var needsDarkUI: Bool {
+    let topNonOverlay = sortedLayers.reversed().first(where: {$0.group != "overlay"})
+
+    if(topNonOverlay == nil) {return true}
+
+    return topNonOverlay!.group == "aerial"
+  }
+  
   var url: URL? {
     do {
       let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)

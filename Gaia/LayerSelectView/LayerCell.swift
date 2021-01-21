@@ -7,6 +7,7 @@ import Mapbox
 class LayerCell: UITableViewCell {
   var _layer: Layer?
   var layerManager: LayerManager?
+  var mapViewController: MapViewController?
   var first = true
 
   let preview = MGLMapView(frame: CGRect.zero)
@@ -62,20 +63,20 @@ class LayerCell: UITableViewCell {
 //    title.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
   }
 
-  func mainMapViewRegionIsChanging() {
-    self.preview.setCenter(layerManager!.mapView.centerCoordinate, zoomLevel: layerManager!.mapView.zoomLevel - 2, animated: false)
+  func parentMapViewRegionIsChanging() {
+    preview.setCenter(mapViewController!.mapView.centerCoordinate, zoomLevel: mapViewController!.mapView.zoomLevel - 2, animated: false)
   }
 
-  func update(_layer: Layer, layerManager: LayerManager) {
+  func update(_layer: Layer, layerManager: LayerManager, mapViewController: MapViewController) {
     self._layer = _layer
     self.layerManager = layerManager
-    let mapView = layerManager.mapView
+    self.mapViewController = mapViewController
 
     preview.styleURL = Style(sortedLayers: [_layer]).url
 
     if(first) {
-      layerManager.multicastMapViewRegionIsChangingDelegate.add(delegate: self)
-      preview.setCenter(mapView.centerCoordinate, zoomLevel: mapView.zoomLevel - 2, animated: false)
+      mapViewController.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)
+      preview.setCenter(mapViewController.mapView.centerCoordinate, zoomLevel: mapViewController.mapView.zoomLevel - 2, animated: false)
       self.first = false
     }
 

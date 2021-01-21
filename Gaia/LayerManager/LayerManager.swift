@@ -5,12 +5,11 @@ import Mapbox
 
 class LayerManager {
   private let managedContext: NSManagedObjectContext
-  let mapView: MGLMapView
+  var delegate: LayerManagerDelegate?
   var groups: [String: [Layer]]?
   var magicLayers: [Layer]?
 
-  let multicastMapViewRegionIsChangingDelegate = MulticastDelegate<(LayerCell)>()
-  let multicastLayersHaveChangedDelegate = MulticastDelegate<(Section)>()
+  let multicastStyleDidChangeDelegate = MulticastDelegate<(LayerManagerDelegate)>()
 
   let layerGroups = [
     LayerGroup(id: "overlay", name: "Overlays", colour: .systemPink),
@@ -52,11 +51,10 @@ class LayerManager {
     return a.name! > b.name!
   }
 
-  init(mapView: MGLMapView){
+  init(){
     let appDelegate = UIApplication.shared.delegate as? AppDelegate
     self.managedContext = appDelegate!.persistentContainer.viewContext
 
-    self.mapView = mapView
     clearData()
     createData()
     loadData()
@@ -166,27 +164,8 @@ class LayerManager {
     catch let error as NSError {print("Could not save. \(error), \(error.userInfo)")}
   }
 
-  func uiShouldBeDark() -> Bool {
-    let topNonOverlay = sortedLayers.reversed().first(where: {$0.group != "overlay"})
-
-    if(topNonOverlay == nil) {return true}
-
-    return topNonOverlay!.group == "aerial"
-  }
-
-  func apply() {
-    mapView.styleURL = style.url
-
-    DispatchQueue.main.async { [self] in
-      let dark = uiShouldBeDark()
-      mapView.window?.overrideUserInterfaceStyle = dark ? .dark : .light
-      mapView.window?.tintColor = dark ? .white : .systemBlue
-    }
-  }
-
   func updateLayers(){
-    apply()
-    multicastLayersHaveChangedDelegate.invoke(invocation: {$0.layersHaveChanged()})
+    multicastStyleDidChangeDelegate.invoke(invocation: {$0.styleDidChange(style: style)})
     do {
         try managedContext.save()
     } catch {
@@ -252,4 +231,9 @@ struct LayerGroup {
   let id: String
   let name: String
   let colour: UIColor
+}
+
+
+protocol LayerManagerDelegate {
+  func styleDidChange(style: Style)
 }

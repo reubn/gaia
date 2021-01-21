@@ -4,20 +4,22 @@ import CoreData
 
 import Mapbox
 
-class Section: UIStackView {
+class Section: UIStackView, LayerManagerDelegate {
   let group: LayerGroup
   let layerManager: LayerManager
+  let mapViewController: MapViewController
   var layers: [Layer]
   let tableView = SectionTableView()
   
-  init(group: LayerGroup, layerManager: LayerManager){
+  init(group: LayerGroup, layerManager: LayerManager, mapViewController: MapViewController){
     self.group = group
     self.layerManager = layerManager
+    self.mapViewController = mapViewController
     self.layers = layerManager.getLayers(layerGroup: group)!.reversed()
     
     super.init(frame: CGRect())
     
-    layerManager.multicastLayersHaveChangedDelegate.add(delegate: self)
+    layerManager.multicastStyleDidChangeDelegate.add(delegate: self)
     
     axis = .vertical
     alignment = .leading
@@ -63,7 +65,7 @@ class Section: UIStackView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func layersHaveChanged() {
+  func styleDidChange(style _: Style) {
     tableView.reloadData()
   }
 }
@@ -102,7 +104,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LayerCell
     
-    cell.update(_layer: layers[indexPath.row], layerManager: layerManager)
+    cell.update(_layer: layers[indexPath.row], layerManager: layerManager, mapViewController: mapViewController)
     
     let labelRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tableViewLabelClick))
     cell.isUserInteractionEnabled = true

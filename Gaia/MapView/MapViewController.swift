@@ -2,7 +2,7 @@ import UIKit
 import Mapbox
 import FloatingPanel
 
-class MapViewController: UIViewController, MGLMapViewDelegate {
+class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDelegate {
   var layerManager: LayerManager?
 
   var mapView: MGLMapView!
@@ -11,13 +11,18 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
   var firstTimeLocating = true
   let lsfpc = FloatingPanelController()
   let osfpc = FloatingPanelController()
+  
+  let uiColourTint: UIColor = .systemBlue
+  
+  let multicastParentMapViewRegionIsChangingDelegate = MulticastDelegate<(LayerCell)>()
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     mapView = MGLMapView(frame: view.bounds)
-    layerManager = LayerManager(mapView: mapView)
-    layerManager!.apply()
+    layerManager = LayerManager()
+    layerManager!.multicastStyleDidChangeDelegate.add(delegate: self)
+    mapView.styleURL = layerManager!.style.url
 
     mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     mapView.logoView.isHidden = true
@@ -87,7 +92,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
   }
 
   func mapViewRegionIsChanging(_ mapView: MGLMapView) {
-    layerManager!.multicastMapViewRegionIsChangingDelegate.invoke(invocation: {$0.mainMapViewRegionIsChanging()})
+    multicastParentMapViewRegionIsChangingDelegate.invoke(invocation: {$0.parentMapViewRegionIsChanging()})
   }
 
   func mapView(_ mapView: MGLMapView, didChange mode: MGLUserTrackingMode, animated: Bool) {
@@ -102,6 +107,16 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
     }
 
     userLocationButton.updateArrowForTrackingMode(mode: mode)
+  }
+  
+  func styleDidChange(style: Style) {
+    mapView.styleURL = style.url
+
+    DispatchQueue.main.async { [self] in
+      let dark = style.needsDarkUI
+      mapView.window?.overrideUserInterfaceStyle = dark ? .dark : .light
+      mapView.window?.tintColor = dark ? .white : uiColourTint
+    }
   }
 
   @IBAction func locationButtonTapped(sender: UserLocationButton) {
@@ -129,7 +144,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
     }
     
     if lsfpc.viewIfLoaded?.window == nil {
-      let layerSelectPanelViewController = LayerSelectPanelViewController(layerManager: layerManager!)
+      let layerSelectPanelViewController = LayerSelectPanelViewController(layerManager: layerManager!, mapViewController: self)
       
       lsfpc.layout = LayerSelectPanelLayout()
       lsfpc.delegate = layerSelectPanelViewController

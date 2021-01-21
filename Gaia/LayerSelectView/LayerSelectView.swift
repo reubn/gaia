@@ -4,11 +4,9 @@ import UIKit
 import Mapbox
 
 class LayerSelectView: UIScrollView {
-  let layerManager: LayerManager
   let stack: UIStackView
   
-  init(layerManager: LayerManager){
-    self.layerManager = layerManager
+  init(layerManager: LayerManager, mapViewController: MapViewController){
     self.stack = UIStackView()
     
     super.init(frame: CGRect())
@@ -35,7 +33,7 @@ class LayerSelectView: UIScrollView {
     layerManager.layerGroups.forEach({
       if(layerManager.getLayers(layerGroup: $0) == nil) {return}
       
-      let section = Section(group: $0, layerManager: layerManager)
+      let section = Section(group: $0, layerManager: layerManager, mapViewController: mapViewController)
       
       stack.addArrangedSubview(section)
       

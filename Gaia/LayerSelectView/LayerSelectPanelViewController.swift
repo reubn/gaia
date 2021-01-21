@@ -4,12 +4,10 @@ import Mapbox
 import FloatingPanel
 
 class LayerSelectPanelViewController: MapViewPanelViewController {
-  let layerManager: LayerManager
   let layerSelectView: LayerSelectView
   
-  init(layerManager: LayerManager){
-    self.layerManager = layerManager
-    self.layerSelectView = LayerSelectView(layerManager: layerManager)
+  init(layerManager: LayerManager, mapViewController: MapViewController){
+    self.layerSelectView = LayerSelectView(layerManager: layerManager, mapViewController: mapViewController)
     
     super.init(title: "Layers")
   }
