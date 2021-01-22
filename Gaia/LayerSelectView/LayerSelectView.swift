@@ -26,11 +26,11 @@ class LayerSelectView: UIScrollView {
     
     addSubview(stack)
     
-    stack.leftAnchor.constraint(equalTo: leftAnchor, constant: 30).isActive = true
+    stack.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
     stack.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
     stack.topAnchor.constraint(equalTo: topAnchor).isActive = true
     stack.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-    stack.widthAnchor.constraint(equalTo: widthAnchor, constant: -30).isActive = true
+    stack.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
     
     layerManager.layerGroups.forEach({
       if(layerManager.getLayers(layerGroup: $0) == nil) {return}
@@ -40,7 +40,7 @@ class LayerSelectView: UIScrollView {
       stack.addArrangedSubview(section)
       
       section.translatesAutoresizingMaskIntoConstraints = false
-      section.widthAnchor.constraint(equalTo: stack.widthAnchor, constant: -30).isActive = true
+      section.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
     })
   }
   

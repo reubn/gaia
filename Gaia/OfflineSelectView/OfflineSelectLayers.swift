@@ -5,13 +5,29 @@ import Mapbox
 
 class OfflineSelectLayers: UIView, CoordinatedView {
   let coordinatorView: OfflineSelectCoordinatorView
-  let layerManager: LayerManager
+  
+  let mapViewController: MapViewController
+  lazy var layerManager = mapViewController.layerManager!
+  
+  lazy var layerSelectView = LayerSelectView(mapViewController: mapViewController)
 
-  init(coordinatorView: OfflineSelectCoordinatorView, layerManager: LayerManager){
+  init(coordinatorView: OfflineSelectCoordinatorView, mapViewController: MapViewController){
     self.coordinatorView = coordinatorView
-    self.layerManager = layerManager
+    self.mapViewController = mapViewController
     
     super.init(frame: CGRect())
+//    backgroundColor = .systemBlue
+//    layerSelectView.backgroundColor = .systemRed
+    
+    addSubview(layerSelectView)
+    
+    layerSelectView.translatesAutoresizingMaskIntoConstraints = false
+    layerSelectView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor).isActive = true
+    layerSelectView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor).isActive = true
+    layerSelectView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+    layerSelectView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+    
+//    layerSelectView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor).isActive = true
   }
   
   required init(coder: NSCoder) {
@@ -24,6 +40,8 @@ class OfflineSelectLayers: UIView, CoordinatedView {
     coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
     coordinatorView.panelViewController.title = "Select Layers"
     coordinatorView.panelViewController.buttons = [.previous, .accept]
+    
+    coordinatorView.selectedStyle = nil
   }
   
   func viewWillExit(){
@@ -32,7 +50,8 @@ class OfflineSelectLayers: UIView, CoordinatedView {
   
   func panelButtonTapped(button: PanelButton){
     if(button == .accept){
-      coordinatorView.done()
+      coordinatorView.selectedStyle = layerManager.style
+      coordinatorView.forward()
     } else if(button == .previous){
       coordinatorView.back()
     }

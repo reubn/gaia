@@ -3,18 +3,32 @@ import UIKit
 
 import Mapbox
 
-class OfflineSelectHome: UIStackView, CoordinatedView, UITableViewDelegate, UITableViewDataSource {
+class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableViewDataSource {
   let coordinatorView: OfflineSelectCoordinatorView
   var offlineManager: OfflineManager
 
   lazy var newButton: UIButton = {
-    let button = UIButton(frame: CGRect.zero)
-    button.backgroundColor = UIColor.systemBlue
-    button.setTitleColor(UIColor.white, for: .normal)
-    button.setTitle("Download Region", for: .normal)
-    button.addTarget(self, action: #selector(newButtonTapped), for: .touchUpInside)
-    button.layer.cornerRadius = bounds.width / 30
+    let button = UIButton()
+    button.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
+    button.contentVerticalAlignment = .fill
+    button.contentHorizontalAlignment = .fill
+    button.imageView!.contentMode = .scaleAspectFit
+    button.imageEdgeInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
+    button.tintColor = .systemBlue
+    button.backgroundColor = .white
+    button.layer.cornerRadius = 8
+    button.layer.cornerCurve = .continuous
+
+    button.addTarget(self, action: #selector(self.newButtonTapped), for: .touchUpInside)
+    
+    addSubview(button)
+    
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+    button.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+    button.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+    button.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+    
     return button
   }()
    
@@ -22,7 +36,7 @@ class OfflineSelectHome: UIStackView, CoordinatedView, UITableViewDelegate, UITa
     let tableView = UITableView(frame: CGRect.zero)
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.backgroundColor = .systemPink
     return tableView
   }()
   
@@ -32,26 +46,19 @@ class OfflineSelectHome: UIStackView, CoordinatedView, UITableViewDelegate, UITa
     
     super.init(frame: CGRect())
     
-    axis = .vertical
-    alignment = .leading
-    distribution = .fill
-    spacing = 30
-    translatesAutoresizingMaskIntoConstraints = false
+//    translatesAutoresizingMaskIntoConstraints = false
     
-    backgroundColor = UIColor.orange
+//    backgroundColor = UIColor.orange
     
-    addArrangedSubview(tableView)
-    addArrangedSubview(newButton)
-//    layerManager.layerGroups.forEach({
-//      if(layerManager.getLayers(layerGroup: $0) == nil) {return}
-//
-//      let section = Section(group: $0, layerManager: layerManager)
-//
-//      addArrangedSubview(section)
-//
-//      section.translatesAutoresizingMaskIntoConstraints = false
-//      section.widthAnchor.constraint(equalTo: widthAnchor, constant: -30).isActive = true
-//    })
+    addSubview(tableView)
+//    addSubview(newButton)
+    
+    tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+    tableView.bottomAnchor.constraint(equalTo: newButton.topAnchor, constant: -20).isActive = true
+    tableView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+    tableView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+    
   }
   
   required init(coder: NSCoder) {
@@ -60,6 +67,9 @@ class OfflineSelectHome: UIStackView, CoordinatedView, UITableViewDelegate, UITa
   
   func viewWillEnter(){
     print("enter OSH")
+    coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
+    coordinatorView.panelViewController.title = "Downloads"
+    coordinatorView.panelViewController.buttons = [.dismiss]
   }
   
   func viewWillExit(){
@@ -73,11 +83,26 @@ class OfflineSelectHome: UIStackView, CoordinatedView, UITableViewDelegate, UITa
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    1
+    if let packs = offlineManager.downloads {
+      return packs.count
+    } else {
+      return 0
+    }
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    return UITableViewCell()
+   
+    let cell = UITableViewCell.init(style: .subtitle, reuseIdentifier: "cell")
+     
+    if let packs = offlineManager.downloads {
+      let pack = packs[indexPath.row]
+       
+      cell.textLabel?.text = "Region \(indexPath.row + 1): size: \(pack.progress.countOfBytesCompleted)"
+      cell.detailTextLabel?.text = "Percent completion: \(pack.progress.countOfResourcesExpected != 0 ? String(pack.progress.countOfResourcesCompleted / pack.progress.countOfResourcesExpected) : "N/A")%"
+    }
+     
+    return cell
+   
   }
   
   @objc func newButtonTapped(){

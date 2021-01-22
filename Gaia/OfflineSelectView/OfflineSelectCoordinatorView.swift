@@ -8,10 +8,15 @@ class OfflineSelectCoordinatorView: UIScrollView {
   let mapViewController: MapViewController
   let panelViewController: OfflineSelectPanelViewController
   
+  var selectedArea: MGLCoordinateBounds?
+  var selectedStyle: Style?
+  var selectedZoomFrom: Double?
+  var selectedZoomTo: Double?
+  
   lazy var story: [CoordinatedView] = [
     OfflineSelectHome(coordinatorView: self, offlineManager: offlineManager),
     OfflineSelectArea(coordinatorView: self),
-    OfflineSelectLayers(coordinatorView: self, layerManager: mapViewController.layerManager!)
+    OfflineSelectLayers(coordinatorView: self, mapViewController: mapViewController)
   ]
   
   var storyPosition = -1
@@ -21,6 +26,8 @@ class OfflineSelectCoordinatorView: UIScrollView {
     self.panelViewController = panelViewController
     
     super.init(frame: CGRect())
+    
+//    backgroundColor = .systemYellow
     
     read()
     
@@ -33,13 +40,16 @@ class OfflineSelectCoordinatorView: UIScrollView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  private func read(direction: Int = 1){
-    
+  private func read(direction: Int = 1, newPosition: Int? = nil){
     let previousChapter = storyPosition >= 0 && storyPosition < story.count ? story[storyPosition] : nil
     
-    let testStoryNextPosition = storyPosition + direction
+    let testStoryNextPosition = newPosition ?? storyPosition + direction
     
-    if(testStoryNextPosition < 0 || testStoryNextPosition >= story.count) {return}
+    if(testStoryNextPosition < 0) {return}
+    if(testStoryNextPosition >= story.count) {
+      done()
+      return
+    }
     
     storyPosition = testStoryNextPosition
     
@@ -50,6 +60,13 @@ class OfflineSelectCoordinatorView: UIScrollView {
     
     chapter.viewWillEnter()
     addSubview(chapter)
+    
+    chapter.translatesAutoresizingMaskIntoConstraints = false
+    chapter.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor).isActive = true
+    chapter.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor).isActive = true
+    chapter.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+    chapter.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: UIApplication.shared.windows.first!.safeAreaInsets.bottom).isActive = true // Bug?? Normal bottomAnchor doesn't work
+    
   }
   
   func forward(){
@@ -60,27 +77,16 @@ class OfflineSelectCoordinatorView: UIScrollView {
     read(direction: -1)
   }
   
-  
-//  @objc func startNewDownloadFlow(){
-//    let mapView = mapViewController.mapView
-//    mapViewController.osfpc.move(to: .tip, animated: true)
-//    panelViewController.title = "Select Area"
-//    panelViewController.buttons = [.accept, .reject]
-//
-////    offlineManager.startDownload(style: map, bounds: <#T##MGLCoordinateBounds#>, fromZoomLevel: <#T##Double#>, toZoomLevel: <#T##Double#>)
-//  }
+  func done(){
+    print("done!")
+    print(selectedArea)
+    print(selectedStyle!.jsonString)
+    offlineManager.startDownload(style: selectedStyle!, bounds: selectedArea!, fromZoomLevel: 14, toZoomLevel: 15)
+    read(newPosition: 0)
+  }
   
   func panelButtonTapped(button: PanelButton) {
     story[storyPosition].panelButtonTapped(button: button)
-//    func acceptButtonTapped(){
-//      mapViewController.osfpc.move(to: .full, animated: true)
-//      panelViewController.title = "Select Layers"
-//      panelViewController.buttons = [.okay]
-//    }
-//    
-//    func rejectButtonTapped(){
-//      print("reject")
-//    }
   }
 
 }

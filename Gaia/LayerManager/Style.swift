@@ -21,7 +21,7 @@ class Style {
       let temporaryFilename = ProcessInfo().globallyUniqueString
       let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(temporaryFilename)
 
-      try json!.data(using: .utf8)!.write(to: temporaryFileURL, options: .atomic)
+      try jsonString!.data(using: .utf8)!.write(to: temporaryFileURL, options: .atomic)
       
       return temporaryFileURL
     }
@@ -30,7 +30,22 @@ class Style {
     }
   }
   
-  var json: String? {
+  var jsonString: String? {
+    jsonData != nil ? String(data: jsonData!, encoding: .utf8) : nil
+  }
+  
+  var jsonData: Data? {
+    do {
+      let encoder = JSONEncoder()
+
+      return try encoder.encode(jsonObject)
+      
+    } catch {
+      return nil
+    }
+  }
+  
+  var jsonObject: StyleJSON {
     let layerSourcesJSON = sortedLayers.reduce(into: [String: LayerSourceJSON]()) {
       let incoming = $1 as Layer
       $0[$1.id!] = LayerSourceJSON(
@@ -54,18 +69,7 @@ class Style {
       )
     }
 
-    let rootJSON = StyleJSON(sources: layerSourcesJSON, layers: layerLayersJSON)
-
-    do {
-      let encoder = JSONEncoder()
-
-      let data = try encoder.encode(rootJSON)
-      let json = String(data: data, encoding: .utf8)!
-
-      return json
-    } catch {
-      return nil
-    }
+    return StyleJSON(sources: layerSourcesJSON, layers: layerLayersJSON)
   }
 }
 

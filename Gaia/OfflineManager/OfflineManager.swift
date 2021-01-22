@@ -12,7 +12,7 @@ class OfflineManager {
     let region = MGLTilePyramidOfflineRegion(styleURL: style.url, bounds: bounds, fromZoomLevel: fromZoomLevel, toZoomLevel: toZoomLevel)
       
     // Store some data for identification purposes alongside the offline pack.
-    let context = try! NSKeyedArchiver.archivedData(withRootObject: style, requiringSecureCoding: true)
+    let context = style.jsonData!
     
     NotificationCenter.default.addObserver(self, selector: #selector(offlinePackProgressDidChange), name: NSNotification.Name.MGLOfflinePackProgressChanged, object: nil)
      
@@ -27,8 +27,9 @@ class OfflineManager {
   }
   
   @objc func offlinePackProgressDidChange(notification: NSNotification) {
+    let decoder = JSONDecoder()
     if let pack = notification.object as? MGLOfflinePack,
-       let context = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(pack.context) as? Style {
+       let context = try? decoder.decode(StyleJSON.self, from: pack.context) {
 
       // At this point, the offline pack has finished downloading.
 
@@ -42,6 +43,8 @@ class OfflineManager {
       - Bytes: \(byteCount)
       - Resource count: \(pack.progress.countOfResourcesCompleted)")
       """)
+        
+        print(context)
 
       NotificationCenter.default.removeObserver(self, name: NSNotification.Name.MGLOfflinePackProgressChanged,
       object: nil)

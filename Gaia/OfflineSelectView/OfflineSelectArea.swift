@@ -26,12 +26,11 @@ class OfflineSelectArea: UIView, CoordinatedView {
   
   func viewWillExit(){
     print("exit OSA")
-    
-    coordinatorView.selectedArea = coordinatorView.mapViewController.mapView.visibleCoordinateBounds
   }
   
   func panelButtonTapped(button: PanelButton){
     if(button == .next){
+      coordinatorView.selectedArea = coordinatorView.mapViewController.mapView.visibleCoordinateBounds
       coordinatorView.forward()
     } else if(button == .previous){
       coordinatorView.back()
