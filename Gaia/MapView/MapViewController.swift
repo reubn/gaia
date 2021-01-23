@@ -52,7 +52,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 
     layersButton.setImage(UIImage(systemName: "map"), for: .normal)
     layersButton.addTarget(self, action: #selector(layersButtonTapped), for: .touchUpInside)
-    layersButton.addTarget(self, action: #selector(layersButtonLongPressed), for: .touchDownRepeat)
+//    layersButton.addTarget(self, action: #selector(layersButtonLongPressed), for: .touchDownRepeat)
     
     let layersButtonLongGR = UILongPressGestureRecognizer(target: self, action: #selector(layersButtonLongPressed))
     layersButtonLongGR.minimumPressDuration = 0.4
