@@ -11,7 +11,7 @@ class LayerSelectView: UIScrollView {
     
     super.init(frame: CGRect())
     
-    let layerManager = mapViewController.layerManager!
+    let layerManager = mapViewController.layerManager
     
     layer.cornerRadius = 8
     layer.cornerCurve = .continuous

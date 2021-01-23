@@ -3,7 +3,7 @@ import Mapbox
 import FloatingPanel
 
 class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDelegate {
-  var layerManager: LayerManager?
+  let layerManager = LayerManager()
 
   var mapView: MGLMapView!
   var rasterLayer: MGLRasterStyleLayer?
@@ -20,10 +20,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     super.viewDidLoad()
 
     mapView = MGLMapView(frame: view.bounds)
-    layerManager = LayerManager()
-    layerManager!.multicastStyleDidChangeDelegate.add(delegate: self)
+    layerManager.multicastStyleDidChangeDelegate.add(delegate: self)
     
-    let initialStyle = layerManager!.style
+    let initialStyle = layerManager.style
     mapView.styleURL = initialStyle.url
     updateUIColourScheme(style: initialStyle)
 
@@ -176,7 +175,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   @objc func layersButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
     if gestureReconizer.state == UIGestureRecognizer.State.began {
-      layerManager!.magic()
+      layerManager.magic()
       
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
