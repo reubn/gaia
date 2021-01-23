@@ -4,7 +4,6 @@ import UIKit
 import Mapbox
 
 class OfflineSelectCoordinatorView: UIScrollView {
-  let offlineManager = OfflineManager()
   let mapViewController: MapViewController
   let panelViewController: OfflineSelectPanelViewController
   
@@ -13,8 +12,10 @@ class OfflineSelectCoordinatorView: UIScrollView {
   var selectedZoomFrom: Double?
   var selectedZoomTo: Double?
   
+  lazy var offlineManager = mapViewController.offlineManager
+  
   lazy var story: [CoordinatedView] = [
-    OfflineSelectHome(coordinatorView: self, offlineManager: offlineManager),
+    OfflineSelectHome(coordinatorView: self, mapViewController: mapViewController),
     OfflineSelectArea(coordinatorView: self),
     OfflineSelectLayers(coordinatorView: self, mapViewController: mapViewController)
   ]
@@ -81,7 +82,7 @@ class OfflineSelectCoordinatorView: UIScrollView {
     print("done!")
     print(selectedArea)
     print(selectedStyle!.jsonString)
-    offlineManager.startDownload(style: selectedStyle!, bounds: selectedArea!, fromZoomLevel: 14, toZoomLevel: 15)
+    offlineManager.downloadPack(style: selectedStyle!, bounds: selectedArea!, fromZoomLevel: 14, toZoomLevel: 15)
     read(newPosition: 0)
   }
   

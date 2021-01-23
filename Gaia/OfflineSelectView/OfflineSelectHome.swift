@@ -3,9 +3,10 @@ import UIKit
 
 import Mapbox
 
-class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableViewDataSource {
+class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableViewDataSource, OfflineManagerDelegate {
   let coordinatorView: OfflineSelectCoordinatorView
-  var offlineManager: OfflineManager
+  let mapViewController: MapViewController
+  lazy var offlineManager = mapViewController.offlineManager
 
   lazy var newButton: UIButton = {
     let button = UIButton()
@@ -33,18 +34,27 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   }()
    
   lazy var tableView: UITableView = {
-    let tableView = UITableView(frame: CGRect.zero)
+    let tableView = STableView()
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.backgroundColor = .systemPink
+    tableView.backgroundColor = .clear
+    
+    tableView.layer.cornerRadius = 8
+    tableView.layer.cornerCurve = .continuous
+    tableView.clipsToBounds = true
+    
+    tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+    tableView.isScrollEnabled = false
     return tableView
   }()
   
-  init(coordinatorView: OfflineSelectCoordinatorView, offlineManager: OfflineManager){
+  init(coordinatorView: OfflineSelectCoordinatorView, mapViewController: MapViewController){
     self.coordinatorView = coordinatorView
-    self.offlineManager = offlineManager
+    self.mapViewController = mapViewController
     
     super.init(frame: CGRect())
+    
+    offlineManager.multicastDownloadDidUpdateDelegate.add(delegate: self)
     
 //    translatesAutoresizingMaskIntoConstraints = false
     
@@ -55,7 +65,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-    tableView.bottomAnchor.constraint(equalTo: newButton.topAnchor, constant: -20).isActive = true
+    tableView.bottomAnchor.constraint(lessThanOrEqualTo: newButton.topAnchor, constant: -20).isActive = true
     tableView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
     tableView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
     
@@ -70,6 +80,8 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
     coordinatorView.panelViewController.title = "Downloads"
     coordinatorView.panelViewController.buttons = [.dismiss]
+    
+    offlineManager.refreshDownloads()
   }
   
   func viewWillExit(){
@@ -82,6 +94,21 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     }
   }
   
+  func downloadDidUpdate(pack: MGLOfflinePack?) {
+    print("pack change")
+
+    if(pack != nil){
+      let index = offlineManager.downloads!.firstIndex(of: pack!)
+      let indexPath = IndexPath(row: index!, section: 0)
+      let cell = tableView.cellForRow(at: indexPath) as? DownloadCell
+      
+      if(cell != nil) {cell!.update(pack: pack!, mapViewController: mapViewController)}
+      else {tableView.reloadData()}
+    } else {
+      tableView.reloadData()
+    }
+  }
+  
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     if let packs = offlineManager.downloads {
       return packs.count
@@ -91,18 +118,70 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-   
-    let cell = UITableViewCell.init(style: .subtitle, reuseIdentifier: "cell")
+    let cell = DownloadCell(style: .subtitle, reuseIdentifier: "cell")
      
-    if let packs = offlineManager.downloads {
-      let pack = packs[indexPath.row]
-       
-      cell.textLabel?.text = "Region \(indexPath.row + 1): size: \(pack.progress.countOfBytesCompleted)"
-      cell.detailTextLabel?.text = "Percent completion: \(pack.progress.countOfResourcesExpected != 0 ? String(pack.progress.countOfResourcesCompleted / pack.progress.countOfResourcesExpected) : "N/A")%"
-    }
+    cell.update(pack: offlineManager.downloads![indexPath.row], mapViewController: mapViewController)
      
     return cell
    
+  }
+  
+  func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    let downloads = offlineManager.downloads!
+    
+    if(downloads.count <= indexPath.row) {
+      return nil
+    }
+    
+    let pack = downloads[indexPath.row]
+    
+    return UIContextMenuConfiguration(identifier: nil, previewProvider: nil){ actions -> UIMenu? in
+      
+      var children: [UIAction] = []
+      
+      if(pack.state == .inactive) {
+        let action = UIAction(
+          title: "Resume",
+          image: UIImage(systemName: "square.and.arrow.down")) { _ in
+            pack.resume()
+        }
+        
+        children.append(action)
+      }
+      
+      if(pack.state == .complete) {
+        let action = UIAction(
+          title: "Redownload",
+          image: UIImage(systemName: "square.and.arrow.down")) { _ in
+            self.offlineManager.redownloadPack(pack: pack)
+        }
+        
+        children.append(action)
+      }
+      
+      if(pack.state == .active) {
+        let action = UIAction(
+          title: "Stop Download",
+          image: UIImage(systemName: "xmark.circle.fill"),
+          attributes: .destructive) { _ in
+            pack.suspend()
+        }
+        
+        children.append(action)
+      }
+      
+      let delete = UIAction(
+        title: "Delete",
+        image: UIImage(systemName: "trash"),
+        attributes: .destructive) { _ in
+          self.offlineManager.deletePack(pack: pack)
+      }
+      
+      children.append(delete)
+      
+    
+      return UIMenu(title: "", children: children)
+    }
   }
   
   @objc func newButtonTapped(){
@@ -115,3 +194,26 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
 
 
 
+class STableView: UITableView {
+  init(){
+    super.init(frame: CGRect(), style: UITableView.Style.plain)
+    
+    layer.cornerRadius = 8
+    layer.cornerCurve = .continuous
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  override var contentSize: CGSize {
+    didSet {
+        invalidateIntrinsicContentSize()
+    }
+  }
+
+  override var intrinsicContentSize: CGSize {
+    layoutIfNeeded()
+    return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
+  }
+}

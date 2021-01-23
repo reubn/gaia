@@ -13,20 +13,31 @@ class OfflineManager {
     }
   }
   
+  let multicastDownloadDidUpdateDelegate = MulticastDelegate<(OfflineManagerDelegate)>()
   let multicastOfflineModeDidChangeDelegate = MulticastDelegate<(OfflineModeDelegate)>()
   
   var downloads: [MGLOfflinePack]? {
     get {offlineStorage.packs}
   }
   
-  func startDownload(style: Style, bounds: MGLCoordinateBounds, fromZoomLevel: Double, toZoomLevel: Double) {
+  init() {
+    NotificationCenter.default.addObserver(self, selector: #selector(offlinePackProgressDidChange), name: NSNotification.Name.MGLOfflinePackProgressChanged, object: nil)
+    
+    DispatchQueue.main.async {
+      self.refreshDownloads()
+    }
+  }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name.MGLOfflinePackProgressChanged, object: nil)
+  }
+  
+  func downloadPack(style: Style, bounds: MGLCoordinateBounds, fromZoomLevel: Double, toZoomLevel: Double) {
     let region = MGLTilePyramidOfflineRegion(styleURL: style.url, bounds: bounds, fromZoomLevel: fromZoomLevel, toZoomLevel: toZoomLevel)
       
     // Store some data for identification purposes alongside the offline pack.
     let context = style.jsonData!
     
-    NotificationCenter.default.addObserver(self, selector: #selector(offlinePackProgressDidChange), name: NSNotification.Name.MGLOfflinePackProgressChanged, object: nil)
-     
     MGLOfflineStorage.shared.addPack(for: region, withContext: context) { (pack, error) in
       if(error != nil) {
       print("Error: \(error?.localizedDescription ?? "unknown error")")
@@ -37,37 +48,40 @@ class OfflineManager {
     }
   }
   
-  @objc func offlinePackProgressDidChange(notification: NSNotification) {
-    let decoder = JSONDecoder()
-    if let pack = notification.object as? MGLOfflinePack,
-       let context = try? decoder.decode(StyleJSON.self, from: pack.context) {
-
-      // At this point, the offline pack has finished downloading.
-
-      if pack.state == .complete {
-
-      let byteCount = ByteCountFormatter.string(fromByteCount: Int64(pack.progress.countOfBytesCompleted), countStyle: ByteCountFormatter.CountStyle.memory)
-
-
-      print("""
-      Offline pack completed download:
-      - Bytes: \(byteCount)
-      - Resource count: \(pack.progress.countOfResourcesCompleted)")
-      """)
-        
-        print(context)
-
-      NotificationCenter.default.removeObserver(self, name: NSNotification.Name.MGLOfflinePackProgressChanged,
-      object: nil)
-      }
+  func redownloadPack(pack: MGLOfflinePack){
+    offlineStorage.invalidatePack(pack){error in
+      if(error != nil) {print("Error: \(error?.localizedDescription ?? "unknown error")")}
+      
+      self.refreshDownloads()
+      self.multicastDownloadDidUpdateDelegate.invoke(invocation: {$0.downloadDidUpdate(pack: pack)})
     }
-}
-
-    // Reload the table to update the progress percentage for each offline pack.
-//    self.tableView.reloadData()
-
   }
   
+  func deletePack(pack: MGLOfflinePack){
+    offlineStorage.removePack(pack){error in
+      if(error != nil) {print("Error: \(error?.localizedDescription ?? "unknown error")")}
+      
+      self.refreshDownloads()
+      self.multicastDownloadDidUpdateDelegate.invoke(invocation: {$0.downloadDidUpdate(pack: nil)})
+    }
+  }
+  
+  
+  @objc func offlinePackProgressDidChange(notification: NSNotification) {
+    multicastDownloadDidUpdateDelegate.invoke(invocation: {$0.downloadDidUpdate(pack: notification.object as? MGLOfflinePack)})
+  }
+  
+  func refreshDownloads(){
+    for pack in downloads ?? [] {
+      pack.requestProgress()
+    }
+  }
+}
+
+protocol OfflineManagerDelegate {
+  func downloadDidUpdate(pack: MGLOfflinePack?)
+}
+
 protocol OfflineModeDelegate {
   func offlineModeDidChange(offline: Bool)
 }
