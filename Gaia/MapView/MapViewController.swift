@@ -2,8 +2,9 @@ import UIKit
 import Mapbox
 import FloatingPanel
 
-class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDelegate {
+class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDelegate, OfflineModeDelegate {
   let layerManager = LayerManager()
+  let offlineManager = OfflineManager()
 
   var mapView: MGLMapView!
   var rasterLayer: MGLRasterStyleLayer?
@@ -11,6 +12,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   var firstTimeLocating = true
   let lsfpc = FloatingPanelController()
   let osfpc = FloatingPanelController()
+  
+  let layersButton = MapButton()
+  let offlineButton = MapButton()
   
   let uiColourTint: UIColor = .systemBlue
   
@@ -21,6 +25,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 
     mapView = MGLMapView(frame: view.bounds)
     layerManager.multicastStyleDidChangeDelegate.add(delegate: self)
+    offlineManager.multicastOfflineModeDidChangeDelegate.add(delegate: self)
     
     let initialStyle = layerManager.style
     mapView.styleURL = initialStyle.url
@@ -45,7 +50,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     userLocationButton.translatesAutoresizingMaskIntoConstraints = false
     self.userLocationButton = userLocationButton
 
-    let layersButton = MapButton() ;
     layersButton.setImage(UIImage(systemName: "map"), for: .normal)
     layersButton.addTarget(self, action: #selector(layersButtonTapped), for: .touchUpInside)
     layersButton.addTarget(self, action: #selector(layersButtonLongPressed), for: .touchDownRepeat)
@@ -54,9 +58,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     layersButtonLongGR.minimumPressDuration = 0.4
     layersButton.addGestureRecognizer(layersButtonLongGR)
 
-    let offlineButton = MapButton() ;
-    offlineButton.setImage(UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
+    offlineButton.setImage(offlineManager.offlineMode ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "icloud.and.arrow.down"), for: .normal)
     offlineButton.addTarget(self, action: #selector(offlineButtonTapped), for: .touchUpInside)
+    
+    let offlineButtonLongGR = UILongPressGestureRecognizer(target: self, action: #selector(offlineButtonLongPressed))
+    offlineButtonLongGR.minimumPressDuration = 0.4
+    offlineButton.addGestureRecognizer(offlineButtonLongGR)
     
     let mapButtonGroup = MapButtonGroup(arrangedSubviews: [userLocationButton, layersButton, offlineButton])
 
@@ -122,6 +129,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       mapView.window?.overrideUserInterfaceStyle = dark ? .dark : .light
       mapView.window?.tintColor = dark ? .white : uiColourTint
     }
+  }
+  
+  func offlineModeDidChange(offline: Bool){
+//    offlineButton.tintColor = offline ? .systemPink : mapView.window?.tintColor
+    offlineButton.setImage(offline ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "icloud.and.arrow.down"), for: .normal)
   }
 
   @objc func locationButtonTapped(sender: UserLocationButton) {
@@ -208,6 +220,14 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       self.present(osfpc, animated: true, completion: nil)
     } else {
       osfpc.dismiss(animated: true, completion: nil)
+    }
+  }
+  
+  @objc func offlineButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
+    if gestureReconizer.state == UIGestureRecognizer.State.began {
+      offlineManager.offlineMode = !offlineManager.offlineMode
+      
+      UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
   }
 }

@@ -3,6 +3,17 @@ import Mapbox
 
 class OfflineManager {
   private let offlineStorage = MGLOfflineStorage.shared
+  private let networkConfiguration = MGLNetworkConfiguration()
+  
+  var offlineMode = false {
+    didSet {
+      print("offlinemode set to \(offlineMode)")
+      networkConfiguration.connected = !offlineMode
+      self.multicastOfflineModeDidChangeDelegate.invoke(invocation: {$0.offlineModeDidChange(offline: offlineMode)})
+    }
+  }
+  
+  let multicastOfflineModeDidChangeDelegate = MulticastDelegate<(OfflineModeDelegate)>()
   
   var downloads: [MGLOfflinePack]? {
     get {offlineStorage.packs}
@@ -50,10 +61,13 @@ class OfflineManager {
       object: nil)
       }
     }
+}
 
     // Reload the table to update the progress percentage for each offline pack.
 //    self.tableView.reloadData()
 
   }
   
+protocol OfflineModeDelegate {
+  func offlineModeDidChange(offline: Bool)
 }
