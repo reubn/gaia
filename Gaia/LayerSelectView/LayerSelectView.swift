@@ -13,6 +13,10 @@ class LayerSelectView: UIScrollView {
     
     let layerManager = mapViewController.layerManager!
     
+    layer.cornerRadius = 8
+    layer.cornerCurve = .continuous
+    clipsToBounds = true
+    
 //    self.backgroundColor = UIColor.red
 //    self.isUserInteractionEnabled = false
     
@@ -28,7 +32,7 @@ class LayerSelectView: UIScrollView {
     
     stack.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
     stack.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-    stack.topAnchor.constraint(equalTo: topAnchor).isActive = true
+    stack.topAnchor.constraint(equalTo: topAnchor, constant: layer.cornerRadius / 2).isActive = true
     stack.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     stack.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
     
