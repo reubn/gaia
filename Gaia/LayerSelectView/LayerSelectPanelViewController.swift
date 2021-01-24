@@ -11,7 +11,7 @@ class LayerSelectPanelViewController: MapViewPanelViewController {
     
     super.init(title: "Layers")
     
-    self.buttons = [.dismiss]
+    self.buttons = [.new, .dismiss]
   }
   
   override func loadView() {

@@ -39,7 +39,7 @@ class OfflineSelectLayers: UIView, CoordinatedView {
     
     coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
     coordinatorView.panelViewController.title = "Select Layers"
-    coordinatorView.panelViewController.buttons = [.previous, .accept]
+    coordinatorView.panelViewController.buttons = [.previous, .next]
     
     coordinatorView.selectedStyle = nil
   }
@@ -49,7 +49,7 @@ class OfflineSelectLayers: UIView, CoordinatedView {
   }
   
   func panelButtonTapped(button: PanelButton){
-    if(button == .accept){
+    if(button == .next){
       coordinatorView.selectedStyle = layerManager.style
       coordinatorView.forward()
     } else if(button == .previous){

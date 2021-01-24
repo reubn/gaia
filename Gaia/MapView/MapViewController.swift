@@ -18,7 +18,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   let uiColourTint: UIColor = .systemBlue
   
-  let multicastParentMapViewRegionIsChangingDelegate = MulticastDelegate<(LayerCell)>()
+  let multicastParentMapViewRegionIsChangingDelegate = MulticastDelegate<(ParentMapViewRegionIsChangingDelegate)>()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -230,4 +230,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
   }
+}
+
+protocol ParentMapViewRegionIsChangingDelegate {
+  func parentMapViewRegionIsChanging()
 }

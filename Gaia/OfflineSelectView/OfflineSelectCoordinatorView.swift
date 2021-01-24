@@ -8,6 +8,7 @@ class OfflineSelectCoordinatorView: UIScrollView {
   let panelViewController: OfflineSelectPanelViewController
   
   var selectedArea: MGLCoordinateBounds?
+  var selectedZoom: Double?
   var selectedStyle: Style?
   var selectedZoomFrom: Double?
   var selectedZoomTo: Double?
@@ -17,7 +18,8 @@ class OfflineSelectCoordinatorView: UIScrollView {
   lazy var story: [CoordinatedView] = [
     OfflineSelectHome(coordinatorView: self, mapViewController: mapViewController),
     OfflineSelectArea(coordinatorView: self),
-    OfflineSelectLayers(coordinatorView: self, mapViewController: mapViewController)
+    OfflineSelectLayers(coordinatorView: self, mapViewController: mapViewController),
+    OfflineSelectZoom(coordinatorView: self)
   ]
   
   var storyPosition = -1
@@ -80,9 +82,7 @@ class OfflineSelectCoordinatorView: UIScrollView {
   
   func done(){
     print("done!")
-    print(selectedArea)
-    print(selectedStyle!.jsonString)
-    offlineManager.downloadPack(style: selectedStyle!, bounds: selectedArea!, fromZoomLevel: 14, toZoomLevel: 15)
+    offlineManager.downloadPack(style: selectedStyle!, bounds: selectedArea!, fromZoomLevel: selectedZoom! - 2, toZoomLevel: selectedZoom!)
     read(newPosition: 0)
   }
   

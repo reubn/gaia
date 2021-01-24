@@ -4,7 +4,7 @@ import CoreData
 
 import Mapbox
 
-class LayerCell: UITableViewCell {
+class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   var _layer: Layer?
   var layerManager: LayerManager?
   var mapViewController: MapViewController?
