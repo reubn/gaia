@@ -183,6 +183,24 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     }
   }
   
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let pack = offlineManager.downloads![indexPath.row]
+    let context = offlineManager.decodePackContext(pack: pack)!
+    
+//    let currentBounds
+    let bounds = MGLCoordinateBounds(context.bounds)
+    
+//    mapViewController.mapView.styleURL =
+//    mapViewController.mapView.userTrackingMode = .none
+    mapViewController.mapView.setDirection(0, animated: false)
+    mapViewController.mapView.setVisibleCoordinateBounds(bounds, animated: true)
+    coordinatorView.mapViewController.osfpc.dismiss(animated: true, completion: nil)
+    
+//    DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+//        self.yourFuncHere()
+//    }
+  }
+  
 //  @objc func newButtonTapped(){
 //    coordinatorView.forward()
 //  }
