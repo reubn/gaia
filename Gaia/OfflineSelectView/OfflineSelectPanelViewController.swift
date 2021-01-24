@@ -44,6 +44,10 @@ class OfflineSelectPanelViewController: MapViewPanelViewController {
     offlineSelectCoordinatorView.panelButtonTapped(button: .previous)
   }
   
+  @objc override func newButtonTapped(_ sender: UIButton) {
+    offlineSelectCoordinatorView.panelButtonTapped(button: .new)
+  }
+  
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

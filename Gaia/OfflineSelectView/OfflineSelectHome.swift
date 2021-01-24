@@ -8,30 +8,30 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   let mapViewController: MapViewController
   lazy var offlineManager = mapViewController.offlineManager
 
-  lazy var newButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-    button.contentVerticalAlignment = .fill
-    button.contentHorizontalAlignment = .fill
-    button.imageView!.contentMode = .scaleAspectFit
-    button.imageEdgeInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
-    button.tintColor = .systemBlue
-    button.backgroundColor = .white
-    button.layer.cornerRadius = 8
-    button.layer.cornerCurve = .continuous
-
-    button.addTarget(self, action: #selector(self.newButtonTapped), for: .touchUpInside)
-    
-    addSubview(button)
-    
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-    button.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
-    button.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-    button.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-    
-    return button
-  }()
+//  lazy var newButton: UIButton = {
+//    let button = UIButton()
+//    button.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
+//    button.contentVerticalAlignment = .fill
+//    button.contentHorizontalAlignment = .fill
+//    button.imageView!.contentMode = .scaleAspectFit
+//    button.imageEdgeInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
+//    button.tintColor = .systemBlue
+//    button.backgroundColor = .white
+//    button.layer.cornerRadius = 8
+//    button.layer.cornerCurve = .continuous
+//
+//    button.addTarget(self, action: #selector(self.newButtonTapped), for: .touchUpInside)
+//
+//    addSubview(button)
+//
+//    button.translatesAutoresizingMaskIntoConstraints = false
+//    button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+//    button.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+//    button.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+//    button.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+//
+//    return button
+//  }()
    
   lazy var tableView: UITableView = {
     let tableView = STableView()
@@ -65,7 +65,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-    tableView.bottomAnchor.constraint(lessThanOrEqualTo: newButton.topAnchor, constant: -20).isActive = true
+//    tableView.bottomAnchor.constraint(lessThanOrEqualTo: newButton.topAnchor, constant: -20).isActive = true
     tableView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
     tableView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
     
@@ -79,7 +79,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     print("enter OSH")
     coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
     coordinatorView.panelViewController.title = "Downloads"
-    coordinatorView.panelViewController.buttons = [.dismiss]
+    coordinatorView.panelViewController.buttons = [.new, .dismiss]
     
     offlineManager.refreshDownloads()
   }
@@ -89,9 +89,8 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   }
   
   func panelButtonTapped(button: PanelButton){
-    if(button == .dismiss) {
-      coordinatorView.panelViewController.dismiss(animated: true, completion: nil)
-    }
+    if(button == .dismiss) {coordinatorView.panelViewController.dismiss(animated: true, completion: nil)}
+    else if(button == .new) {coordinatorView.forward()}
   }
   
   func downloadDidUpdate(pack: MGLOfflinePack?) {
@@ -184,9 +183,9 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     }
   }
   
-  @objc func newButtonTapped(){
-    coordinatorView.forward()
-  }
+//  @objc func newButtonTapped(){
+//    coordinatorView.forward()
+//  }
   
 }
 

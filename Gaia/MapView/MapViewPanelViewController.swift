@@ -144,6 +144,27 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     return button
   }()
   
+  lazy var newButton: UIButton = {
+    let button = UIButton()
+    button.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
+    button.contentVerticalAlignment = .fill
+    button.contentHorizontalAlignment = .fill
+    button.imageView!.contentMode = .scaleAspectFit
+    button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
+    button.tintColor = .white
+    button.backgroundColor = .systemBlue
+    button.layer.cornerRadius = 15
+    button.layer.cornerCurve = .circular
+
+    button.addTarget(self, action: #selector(newButtonTapped), for: .touchUpInside)
+    
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
+    
+    return button
+  }()
+  
   lazy var buttonsView: UIStackView = {
     let stack = UIStackView()
     
@@ -174,7 +195,8 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
         .accept: acceptButton,
         .reject: rejectButton,
         .next: nextButton,
-        .previous: previousButton
+        .previous: previousButton,
+        .new: newButton
       ]
       
       for subView in self.buttonsView.arrangedSubviews {
@@ -243,6 +265,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   @objc func rejectButtonTapped(_ sender: UIButton) {}
   @objc func nextButtonTapped(_ sender: UIButton) {}
   @objc func previousButtonTapped(_ sender: UIButton) {}
+  @objc func newButtonTapped(_ sender: UIButton) {}
   
   func floatingPanelWillBeginAttracting(_ fpc: FloatingPanelController, to state: FloatingPanelState) {
     uiImpactFeedbackGenerator.prepare()
@@ -273,4 +296,5 @@ enum PanelButton {
   case reject
   case next
   case previous
+  case new
 }
