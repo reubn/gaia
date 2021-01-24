@@ -58,7 +58,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     layersButtonLongGR.minimumPressDuration = 0.4
     layersButton.addGestureRecognizer(layersButtonLongGR)
 
-    offlineButton.setImage(offlineManager.offlineMode ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "icloud.and.arrow.down"), for: .normal)
+    offlineButton.setImage(offlineManager.offlineMode ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
     offlineButton.addTarget(self, action: #selector(offlineButtonTapped), for: .touchUpInside)
     
     let offlineButtonLongGR = UILongPressGestureRecognizer(target: self, action: #selector(offlineButtonLongPressed))
@@ -133,7 +133,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   func offlineModeDidChange(offline: Bool){
 //    offlineButton.tintColor = offline ? .systemPink : mapView.window?.tintColor
-    offlineButton.setImage(offline ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "icloud.and.arrow.down"), for: .normal)
+    offlineButton.setImage(offline ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
   }
 
   @objc func locationButtonTapped(sender: UserLocationButton) {
