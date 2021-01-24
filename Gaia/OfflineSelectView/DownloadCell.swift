@@ -8,6 +8,7 @@ class DownloadCell: UITableViewCell {
   var pack: MGLOfflinePack?
   var mapViewController: MapViewController?
   var first = true
+  var context: PackContext? = nil
 
   let previewSpacing: CGFloat = 15
   
@@ -32,6 +33,7 @@ class DownloadCell: UITableViewCell {
     
     label.font = UIFont.systemFont(ofSize: 12)
     label.textColor = .secondaryLabel
+    label.clipsToBounds = true
     
     contentView.addSubview(label)
 
@@ -39,17 +41,30 @@ class DownloadCell: UITableViewCell {
     label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: title.font.pointSize).isActive = true
     label.heightAnchor.constraint(equalTo: title.heightAnchor).isActive = true
     label.leftAnchor.constraint(equalTo: title.leftAnchor).isActive = true
+    label.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -previewSpacing).isActive = true
     
     return label
   }()
   
-  lazy var preview: UIView = {
-    let preview = UIView()
+  lazy var preview: MGLMapView = {
+    let preview = MGLMapView()
     preview.layer.cornerRadius = 10
     preview.layer.cornerCurve = .continuous
     preview.clipsToBounds = true
     preview.backgroundColor = .black
     preview.layer.allowsEdgeAntialiasing = true
+    preview.isUserInteractionEnabled = false
+    
+    preview.allowsScrolling = false
+    preview.allowsTilting = false
+    preview.allowsZooming = false
+    preview.allowsRotating = false
+    preview.compassView.isHidden = true
+    preview.showsUserLocation = false
+    preview.showsUserHeadingIndicator = false
+
+    preview.logoView.isHidden = true
+    preview.attributionButton.isHidden = true
 
     preview.translatesAutoresizingMaskIntoConstraints = false
     
@@ -146,10 +161,33 @@ class DownloadCell: UITableViewCell {
   func update(pack: MGLOfflinePack, mapViewController: MapViewController) {
     self.pack = pack
     self.mapViewController = mapViewController
-
-    title.text = "Downloaded Region"
-    subtitle.text = ByteCountFormatter.string(fromByteCount: Int64(pack.progress.countOfBytesCompleted), countStyle: ByteCountFormatter.CountStyle.memory)
+    
+    var layersString = ""
+    if(context != nil) {
+      let layers = context!.style.sources.enumerated()
+      
+      layersString = " - "
+      
+      for (index, (_, layer)) in layers {
+        if(layer.name != nil) {
+          if(index > 0) {layersString += ", "}
+          layersString += "\(layer.name!)"
+        }
+      }
+    }
+    
+    subtitle.text = "\(ByteCountFormatter.string(fromByteCount: Int64(pack.progress.countOfBytesCompleted), countStyle: ByteCountFormatter.CountStyle.memory))\(layersString)"
     status = pack.state
+    
+    if(first) {
+      self.context = mapViewController.offlineManager.decodePackContext(pack: pack)
+      if(self.context == nil) {return}
+      title.text = self.context!.name
+      
+      preview.styleURL = Style.toURL(jsonObject: self.context!.style)
+      preview.setVisibleCoordinateBounds(MGLCoordinateBounds(self.context!.bounds), animated: false)
+      self.first = false
+    }
   }
 
   required init?(coder: NSCoder) {
