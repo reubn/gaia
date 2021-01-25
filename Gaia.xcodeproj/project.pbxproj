@@ -34,6 +34,7 @@
 		1BA9BD1025BA2A5E00AC97C7 /* OfflineSelectLayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0F25BA2A5E00AC97C7 /* OfflineSelectLayers.swift */; };
 		1BA9BD1225BB879200AC97C7 /* DownloadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD1125BB879200AC97C7 /* DownloadCell.swift */; };
 		1BA9BD1425BE248600AC97C7 /* OfflineSelectZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD1325BE248600AC97C7 /* OfflineSelectZoom.swift */; };
+		1BA9BD1925BF208600AC97C7 /* customCompass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD1825BF208600AC97C7 /* customCompass.swift */; };
 		1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; };
 		1BBD3FEF25B63B10007B8BC7 /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */; };
@@ -89,6 +90,7 @@
 		1BA9BD0F25BA2A5E00AC97C7 /* OfflineSelectLayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectLayers.swift; sourceTree = "<group>"; };
 		1BA9BD1125BB879200AC97C7 /* DownloadCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadCell.swift; sourceTree = "<group>"; };
 		1BA9BD1325BE248600AC97C7 /* OfflineSelectZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectZoom.swift; sourceTree = "<group>"; };
+		1BA9BD1825BF208600AC97C7 /* customCompass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customCompass.swift; sourceTree = "<group>"; };
 		1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelLayout.swift; sourceTree = "<group>"; };
 		1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewPanelViewController.swift; sourceTree = "<group>"; };
 		1BBD3FF425B70C06007B8BC7 /* OfflineSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectPanelLayout.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				1B6638CD25B1EA5F0071F03D /* MapButton.swift */,
 				1B6638CB25B1E9BD0071F03D /* MapButtonGroup.swift */,
 				1B6638AB25B10B530071F03D /* MapViewController.swift */,
+				1BA9BD1825BF208600AC97C7 /* customCompass.swift */,
 				1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */,
 			);
 			path = MapView;
@@ -329,6 +332,7 @@
 				1BBD3FFD25B8927E007B8BC7 /* OfflineManager.swift in Sources */,
 				1BBD3FF825B88F56007B8BC7 /* OfflineSelectPanelViewController.swift in Sources */,
 				1B3401D225B474420091FA3B /* Section.swift in Sources */,
+				1BA9BD1925BF208600AC97C7 /* customCompass.swift in Sources */,
 				1B6638A825B10B530071F03D /* AppDelegate.swift in Sources */,
 				1BBD3FF525B70C06007B8BC7 /* OfflineSelectPanelLayout.swift in Sources */,
 				1B6638AA25B10B530071F03D /* SceneDelegate.swift in Sources */,

@@ -128,6 +128,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       let dark = style.needsDarkUI
       mapView.window?.overrideUserInterfaceStyle = dark ? .dark : .light
       mapView.window?.tintColor = dark ? .white : uiColourTint
+      mapView.compassView.image = compassImage(dark: dark)
     }
   }
   
