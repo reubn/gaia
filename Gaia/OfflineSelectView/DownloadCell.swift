@@ -9,7 +9,6 @@ class DownloadCell: UITableViewCell {
   
   var pack: MGLOfflinePack?
   var mapViewController: MapViewController?
-  var first = true
   var context: PackContext? = nil
   
   var _status: MGLOfflinePackState?
@@ -172,15 +171,14 @@ class DownloadCell: UITableViewCell {
     subtitle.text = "\(ByteCountFormatter.string(fromByteCount: Int64(pack.progress.countOfBytesCompleted), countStyle: ByteCountFormatter.CountStyle.memory))\(layersString)"
     status = pack.state
     
-    if(first) {
-      self.context = mapViewController.offlineManager.decodePackContext(pack: pack)
-      if(self.context == nil) {return}
-      title.text = self.context!.name
-      
-      preview.styleURL = Style.toURL(jsonObject: self.context!.style)
-      preview.setVisibleCoordinateBounds(MGLCoordinateBounds(self.context!.bounds), animated: false)
-      self.first = false
-    }
+    context = mapViewController.offlineManager.decodePackContext(pack: pack)
+    
+    if(context == nil) {return}
+    
+    title.text = context!.name
+    
+    preview.styleURL = Style.toURL(jsonObject: context!.style)
+    preview.setVisibleCoordinateBounds(MGLCoordinateBounds(context!.bounds), animated: false)
   }
 
   required init?(coder: NSCoder) {
