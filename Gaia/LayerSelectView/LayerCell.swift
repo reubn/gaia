@@ -61,7 +61,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   }
 
   func parentMapViewRegionIsChanging() {
-    preview.setCenter(mapViewController!.mapView.centerCoordinate, zoomLevel: mapViewController!.mapView.zoomLevel - 2, animated: false)
+    preview.setCenter(mapViewController!.mapView.centerCoordinate, zoomLevel: mapViewController!.mapView.zoomLevel - 1, animated: false)
     preview.setDirection(mapViewController!.mapView.direction, animated: false)
   }
 
