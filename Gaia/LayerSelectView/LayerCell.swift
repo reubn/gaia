@@ -62,6 +62,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
 
   func parentMapViewRegionIsChanging() {
     preview.setCenter(mapViewController!.mapView.centerCoordinate, zoomLevel: mapViewController!.mapView.zoomLevel - 2, animated: false)
+    preview.setDirection(mapViewController!.mapView.direction, animated: false)
   }
 
   func update(_layer: Layer, layerManager: LayerManager, mapViewController: MapViewController) {
@@ -73,7 +74,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
 
     if(first) {
       mapViewController.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)
-      preview.setCenter(mapViewController.mapView.centerCoordinate, zoomLevel: mapViewController.mapView.zoomLevel - 2, animated: false)
+      parentMapViewRegionIsChanging()
       self.first = false
     }
 
