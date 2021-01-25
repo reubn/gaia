@@ -192,6 +192,14 @@ class LayerManager {
 
     updateLayers()
   }
+  
+  func filterLayers(_ shouldBeEnabled: (Layer) -> Bool){
+    for layer in layers {
+      layer.enabled = shouldBeEnabled(layer)
+    }
+    
+    updateLayers()
+  }
 
   public func getLayers(layerGroup: LayerGroup) -> [Layer]? {
     groups![layerGroup.id]

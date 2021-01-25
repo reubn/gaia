@@ -6,6 +6,7 @@ import Mapbox
 class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableViewDataSource, OfflineManagerDelegate {
   let coordinatorView: OfflineSelectCoordinatorView
   let mapViewController: MapViewController
+  lazy var layerManager = mapViewController.layerManager
   lazy var offlineManager = mapViewController.offlineManager
 
 //  lazy var newButton: UIButton = {
@@ -190,8 +191,12 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
 //    let currentBounds
     let bounds = MGLCoordinateBounds(context.bounds)
     
-//    mapViewController.mapView.styleURL =
-//    mapViewController.mapView.userTrackingMode = .none
+    layerManager.filterLayers({layer in
+      context.style.layers.contains(where: {jsonLayer in
+        jsonLayer.id == layer.id
+      })
+    })
+    
     mapViewController.mapView.setDirection(0, animated: false)
     mapViewController.mapView.setVisibleCoordinateBounds(bounds, animated: true)
     coordinatorView.mapViewController.osfpc.dismiss(animated: true, completion: nil)
