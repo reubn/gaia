@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 
 class Style {
   let sortedLayers: [Layer]
@@ -16,29 +17,8 @@ class Style {
   }
   
   var jsonObject: StyleJSON {
-    let sources = sortedLayers.reduce(into: [String: StyleJSON.Source]()) {
-      let incoming = $1 as Layer
-      $0[$1.id!] = StyleJSON.Source(
-        name: incoming.name,
-        type: .raster,
-        tiles: [incoming.url!],
-        minzoom: (incoming.minZoom ?? "").isEmpty ? nil : Int(incoming.minZoom!),
-        maxzoom: (incoming.maxZoom ?? "").isEmpty ? nil : Int(incoming.maxZoom!),
-        tileSize: (incoming.tileSize ?? "").isEmpty ? 256 : Int(incoming.tileSize!)
-      )
-    }
-
-    let layers: [StyleJSON.Layer] = sortedLayers.map {
-      let incoming = $0 as Layer
-
-      return StyleJSON.Layer(
-        id: incoming.id!,
-        type: .raster,
-        source: incoming.id!,
-        minzoom: (incoming.minZoom ?? "").isEmpty ? nil : Int(incoming.minZoom!),
-        maxzoom: (incoming.maxZoom ?? "").isEmpty ? nil : Int(incoming.maxZoom!)
-      )
-    }
+    let sources = sortedLayers.reduce(into: [String: StyleJSON.Source]()) {$0[$1.id!] = StyleJSON.Source($1 as Layer)}
+    let layers = sources.map {StyleJSON.Layer($0.value as StyleJSON.Source)}
 
     return StyleJSON(sources: sources, layers: layers)
   }
@@ -80,7 +60,10 @@ struct StyleJSON: Codable {
   let layers: [Layer]
   
   struct Source: Codable {
-    let name: String?
+    let id: String
+    let name: String
+    let group: String
+    let groupIndex: Int
     let type: LayerType
     let tiles: [String]
 
@@ -100,5 +83,54 @@ struct StyleJSON: Codable {
   
   enum LayerType: String, Codable {
     case vector, raster
+  }
+}
+
+// Layer from StyleJSON.Source
+extension Layer {
+  convenience init(_ source: StyleJSON.Source, context: NSManagedObjectContext){
+    self.init(context: context)
+    
+    self.id = source.id
+    self.name = source.name
+    self.group = source.group
+    self.groupIndex = Int16(source.groupIndex)
+    self.url = source.tiles[0]
+    
+    if(source.minzoom != nil) {self.minZoom = String(source.minzoom!)}
+    if(source.maxzoom != nil) {self.maxZoom = String(source.maxzoom!)}
+    if(source.tileSize != nil) {self.tileSize = String(source.tileSize!)}
+    
+    self.enabled = false
+  }
+}
+
+// StyleJSON.Source from Layer
+extension StyleJSON.Source {
+  init(_ layer: Layer){
+    self.init(
+      id: layer.id!,
+      name: layer.name!,
+      group: layer.group!,
+      groupIndex: Int(layer.groupIndex),
+      type: .raster,
+      tiles: [layer.url!],
+      minzoom: (layer.minZoom ?? "").isEmpty ? nil : Int(layer.minZoom!),
+      maxzoom: (layer.maxZoom ?? "").isEmpty ? nil : Int(layer.maxZoom!),
+      tileSize: (layer.tileSize ?? "").isEmpty ? 256 : Int(layer.tileSize!)
+    )
+  }
+}
+
+// StyleJSON.Layer from StyleJSON.Source
+extension StyleJSON.Layer {
+  init(_ source: StyleJSON.Source){
+    self.init(
+      id: source.id,
+      type: source.type,
+      source: source.id,
+      minzoom: source.minzoom,
+      maxzoom: source.maxzoom
+    )
   }
 }

@@ -164,10 +164,8 @@ class DownloadCell: UITableViewCell {
       layersString = " - "
       
       for (index, (_, layer)) in layers {
-        if(layer.name != nil) {
-          if(index > 0) {layersString += ", "}
-          layersString += "\(layer.name!)"
-        }
+        if(index > 0) {layersString += ", "}
+        layersString += "\(layer.name)"
       }
     }
     
