@@ -67,30 +67,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     let mapButtonGroup = MapButtonGroup(arrangedSubviews: [userLocationButton, layersButton, offlineButton])
 
-    mapButtonGroup.translatesAutoresizingMaskIntoConstraints = false
-    let constraints: [NSLayoutConstraint] = [
-      NSLayoutConstraint(
-        item: mapButtonGroup,
-        attribute: .top,
-        relatedBy: .greaterThanOrEqual,
-        toItem: view.safeAreaLayoutGuide,
-        attribute: .top,
-        multiplier: 1,
-        constant: 36 + 20
-      ),
-      NSLayoutConstraint(
-        item: mapButtonGroup,
-        attribute: .trailing,
-        relatedBy: .equal,
-        toItem: view.safeAreaLayoutGuide,
-        attribute: .trailing,
-        multiplier: 1,
-        constant: -6
-      )
-    ]
-
     view.addSubview(mapButtonGroup)
-    view.addConstraints(constraints)
+    
+    mapButtonGroup.translatesAutoresizingMaskIntoConstraints = false
+    mapButtonGroup.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 36 + 20).isActive = true
+    mapButtonGroup.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -6).isActive = true
   }
   
   func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?){
