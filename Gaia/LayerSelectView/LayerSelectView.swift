@@ -4,11 +4,9 @@ import UIKit
 import Mapbox
 
 class LayerSelectView: UIScrollView {
-  let stack: UIStackView
+  let stack = UIStackView()
   
   init(mapViewController: MapViewController){
-    self.stack = UIStackView()
-    
     super.init(frame: CGRect())
     
     let layerManager = mapViewController.layerManager
@@ -16,20 +14,15 @@ class LayerSelectView: UIScrollView {
     layer.cornerRadius = 8
     layer.cornerCurve = .continuous
     clipsToBounds = true
-    
-//    self.backgroundColor = UIColor.red
-//    self.isUserInteractionEnabled = false
-    
+
     stack.axis = .vertical
     stack.alignment = .leading
     stack.distribution = .fill
     stack.spacing = 30
-    stack.translatesAutoresizingMaskIntoConstraints = false
-    
-//    stack.backgroundColor = UIColor.orange
     
     addSubview(stack)
     
+    stack.translatesAutoresizingMaskIntoConstraints = false
     stack.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
     stack.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
     stack.topAnchor.constraint(equalTo: topAnchor, constant: layer.cornerRadius / 2).isActive = true
@@ -51,7 +44,6 @@ class LayerSelectView: UIScrollView {
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
 }
 
 

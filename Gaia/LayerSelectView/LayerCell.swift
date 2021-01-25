@@ -29,7 +29,6 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     preview.layer.cornerCurve = .continuous
     preview.clipsToBounds = true
     preview.backgroundColor = .black
-//    preview.layer.borderWidth = 2
     preview.layer.allowsEdgeAntialiasing = true
 
     preview.allowsScrolling = false
@@ -43,7 +42,6 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     preview.logoView.isHidden = true
     preview.attributionButton.isHidden = true
 
-    preview.translatesAutoresizingMaskIntoConstraints = false
     contentView.addSubview(preview)
 
     preview.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +58,6 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     title.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
     title.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
     title.leftAnchor.constraint(equalTo: preview.rightAnchor, constant: previewSpacing).isActive = true
-//    title.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
   }
 
   func parentMapViewRegionIsChanging() {

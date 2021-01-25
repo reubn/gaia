@@ -11,10 +11,6 @@ class OfflineSelectArea: UIView, CoordinatedView {
     super.init(frame: CGRect())
   }
   
-  required init(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
   func viewWillEnter(){
     print("enter OSA")
     coordinatorView.mapViewController.osfpc.move(to: .tip, animated: true)
@@ -35,6 +31,10 @@ class OfflineSelectArea: UIView, CoordinatedView {
     } else if(button == .previous){
       coordinatorView.back()
     }
+  }
+  
+  required init(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 }
 

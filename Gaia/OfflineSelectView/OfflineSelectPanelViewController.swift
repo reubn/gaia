@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+
 import Mapbox
 import FloatingPanel
 
@@ -13,15 +14,13 @@ class OfflineSelectPanelViewController: MapViewPanelViewController {
     
     self.buttons = [.dismiss]
     
-//    view.backgroundColor = .systemTeal
     view.addSubview(offlineSelectCoordinatorView)
+    
     offlineSelectCoordinatorView.translatesAutoresizingMaskIntoConstraints = false
     offlineSelectCoordinatorView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 30).isActive = true
     offlineSelectCoordinatorView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -30).isActive = true
     offlineSelectCoordinatorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 55).isActive = true
     offlineSelectCoordinatorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-
-//    offlineSelectCoordinatorView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor).isActive = true
   }
   
   @objc override func dismissButtonTapped(_ sender: UIButton) {

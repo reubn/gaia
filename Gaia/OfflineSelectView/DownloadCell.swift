@@ -5,12 +5,48 @@ import CoreData
 import Mapbox
 
 class DownloadCell: UITableViewCell {
+  let previewSpacing: CGFloat = 15
+  
   var pack: MGLOfflinePack?
   var mapViewController: MapViewController?
   var first = true
   var context: PackContext? = nil
+  
+  var _status: MGLOfflinePackState?
+  var status: MGLOfflinePackState? {
+    get {_status}
+    set {
+      
+      if(newValue == _status) {return}
+      _status = newValue
+      
+      switch newValue {
+        case .unknown:
+          statusIcon.setImage(nil, for: .normal)
+          statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
+        case .inactive:
+          statusIcon.setImage(UIImage(systemName: "exclamationmark.triangle.fill"), for: .normal)
+          statusIcon.tintColor = .systemYellow
+          statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
+        case .active:
+          statusIcon.setImage(UIImage(systemName: "arrow.triangle.2.circlepath.circle.fill"), for: .normal)
+          statusIcon.tintColor = .systemBlue
+          statusIcon.layer.add(rotationAnimation, forKey: "rotationAnimation")
+        case .complete:
+          statusIcon.setImage(nil, for: .normal)
+          statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
+        case .invalid:
+          statusIcon.setImage(UIImage(systemName: "xmark.octagon.fill"), for: .normal)
+          statusIcon.tintColor = .systemRed
+          statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
 
-  let previewSpacing: CGFloat = 15
+        default:
+          statusIcon.setImage(UIImage(systemName: "xmark.octagon.fill"), for: .normal)
+          statusIcon.tintColor = .systemRed
+          statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
+      }
+    }
+  }
   
   lazy var title: UILabel = {
     let label = UILabel()
@@ -65,8 +101,6 @@ class DownloadCell: UITableViewCell {
 
     preview.logoView.isHidden = true
     preview.attributionButton.isHidden = true
-
-    preview.translatesAutoresizingMaskIntoConstraints = false
     
     contentView.addSubview(preview)
 
@@ -84,10 +118,7 @@ class DownloadCell: UITableViewCell {
     button.contentVerticalAlignment = .fill
     button.contentHorizontalAlignment = .fill
     button.imageView!.contentMode = .scaleAspectFit
-//    button.tintColor = UIColor.systemGray2
-    
-//    button.addTarget(self, action: #selector(self.dismissButtonTapped), for: .touchUpInside)
-    
+
     contentView.addSubview(button)
 
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -108,42 +139,6 @@ class DownloadCell: UITableViewCell {
     
     return animation
   }()
-  
-  var _status: MGLOfflinePackState?
-  var status: MGLOfflinePackState? {
-    get {_status}
-    set {
-      
-      if(newValue == _status) {return}
-      _status = newValue
-      
-      switch newValue {
-        case .unknown:
-          statusIcon.setImage(nil, for: .normal)
-          statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
-        case .inactive:
-          statusIcon.setImage(UIImage(systemName: "exclamationmark.triangle.fill"), for: .normal)
-          statusIcon.tintColor = .systemYellow
-          statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
-        case .active:
-          statusIcon.setImage(UIImage(systemName: "arrow.triangle.2.circlepath.circle.fill"), for: .normal)
-          statusIcon.tintColor = .systemBlue
-          statusIcon.layer.add(rotationAnimation, forKey: "rotationAnimation")
-        case .complete:
-          statusIcon.setImage(nil, for: .normal)
-          statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
-        case .invalid:
-          statusIcon.setImage(UIImage(systemName: "xmark.octagon.fill"), for: .normal)
-          statusIcon.tintColor = .systemRed
-          statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
-
-        default:
-          statusIcon.setImage(UIImage(systemName: "xmark.octagon.fill"), for: .normal)
-          statusIcon.tintColor = .systemRed
-          statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
-      }
-    }
-  }
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)

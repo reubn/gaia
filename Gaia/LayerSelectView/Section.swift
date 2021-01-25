@@ -25,7 +25,6 @@ class Section: UIStackView, LayerManagerDelegate {
     alignment = .leading
     distribution = .fill
     spacing = 10
-//  backgroundColor = UIColor.blue
     
     let label = SectionLabel(insets: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5))
     label.text = group.name.uppercased()
@@ -61,12 +60,12 @@ class Section: UIStackView, LayerManagerDelegate {
     tableView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
   }
   
-  required init(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
   func styleDidChange(style _: Style) {
     tableView.reloadData()
+  }
+  
+  required init(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 }
 
@@ -78,7 +77,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
   func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {} // empty drag, drop delegate methods needed to enable moveRowAt... bug?
   
   func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
-      return false // reject drops between groups
+    return false // reject drops between groups
   }
   
   func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {

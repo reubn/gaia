@@ -11,10 +11,6 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
     super.init(frame: CGRect())
   }
   
-  required init(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
   func viewWillEnter(){
     print("enter OSZ")
     coordinatorView.mapViewController.osfpc.move(to: .tip, animated: true)
@@ -54,7 +50,10 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
   
   func parentMapViewRegionIsChanging() {
     coordinatorView.panelViewController.title = "Select Zoom: \(Int(coordinatorView.mapViewController.mapView.zoomLevel.rounded(.up)))"
-    
+  }
+  
+  required init(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 }
 

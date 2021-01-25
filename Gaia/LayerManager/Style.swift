@@ -3,10 +3,6 @@ import Foundation
 class Style {
   let sortedLayers: [Layer]
   
-  init(sortedLayers: [Layer]){
-    self.sortedLayers = sortedLayers
-  }
-  
   var needsDarkUI: Bool {
     let topNonOverlay = sortedLayers.reversed().first(where: {$0.group != "overlay"})
 
@@ -18,8 +14,6 @@ class Style {
   var url: URL? {
     Style.toURL(jsonObject: jsonObject)
   }
-  
-  
   
   var jsonObject: StyleJSON {
     let sources = sortedLayers.reduce(into: [String: StyleJSON.Source]()) {
@@ -47,6 +41,10 @@ class Style {
     }
 
     return StyleJSON(sources: sources, layers: layers)
+  }
+  
+  init(sortedLayers: [Layer]){
+    self.sortedLayers = sortedLayers
   }
   
   static func toURL(data: Data) -> URL? {

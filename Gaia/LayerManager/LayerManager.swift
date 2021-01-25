@@ -40,6 +40,13 @@ class LayerManager {
       activeLayers.sorted(by: layerSortingFunction)
     }
   }
+  
+  init(){
+    let appDelegate = UIApplication.shared.delegate as? AppDelegate
+    self.managedContext = appDelegate!.persistentContainer.viewContext
+
+    loadData()
+  }
 
   func layerSortingFunction(a: Layer, b: Layer) -> Bool {
     if(a.group! != b.group!) {
@@ -49,15 +56,6 @@ class LayerManager {
     if(a.groupIndex != b.groupIndex) {return a.groupIndex > b.groupIndex}
     
     return a.name! > b.name!
-  }
-
-  init(){
-    let appDelegate = UIApplication.shared.delegate as? AppDelegate
-    self.managedContext = appDelegate!.persistentContainer.viewContext
-
-//    clearData()
-//    createData()
-    loadData()
   }
 
   func loadData() {
@@ -73,95 +71,8 @@ class LayerManager {
       groups = unorderedGroups.mapValues({
         $0.sorted(by: layerSortingFunction)
       })
-//      print("items saved", groups!.count)
 
     } catch {print("Failed")}
-  }
-
-  func clearData(){
-    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Layer")
-    let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-
-    do {
-      try managedContext.execute(batchDeleteRequest)
-    } catch {
-        print("Detele all data in error :", error)
-    }
-  }
-
-  func createData(){
-
-    let layerA = Layer.init(context: managedContext)
-    layerA.id = "stravaA"
-    layerA.name = "Strava Heatmap Run"
-    layerA.group = "overlay"
-    layerA.url = "https://r3.cedar/strava/run/hot/{z}/{x}/{y}"
-    layerA.enabled = true
-    layerA.groupIndex = 2
-
-    let layerAB = Layer.init(context: managedContext)
-    layerAB.id = "stravaB"
-    layerAB.name = "Strava Heatmap Ride"
-    layerAB.group = "overlay"
-    layerAB.url = "https://r3.cedar/strava/ride/purple/{z}/{x}/{y}"
-    layerAB.enabled = true
-    layerAB.groupIndex = 1
-
-    let layerAC = Layer.init(context: managedContext)
-    layerAC.id = "stravaC"
-    layerAC.name = "Strava Heatmap Water"
-    layerAC.group = "overlay"
-    layerAC.url = "https://r3.cedar/strava/water/blue/{z}/{x}/{y}"
-    layerAC.enabled = true
-    layerAC.groupIndex = 0
-
-    let layerB = Layer.init(context: managedContext)
-    layerB.id = "magicOS"
-    layerB.name = "Ordnanace Survey"
-    layerB.group = "base"
-    layerB.url = "https://r3.cedar/magicOS/{z}/{x}/{y}"
-    layerB.tileSize = "200"
-    layerB.enabled = true
-    layerB.groupIndex = 0
-
-    let layerC = Layer.init(context: managedContext)
-    layerC.id = "bingSat"
-    layerC.name = "Bing Satellite"
-    layerC.group = "aerial"
-    layerC.url = "https://r3.cedar/bingSat/{z}/{x}/{y}"
-    layerC.tileSize = "128"
-    layerC.enabled = false
-    layerC.groupIndex = 0
-
-    let layerD = Layer.init(context: managedContext)
-    layerD.id = "osm"
-    layerD.name = "OpenStreetMap"
-    layerD.group = "base"
-    layerD.url = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-    layerD.tileSize = "128"
-    layerD.enabled = false
-    layerD.groupIndex = 0
-
-    let layerE = Layer.init(context: managedContext)
-    layerE.id = "googleSat"
-    layerE.name = "Google Satellite"
-    layerE.group = "aerial"
-    layerE.url = "https://r3.cedar/googleSat/{z}/{x}/{y}"
-    layerE.tileSize = "128"
-    layerE.enabled = false
-    layerE.groupIndex = 0
-
-    let layerF = Layer.init(context: managedContext)
-    layerF.id = "osSat2017"
-    layerF.name = "Ordnance Survey"
-    layerF.group = "aerial"
-    layerF.url = "https://r3.cedar/osSat2017/{z}/{x}/{y}"
-    layerF.tileSize = "128"
-    layerF.enabled = false
-    layerF.groupIndex = 0
-
-    do {try managedContext.save()}
-    catch let error as NSError {print("Could not save. \(error), \(error.userInfo)")}
   }
 
   func updateLayers(){

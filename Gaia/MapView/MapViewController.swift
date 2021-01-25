@@ -5,11 +5,7 @@ import FloatingPanel
 class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDelegate, OfflineModeDelegate {
   let layerManager = LayerManager()
   let offlineManager = OfflineManager()
-
-  var mapView: MGLMapView!
-  var rasterLayer: MGLRasterStyleLayer?
-  var userLocationButton: UserLocationButton?
-  var firstTimeLocating = true
+  
   let lsfpc = FloatingPanelController()
   let osfpc = FloatingPanelController()
   
@@ -20,6 +16,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   let multicastParentMapViewRegionIsChangingDelegate = MulticastDelegate<(ParentMapViewRegionIsChangingDelegate)>()
 
+  var mapView: MGLMapView!
+  var rasterLayer: MGLRasterStyleLayer?
+  var userLocationButton: UserLocationButton?
+  var firstTimeLocating = true
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -52,12 +53,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 
     layersButton.setImage(UIImage(systemName: "map"), for: .normal)
     layersButton.addTarget(self, action: #selector(layersButtonTapped), for: .touchUpInside)
-//    layersButton.addTarget(self, action: #selector(layersButtonLongPressed), for: .touchDownRepeat)
     
     let layersButtonLongGR = UILongPressGestureRecognizer(target: self, action: #selector(layersButtonLongPressed))
     layersButtonLongGR.minimumPressDuration = 0.4
     layersButton.addGestureRecognizer(layersButtonLongGR)
-
+    
     offlineButton.setImage(offlineManager.offlineMode ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
     offlineButton.addTarget(self, action: #selector(offlineButtonTapped), for: .touchUpInside)
     
@@ -67,6 +67,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     let mapButtonGroup = MapButtonGroup(arrangedSubviews: [userLocationButton, layersButton, offlineButton])
 
+    mapButtonGroup.translatesAutoresizingMaskIntoConstraints = false
     let constraints: [NSLayoutConstraint] = [
       NSLayoutConstraint(
         item: mapButtonGroup,
@@ -133,7 +134,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   func offlineModeDidChange(offline: Bool){
-//    offlineButton.tintColor = offline ? .systemPink : mapView.window?.tintColor
     offlineButton.setImage(offline ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
   }
 
@@ -178,8 +178,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       
       lsfpc.set(contentViewController: layerSelectPanelViewController)
 
-//      fpc.track(scrollView: popoverLayerSelectViewController.rootScrollView)
-
       self.present(lsfpc, animated: true, completion: nil)
     } else {
       lsfpc.dismiss(animated: true, completion: nil)
@@ -215,8 +213,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       osfpc.surfaceView.appearance = appearance
      
       osfpc.set(contentViewController: offlineSelectPanelViewController)
-
-  //       fpc.track(scrollView: popoverLayerSelectViewController.rootScrollView)
 
       self.present(osfpc, animated: true, completion: nil)
     } else {

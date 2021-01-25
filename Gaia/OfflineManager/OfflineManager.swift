@@ -1,4 +1,5 @@
 import Foundation
+
 import Mapbox
 
 class OfflineManager {
@@ -36,7 +37,6 @@ class OfflineManager {
   func downloadPack(style: Style, bounds: MGLCoordinateBounds, fromZoomLevel: Double, toZoomLevel: Double) {
     let region = MGLTilePyramidOfflineRegion(styleURL: style.url, bounds: bounds, fromZoomLevel: fromZoomLevel, toZoomLevel: toZoomLevel)
       
-    // Store some data for identification purposes alongside the offline pack.
     let packContext = PackContext(
       style: style.jsonObject,
       bounds: PackContext.Bounds(bounds),
@@ -47,19 +47,17 @@ class OfflineManager {
     
     do {
       let encoder = JSONEncoder()
-
+      
       context = try encoder.encode(packContext)
-    } catch {
-      return
-    }
+    } catch {return}
     
     MGLOfflineStorage.shared.addPack(for: region, withContext: context) { (pack, error) in
       if(error != nil) {
-      print("Error: \(error?.localizedDescription ?? "unknown error")")
-      return
-    }
+        print("Error: \(error?.localizedDescription ?? "unknown error")")
+        return
+      }
      
-    pack!.resume()
+      pack!.resume()
     }
   }
   

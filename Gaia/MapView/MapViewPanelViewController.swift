@@ -26,19 +26,13 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     button.contentHorizontalAlignment = .fill
     button.imageView!.contentMode = .scaleAspectFit
     button.tintColor = UIColor.systemGray2
-    
-//    button.isHidden = true
+
     button.addTarget(self, action: #selector(self.dismissButtonTapped), for: .touchUpInside)
-//
-//    self.view.addSubview(button)
-//
+
     button.translatesAutoresizingMaskIntoConstraints = false
     button.widthAnchor.constraint(equalToConstant: 30).isActive = true
     button.heightAnchor.constraint(equalTo: button.widthAnchor).isActive = true
-//
-//    button.centerYAnchor.constraint(equalTo: self.popoverTitle.centerYAnchor).isActive = true
-//    button.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-    
+
     return button
   }()
   
@@ -54,18 +48,12 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     button.layer.cornerRadius = 15
     button.layer.cornerCurve = .circular
     
-//    button.isHidden = true
     button.addTarget(self, action: #selector(acceptButtonTapped), for: .touchUpInside)
-    
-//    view.addSubview(button)
-//
+
     button.translatesAutoresizingMaskIntoConstraints = false
     button.heightAnchor.constraint(equalToConstant: 30).isActive = true
     button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
-//
-//    button.centerYAnchor.constraint(equalTo: popoverTitle.centerYAnchor).isActive = true
-//    button.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
-    
+
     return button
   }()
   
@@ -80,19 +68,13 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     button.backgroundColor = .systemRed
     button.layer.cornerRadius = 15
     button.layer.cornerCurve = .circular
-    
-//    button.isHidden = true
+
     button.addTarget(self, action: #selector(rejectButtonTapped), for: .touchUpInside)
-    
-//    view.addSubview(button)
-//
+
     button.translatesAutoresizingMaskIntoConstraints = false
     button.heightAnchor.constraint(equalToConstant: 30).isActive = true
     button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
-//
-//    button.centerYAnchor.constraint(equalTo: popoverTitle.centerYAnchor).isActive = true
-//    button.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
-    
+
     return button
   }()
   
@@ -107,19 +89,13 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     button.backgroundColor = .systemBlue
     button.layer.cornerRadius = 15
     button.layer.cornerCurve = .circular
-    
-//    button.isHidden = true
+
     button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
-    
-//    view.addSubview(button)
-//
+
     button.translatesAutoresizingMaskIntoConstraints = false
     button.heightAnchor.constraint(equalToConstant: 30).isActive = true
     button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
-//
-//    button.centerYAnchor.constraint(equalTo: popoverTitle.centerYAnchor).isActive = true
-//    button.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
-    
+
     return button
   }()
   
@@ -181,7 +157,6 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     stack.centerYAnchor.constraint(equalTo: popoverTitle.centerYAnchor).isActive = true
     stack.leftAnchor.constraint(equalTo: popoverTitle.rightAnchor, constant: 10).isActive = true
     stack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
-    
     
     return stack
   }()
@@ -251,12 +226,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     view.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
     uiImpactFeedbackGenerator.impactOccurred()
   }
-  
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
+
   @objc func dismissButtonTapped(_ sender: UIButton) {
     dismiss(animated: true, completion: nil)
   }
@@ -287,6 +257,10 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     if(!attract) {
       uiImpactFeedbackGenerator.impactOccurred()
     }
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 }
 
