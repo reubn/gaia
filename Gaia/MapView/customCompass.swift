@@ -5,6 +5,29 @@ import UIKit
 import Mapbox
 
 extension MapViewController {
+  func setUpCompass(){
+    let subView = UIView(frame: mapView.compassView.bounds)
+    subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    subView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
+    
+    let blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffect.Style.systemThinMaterial))
+    blur.frame = subView.bounds
+    blur.autoresizingMask = subView.autoresizingMask
+    blur.isUserInteractionEnabled = false
+
+    subView.insertSubview(blur, at: 0)
+    mapView.compassView.insertSubview(subView, at: 0)
+    
+    subView.layer.cornerRadius = subView.layer.frame.height / 2
+    subView.layer.masksToBounds = true
+    subView.clipsToBounds = true
+    
+    mapView.compassView.layer.shadowColor = UIColor.black.cgColor;
+    mapView.compassView.layer.shadowOffset = CGSize(width: 0, height: 0);
+    mapView.compassView.layer.shadowOpacity = 0.25;
+    mapView.compassView.layer.shadowRadius = 10;
+  }
+  
   func compassImage(dark: Bool = true) -> UIImage? {
     let scaleImage = UIImage(named: dark ? "compassDark" : "compassLight")!
 

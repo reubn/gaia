@@ -40,6 +40,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapView.compassView.compassVisibility = .visible
     mapView.zoomLevel = 11
     
+    setUpCompass()
+
     mapView.tintColor = .systemBlue // user location should always be blue
 
     mapView.delegate = self
