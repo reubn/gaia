@@ -2,11 +2,22 @@ import Foundation
 import UIKit
 
 class SectionLabel: UILabel {
-  var insets: UIEdgeInsets
+  let insets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
   
-  init(insets: UIEdgeInsets){
-    self.insets = insets
+  init(){
     super.init(frame: CGRect())
+    
+    font = UIFont.boldSystemFont(ofSize: 12)
+
+    layer.cornerRadius = 5
+    layer.cornerCurve = .continuous
+    layer.masksToBounds = true
+  }
+  
+  override var backgroundColor: UIColor? {
+    didSet {
+      textColor = backgroundColor == .systemYellow ? .black : .white
+    }
   }
 
   override func drawText(in rect: CGRect) {

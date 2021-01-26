@@ -26,16 +26,10 @@ class Section: UIStackView, LayerManagerDelegate {
     distribution = .fill
     spacing = 10
     
-    let label = SectionLabel(insets: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5))
+    let label = SectionLabel()
     label.text = group.name.uppercased()
-    label.font = UIFont.boldSystemFont(ofSize: 12)
-    label.textColor = group.colour == UIColor.systemYellow ? .black : .white
-    
     label.backgroundColor = group.colour
-    label.layer.cornerRadius = 5
-    label.layer.cornerCurve = .continuous
-    label.layer.masksToBounds = true
-    
+
     addArrangedSubview(label)
     
     label.translatesAutoresizingMaskIntoConstraints = false
