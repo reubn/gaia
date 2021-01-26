@@ -63,6 +63,9 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   func downloadDidUpdate(pack: MGLOfflinePack?) {
     if(pack != nil){
       let index = offlineManager.downloads!.firstIndex(of: pack!)
+      
+      if(index == nil) {tableView.reloadData(); return}
+      
       let indexPath = IndexPath(row: index!, section: 0)
       let cell = tableView.cellForRow(at: indexPath) as? DownloadCell
       
