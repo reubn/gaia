@@ -17,10 +17,12 @@ class Style {
   }
   
   var jsonObject: StyleJSON {
-    let sources = sortedLayers.reduce(into: [String: StyleJSON.Source]()) {$0[$1.id!] = StyleJSON.Source($1 as Layer)}
-    let layers = sources.map {StyleJSON.Layer($0.value as StyleJSON.Source)}
+    let sources = sortedLayers.map {StyleJSON.Source($0 as Layer)}
 
-    return StyleJSON(sources: sources, layers: layers)
+    return StyleJSON(
+      sources: sources.reduce(into: [String: StyleJSON.Source]()) {$0[$1.id] = $1},
+      layers: sources.map {StyleJSON.Layer($0 as StyleJSON.Source)}
+    )
   }
   
   init(sortedLayers: [Layer]){
