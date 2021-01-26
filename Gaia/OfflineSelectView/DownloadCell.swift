@@ -134,7 +134,7 @@ class DownloadCell: UITableViewCell {
     animation.toValue = NSNumber(value: Double.pi)
     animation.duration = 1.0
     animation.isCumulative = true
-    animation.repeatCount = 100.0
+    animation.repeatCount = .greatestFiniteMagnitude
     
     return animation
   }()
