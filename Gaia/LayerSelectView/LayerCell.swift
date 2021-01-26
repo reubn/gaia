@@ -66,7 +66,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     
     preview.setCenter(
       mapViewController!.mapView.convert(centerPoint, toCoordinateFrom: nil),
-      zoomLevel: mapViewController!.mapView.zoomLevel - 1,
+      zoomLevel: mapViewController!.mapView.zoomLevel - 0.5,
       direction: mapViewController!.mapView.direction,
       animated: false
     )
