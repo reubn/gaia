@@ -35,6 +35,7 @@
 		1BA9BD1425BE248600AC97C7 /* OfflineSelectZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD1325BE248600AC97C7 /* OfflineSelectZoom.swift */; };
 		1BA9BD1925BF208600AC97C7 /* customCompass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD1825BF208600AC97C7 /* customCompass.swift */; };
 		1BA9BD1B25BF3CD000AC97C7 /* DownloadsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD1A25BF3CD000AC97C7 /* DownloadsTableView.swift */; };
+		1BA9BD1E25C0861400AC97C7 /* CoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD1D25C0861400AC97C7 /* CoordinatorView.swift */; };
 		1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; };
 		1BBD3FEF25B63B10007B8BC7 /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */; };
@@ -91,6 +92,7 @@
 		1BA9BD1325BE248600AC97C7 /* OfflineSelectZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectZoom.swift; sourceTree = "<group>"; };
 		1BA9BD1825BF208600AC97C7 /* customCompass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customCompass.swift; sourceTree = "<group>"; };
 		1BA9BD1A25BF3CD000AC97C7 /* DownloadsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsTableView.swift; sourceTree = "<group>"; };
+		1BA9BD1D25C0861400AC97C7 /* CoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorView.swift; sourceTree = "<group>"; };
 		1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelLayout.swift; sourceTree = "<group>"; };
 		1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewPanelViewController.swift; sourceTree = "<group>"; };
 		1BBD3FF425B70C06007B8BC7 /* OfflineSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectPanelLayout.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 		1B6638A625B10B530071F03D /* Gaia */ = {
 			isa = PBXGroup;
 			children = (
+				1BA9BD1C25C0860300AC97C7 /* CoordinatorView */,
 				1B3401CA25B463970091FA3B /* Boilerplate */,
 				1B3401EA25B4F1A30091FA3B /* Util */,
 				1B3401D325B4A1370091FA3B /* LayerManager */,
@@ -211,6 +214,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		1BA9BD1C25C0860300AC97C7 /* CoordinatorView */ = {
+			isa = PBXGroup;
+			children = (
+				1BA9BD1D25C0861400AC97C7 /* CoordinatorView.swift */,
+				1BA9BD0B25BA266700AC97C7 /* CoordinatedView.swift */,
+			);
+			path = CoordinatorView;
+			sourceTree = "<group>";
+		};
 		1BBD3FF625B88E84007B8BC7 /* OfflineSelectView */ = {
 			isa = PBXGroup;
 			children = (
@@ -221,7 +233,6 @@
 				1BA9BD0D25BA281800AC97C7 /* OfflineSelectArea.swift */,
 				1BA9BD1325BE248600AC97C7 /* OfflineSelectZoom.swift */,
 				1BA9BD0F25BA2A5E00AC97C7 /* OfflineSelectLayers.swift */,
-				1BA9BD0B25BA266700AC97C7 /* CoordinatedView.swift */,
 				1BA9BD1125BB879200AC97C7 /* DownloadCell.swift */,
 				1BA9BD1A25BF3CD000AC97C7 /* DownloadsTableView.swift */,
 			);
@@ -317,6 +328,7 @@
 				1B3401EC25B4F1B00091FA3B /* MulticastDelegate.swift in Sources */,
 				1BA9BD1025BA2A5E00AC97C7 /* OfflineSelectLayers.swift in Sources */,
 				1B6638CC25B1E9BD0071F03D /* MapButtonGroup.swift in Sources */,
+				1BA9BD1E25C0861400AC97C7 /* CoordinatorView.swift in Sources */,
 				1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */,
 				1B6638AC25B10B530071F03D /* MapViewController.swift in Sources */,
 				1BA9BD0A25BA1C6300AC97C7 /* OfflineSelectHome.swift in Sources */,
