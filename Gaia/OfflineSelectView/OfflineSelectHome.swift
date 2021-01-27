@@ -44,7 +44,11 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   
   func viewWillEnter(){
     print("enter OSH")
-    coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
+    
+    if(coordinatorView.mapViewController.osfpc.viewIfLoaded?.window != nil) {
+      coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
+    }
+    
     coordinatorView.panelViewController.title = "Downloads"
     coordinatorView.panelViewController.buttons = [.new, .dismiss]
     
