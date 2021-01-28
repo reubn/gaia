@@ -73,6 +73,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   }
 
   func update(_layer: Layer, layerManager: LayerManager, mapViewController: MapViewController) {
+    if(_layer.id == nil){return}
+    
     self._layer = _layer
     self.layerManager = layerManager
     self.mapViewController = mapViewController
