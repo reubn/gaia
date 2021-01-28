@@ -30,7 +30,7 @@ class LayerSelectView: UIScrollView {
     stack.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
     
     layerManager.layerGroups.forEach({
-      if(layerManager.getLayers(layerGroup: $0) == nil) {return}
+      if(layerManager.getLayers(layerGroup: $0).count == 0) {return}
       
       let section = Section(group: $0, layerManager: layerManager, mapViewController: mapViewController)
       

@@ -112,13 +112,13 @@ class LayerManager {
     updateLayers()
   }
 
-  public func getLayers(layerGroup: LayerGroup) -> [Layer]? {
-    groups![layerGroup.id]
+  public func getLayers(layerGroup: LayerGroup) -> [Layer] {
+    groups![layerGroup.id] ?? []
   }
 
   public func magic(){
     let overlayGroup = layerGroups.first(where: {$0.id == "overlay"})!
-    let overlayLayers = getLayers(layerGroup: overlayGroup)!
+    let overlayLayers = getLayers(layerGroup: overlayGroup)
 
     let activeOverlayLayers = overlayLayers.filter({$0.enabled})
     if(activeOverlayLayers.count > 0) {

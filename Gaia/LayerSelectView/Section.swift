@@ -15,7 +15,7 @@ class Section: UIStackView, LayerManagerDelegate {
     self.group = group
     self.layerManager = layerManager
     self.mapViewController = mapViewController
-    self.layers = layerManager.getLayers(layerGroup: group)!.reversed()
+    self.layers = layerManager.getLayers(layerGroup: group).reversed()
     
     super.init(frame: CGRect())
     
