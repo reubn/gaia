@@ -90,6 +90,15 @@ class LayerManager {
         print("saving error :", error)
     }
   }
+  
+  func newLayer(_ source: StyleJSON.Source) -> Layer? {
+    if(layers.contains(where: {$0.id == source.id})) {return nil}
+    
+    let layer = Layer(source, context: managedContext)
+
+    return layer
+  }
+  
   func removeLayer(layer: Layer){
     managedContext.delete(layer)
     

@@ -55,6 +55,10 @@ class CoordinatorView: UIScrollView {
     read(newPosition: 0)
   }
   
+  func goTo(_ newPosition: Int){
+    read(newPosition: newPosition)
+  }
+  
   func panelButtonTapped(button: PanelButton) {
     story[storyPosition].panelButtonTapped(button: button)
   }

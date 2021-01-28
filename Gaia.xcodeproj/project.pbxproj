@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 1B3401C225B33FAD0091FA3B /* FloatingPanel */; };
 		1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */; };
-		1B3401C725B387690091FA3B /* LayerSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C625B387690091FA3B /* LayerSelectView.swift */; };
+		1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */; };
 		1B3401CC25B473E40091FA3B /* LayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401CB25B473E40091FA3B /* LayerCell.swift */; };
 		1B3401CE25B473FB0091FA3B /* SectionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401CD25B473FB0091FA3B /* SectionLabel.swift */; };
 		1B3401D025B474260091FA3B /* SectionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401CF25B474260091FA3B /* SectionTableView.swift */; };
@@ -36,6 +36,9 @@
 		1BA9BD1925BF208600AC97C7 /* customCompass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD1825BF208600AC97C7 /* customCompass.swift */; };
 		1BA9BD1B25BF3CD000AC97C7 /* DownloadsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD1A25BF3CD000AC97C7 /* DownloadsTableView.swift */; };
 		1BA9BD1E25C0861400AC97C7 /* CoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD1D25C0861400AC97C7 /* CoordinatorView.swift */; };
+		1BA9BD2025C2100F00AC97C7 /* LayerSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD1F25C2100F00AC97C7 /* LayerSelectView.swift */; };
+		1BA9BD2425C212A900AC97C7 /* LayerSelectHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD2325C212A900AC97C7 /* LayerSelectHome.swift */; };
+		1BA9BD2625C21D7C00AC97C7 /* LayerSelectImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD2525C21D7C00AC97C7 /* LayerSelectImport.swift */; };
 		1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; };
 		1BBD3FEF25B63B10007B8BC7 /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */; };
@@ -64,7 +67,7 @@
 
 /* Begin PBXFileReference section */
 		1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelViewController.swift; sourceTree = "<group>"; };
-		1B3401C625B387690091FA3B /* LayerSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectView.swift; sourceTree = "<group>"; };
+		1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectCoordinatorView.swift; sourceTree = "<group>"; };
 		1B3401CB25B473E40091FA3B /* LayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerCell.swift; sourceTree = "<group>"; };
 		1B3401CD25B473FB0091FA3B /* SectionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionLabel.swift; sourceTree = "<group>"; };
 		1B3401CF25B474260091FA3B /* SectionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTableView.swift; sourceTree = "<group>"; };
@@ -93,6 +96,9 @@
 		1BA9BD1825BF208600AC97C7 /* customCompass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customCompass.swift; sourceTree = "<group>"; };
 		1BA9BD1A25BF3CD000AC97C7 /* DownloadsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsTableView.swift; sourceTree = "<group>"; };
 		1BA9BD1D25C0861400AC97C7 /* CoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorView.swift; sourceTree = "<group>"; };
+		1BA9BD1F25C2100F00AC97C7 /* LayerSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectView.swift; sourceTree = "<group>"; };
+		1BA9BD2325C212A900AC97C7 /* LayerSelectHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectHome.swift; sourceTree = "<group>"; };
+		1BA9BD2525C21D7C00AC97C7 /* LayerSelectImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectImport.swift; sourceTree = "<group>"; };
 		1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelLayout.swift; sourceTree = "<group>"; };
 		1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewPanelViewController.swift; sourceTree = "<group>"; };
 		1BBD3FF425B70C06007B8BC7 /* OfflineSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectPanelLayout.swift; sourceTree = "<group>"; };
@@ -121,7 +127,10 @@
 			children = (
 				1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */,
 				1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */,
-				1B3401C625B387690091FA3B /* LayerSelectView.swift */,
+				1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */,
+				1BA9BD1F25C2100F00AC97C7 /* LayerSelectView.swift */,
+				1BA9BD2325C212A900AC97C7 /* LayerSelectHome.swift */,
+				1BA9BD2525C21D7C00AC97C7 /* LayerSelectImport.swift */,
 				1B3401D125B474420091FA3B /* Section.swift */,
 				1B3401CB25B473E40091FA3B /* LayerCell.swift */,
 				1B3401CF25B474260091FA3B /* SectionTableView.swift */,
@@ -331,20 +340,23 @@
 				1BA9BD1E25C0861400AC97C7 /* CoordinatorView.swift in Sources */,
 				1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */,
 				1B6638AC25B10B530071F03D /* MapViewController.swift in Sources */,
+				1BA9BD2425C212A900AC97C7 /* LayerSelectHome.swift in Sources */,
 				1BA9BD0A25BA1C6300AC97C7 /* OfflineSelectHome.swift in Sources */,
 				1BA9BD1225BB879200AC97C7 /* DownloadCell.swift in Sources */,
 				1BA9BD1B25BF3CD000AC97C7 /* DownloadsTableView.swift in Sources */,
 				1B3401CE25B473FB0091FA3B /* SectionLabel.swift in Sources */,
 				1BA9BD1425BE248600AC97C7 /* OfflineSelectZoom.swift in Sources */,
-				1B3401C725B387690091FA3B /* LayerSelectView.swift in Sources */,
+				1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */,
 				1BBD3FFA25B89181007B8BC7 /* OfflineSelectCoordinatorView.swift in Sources */,
 				1BA9BD0E25BA281800AC97C7 /* OfflineSelectArea.swift in Sources */,
 				1BBD3FF325B708A6007B8BC7 /* MapViewPanelViewController.swift in Sources */,
 				1B3401CC25B473E40091FA3B /* LayerCell.swift in Sources */,
 				1BBD3FFD25B8927E007B8BC7 /* OfflineManager.swift in Sources */,
+				1BA9BD2625C21D7C00AC97C7 /* LayerSelectImport.swift in Sources */,
 				1BBD3FF825B88F56007B8BC7 /* OfflineSelectPanelViewController.swift in Sources */,
 				1B3401D225B474420091FA3B /* Section.swift in Sources */,
 				1BA9BD1925BF208600AC97C7 /* customCompass.swift in Sources */,
+				1BA9BD2025C2100F00AC97C7 /* LayerSelectView.swift in Sources */,
 				1B6638A825B10B530071F03D /* AppDelegate.swift in Sources */,
 				1BBD3FF525B70C06007B8BC7 /* OfflineSelectPanelLayout.swift in Sources */,
 				1B6638AA25B10B530071F03D /* SceneDelegate.swift in Sources */,
