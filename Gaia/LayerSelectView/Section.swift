@@ -87,7 +87,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       layer.groupIndex = Int16(index) // reset indexes on group layers
     }
     
-    layerManager.updateLayers()
+    layerManager.saveLayers()
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

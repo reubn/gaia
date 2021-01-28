@@ -45,7 +45,7 @@ class LayerManager {
     let appDelegate = UIApplication.shared.delegate as? AppDelegate
     self.managedContext = appDelegate!.persistentContainer.viewContext
 
-    loadData()
+    reloadData()
   }
 
   func layerSortingFunction(a: Layer, b: Layer) -> Bool {
@@ -58,7 +58,7 @@ class LayerManager {
     return a.name! > b.name!
   }
 
-  func loadData() {
+  func reloadData() {
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Layer")
 
     do {
@@ -71,14 +71,21 @@ class LayerManager {
       groups = unorderedGroups.mapValues({
         $0.sorted(by: layerSortingFunction)
       })
+      
+      informDelegates()
 
     } catch {print("Failed")}
   }
 
-  func updateLayers(){
+  func informDelegates(){
     multicastStyleDidChangeDelegate.invoke(invocation: {$0.styleDidChange(style: style)})
+  }
+  
+  func saveLayers(){
     do {
         try managedContext.save()
+      
+        reloadData()
     } catch {
         print("saving error :", error)
     }
@@ -95,13 +102,13 @@ class LayerManager {
       }
     }
 
-    updateLayers()
+    saveLayers()
   }
 
   func disableLayer(layer: Layer) {
     layer.enabled = false
 
-    updateLayers()
+    saveLayers()
   }
   
   func filterLayers(_ shouldBeEnabled: (Layer) -> Bool){
@@ -109,7 +116,7 @@ class LayerManager {
       layer.enabled = shouldBeEnabled(layer)
     }
     
-    updateLayers()
+    saveLayers()
   }
 
   public func getLayers(layerGroup: LayerGroup) -> [Layer] {
