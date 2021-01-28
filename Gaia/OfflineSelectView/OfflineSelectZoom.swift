@@ -13,6 +13,7 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
   
   func viewWillEnter(){
     print("enter OSZ")
+    
     coordinatorView.mapViewController.osfpc.move(to: .tip, animated: true)
     coordinatorView.panelViewController.title = "Select Zoom"
     coordinatorView.panelViewController.buttons = [.previous, .accept]
