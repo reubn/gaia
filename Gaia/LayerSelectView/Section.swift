@@ -55,6 +55,8 @@ class Section: UIStackView, LayerManagerDelegate {
   }
   
   func styleDidChange(style _: Style) {
+    self.layers = layerManager.getLayers(layerGroup: group).reversed()
+    
     tableView.reloadData()
   }
   
@@ -104,6 +106,15 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
     cell.addGestureRecognizer(labelRecognizer)
     
     return cell
+  }
+  
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    if editingStyle == .delete {
+      let layer = layers[indexPath.row]
+      layers.remove(at: indexPath.row)
+
+      self.layerManager.removeLayer(layer: layer)
+    }
   }
   
   @objc func tableViewLabelClick(sender : UITapGestureRecognizer){

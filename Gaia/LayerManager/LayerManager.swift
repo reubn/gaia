@@ -90,6 +90,11 @@ class LayerManager {
         print("saving error :", error)
     }
   }
+  func removeLayer(layer: Layer){
+    managedContext.delete(layer)
+    
+    saveLayers()
+  }
 
   func enableLayer(layer: Layer, mutuallyExclusive: Bool) {
     if(layer.group == "overlay" || !mutuallyExclusive) {
