@@ -65,8 +65,8 @@ struct StyleJSON: Codable {
     let id: String
     let name: String
     let group: String
-    var groupIndex: Int = 0
-    var type: LayerType = .raster
+    let groupIndex: Int
+    let type: LayerType
     let tiles: [String]
 
     let minzoom: Int?
