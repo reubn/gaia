@@ -141,6 +141,27 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     return button
   }()
   
+  lazy var starButton: UIButton = {
+    let button = UIButton()
+    button.setImage(UIImage(systemName: "star.fill", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
+    button.contentVerticalAlignment = .fill
+    button.contentHorizontalAlignment = .fill
+    button.imageView!.contentMode = .scaleAspectFit
+    button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
+    button.tintColor = .white
+    button.backgroundColor = .systemOrange
+    button.layer.cornerRadius = 15
+    button.layer.cornerCurve = .circular
+
+    button.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
+    
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
+    
+    return button
+  }()
+  
   lazy var buttonsView: UIStackView = {
     let stack = UIStackView()
     
@@ -171,7 +192,8 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
         .reject: rejectButton,
         .next: nextButton,
         .previous: previousButton,
-        .new: newButton
+        .new: newButton,
+        .star: starButton
       ]
       
       for subView in self.buttonsView.arrangedSubviews {
@@ -235,6 +257,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   @objc func nextButtonTapped(_ sender: UIButton) {}
   @objc func previousButtonTapped(_ sender: UIButton) {}
   @objc func newButtonTapped(_ sender: UIButton) {}
+  @objc func starButtonTapped(_ sender: UIButton) {}
   
   func floatingPanelWillBeginAttracting(_ fpc: FloatingPanelController, to state: FloatingPanelState) {
     uiImpactFeedbackGenerator.prepare()
@@ -270,4 +293,5 @@ enum PanelButton {
   case next
   case previous
   case new
+  case star
 }
