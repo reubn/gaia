@@ -12,9 +12,9 @@ class LayerSelectImport: UIView, CoordinatedView, UITextFieldDelegate {
   lazy var urlInput: UITextField = {
     let textField = TextField()
     textField.placeholder = "https://server.com/layerDefinitions.json"
-    textField.attributedPlaceholder = NSAttributedString(string: textField.placeholder!, attributes: [.foregroundColor: traitCollection.userInterfaceStyle == .dark ? .gray : .gray as UIColor])
-    textField.textColor = traitCollection.userInterfaceStyle == .dark ? .darkGray : .darkGray
-    textField.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .white : .lightGray
+    textField.attributedPlaceholder = NSAttributedString(string: textField.placeholder!, attributes: [.foregroundColor: UIColor.gray])
+    textField.textColor = .darkGray
+    textField.backgroundColor = .white
     textField.layer.cornerRadius = 8
     textField.layer.cornerCurve = .continuous
     textField.tintColor = .systemBlue
