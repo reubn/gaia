@@ -9,6 +9,8 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     label.text = title
     label.font = UIFont.boldSystemFont(ofSize: 25)
     label.textColor = UIColor.label
+    label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.2
     
     view.addSubview(label)
     
