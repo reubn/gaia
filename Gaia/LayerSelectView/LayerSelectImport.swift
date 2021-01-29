@@ -49,7 +49,7 @@ class LayerSelectImport: UIView, CoordinatedView, UITextFieldDelegate {
     print("enter LSI")
     
     if(coordinatorView.mapViewController.lsfpc.viewIfLoaded?.window != nil) {
-      coordinatorView.mapViewController.lsfpc.move(to: .full, animated: true)
+      coordinatorView.mapViewController.lsfpc.move(to: .half, animated: true)
     }
     
     coordinatorView.panelViewController.title = "Import Layer"
