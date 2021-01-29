@@ -8,13 +8,16 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   let lsfpc = FloatingPanelController()
   let osfpc = FloatingPanelController()
+  let lifpc = FloatingPanelController()
   
   let layersButton = MapButton()
+  let infoButton = MapButton()
   let offlineButton = MapButton()
   
   let uiColourTint: UIColor = .systemBlue
   
   let multicastParentMapViewRegionIsChangingDelegate = MulticastDelegate<(ParentMapViewRegionIsChangingDelegate)>()
+  let multicastUserLocationDidUpdateDelegate = MulticastDelegate<(UserLocationDidUpdateDelegate)>()
 
   var mapView: MGLMapView!
   var rasterLayer: MGLRasterStyleLayer?
@@ -52,6 +55,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     userLocationButton.addTarget(self, action: #selector(locationButtonTapped), for: .touchUpInside)
     userLocationButton.translatesAutoresizingMaskIntoConstraints = false
     self.userLocationButton = userLocationButton
+    
+    let userLocationButtonLongGR = UILongPressGestureRecognizer(target: self, action: #selector(locationButtonLongPressed))
+    userLocationButtonLongGR.minimumPressDuration = 0.4
+    userLocationButton.addGestureRecognizer(userLocationButtonLongGR)
 
     layersButton.setImage(UIImage(systemName: "map"), for: .normal)
     layersButton.addTarget(self, action: #selector(layersButtonTapped), for: .touchUpInside)
@@ -77,6 +84,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?){
+    multicastUserLocationDidUpdateDelegate.invoke(invocation: {$0.userLocationDidUpdate()})
+    
     if(firstTimeLocating && userLocation?.location != nil) {
       mapView.centerCoordinate = userLocation!.location!.coordinate
       mapView.userTrackingMode = .followWithHeading
@@ -137,6 +146,35 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
 
     mapView.userTrackingMode = mode
+  }
+  
+  @objc func locationButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
+    if gestureReconizer.state != UIGestureRecognizer.State.began {return}
+    
+    if presentedViewController != nil {
+      let isMe = presentedViewController == lifpc
+      presentedViewController!.dismiss(animated: true, completion: nil)
+      
+      if(isMe) {return}
+    }
+
+    let locationInfoPanelViewController = LocationInfoPanelViewController(mapViewController: self)
+    
+    lifpc.layout = locationInfoPanelLayout
+    lifpc.delegate = locationInfoPanelViewController
+    lifpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+    lifpc.isRemovalInteractionEnabled = true
+    lifpc.contentMode = .fitToBounds
+    
+    let appearance = SurfaceAppearance()
+//    appearance.cornerCurve = CALayerCornerCurve.continuous
+    appearance.cornerRadius = 16
+    appearance.backgroundColor = .clear
+    lifpc.surfaceView.appearance = appearance
+    
+    lifpc.set(contentViewController: locationInfoPanelViewController)
+
+    self.present(lifpc, animated: true, completion: nil)
   }
 
   @objc func layersButtonTapped(sender: MapButton) {
@@ -213,3 +251,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 protocol ParentMapViewRegionIsChangingDelegate {
   func parentMapViewRegionIsChanging()
 }
+
+protocol UserLocationDidUpdateDelegate {
+  func userLocationDidUpdate()
+}
+
+
