@@ -140,31 +140,30 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
 
   @objc func layersButtonTapped(sender: MapButton) {
-    if osfpc.viewIfLoaded?.window != nil {
-      osfpc.dismiss(animated: false, completion: nil)
+    if presentedViewController != nil {
+      let isMe = presentedViewController == lsfpc
+      presentedViewController!.dismiss(animated: true, completion: nil)
+      
+      if(isMe) {return}
     }
-    
-    if lsfpc.viewIfLoaded?.window == nil {
-      let layerSelectPanelViewController = LayerSelectPanelViewController(mapViewController: self)
-      
-      lsfpc.layout = layerSelectPanelLayout
-      lsfpc.delegate = layerSelectPanelViewController
-      lsfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
-      lsfpc.isRemovalInteractionEnabled = true
-      lsfpc.contentMode = .fitToBounds
-      
-      let appearance = SurfaceAppearance()
-  //    appearance.cornerCurve = CALayerCornerCurve.continuous
-      appearance.cornerRadius = 16
-      appearance.backgroundColor = .clear
-      lsfpc.surfaceView.appearance = appearance
-      
-      lsfpc.set(contentViewController: layerSelectPanelViewController)
 
-      self.present(lsfpc, animated: true, completion: nil)
-    } else {
-      lsfpc.dismiss(animated: true, completion: nil)
-    }
+    let layerSelectPanelViewController = LayerSelectPanelViewController(mapViewController: self)
+    
+    lsfpc.layout = layerSelectPanelLayout
+    lsfpc.delegate = layerSelectPanelViewController
+    lsfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+    lsfpc.isRemovalInteractionEnabled = true
+    lsfpc.contentMode = .fitToBounds
+    
+    let appearance = SurfaceAppearance()
+//    appearance.cornerCurve = CALayerCornerCurve.continuous
+    appearance.cornerRadius = 16
+    appearance.backgroundColor = .clear
+    lsfpc.surfaceView.appearance = appearance
+    
+    lsfpc.set(contentViewController: layerSelectPanelViewController)
+
+    self.present(lsfpc, animated: true, completion: nil)
   }
   
   @objc func layersButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
@@ -176,31 +175,30 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   @objc func offlineButtonTapped(sender: MapButton) {
-    if lsfpc.viewIfLoaded?.window != nil {
-      lsfpc.dismiss(animated: false, completion: nil)
+    if presentedViewController != nil {
+      let isMe = presentedViewController == osfpc
+      presentedViewController!.dismiss(animated: true, completion: nil)
+      
+      if(isMe) {return}
     }
     
-    if osfpc.viewIfLoaded?.window == nil {
-      let offlineSelectPanelViewController = OfflineSelectPanelViewController(mapViewController: self)
-     
-      osfpc.layout = offlineSelectPanelLayout
-      osfpc.delegate = offlineSelectPanelViewController
-      osfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
-      osfpc.isRemovalInteractionEnabled = true
-      osfpc.contentMode = .fitToBounds
-     
-      let appearance = SurfaceAppearance()
-  //     appearance.cornerCurve = CALayerCornerCurve.continuous
-      appearance.cornerRadius = 16
-      appearance.backgroundColor = .clear
-      osfpc.surfaceView.appearance = appearance
-     
-      osfpc.set(contentViewController: offlineSelectPanelViewController)
+    let offlineSelectPanelViewController = OfflineSelectPanelViewController(mapViewController: self)
+   
+    osfpc.layout = offlineSelectPanelLayout
+    osfpc.delegate = offlineSelectPanelViewController
+    osfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+    osfpc.isRemovalInteractionEnabled = true
+    osfpc.contentMode = .fitToBounds
+   
+    let appearance = SurfaceAppearance()
+//     appearance.cornerCurve = CALayerCornerCurve.continuous
+    appearance.cornerRadius = 16
+    appearance.backgroundColor = .clear
+    osfpc.surfaceView.appearance = appearance
+   
+    osfpc.set(contentViewController: offlineSelectPanelViewController)
 
-      self.present(osfpc, animated: true, completion: nil)
-    } else {
-      osfpc.dismiss(animated: true, completion: nil)
-    }
+    self.present(osfpc, animated: true, completion: nil)
   }
   
   @objc func offlineButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
