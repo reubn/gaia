@@ -223,7 +223,6 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   
   
   override func viewDidLoad() {
-    view.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
     uiImpactFeedbackGenerator.impactOccurred()
   }
 

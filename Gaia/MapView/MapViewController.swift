@@ -147,7 +147,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     if lsfpc.viewIfLoaded?.window == nil {
       let layerSelectPanelViewController = LayerSelectPanelViewController(mapViewController: self)
       
-      lsfpc.layout = LayerSelectPanelLayout()
+      lsfpc.layout = layerSelectPanelLayout
       lsfpc.delegate = layerSelectPanelViewController
       lsfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
       lsfpc.isRemovalInteractionEnabled = true
@@ -183,7 +183,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     if osfpc.viewIfLoaded?.window == nil {
       let offlineSelectPanelViewController = OfflineSelectPanelViewController(mapViewController: self)
      
-      osfpc.layout = OfflineSelectPanelLayout()
+      osfpc.layout = offlineSelectPanelLayout
       osfpc.delegate = offlineSelectPanelViewController
       osfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
       osfpc.isRemovalInteractionEnabled = true

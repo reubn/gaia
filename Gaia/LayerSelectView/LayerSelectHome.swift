@@ -30,9 +30,9 @@ class LayerSelectHome: UIView, CoordinatedView {
     layerSelectView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
   }
   
-  func showActionSheet() {
-    let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-    alert.addAction(UIAlertAction(title: "Import", style: .default, handler: {_ in
+  func showActionSheet(_ sender: UIButton) {
+    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    alertController.addAction(UIAlertAction(title: "Import", style: .default, handler: {_ in
       self.coordinatorView.goTo(1)
     }))
 
@@ -40,9 +40,13 @@ class LayerSelectHome: UIView, CoordinatedView {
 //      self.coordinatorView.goTo(2)
 //    }))
 
-    alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel))
+    alertController.addAction(UIAlertAction(title: "Dismiss", style: .cancel))
+    
+    if let popoverController = alertController.popoverPresentationController {
+      popoverController.sourceView = sender
+    }
 
-    self.mapViewController.lsfpc.present(alert, animated: true, completion: nil)
+    self.mapViewController.lsfpc.present(alertController, animated: true, completion: nil)
   }
   
   func viewWillEnter(){
@@ -62,7 +66,7 @@ class LayerSelectHome: UIView, CoordinatedView {
   
   func panelButtonTapped(button: PanelButton){
     if(button == .dismiss) {coordinatorView.panelViewController.dismiss(animated: true, completion: nil)}
-    else if(button == .new) {showActionSheet()}
+    else if(button == .new) {showActionSheet(coordinatorView.panelViewController.newButton)}
   }
   
   required init(coder: NSCoder) {
