@@ -4,8 +4,8 @@ import Mapbox
 import FloatingPanel
 
 class MapViewPanelViewController: UIViewController, FloatingPanelControllerDelegate {
-  lazy var popoverTitle: UILabel = {
-    let label = UILabel()
+  lazy var popoverTitle: SelectableLabel = {
+    let label = SelectableLabel()
     label.text = title
     label.font = UIFont.boldSystemFont(ofSize: 25)
     label.textColor = UIColor.label
