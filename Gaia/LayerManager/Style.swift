@@ -131,8 +131,8 @@ extension StyleJSON.Layer {
       id: source.id,
       type: source.type,
       source: source.id,
-      minzoom: source.minzoom,
-      maxzoom: source.maxzoom
+      minzoom: nil, //source.minzoom,
+      maxzoom: nil //source.maxzoom
     )
   }
 }
