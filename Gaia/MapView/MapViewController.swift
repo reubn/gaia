@@ -92,6 +92,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       firstTimeLocating = false
     }
   }
+  
+  func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
+    openLocationInfoPanel()
+    
+    mapView.deselectAnnotation(annotation, animated: false)
+  }
 
   func mapViewRegionIsChanging(_ mapView: MGLMapView) {
     multicastParentMapViewRegionIsChangingDelegate.invoke(invocation: {$0.parentMapViewRegionIsChanging()})
@@ -149,8 +155,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   @objc func locationButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
-    if gestureReconizer.state != UIGestureRecognizer.State.began {return}
-    
+    if gestureReconizer.state == UIGestureRecognizer.State.began {
+      openLocationInfoPanel()
+    }
+  }
+  
+  func openLocationInfoPanel() {
     if presentedViewController != nil {
       let isMe = presentedViewController == lifpc
       presentedViewController!.dismiss(animated: true, completion: nil)
