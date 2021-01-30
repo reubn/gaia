@@ -53,6 +53,9 @@
 		1BBD3FFA25B89181007B8BC7 /* OfflineSelectCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF925B89181007B8BC7 /* OfflineSelectCoordinatorView.swift */; };
 		1BBD3FFD25B8927E007B8BC7 /* OfflineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */; };
 		1BBD3FFF25B8B0B5007B8BC7 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FFE25B8B0B5007B8BC7 /* Style.swift */; };
+		1BEE8D5B25C58FF5004260C1 /* MetricDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5A25C58FF5004260C1 /* MetricDisplay.swift */; };
+		1BEE8D5E25C599B3004260C1 /* HeadingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */; };
+		1BEE8D6025C59A4D004260C1 /* ElevationDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -116,6 +119,9 @@
 		1BBD3FF925B89181007B8BC7 /* OfflineSelectCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectCoordinatorView.swift; sourceTree = "<group>"; };
 		1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineManager.swift; sourceTree = "<group>"; };
 		1BBD3FFE25B8B0B5007B8BC7 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		1BEE8D5A25C58FF5004260C1 /* MetricDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricDisplay.swift; sourceTree = "<group>"; };
+		1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingDisplay.swift; sourceTree = "<group>"; };
+		1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +247,7 @@
 			children = (
 				1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */,
 				1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */,
+				1BEE8D5C25C599A0004260C1 /* MetricDisplay */,
 				1B8C079025C4833D008C08B2 /* LocationInfoView.swift */,
 			);
 			path = LocationInfoView;
@@ -277,6 +284,16 @@
 				1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */,
 			);
 			path = OfflineManager;
+			sourceTree = "<group>";
+		};
+		1BEE8D5C25C599A0004260C1 /* MetricDisplay */ = {
+			isa = PBXGroup;
+			children = (
+				1BEE8D5A25C58FF5004260C1 /* MetricDisplay.swift */,
+				1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */,
+				1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */,
+			);
+			path = MetricDisplay;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -364,13 +381,16 @@
 				1BA9BD1E25C0861400AC97C7 /* CoordinatorView.swift in Sources */,
 				1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */,
 				1B6638AC25B10B530071F03D /* MapViewController.swift in Sources */,
+				1BEE8D5E25C599B3004260C1 /* HeadingDisplay.swift in Sources */,
 				1BA9BD2425C212A900AC97C7 /* LayerSelectHome.swift in Sources */,
 				1BA9BD0A25BA1C6300AC97C7 /* OfflineSelectHome.swift in Sources */,
 				1BA9BD1225BB879200AC97C7 /* DownloadCell.swift in Sources */,
 				1BA9BD1B25BF3CD000AC97C7 /* DownloadsTableView.swift in Sources */,
+				1BEE8D6025C59A4D004260C1 /* ElevationDisplay.swift in Sources */,
 				1B3401CE25B473FB0091FA3B /* SectionLabel.swift in Sources */,
 				1BA9BD1425BE248600AC97C7 /* OfflineSelectZoom.swift in Sources */,
 				1B8C078A25C43C58008C08B2 /* MapViewPanelLayout.swift in Sources */,
+				1BEE8D5B25C58FF5004260C1 /* MetricDisplay.swift in Sources */,
 				1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */,
 				1BBD3FFA25B89181007B8BC7 /* OfflineSelectCoordinatorView.swift in Sources */,
 				1BA9BD0E25BA281800AC97C7 /* OfflineSelectArea.swift in Sources */,

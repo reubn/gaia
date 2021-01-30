@@ -8,37 +8,28 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
   let mapViewController: MapViewController
   lazy var mainView = UIView()
   
-  lazy var headingDisplay: SelectableLabel = {
-    let label = SelectableLabel()
-    label.isSelectable = true
+  lazy var headingDisplay: HeadingDisplay = {
+    let display = HeadingDisplay()
     
-    label.font = UIFont.systemFont(ofSize: 18)
-    label.textColor = .secondaryLabel
+    mainView.addSubview(display)
     
-    mainView.addSubview(label)
+    display.translatesAutoresizingMaskIntoConstraints = false
+    display.leftAnchor.constraint(equalTo: mainView.leftAnchor).isActive = true
+    display.topAnchor.constraint(equalTo: mainView.topAnchor).isActive = true
     
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.leftAnchor.constraint(equalTo: mainView.leftAnchor).isActive = true
-    label.topAnchor.constraint(equalTo: mainView.topAnchor).isActive = true
-    
-    return label
+    return display
   }()
-  
-  lazy var altitudeDisplay: SelectableLabel = {
-    let label = SelectableLabel()
-    label.isSelectable = true
+
+  lazy var elevationDisplay: ElevationDisplay = {
+    let display = ElevationDisplay()
     
-    label.font = UIFont.systemFont(ofSize: 18)
-    label.textColor = .secondaryLabel
+    mainView.addSubview(display)
     
-    mainView.addSubview(label)
+    display.translatesAutoresizingMaskIntoConstraints = false
+    display.leftAnchor.constraint(equalTo: headingDisplay.rightAnchor, constant: 5).isActive = true
+    display.topAnchor.constraint(equalTo: mainView.topAnchor).isActive = true
     
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.leftAnchor.constraint(equalTo: mainView.centerXAnchor).isActive = true
-    label.rightAnchor.constraint(equalTo: mainView.rightAnchor).isActive = true
-    label.topAnchor.constraint(equalTo: mainView.topAnchor).isActive = true
-    
-    return label
+    return display
   }()
   
   init(mapViewController: MapViewController){
@@ -64,24 +55,23 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
   func userLocationDidUpdate() {
     if(mapViewController.mapView.userLocation == nil) {return}
     
-    let location = mapViewController.mapView.userLocation!.coordinate
+    let coordinate = mapViewController.mapView.userLocation!.coordinate
     let heading = mapViewController.mapView.userLocation!.heading
-    let altitude = mapViewController.mapView.userLocation!.location!.altitude
+    let location = mapViewController.mapView.userLocation!.location
     
-    let lat = Double(location.latitude)
-    let lng = Double(location.longitude)
+    let lat = Double(coordinate.latitude)
+    let lng = Double(coordinate.longitude)
     
     self.popoverTitle.text = String(format: "%.4f, %.4f", lat, lng) // 11m worst-case
     self.popoverTitle.textToSelect = String(format: "%.6f, %.6f", lat, lng) // 11cm worst-case
     
     if(heading != nil) {
-      self.headingDisplay.text = String(format: "🧭 %03d° 🧲 %03d°", Int(heading!.trueHeading), Int(heading!.magneticHeading))
-      self.headingDisplay.textToSelect = String(format: "T: %03d° M: %03d°", Int(heading!.trueHeading), Int(heading!.magneticHeading))
+      self.headingDisplay.value = heading!
     }
     
-    let altitudeString = String(format: "%dm", Int(altitude))
-    self.altitudeDisplay.text = "⛰ " + altitudeString
-    self.altitudeDisplay.textToSelect = altitudeString
+    if(location != nil) {
+      self.elevationDisplay.value = location!
+    }
   }
   
   required init?(coder aDecoder: NSCoder) {
