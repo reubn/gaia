@@ -23,13 +23,23 @@ class LayerSelectCoordinatorView: CoordinatorView {
     super.ready()
   }
   
-  func done(newSources: [StyleJSON.Source]){
-    for source in newSources {
-      _ = layerManager.newLayer(source)
+  func done(data: Data){
+    do {
+      let decoder = JSONDecoder()
+
+      let contents = try decoder.decode([StyleJSON.Source].self, from: data)
+      
+      print(contents)
+      
+      for source in contents {
+        _ = self.layerManager.newLayer(source)
+      }
+      
+      self.layerManager.saveLayers()
+      super.done()
+    } catch {
+      print("Unexpected error: \(error).")
     }
-    
-    layerManager.saveLayers()
-    super.done()
   }
   
   required init(coder: NSCoder) {

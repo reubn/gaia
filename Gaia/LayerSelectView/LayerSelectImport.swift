@@ -93,21 +93,7 @@ class LayerSelectImport: UIView, CoordinatedView, UITextFieldDelegate {
       
       if let url = URL(string: string) {
         URLSession.shared.dataTask(with: url) { data, response, error in
-          if let data = data {
-            do {
-              let decoder = JSONDecoder()
-
-              let contents = try decoder.decode([StyleJSON.Source].self, from: data)
-              
-              print(contents)
-              
-              DispatchQueue.main.async {
-                self.coordinatorView.done(newSources: contents)
-              }
-            } catch {
-              print("Unexpected error: \(error).")
-            }
-          }
+          if let data = data {self.coordinatorView.done(data: data)}
         }.resume()
       }
     }
