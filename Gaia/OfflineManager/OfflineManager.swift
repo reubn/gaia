@@ -40,7 +40,9 @@ class OfflineManager {
     let packContext = PackContext(
       style: style.jsonObject,
       bounds: PackContext.Bounds(bounds),
-      name: DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .medium, timeStyle: .short)
+      name: DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .medium, timeStyle: .short),
+      toZoomLevel: Int(toZoomLevel),
+      fromZoomLevel: Int(fromZoomLevel)
     )
     
     var context: Data
@@ -112,6 +114,8 @@ struct PackContext: Codable {
   let style: StyleJSON
   let bounds: Bounds
   let name: String
+  let toZoomLevel: Int?
+  let fromZoomLevel: Int?
   
   struct Bounds: Codable {
     let ne, sw: Coordinate

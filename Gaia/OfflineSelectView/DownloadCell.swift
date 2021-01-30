@@ -197,6 +197,7 @@ class DownloadCell: UITableViewCell {
     self.mapViewController = mapViewController
     
     var layersString = ""
+    var zoomString = ""
     if(context != nil) {
       let layers = context!.style.sources.enumerated()
       
@@ -206,9 +207,14 @@ class DownloadCell: UITableViewCell {
         if(index > 0) {layersString += ", "}
         layersString += "\(layer.name)"
       }
+      
+      if(context!.fromZoomLevel != nil) {
+        zoomString = String(format: " @ %d-%d", context!.fromZoomLevel!, context!.toZoomLevel!)
+      }
+      
     }
     
-    subtitle.text = "\(ByteCountFormatter.string(fromByteCount: Int64(pack.progress.countOfBytesCompleted), countStyle: ByteCountFormatter.CountStyle.memory))\(layersString)"
+    subtitle.text = "\(ByteCountFormatter.string(fromByteCount: Int64(pack.progress.countOfBytesCompleted), countStyle: ByteCountFormatter.CountStyle.memory))\(layersString)\(zoomString)"
     status = pack.state
     
     context = mapViewController.offlineManager.decodePackContext(pack: pack)
