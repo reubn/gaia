@@ -33,7 +33,7 @@ class SelectableLabel: UILabel {
     
     if(recogniser.state == .began) {
       becomeFirstResponder()
-      UIMenuController.shared.showMenu(from: self, rect: self.textRect(forBounds: frame, limitedToNumberOfLines: 1))
+      UIMenuController.shared.showMenu(from: self, rect: self.textRect(forBounds: bounds, limitedToNumberOfLines: 0))
     }
   }
 
