@@ -14,7 +14,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     let tableView = DownloadsTableView()
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.backgroundColor = .clear
+    tableView.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(0.75)
     
     tableView.layer.cornerRadius = 8
     tableView.layer.cornerCurve = .continuous

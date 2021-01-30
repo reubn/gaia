@@ -148,7 +148,7 @@ class DownloadCell: UITableViewCell {
     height.priority = UILayoutPriority(rawValue: 999)
     height.isActive = true
 
-    contentView.backgroundColor = .tertiarySystemBackground
+    backgroundColor = .clear
   }
   
 

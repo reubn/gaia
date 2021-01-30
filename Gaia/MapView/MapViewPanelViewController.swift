@@ -231,7 +231,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     
     let subView = UIView(frame: view.bounds)
     subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    subView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.7)
+    subView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.75)
     
     let blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffect.Style.systemThinMaterial))
     blur.frame = subView.bounds
