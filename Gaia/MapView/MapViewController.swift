@@ -163,7 +163,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   func openLocationInfoPanel() {
     if presentedViewController != nil {
       let isMe = presentedViewController == lifpc
-      presentedViewController!.dismiss(animated: true, completion: nil)
+      presentedViewController!.dismiss(animated: false, completion: nil)
       
       if(isMe) {return}
     }
@@ -190,7 +190,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   @objc func layersButtonTapped(sender: MapButton) {
     if presentedViewController != nil {
       let isMe = presentedViewController == lsfpc
-      presentedViewController!.dismiss(animated: true, completion: nil)
+      presentedViewController!.dismiss(animated: false, completion: nil)
       
       if(isMe) {return}
     }
@@ -225,7 +225,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   @objc func offlineButtonTapped(sender: MapButton) {
     if presentedViewController != nil {
       let isMe = presentedViewController == osfpc
-      presentedViewController!.dismiss(animated: true, completion: nil)
+      presentedViewController!.dismiss(animated: false, completion: nil)
       
       if(isMe) {return}
     }
