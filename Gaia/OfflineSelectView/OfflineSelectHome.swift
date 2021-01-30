@@ -47,7 +47,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     print("enter OSH")
     
     if(coordinatorView.mapViewController.osfpc.viewIfLoaded?.window != nil) {
-      coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
+      coordinatorView.mapViewController.osfpc.move(to: .half, animated: true)
     }
     
     coordinatorView.panelViewController.title = "Downloads"
