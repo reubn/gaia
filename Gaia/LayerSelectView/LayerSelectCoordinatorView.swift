@@ -31,12 +31,14 @@ class LayerSelectCoordinatorView: CoordinatorView {
       
       print(contents)
       
-      for source in contents {
-        _ = self.layerManager.newLayer(source)
+      DispatchQueue.main.async {
+        for source in contents {
+          _ = self.layerManager.newLayer(source)
+        }
+        
+        self.layerManager.saveLayers()
+        super.done()
       }
-      
-      self.layerManager.saveLayers()
-      super.done()
     } catch {
       print("Unexpected error: \(error).")
     }
