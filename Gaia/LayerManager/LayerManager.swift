@@ -14,7 +14,8 @@ class LayerManager {
   let layerGroups = [
     LayerGroup(id: "overlay", name: "Overlays", colour: .systemPink),
     LayerGroup(id: "aerial", name: "Aerial Imagery", colour: .systemGreen),
-    LayerGroup(id: "base", name: "Base Maps", colour: .systemBlue)
+    LayerGroup(id: "base", name: "Base Maps", colour: .systemBlue),
+    LayerGroup(id: "historic", name: "Historic", colour: .systemIndigo )
   ]
   
   var layers: [Layer]{
