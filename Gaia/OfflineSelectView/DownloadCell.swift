@@ -24,67 +24,29 @@ class DownloadCell: UITableViewCell {
       switch newValue {
         case .unknown:
           statusIcon.setImage(nil, for: .normal)
-          statusIcon.viewWithTag(_t)?.removeFromSuperview()
           statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
         case .inactive:
           statusIcon.setImage(UIImage(systemName: "exclamationmark.triangle.fill"), for: .normal)
           statusIcon.tintColor = .systemYellow
-          statusIcon.viewWithTag(_t)?.removeFromSuperview()
-          statusIcon.insertSubview(triangleBackground(), at: 0)
           statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
         case .active:
           statusIcon.setImage(UIImage(systemName: "arrow.triangle.2.circlepath.circle.fill"), for: .normal)
           statusIcon.tintColor = .systemBlue
-          statusIcon.viewWithTag(_t)?.removeFromSuperview()
-          statusIcon.insertSubview(circleBackground(), at: 0)
           statusIcon.layer.add(rotationAnimation, forKey: "rotationAnimation")
         case .complete:
           statusIcon.setImage(nil, for: .normal)
-          statusIcon.viewWithTag(_t)?.removeFromSuperview()
           statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
         case .invalid:
           statusIcon.setImage(UIImage(systemName: "xmark.octagon.fill"), for: .normal)
           statusIcon.tintColor = .systemRed
-          statusIcon.viewWithTag(_t)?.removeFromSuperview()
-          statusIcon.insertSubview(circleBackground(), at: 0)
           statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
 
         default:
           statusIcon.setImage(UIImage(systemName: "xmark.octagon.fill"), for: .normal)
           statusIcon.tintColor = .systemRed
-          statusIcon.viewWithTag(_t)?.removeFromSuperview()
-          statusIcon.insertSubview(circleBackground(), at: 0)
           statusIcon.layer.removeAnimation(forKey: "rotationAnimation")
       }
     }
-  }
-  
-  lazy var circleBackground = {() -> UIView in
-    let view = UIView()
-
-    let size: CGFloat = 16
-    
-    view.frame = CGRect(x: self.statusIcon.bounds.width / 2 - (size / 2), y: self.statusIcon.bounds.height / 2 - (size / 2), width: size, height: size)
-    view.layer.cornerRadius = size / 2
-    
-    view.backgroundColor = .white
-    view.tag = self._t
-    
-    return view
-  }
-  
-  lazy var triangleBackground = {() -> UIView in
-    let view = UIView()
-
-    let width: CGFloat = 4
-    let height: CGFloat = 14
-    
-    view.frame = CGRect(x: self.statusIcon.bounds.width / 2 - (width / 2), y: self.statusIcon.bounds.height / 2 - (height / 2), width: width, height: height)
-    
-    view.backgroundColor = .white
-    view.tag = self._t
-    
-    return view
   }
   
   lazy var title: UILabel = {
