@@ -11,6 +11,15 @@ class Section: UIStackView, LayerManagerDelegate {
   var layers: [Layer]
   let tableView = SectionTableView()
   
+  var tableViewBottomAnchorConstraint: NSLayoutConstraint!
+  var tableViewHeightAnchorConstraint: NSLayoutConstraint!
+  
+  var open = true {
+    didSet {
+      updateCollapse()
+    }
+  }
+  
   init(group: LayerGroup, layerManager: LayerManager, mapViewController: MapViewController){
     self.group = group
     self.layerManager = layerManager
@@ -35,6 +44,10 @@ class Section: UIStackView, LayerManagerDelegate {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
     
+    let labelTapGR = UITapGestureRecognizer(target: self, action: #selector(self.toggleCollapse))
+    label.isUserInteractionEnabled = true
+    label.addGestureRecognizer(labelTapGR)
+    
     tableView.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(0.75)
     tableView.dataSource = self
     
@@ -51,7 +64,24 @@ class Section: UIStackView, LayerManagerDelegate {
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
     tableView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-    tableView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+    tableViewBottomAnchorConstraint = tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
+    tableViewHeightAnchorConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
+    
+    updateCollapse()
+  }
+  
+ @objc func toggleCollapse(){
+    open = !open
+  }
+  
+  func updateCollapse(){
+    if(self.open){
+      self.tableViewBottomAnchorConstraint.isActive = true
+      self.tableViewHeightAnchorConstraint.isActive = false
+    } else {
+      self.tableViewBottomAnchorConstraint.isActive = false
+      self.tableViewHeightAnchorConstraint.isActive = true
+    }
   }
   
   func styleDidChange(style _: Style) {
@@ -101,9 +131,9 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
     
     cell.update(_layer: layers[indexPath.row], layerManager: layerManager, mapViewController: mapViewController)
     
-    let labelRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tableViewLabelClick))
+    let cellGR = UITapGestureRecognizer(target: self, action: #selector(self.tableViewLabelClick))
     cell.isUserInteractionEnabled = true
-    cell.addGestureRecognizer(labelRecognizer)
+    cell.addGestureRecognizer(cellGR)
     
     return cell
   }
