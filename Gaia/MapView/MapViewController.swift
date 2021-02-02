@@ -6,9 +6,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   let layerManager = LayerManager()
   let offlineManager = OfflineManager()
   
-  let lsfpc = FloatingPanelController()
-  let osfpc = FloatingPanelController()
-  let lifpc = FloatingPanelController()
+  let lsfpc = MemoryConsciousFloatingPanelController()
+  let osfpc = MemoryConsciousFloatingPanelController()
+  let lifpc = MemoryConsciousFloatingPanelController()
   
   let layersButton = MapButton()
   let infoButton = MapButton()
