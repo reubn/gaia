@@ -61,15 +61,17 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   }
 
   func parentMapViewRegionIsChanging() {
-    let parent = mapViewController!.mapView.bounds
-    let centerPoint = CGPoint(x: parent.width * 0.5, y: parent.height * 0.25)
-    
-    preview.setCenter(
-      mapViewController!.mapView.convert(centerPoint, toCoordinateFrom: nil),
-      zoomLevel: mapViewController!.mapView.zoomLevel - 0.5,
-      direction: mapViewController!.mapView.direction,
-      animated: false
-    )
+    if(preview.isVisible()){
+      let parent = mapViewController!.mapView.bounds
+      let centerPoint = CGPoint(x: parent.width * 0.5, y: parent.height * 0.25)
+      
+      preview.setCenter(
+        mapViewController!.mapView.convert(centerPoint, toCoordinateFrom: nil),
+        zoomLevel: mapViewController!.mapView.zoomLevel - 0.5,
+        direction: mapViewController!.mapView.direction,
+        animated: false
+      )
+    }
   }
 
   func update(_layer: Layer, layerManager: LayerManager, mapViewController: MapViewController) {
@@ -94,5 +96,21 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
 
   required init?(coder: NSCoder) {
       fatalError("init(coder:) has not been implemented")
+  }
+}
+
+// https://stackoverflow.com/a/34641936
+extension UIView {
+  func isVisible() -> Bool {
+    return UIView.isVisible(view: self, inView: superview)
+  }
+  
+  static func isVisible(view: UIView, inView: UIView?) -> Bool {
+    guard let inView = inView else { return true }
+    let viewFrame = inView.convert(view.bounds, from: view)
+    if viewFrame.intersects(inView.bounds) {
+        return isVisible(view: view, inView: inView.superview)
+    }
+    return false
   }
 }
