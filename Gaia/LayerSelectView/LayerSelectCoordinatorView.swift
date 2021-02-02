@@ -5,7 +5,7 @@ import Mapbox
 
 class LayerSelectCoordinatorView: CoordinatorView {
   let mapViewController: MapViewController
-  let panelViewController: LayerSelectPanelViewController
+  unowned let panelViewController: LayerSelectPanelViewController
   
   lazy var layerManager = mapViewController.layerManager
   

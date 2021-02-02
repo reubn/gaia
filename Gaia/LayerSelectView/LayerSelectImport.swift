@@ -4,7 +4,7 @@ import UIKit
 import Mapbox
 
 class LayerSelectImport: UIView, CoordinatedView, UITextFieldDelegate {
-  let coordinatorView: LayerSelectCoordinatorView
+  unowned let coordinatorView: LayerSelectCoordinatorView
   let mapViewController: MapViewController
   
   lazy var layerManager = mapViewController.layerManager

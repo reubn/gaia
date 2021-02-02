@@ -4,7 +4,7 @@ import UIKit
 import Mapbox
 
 class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingDelegate {
-  let coordinatorView: OfflineSelectCoordinatorView
+  unowned let coordinatorView: OfflineSelectCoordinatorView
 
   init(coordinatorView: OfflineSelectCoordinatorView){
     self.coordinatorView = coordinatorView

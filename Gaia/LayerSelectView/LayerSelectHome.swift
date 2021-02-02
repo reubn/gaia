@@ -5,7 +5,7 @@ import UniformTypeIdentifiers
 import Mapbox
 
 class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate {
-  let coordinatorView: LayerSelectCoordinatorView
+  unowned let coordinatorView: LayerSelectCoordinatorView
   let mapViewController: MapViewController
   
   lazy var layerManager = mapViewController.layerManager

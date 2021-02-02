@@ -4,7 +4,7 @@ import UIKit
 import Mapbox
 
 class OfflineSelectLayers: UIView, CoordinatedView {
-  let coordinatorView: OfflineSelectCoordinatorView
+  unowned let coordinatorView: OfflineSelectCoordinatorView
   let mapViewController: MapViewController
   
   lazy var layerManager = mapViewController.layerManager

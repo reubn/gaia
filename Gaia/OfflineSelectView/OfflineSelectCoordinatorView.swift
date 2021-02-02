@@ -5,7 +5,7 @@ import Mapbox
 
 class OfflineSelectCoordinatorView: CoordinatorView {
   let mapViewController: MapViewController
-  let panelViewController: OfflineSelectPanelViewController
+  unowned let panelViewController: OfflineSelectPanelViewController
   
   var selectedArea: MGLCoordinateBounds?
   var selectedZoom: Double?
