@@ -61,17 +61,15 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   }
 
   func parentMapViewRegionIsChanging() {
-    if(preview.isVisible()){
-      let parent = mapViewController!.mapView.bounds
-      let centerPoint = CGPoint(x: parent.width * 0.5, y: parent.height * 0.25)
-      
-      preview.setCenter(
-        mapViewController!.mapView.convert(centerPoint, toCoordinateFrom: nil),
-        zoomLevel: mapViewController!.mapView.zoomLevel - 0.5,
-        direction: mapViewController!.mapView.direction,
-        animated: false
-      )
-    }
+    let parent = mapViewController!.mapView.bounds
+    let centerPoint = CGPoint(x: parent.width * 0.5, y: parent.height * 0.25)
+    
+    preview.setCenter(
+      mapViewController!.mapView.convert(centerPoint, toCoordinateFrom: nil),
+      zoomLevel: mapViewController!.mapView.zoomLevel - 0.5,
+      direction: mapViewController!.mapView.direction,
+      animated: false
+    )
   }
 
   func update(_layer: Layer, layerManager: LayerManager, mapViewController: MapViewController) {
