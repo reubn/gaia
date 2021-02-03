@@ -52,12 +52,15 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
 
     title.font = UIFont.systemFont(ofSize: 18)
     title.textColor = UIColor.label
+    title.numberOfLines = 0
+
     contentView.addSubview(title)
 
     title.translatesAutoresizingMaskIntoConstraints = false
     title.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
     title.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
     title.leftAnchor.constraint(equalTo: preview.rightAnchor, constant: previewSpacing).isActive = true
+    title.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
   }
 
   func parentMapViewRegionIsChanging() {
