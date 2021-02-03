@@ -34,11 +34,15 @@ class OfflineManager {
     NotificationCenter.default.removeObserver(self, name: NSNotification.Name.MGLOfflinePackProgressChanged, object: nil)
   }
   
-  func downloadPack(style: Style, bounds: MGLCoordinateBounds, fromZoomLevel: Double, toZoomLevel: Double) {
+  func downloadPack(layers: [Layer], bounds: MGLCoordinateBounds, fromZoomLevel: Double, toZoomLevel: Double) {
+    let style = Style(sortedLayers: layers)
     let region = MGLTilePyramidOfflineRegion(styleURL: style.url, bounds: bounds, fromZoomLevel: fromZoomLevel, toZoomLevel: toZoomLevel)
+    
+    let layerMetadata = layers.map {LayerDefinition.Metadata($0)}
       
     let packContext = PackContext(
-      style: style.jsonObject,
+      layerMetadata: layerMetadata,
+      styleJSON: style.styleJSON,
       bounds: PackContext.Bounds(bounds),
       name: DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .medium, timeStyle: .short),
       toZoomLevel: Int(toZoomLevel),
@@ -111,7 +115,8 @@ protocol OfflineModeDelegate {
 }
 
 struct PackContext: Codable {
-  let style: StyleJSON
+  let layerMetadata: [LayerDefinition.Metadata]
+  let styleJSON: StyleJSON
   let bounds: Bounds
   let name: String
   let toZoomLevel: Int?

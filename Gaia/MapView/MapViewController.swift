@@ -266,4 +266,3 @@ protocol UserLocationDidUpdateDelegate {
   func userLocationDidUpdate()
 }
 
-

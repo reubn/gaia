@@ -45,19 +45,31 @@ class LayerManager {
   init(){
     let appDelegate = UIApplication.shared.delegate as? AppDelegate
     self.managedContext = appDelegate!.persistentContainer.viewContext
-
+    
+//    clearData()
     reloadData()
   }
 
   func layerSortingFunction(a: Layer, b: Layer) -> Bool {
-    if(a.group! != b.group!) {
-      return layerGroups.firstIndex(where: {layerGroup in a.group! == layerGroup.id}) ?? 0 > layerGroups.firstIndex(where: {layerGroup in b.group! == layerGroup.id}) ?? 0
+    if(a.group != b.group) {
+      return layerGroups.firstIndex(where: {layerGroup in a.group == layerGroup.id}) ?? 0 > layerGroups.firstIndex(where: {layerGroup in b.group == layerGroup.id}) ?? 0
     }
     
     if(a.groupIndex != b.groupIndex) {return a.groupIndex > b.groupIndex}
     
-    return a.name! > b.name!
+    return a.name > b.name
   }
+  
+  func clearData(){
+      let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Layer")
+      let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+      do {
+        try managedContext.execute(batchDeleteRequest)
+      } catch {
+          print("Detele all data in error :", error)
+      }
+    }
 
   func reloadData() {
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Layer")
@@ -66,7 +78,7 @@ class LayerManager {
       let results = try managedContext.fetch(fetchRequest) as! [Layer]
 
       let unorderedGroups = Dictionary(grouping: results) { (obj) -> String in
-        return obj.group!
+        return obj.group
       }
 
       groups = unorderedGroups.mapValues({
@@ -92,10 +104,10 @@ class LayerManager {
     }
   }
   
-  func newLayer(_ source: StyleJSON.Source) -> Layer? {
-    if(layers.contains(where: {$0.id == source.id})) {return nil}
+  func newLayer(_ layerDefinition: LayerDefinition) -> Layer? {
+    if(layers.contains(where: {$0.id == layerDefinition.metadata.id})) {return nil}
     
-    let layer = Layer(source, context: managedContext)
+    let layer = Layer(layerDefinition, context: managedContext)
 
     return layer
   }

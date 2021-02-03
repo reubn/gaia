@@ -32,7 +32,7 @@ class OfflineSelectLayers: UIView, CoordinatedView {
     coordinatorView.panelViewController.title = "Select Layers"
     coordinatorView.panelViewController.buttons = [.previous, .next]
     
-    coordinatorView.selectedStyle = nil
+    coordinatorView.selectedLayers = nil
   }
   
   func viewWillExit(){
@@ -41,7 +41,7 @@ class OfflineSelectLayers: UIView, CoordinatedView {
   
   func panelButtonTapped(button: PanelButton){
     if(button == .next){
-      coordinatorView.selectedStyle = layerManager.style
+      coordinatorView.selectedLayers = layerManager.sortedLayers
       coordinatorView.forward()
     } else if(button == .previous){
       coordinatorView.back()

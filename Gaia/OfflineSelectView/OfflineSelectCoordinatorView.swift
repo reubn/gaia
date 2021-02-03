@@ -9,7 +9,7 @@ class OfflineSelectCoordinatorView: CoordinatorView {
   
   var selectedArea: MGLCoordinateBounds?
   var selectedZoom: Double?
-  var selectedStyle: Style?
+  var selectedLayers: [Layer]?
   var selectedZoomFrom: Double?
   var selectedZoomTo: Double?
   
@@ -32,7 +32,7 @@ class OfflineSelectCoordinatorView: CoordinatorView {
   }
   
   override func done(){
-    offlineManager.downloadPack(style: selectedStyle!, bounds: selectedArea!, fromZoomLevel: selectedZoom! - 2, toZoomLevel: selectedZoom!)
+    offlineManager.downloadPack(layers: selectedLayers!, bounds: selectedArea!, fromZoomLevel: selectedZoom! - 2, toZoomLevel: selectedZoom!)
     
     super.done()
   }

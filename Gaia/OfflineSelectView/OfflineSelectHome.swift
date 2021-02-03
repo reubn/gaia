@@ -163,8 +163,8 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     let bounds = MGLCoordinateBounds(context.bounds)
     
     layerManager.filterLayers({layer in
-      context.style.layers.contains(where: {jsonLayer in
-        jsonLayer.id == layer.id
+      context.layerMetadata.contains(where: {layerMetadata in
+        layerMetadata.id == layer.id
       })
     })
     

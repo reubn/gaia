@@ -27,13 +27,13 @@ class LayerSelectCoordinatorView: CoordinatorView {
     do {
       let decoder = JSONDecoder()
 
-      let contents = try decoder.decode([StyleJSON.Source].self, from: data)
+      let contents = try decoder.decode([LayerDefinition].self, from: data)
       
       print(contents)
       
       DispatchQueue.main.async {
-        for source in contents {
-          _ = self.layerManager.newLayer(source)
+        for layerDefinition in contents {
+          _ = self.layerManager.newLayer(layerDefinition)
         }
         
         self.layerManager.saveLayers()

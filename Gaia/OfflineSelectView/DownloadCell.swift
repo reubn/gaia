@@ -161,11 +161,11 @@ class DownloadCell: UITableViewCell {
     var layersString = ""
     var zoomString = ""
     if(context != nil) {
-      let layers = context!.style.sources.enumerated()
+      let layers = context!.layerMetadata
       
       layersString = " - "
       
-      for (index, (_, layer)) in layers {
+      for (index, layer) in layers.enumerated() {
         if(index > 0) {layersString += ", "}
         layersString += "\(layer.name)"
       }
@@ -185,7 +185,7 @@ class DownloadCell: UITableViewCell {
     
     title.text = context!.name
     
-    preview.styleURL = Style.toURL(jsonObject: context!.style)
+    preview.styleURL = Style.toURL(styleJSON: context!.styleJSON)
     preview.setVisibleCoordinateBounds(MGLCoordinateBounds(context!.bounds), animated: false)
   }
 
