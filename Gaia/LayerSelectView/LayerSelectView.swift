@@ -3,13 +3,19 @@ import UIKit
 
 import Mapbox
 
-class LayerSelectView: UIScrollView {
+class LayerSelectView: UIScrollView, LayerManagerDelegate {
+  let mapViewController: MapViewController
+  
+  lazy var layerManager = mapViewController.layerManager
+  
   let stack = UIStackView()
   
   init(mapViewController: MapViewController){
-    super.init(frame: CGRect())
+    self.mapViewController = mapViewController
     
-    let layerManager = mapViewController.layerManager
+    super.init(frame: CGRect())
+  
+    layerManager.multicastStyleDidChangeDelegate.add(delegate: self)
     
     layer.cornerRadius = 8
     layer.cornerCurve = .continuous
@@ -18,7 +24,7 @@ class LayerSelectView: UIScrollView {
     stack.axis = .vertical
     stack.alignment = .leading
     stack.distribution = .fill
-    stack.spacing = 30
+    stack.spacing = 0
     
     addSubview(stack)
     
@@ -30,14 +36,18 @@ class LayerSelectView: UIScrollView {
     stack.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
     
     layerManager.layerGroups.forEach({
-      if(layerManager.getLayers(layerGroup: $0).count == 0) {return}
-      
       let section = Section(group: $0, layerManager: layerManager, mapViewController: mapViewController)
       
       stack.addArrangedSubview(section)
       
       section.translatesAutoresizingMaskIntoConstraints = false
       section.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
+    })
+  }
+  
+  func styleDidChange(style _: Style) {
+    stack.arrangedSubviews.forEach({
+      ($0 as! Section).update()
     })
   }
   

@@ -4,21 +4,30 @@ import CoreData
 
 import Mapbox
 
-class Section: UIStackView, LayerManagerDelegate {
+class Section: UIStackView {
   let group: LayerGroup
   let layerManager: LayerManager
   let mapViewController: MapViewController
   var layers: [Layer]
   let tableView = SectionTableView()
   
-  var tableViewBottomAnchorConstraint: NSLayoutConstraint!
-  var tableViewHeightAnchorConstraint: NSLayoutConstraint!
+  var sectionOpenConstraint: NSLayoutConstraint!
+  var sectionCollapsedConstraint: NSLayoutConstraint!
+  var sectionHiddenConstraint: NSLayoutConstraint!
   
-  var open = true {
+  var openState: SectionOpenState = .hidden {
     didSet {
-      updateCollapse()
+      updateState()
     }
   }
+  
+  lazy var spacerView: UIView = {
+    let view = UIView()
+    
+    view.translatesAutoresizingMaskIntoConstraints = false
+
+    return view
+  }()
   
   init(group: LayerGroup, layerManager: LayerManager, mapViewController: MapViewController){
     self.group = group
@@ -27,9 +36,7 @@ class Section: UIStackView, LayerManagerDelegate {
     self.layers = layerManager.getLayers(layerGroup: group).reversed()
     
     super.init(frame: CGRect())
-    
-    layerManager.multicastStyleDidChangeDelegate.add(delegate: self)
-    
+        
     axis = .vertical
     alignment = .leading
     distribution = .fill
@@ -64,28 +71,53 @@ class Section: UIStackView, LayerManagerDelegate {
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
     tableView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-    tableViewBottomAnchorConstraint = tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
-    tableViewHeightAnchorConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
     
-    updateCollapse()
+    addArrangedSubview(spacerView)
+    
+    sectionOpenConstraint = spacerView.heightAnchor.constraint(equalToConstant: 20)
+    sectionCollapsedConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
+    sectionHiddenConstraint = heightAnchor.constraint(equalToConstant: 0)
+    
+    update()
   }
   
- @objc func toggleCollapse(){
-    open = !open
-  }
-  
-  func updateCollapse(){
-    if(self.open){
-      self.tableViewBottomAnchorConstraint.isActive = true
-      self.tableViewHeightAnchorConstraint.isActive = false
-    } else {
-      self.tableViewBottomAnchorConstraint.isActive = false
-      self.tableViewHeightAnchorConstraint.isActive = true
+  @objc func toggleCollapse(){
+    switch openState {
+      case .open:
+        openState = .collapsed
+      case .collapsed:
+        openState = .open
+      case .hidden: break
     }
   }
   
-  func styleDidChange(style _: Style) {
+  func updateState(){
+    switch openState {
+      case .open:
+        sectionOpenConstraint.isActive = true
+        sectionCollapsedConstraint.isActive = false
+        sectionHiddenConstraint.isActive = false
+      case .collapsed:
+        sectionOpenConstraint.isActive = false
+        sectionCollapsedConstraint.isActive = true
+        sectionHiddenConstraint.isActive = false
+      case .hidden:
+        sectionOpenConstraint.isActive = false
+        sectionCollapsedConstraint.isActive = false
+        sectionHiddenConstraint.isActive = true
+    }
+  }
+  
+  func update() {
     self.layers = layerManager.getLayers(layerGroup: group).reversed()
+    
+    if(self.layers.count > 0) {
+      if(openState == .hidden) {
+        openState = .open
+      }
+    } else {
+      openState = .hidden
+    }
     
     tableView.reloadData()
   }
@@ -163,4 +195,10 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
     
     UISelectionFeedbackGenerator().selectionChanged()
   }
+}
+
+enum SectionOpenState {
+  case open
+  case collapsed
+  case hidden
 }
