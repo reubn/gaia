@@ -74,7 +74,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate {
     }
     
     coordinatorView.panelViewController.title = "Layers"
-    coordinatorView.panelViewController.panelButtons = [.new, .dismiss]
+    coordinatorView.panelViewController.panelButtons = [.share, .new, .dismiss]
   }
   
   func viewWillExit(){
@@ -82,10 +82,31 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate {
   }
   
   func panelButtonTapped(button: PanelButton){
+    let panelButton = coordinatorView.panelViewController.getPanelButton(button)
+    
     if(button == .new) {
-      let newButton = coordinatorView.panelViewController.getPanelButton(.new)
+      showActionSheet(panelButton)
+    } else if(button == .share) {
       
-      showActionSheet(newButton)
+      let layerDefinitions = layerManager.layers.map {LayerDefinition($0)}
+      
+      do {
+        let encoder = JSONEncoder()
+        
+        let json = try encoder.encode(layerDefinitions)
+        
+        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent("gaiaLayerDefinitions").appendingPathExtension("json")
+
+        try json.write(to: temporaryFileURL, options: .atomic)
+        
+        let activityViewController = UIActivityViewController(activityItems: [temporaryFileURL], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = panelButton
+        self.mapViewController.lsfpc.present(activityViewController, animated: true, completion: nil)
+        
+      } catch {
+        print(error)
+      }
     }
   }
   

@@ -65,7 +65,8 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     .next: PanelActionButton("arrow.right"),
     .previous: PanelActionButton("arrow.left", deemphasise: true),
     .new: PanelActionButton("plus"),
-    .star: PanelActionButton("star.fill", colour: .systemOrange)
+    .star: PanelActionButton("star.fill", colour: .systemOrange),
+    .share: PanelActionButton("square.and.arrow.up", deemphasise: true)
   ]
   
   var panelButtons: [PanelButton] = [] {
@@ -175,6 +176,7 @@ enum PanelButton {
   case previous
   case new
   case star
+  case share
 }
 
 extension Dictionary where Value: Equatable {

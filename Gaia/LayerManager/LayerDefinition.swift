@@ -24,3 +24,12 @@ extension LayerDefinition.Metadata {
     )
   }
 }
+
+extension LayerDefinition {
+  init(_ layer: Layer){
+    self.init(
+      metadata: Metadata(layer),
+      styleJSON: layer.styleJSON
+    )
+  }
+}
