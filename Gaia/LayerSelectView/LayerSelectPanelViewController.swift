@@ -19,7 +19,7 @@ class LayerSelectPanelViewController: MapViewPanelViewController {
     layerSelectCoordinatorView.translatesAutoresizingMaskIntoConstraints = false
     layerSelectCoordinatorView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 30).isActive = true
     layerSelectCoordinatorView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -30).isActive = true
-    layerSelectCoordinatorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 55).isActive = true
+    layerSelectCoordinatorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
     layerSelectCoordinatorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
   }
   

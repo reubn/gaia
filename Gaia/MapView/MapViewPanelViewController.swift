@@ -15,7 +15,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     view.addSubview(label)
     
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.topAnchor.constraint(equalTo: view.topAnchor, constant: 15).isActive = true
+    label.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
     label.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
     
     return label

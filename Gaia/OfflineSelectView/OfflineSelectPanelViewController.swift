@@ -19,7 +19,7 @@ class OfflineSelectPanelViewController: MapViewPanelViewController {
     offlineSelectCoordinatorView.translatesAutoresizingMaskIntoConstraints = false
     offlineSelectCoordinatorView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 30).isActive = true
     offlineSelectCoordinatorView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -30).isActive = true
-    offlineSelectCoordinatorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 55).isActive = true
+    offlineSelectCoordinatorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
     offlineSelectCoordinatorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
   }
   
