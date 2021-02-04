@@ -53,7 +53,7 @@ class LayerSelectImport: UIView, CoordinatedView, UITextFieldDelegate {
     }
     
     coordinatorView.panelViewController.title = "Import Layer"
-    coordinatorView.panelViewController.buttons = [.previous, .accept]
+    coordinatorView.panelViewController.panelButtons = [.previous, .accept]
     
     urlInput.translatesAutoresizingMaskIntoConstraints = false
     urlInput.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -76,13 +76,9 @@ class LayerSelectImport: UIView, CoordinatedView, UITextFieldDelegate {
   }
 
   @objc func urlChanged(){
-    if((urlInput.text ?? "").isValidURL()) {
-      coordinatorView.panelViewController.acceptButton.backgroundColor = .systemGreen
-      coordinatorView.panelViewController.acceptButton.isEnabled = true
-    } else {
-      coordinatorView.panelViewController.acceptButton.backgroundColor = .systemGray
-      coordinatorView.panelViewController.acceptButton.isEnabled = false
-    }
+    let acceptButton = coordinatorView.panelViewController.getPanelButton(.accept)
+    
+    acceptButton.isEnabled = (urlInput.text ?? "").isValidURL()
   }
   
   @objc func process(){

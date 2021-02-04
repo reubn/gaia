@@ -32,6 +32,7 @@
 		1B7644C125CAFA2F00572A70 /* LayerDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C025CAFA2F00572A70 /* LayerDefinition.swift */; };
 		1B7644C325CAFA7300572A70 /* StyleJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C225CAFA7300572A70 /* StyleJSON.swift */; };
 		1B7644C625CB418D00572A70 /* AnyCodable in Frameworks */ = {isa = PBXBuildFile; productRef = 1B7644C525CB418D00572A70 /* AnyCodable */; };
+		1B7644C825CC3E9000572A70 /* PanelActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C725CC3E9000572A70 /* PanelActionButton.swift */; };
 		1B8C078A25C43C58008C08B2 /* MapViewPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078925C43C58008C08B2 /* MapViewPanelLayout.swift */; };
 		1B8C078E25C48245008C08B2 /* LocationInfoPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */; };
 		1B8C078F25C48245008C08B2 /* LocationInfoPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */; };
@@ -104,6 +105,7 @@
 		1B7644BD25CAD61900572A70 /* Layer+CoreData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Layer+CoreData.swift"; sourceTree = "<group>"; };
 		1B7644C025CAFA2F00572A70 /* LayerDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerDefinition.swift; sourceTree = "<group>"; };
 		1B7644C225CAFA7300572A70 /* StyleJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleJSON.swift; sourceTree = "<group>"; };
+		1B7644C725CC3E9000572A70 /* PanelActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelActionButton.swift; sourceTree = "<group>"; };
 		1B8C078925C43C58008C08B2 /* MapViewPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewPanelLayout.swift; sourceTree = "<group>"; };
 		1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelLayout.swift; sourceTree = "<group>"; };
 		1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelViewController.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				1BA9BD1825BF208600AC97C7 /* customCompass.swift */,
 				1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */,
 				1B8C078925C43C58008C08B2 /* MapViewPanelLayout.swift */,
+				1B7644C725CC3E9000572A70 /* PanelActionButton.swift */,
 			);
 			path = MapView;
 			sourceTree = "<group>";
@@ -438,6 +441,7 @@
 				1B7644BF25CAD61900572A70 /* Layer+CoreData.swift in Sources */,
 				1B8C078E25C48245008C08B2 /* LocationInfoPanelLayout.swift in Sources */,
 				1B3401D525B4A1570091FA3B /* LayerManager.swift in Sources */,
+				1B7644C825CC3E9000572A70 /* PanelActionButton.swift in Sources */,
 				1B6638B225B10B530071F03D /* Gaia.xcdatamodeld in Sources */,
 				1B6638CA25B19FFF0071F03D /* UserLocationButton.swift in Sources */,
 				1BBD3FFF25B8B0B5007B8BC7 /* Style.swift in Sources */,

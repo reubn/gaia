@@ -12,7 +12,7 @@ class LayerSelectPanelViewController: MapViewPanelViewController {
     
     super.init(title: "Layers")
     
-    self.buttons = [.dismiss]
+    self.panelButtons = [.dismiss]
     
     view.addSubview(layerSelectCoordinatorView)
     
@@ -23,28 +23,10 @@ class LayerSelectPanelViewController: MapViewPanelViewController {
     layerSelectCoordinatorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
   }
   
-  @objc override func dismissButtonTapped(_ sender: UIButton) {
-    layerSelectCoordinatorView.panelButtonTapped(button: .dismiss)
-  }
-  
-  @objc override func acceptButtonTapped(_ sender: UIButton) {
-    layerSelectCoordinatorView.panelButtonTapped(button: .accept)
-  }
-  
-  @objc override func rejectButtonTapped(_ sender: UIButton) {
-    layerSelectCoordinatorView.panelButtonTapped(button: .reject)
-  }
-  
-  @objc override func nextButtonTapped(_ sender: UIButton) {
-    layerSelectCoordinatorView.panelButtonTapped(button: .next)
-  }
-  
-  @objc override func previousButtonTapped(_ sender: UIButton) {
-    layerSelectCoordinatorView.panelButtonTapped(button: .previous)
-  }
-  
-  @objc override func newButtonTapped(_ sender: UIButton) {
-    layerSelectCoordinatorView.panelButtonTapped(button: .new)
+  override func panelButtonTapped(button: PanelButton) {
+    super.panelButtonTapped(button: button)
+    
+    layerSelectCoordinatorView.panelButtonTapped(button: button)
   }
   
   required init?(coder aDecoder: NSCoder) {

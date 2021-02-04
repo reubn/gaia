@@ -29,138 +29,10 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     button.imageView!.contentMode = .scaleAspectFit
     button.tintColor = UIColor.systemGray2
 
-    button.addTarget(self, action: #selector(self.dismissButtonTapped), for: .touchUpInside)
-
     button.translatesAutoresizingMaskIntoConstraints = false
     button.widthAnchor.constraint(equalToConstant: 30).isActive = true
     button.heightAnchor.constraint(equalTo: button.widthAnchor).isActive = true
 
-    return button
-  }()
-  
-  lazy var acceptButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(systemName: "checkmark", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
-    button.contentVerticalAlignment = .fill
-    button.contentHorizontalAlignment = .fill
-    button.imageView!.contentMode = .scaleAspectFit
-    button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
-    button.tintColor = .white
-    button.backgroundColor = .systemGreen
-    button.layer.cornerRadius = 15
-    button.layer.cornerCurve = .circular
-    
-    button.addTarget(self, action: #selector(acceptButtonTapped), for: .touchUpInside)
-
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
-
-    return button
-  }()
-  
-  lazy var rejectButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
-    button.contentVerticalAlignment = .fill
-    button.contentHorizontalAlignment = .fill
-    button.imageView!.contentMode = .scaleAspectFit
-    button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
-    button.tintColor = .white
-    button.backgroundColor = .systemRed
-    button.layer.cornerRadius = 15
-    button.layer.cornerCurve = .circular
-
-    button.addTarget(self, action: #selector(rejectButtonTapped), for: .touchUpInside)
-
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
-
-    return button
-  }()
-  
-  lazy var nextButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(systemName: "arrow.right", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
-    button.contentVerticalAlignment = .fill
-    button.contentHorizontalAlignment = .fill
-    button.imageView!.contentMode = .scaleAspectFit
-    button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
-    button.tintColor = .white
-    button.backgroundColor = .systemBlue
-    button.layer.cornerRadius = 15
-    button.layer.cornerCurve = .circular
-
-    button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
-
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
-
-    return button
-  }()
-  
-  lazy var previousButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(systemName: "arrow.left", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
-    button.contentVerticalAlignment = .fill
-    button.contentHorizontalAlignment = .fill
-    button.imageView!.contentMode = .scaleAspectFit
-    button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
-    button.tintColor = .systemBlue
-    button.backgroundColor = .white
-    button.layer.cornerRadius = 15
-    button.layer.cornerCurve = .circular
-
-    button.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
-    
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
-    
-    return button
-  }()
-  
-  lazy var newButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
-    button.contentVerticalAlignment = .fill
-    button.contentHorizontalAlignment = .fill
-    button.imageView!.contentMode = .scaleAspectFit
-    button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
-    button.tintColor = .white
-    button.backgroundColor = .systemBlue
-    button.layer.cornerRadius = 15
-    button.layer.cornerCurve = .circular
-
-    button.addTarget(self, action: #selector(newButtonTapped), for: .touchUpInside)
-    
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
-    
-    return button
-  }()
-  
-  lazy var starButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(systemName: "star.fill", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
-    button.contentVerticalAlignment = .fill
-    button.contentHorizontalAlignment = .fill
-    button.imageView!.contentMode = .scaleAspectFit
-    button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
-    button.tintColor = .white
-    button.backgroundColor = .systemOrange
-    button.layer.cornerRadius = 15
-    button.layer.cornerCurve = .circular
-
-    button.addTarget(self, action: #selector(starButtonTapped), for: .touchUpInside)
-    
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 2).isActive = true
-    
     return button
   }()
   
@@ -186,29 +58,47 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   
   let uiImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
   
-  var buttons: [PanelButton] = [] {
+  private lazy var buttonsMap: [PanelButton: UIButton] = [
+    .dismiss: dismissButton,
+    .accept: PanelActionButton("checkmark", colour: .systemGreen),
+    .reject: PanelActionButton("xmark", colour: .systemRed),
+    .next: PanelActionButton("arrow.right"),
+    .previous: PanelActionButton("arrow.left", deemphasise: true),
+    .new: PanelActionButton("plus"),
+    .star: PanelActionButton("star.fill", colour: .systemOrange)
+  ]
+  
+  var panelButtons: [PanelButton] = [] {
     didSet {
-      let buttonLookup: [PanelButton: UIButton] = [
-        .dismiss: dismissButton,
-        .accept: acceptButton,
-        .reject: rejectButton,
-        .next: nextButton,
-        .previous: previousButton,
-        .new: newButton,
-        .star: starButton
-      ]
-      
       for subView in self.buttonsView.arrangedSubviews {
         self.buttonsView.removeArrangedSubview(subView)
         subView.removeFromSuperview()
       }
       
-      for button in buttons {
+      for button in panelButtons {
         print(button, self.buttonsView.arrangedSubviews)
-        self.buttonsView.addArrangedSubview(buttonLookup[button]!)
+        
+        buttonsMap[button]!.addTarget(self, action: #selector(_panelButtonTapped(_:)), for: .touchUpInside)
+        self.buttonsView.addArrangedSubview(buttonsMap[button]!)
       }
       
       self.buttonsView.setNeedsLayout()
+    }
+  }
+  
+  @objc private func _panelButtonTapped(_ sender: UIButton){
+    panelButtonTapped(button: buttonsMap.key(forValue: sender)!)
+  }
+  
+  func getPanelButton(_ button: PanelButton) -> UIButton {
+    return buttonsMap[button]!
+  }
+  
+  func panelButtonTapped(button: PanelButton){
+    if(button == .dismiss) {
+      dismiss(animated: true, completion: nil)
+      
+      return 
     }
   }
   
@@ -250,17 +140,6 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     uiImpactFeedbackGenerator.impactOccurred()
   }
 
-  @objc func dismissButtonTapped(_ sender: UIButton) {
-    dismiss(animated: true, completion: nil)
-  }
-  
-  @objc func acceptButtonTapped(_ sender: UIButton) {}
-  @objc func rejectButtonTapped(_ sender: UIButton) {}
-  @objc func nextButtonTapped(_ sender: UIButton) {}
-  @objc func previousButtonTapped(_ sender: UIButton) {}
-  @objc func newButtonTapped(_ sender: UIButton) {}
-  @objc func starButtonTapped(_ sender: UIButton) {}
-  
   func floatingPanelWillBeginAttracting(_ fpc: FloatingPanelController, to state: FloatingPanelState) {
     uiImpactFeedbackGenerator.prepare()
   }
@@ -296,4 +175,10 @@ enum PanelButton {
   case previous
   case new
   case star
+}
+
+extension Dictionary where Value: Equatable {
+  func key(forValue value: Value) -> Key? {
+    first {$0.1 == value}?.0
+  }
 }

@@ -74,7 +74,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate {
     }
     
     coordinatorView.panelViewController.title = "Layers"
-    coordinatorView.panelViewController.buttons = [.new, .dismiss]
+    coordinatorView.panelViewController.panelButtons = [.new, .dismiss]
   }
   
   func viewWillExit(){
@@ -82,8 +82,11 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate {
   }
   
   func panelButtonTapped(button: PanelButton){
-    if(button == .dismiss) {coordinatorView.panelViewController.dismiss(animated: true, completion: nil)}
-    else if(button == .new) {showActionSheet(coordinatorView.panelViewController.newButton)}
+    if(button == .new) {
+      let newButton = coordinatorView.panelViewController.getPanelButton(.new)
+      
+      showActionSheet(newButton)
+    }
   }
   
   required init(coder: NSCoder) {

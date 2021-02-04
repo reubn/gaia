@@ -16,7 +16,7 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
     
     coordinatorView.mapViewController.osfpc.move(to: .tip, animated: true)
     coordinatorView.panelViewController.title = "Select Zoom"
-    coordinatorView.panelViewController.buttons = [.previous, .accept]
+    coordinatorView.panelViewController.panelButtons = [.previous, .accept]
     
     coordinatorView.mapViewController.mapView.isScrollEnabled = false
     coordinatorView.mapViewController.mapView.isRotateEnabled = false

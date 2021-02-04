@@ -15,7 +15,7 @@ class OfflineSelectArea: UIView, CoordinatedView {
     print("enter OSA")
     coordinatorView.mapViewController.osfpc.move(to: .tip, animated: true)
     coordinatorView.panelViewController.title = "Select Area"
-    coordinatorView.panelViewController.buttons = [.previous, .next]
+    coordinatorView.panelViewController.panelButtons = [.previous, .next]
     
     coordinatorView.selectedArea = nil
   }

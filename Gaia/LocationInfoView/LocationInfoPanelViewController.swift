@@ -37,7 +37,7 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     super.init(title: "Current Location")
     self.popoverTitle.isSelectable = true
     
-    self.buttons = [.star, .dismiss]
+    self.panelButtons = [.star, .dismiss]
     
     view.addSubview(mainView)
     

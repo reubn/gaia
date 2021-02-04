@@ -51,7 +51,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     }
     
     coordinatorView.panelViewController.title = "Downloads"
-    coordinatorView.panelViewController.buttons = [.new, .dismiss]
+    coordinatorView.panelViewController.panelButtons = [.new, .dismiss]
     
     offlineManager.refreshDownloads()
   }

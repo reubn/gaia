@@ -30,7 +30,7 @@ class OfflineSelectLayers: UIView, CoordinatedView {
     
     coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
     coordinatorView.panelViewController.title = "Select Layers"
-    coordinatorView.panelViewController.buttons = [.previous, .next]
+    coordinatorView.panelViewController.panelButtons = [.previous, .next]
     
     coordinatorView.selectedLayers = nil
   }

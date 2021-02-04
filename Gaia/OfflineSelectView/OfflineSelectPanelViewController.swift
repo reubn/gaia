@@ -12,7 +12,7 @@ class OfflineSelectPanelViewController: MapViewPanelViewController {
     self.mapViewController = mapViewController
     super.init(title: "Downloads")
     
-    self.buttons = [.dismiss]
+    self.panelButtons = [.dismiss]
     
     view.addSubview(offlineSelectCoordinatorView)
     
@@ -23,28 +23,10 @@ class OfflineSelectPanelViewController: MapViewPanelViewController {
     offlineSelectCoordinatorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
   }
   
-  @objc override func dismissButtonTapped(_ sender: UIButton) {
-    offlineSelectCoordinatorView.panelButtonTapped(button: .dismiss)
-  }
-  
-  @objc override func acceptButtonTapped(_ sender: UIButton) {
-    offlineSelectCoordinatorView.panelButtonTapped(button: .accept)
-  }
-  
-  @objc override func rejectButtonTapped(_ sender: UIButton) {
-    offlineSelectCoordinatorView.panelButtonTapped(button: .reject)
-  }
-  
-  @objc override func nextButtonTapped(_ sender: UIButton) {
-    offlineSelectCoordinatorView.panelButtonTapped(button: .next)
-  }
-  
-  @objc override func previousButtonTapped(_ sender: UIButton) {
-    offlineSelectCoordinatorView.panelButtonTapped(button: .previous)
-  }
-  
-  @objc override func newButtonTapped(_ sender: UIButton) {
-    offlineSelectCoordinatorView.panelButtonTapped(button: .new)
+  override func panelButtonTapped(button: PanelButton) {
+    super.panelButtonTapped(button: button)
+    
+    offlineSelectCoordinatorView.panelButtonTapped(button: button)
   }
   
   required init?(coder aDecoder: NSCoder) {
