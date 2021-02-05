@@ -51,6 +51,10 @@ class LayerManager {
   }
 
   func layerSortingFunction(a: Layer, b: Layer) -> Bool {
+    return layerSortingFunction(a: LayerDefinition.Metadata(a), b: LayerDefinition.Metadata(b))
+  }
+  
+  func layerSortingFunction(a: LayerDefinition.Metadata, b: LayerDefinition.Metadata) -> Bool {
     if(a.group != b.group) {
       return layerGroups.firstIndex(where: {layerGroup in a.group == layerGroup.id}) ?? 0 > layerGroups.firstIndex(where: {layerGroup in b.group == layerGroup.id}) ?? 0
     }

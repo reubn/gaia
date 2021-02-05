@@ -165,33 +165,21 @@ class DownloadCell: UITableViewCell {
   func update(pack: MGLOfflinePack, mapViewController: MapViewController) {
     self.pack = pack
     self.mapViewController = mapViewController
-    
-    var layersString = ""
-    var zoomString = ""
-    if(context != nil) {
-      let layers = context!.layerMetadata
-      
-      layersString = " - "
-      
-      for (index, layer) in layers.enumerated() {
-        if(index > 0) {layersString += ", "}
-        layersString += "\(layer.name)"
-      }
-      
-      if(context!.fromZoomLevel != nil) {
-        zoomString = String(format: " @ %d-%d", context!.fromZoomLevel!, context!.toZoomLevel!)
-      }
-      
-    }
-    
-    subtitle.text = "\(ByteCountFormatter.string(fromByteCount: Int64(pack.progress.countOfBytesCompleted), countStyle: ByteCountFormatter.CountStyle.memory))\(layersString)\(zoomString)"
-    status = pack.state
-    
+
     context = mapViewController.offlineManager.decodePackContext(pack: pack)
     
     if(context == nil) {return}
     
+    let layersMetadata = context!.layerMetadata
+    let orderedLayersMetadata = layersMetadata.sorted(by: mapViewController.layerManager.layerSortingFunction).reversed()
+    
+    let byteString = ByteCountFormatter.string(fromByteCount: Int64(pack.progress.countOfBytesCompleted), countStyle: .memory)
+    let layersString = orderedLayersMetadata.map({$0.name}).joined(separator: ", ")
+    
     title.text = context!.name
+    subtitle.text = String(format: "%@ - %@ @ %d-%d", byteString, layersString, context!.fromZoomLevel!, context!.toZoomLevel!)
+    
+    status = pack.state
     
     preview.styleURL = Style.toURL(styleJSON: context!.styleJSON)
     preview.setVisibleCoordinateBounds(MGLCoordinateBounds(context!.bounds), animated: false)
