@@ -3,7 +3,7 @@ import UIKit
 
 import Mapbox
 
-class OfflineSelectLayers: UIView, CoordinatedView {
+class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate {
   unowned let coordinatorView: OfflineSelectCoordinatorView
   let mapViewController: MapViewController
   
@@ -15,6 +15,8 @@ class OfflineSelectLayers: UIView, CoordinatedView {
     self.mapViewController = mapViewController
     
     super.init(frame: CGRect())
+    
+    layerManager.multicastStyleDidChangeDelegate.add(delegate: self)
     
     addSubview(layerSelectView)
     
@@ -33,10 +35,21 @@ class OfflineSelectLayers: UIView, CoordinatedView {
     coordinatorView.panelViewController.panelButtons = [.previous, .next]
     
     coordinatorView.selectedLayers = nil
+    
+    updateNextButton()
   }
   
   func viewWillExit(){
     print("exit OSL")
+  }
+  
+  func styleDidChange(style: Style) {
+    updateNextButton()
+  }
+  
+  func updateNextButton(){
+    let nextButton = coordinatorView.panelViewController.getPanelButton(.next)
+    nextButton.isEnabled = layerManager.activeLayers.count > 0
   }
   
   func panelButtonTapped(button: PanelButton){
