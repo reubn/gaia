@@ -76,11 +76,12 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
         subView.removeFromSuperview()
       }
       
-      for button in panelButtons {
-        print(button, self.buttonsView.arrangedSubviews)
+      for panelButton in panelButtons {
+        let button = buttonsMap[panelButton]!
         
-        buttonsMap[button]!.addTarget(self, action: #selector(_panelButtonTapped(_:)), for: .touchUpInside)
-        self.buttonsView.addArrangedSubview(buttonsMap[button]!)
+        button.isEnabled = true
+        button.addTarget(self, action: #selector(_panelButtonTapped(_:)), for: .touchUpInside)
+        self.buttonsView.addArrangedSubview(button)
       }
       
       self.buttonsView.setNeedsLayout()
