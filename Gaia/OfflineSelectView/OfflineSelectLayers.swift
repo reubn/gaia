@@ -31,12 +31,11 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate {
     print("enter OSL")
     
     coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
-    coordinatorView.panelViewController.title = "Select Layers"
     coordinatorView.panelViewController.panelButtons = [.previous, .next]
     
     coordinatorView.selectedLayers = nil
     
-    updateNextButton()
+    updatePanel()
   }
   
   func viewWillExit(){
@@ -44,12 +43,21 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate {
   }
   
   func styleDidChange(style: Style) {
-    updateNextButton()
+    updatePanel()
   }
   
-  func updateNextButton(){
+  func updatePanel(){
+    let count = layerManager.activeLayers.count
+    
     let nextButton = coordinatorView.panelViewController.getPanelButton(.next)
-    nextButton.isEnabled = layerManager.activeLayers.count > 0
+    nextButton.isEnabled = count > 0
+    
+    if(count > 0) {
+      let plural = count > 1 ? "Layers" : "Layer"
+      coordinatorView.panelViewController.title = String(format: "%d %@ Selected", count, plural)
+    } else {
+      coordinatorView.panelViewController.title = "Select Layers"
+    }
   }
   
   func panelButtonTapped(button: PanelButton){
