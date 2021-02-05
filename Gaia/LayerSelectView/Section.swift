@@ -6,6 +6,7 @@ import Mapbox
 
 class Section: UIStackView {
   let group: LayerGroup
+  let mutuallyExclusive: Bool
   let layerManager: LayerManager
   let mapViewController: MapViewController
   var layers: [Layer]
@@ -29,8 +30,9 @@ class Section: UIStackView {
     return view
   }()
   
-  init(group: LayerGroup, layerManager: LayerManager, mapViewController: MapViewController){
+  init(group: LayerGroup, mutuallyExclusive: Bool, layerManager: LayerManager, mapViewController: MapViewController){
     self.group = group
+    self.mutuallyExclusive = mutuallyExclusive
     self.layerManager = layerManager
     self.mapViewController = mapViewController
     self.layers = layerManager.getLayers(layerGroup: group).reversed()
@@ -190,7 +192,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       layerManager.disableLayer(layer: layer)
     }
     else {
-      layerManager.enableLayer(layer: layer, mutuallyExclusive: true)
+      layerManager.enableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
     }
     
     UISelectionFeedbackGenerator().selectionChanged()

@@ -8,7 +8,7 @@ class OfflineSelectLayers: UIView, CoordinatedView {
   let mapViewController: MapViewController
   
   lazy var layerManager = mapViewController.layerManager
-  lazy var layerSelectView = LayerSelectView(mapViewController: mapViewController)
+  lazy var layerSelectView = LayerSelectView(mutuallyExclusive: false, mapViewController: mapViewController)
 
   init(coordinatorView: OfflineSelectCoordinatorView, mapViewController: MapViewController){
     self.coordinatorView = coordinatorView

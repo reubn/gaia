@@ -9,7 +9,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate {
   let mapViewController: MapViewController
   
   lazy var layerManager = mapViewController.layerManager
-  lazy var layerSelectView = LayerSelectView(mapViewController: mapViewController)
+  lazy var layerSelectView = LayerSelectView(mutuallyExclusive: true, mapViewController: mapViewController)
   
   func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
     if let url = urls.first {

@@ -10,7 +10,7 @@ class LayerSelectView: UIScrollView, LayerManagerDelegate {
   
   let stack = UIStackView()
   
-  init(mapViewController: MapViewController){
+  init(mutuallyExclusive: Bool, mapViewController: MapViewController){
     self.mapViewController = mapViewController
     
     super.init(frame: CGRect())
@@ -36,7 +36,7 @@ class LayerSelectView: UIScrollView, LayerManagerDelegate {
     stack.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
     
     layerManager.layerGroups.forEach({
-      let section = Section(group: $0, layerManager: layerManager, mapViewController: mapViewController)
+      let section = Section(group: $0, mutuallyExclusive: mutuallyExclusive, layerManager: layerManager, mapViewController: mapViewController)
       
       stack.addArrangedSubview(section)
       
