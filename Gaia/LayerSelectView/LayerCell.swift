@@ -75,12 +75,16 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     )
   }
 
-  func update(_layer: Layer, layerManager: LayerManager, mapViewController: MapViewController) {
+  func update(_layer: Layer, mutuallyExclusive: Bool, layerManager: LayerManager, mapViewController: MapViewController) {
     self._layer = _layer
     self.layerManager = layerManager
     self.mapViewController = mapViewController
 
     preview.styleURL = Style(sortedLayers: [_layer]).url
+    
+    backgroundColor = !mutuallyExclusive && _layer.enabled ? .systemBlue : .clear
+    tintColor = !mutuallyExclusive && _layer.enabled ? .white : nil
+    title.textColor = !mutuallyExclusive && _layer.enabled ? .white : UIColor.label
 
     if(first) {
       mapViewController.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)

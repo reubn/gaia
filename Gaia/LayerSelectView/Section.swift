@@ -163,7 +163,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LayerCell
     
-    cell.update(_layer: layers[indexPath.row], layerManager: layerManager, mapViewController: mapViewController)
+    cell.update(_layer: layers[indexPath.row], mutuallyExclusive: mutuallyExclusive, layerManager: layerManager, mapViewController: mapViewController)
     
     let cellGR = UITapGestureRecognizer(target: self, action: #selector(self.tableViewLabelClick))
     cell.isUserInteractionEnabled = true
