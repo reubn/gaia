@@ -49,19 +49,32 @@ class DownloadCell: UITableViewCell {
     }
   }
   
+  lazy var stack: UIStackView = {
+    let stack = UIStackView()
+    
+    stack.axis = .vertical
+    stack.alignment = .leading
+    stack.distribution = .equalCentering
+    stack.spacing = 0
+    
+    contentView.addSubview(stack)
+    
+    stack.translatesAutoresizingMaskIntoConstraints = false
+    stack.leftAnchor.constraint(equalTo: preview.rightAnchor, constant: previewSpacing).isActive = true
+    stack.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -previewSpacing).isActive = true
+    stack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+    
+    return stack
+  }()
+  
   lazy var title: UILabel = {
     let label = UILabel()
     
     label.font = UIFont.systemFont(ofSize: 18)
     label.textColor = UIColor.label
     
-    contentView.addSubview(label)
+    stack.addArrangedSubview(label)
 
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-    label.heightAnchor.constraint(equalTo: contentView.heightAnchor, constant: -label.font.pointSize).isActive = true
-    label.leftAnchor.constraint(equalTo: preview.rightAnchor, constant: previewSpacing).isActive = true
-    
     return label
   }()
   
@@ -70,16 +83,11 @@ class DownloadCell: UITableViewCell {
     
     label.font = UIFont.systemFont(ofSize: 12)
     label.textColor = .secondaryLabel
+    label.numberOfLines = 0
     label.clipsToBounds = true
     
-    contentView.addSubview(label)
+    stack.addArrangedSubview(label)
 
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: title.font.pointSize).isActive = true
-    label.heightAnchor.constraint(equalTo: title.heightAnchor).isActive = true
-    label.leftAnchor.constraint(equalTo: title.leftAnchor).isActive = true
-    label.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -previewSpacing).isActive = true
-    
     return label
   }()
   
