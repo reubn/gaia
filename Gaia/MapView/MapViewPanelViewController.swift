@@ -110,7 +110,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     }
 }
   
-  init(title: String){
+  init(title: String?){
     super.init(nibName: nil, bundle: nil)
     self.title = title
     

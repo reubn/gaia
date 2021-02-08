@@ -99,7 +99,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     if(firstTimeLocating && userLocation?.location != nil) {
       mapView.centerCoordinate = userLocation!.location!.coordinate
-      mapView.userTrackingMode = .followWithHeading
+      mapView.userTrackingMode = .follow
       firstTimeLocating = false
     }
   }
