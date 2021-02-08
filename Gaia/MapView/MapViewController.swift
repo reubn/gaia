@@ -9,6 +9,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   let lsfpc = MemoryConsciousFloatingPanelController()
   let osfpc = MemoryConsciousFloatingPanelController()
   let lifpc = MemoryConsciousFloatingPanelController()
+  let abfpc = MemoryConsciousFloatingPanelController()
   
   let layersButton = MapButton()
   let infoButton = MapButton()
@@ -81,6 +82,16 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapButtonGroup.translatesAutoresizingMaskIntoConstraints = false
     mapButtonGroup.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 36 + 20).isActive = true
     mapButtonGroup.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -6).isActive = true
+    
+    let appIconButton = AppIconButton()
+    
+    view.addSubview(appIconButton)
+    
+    appIconButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 10).isActive = true
+    appIconButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 15).isActive = true
+    
+    appIconButton.addTarget(self, action: #selector(appIconButtonTapped), for: .touchUpInside)
+    
   }
   
   func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?){
@@ -256,6 +267,33 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
   }
+  
+  @objc func appIconButtonTapped(sender: UIButton) {
+    if presentedViewController != nil {
+      let isMe = presentedViewController == abfpc
+      presentedViewController!.dismiss(animated: isMe, completion: nil)
+      
+      if(isMe) {return}
+    }
+
+    let aboutPanelViewController = AboutPanelViewController(mapViewController: self)
+    
+    abfpc.layout = aboutPanelLayout
+    abfpc.delegate = aboutPanelViewController
+    abfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+    abfpc.isRemovalInteractionEnabled = true
+//    abfpc.contentMode = .fitToBounds
+    
+    let appearance = SurfaceAppearance()
+//    appearance.cornerCurve = CALayerCornerCurve.continuous
+    appearance.cornerRadius = 16
+    appearance.backgroundColor = .clear
+    abfpc.surfaceView.appearance = appearance
+    
+    abfpc.set(contentViewController: aboutPanelViewController)
+
+    self.present(abfpc, animated: true, completion: nil)
+  }
 }
 
 protocol ParentMapViewRegionIsChangingDelegate {
@@ -265,4 +303,3 @@ protocol ParentMapViewRegionIsChangingDelegate {
 protocol UserLocationDidUpdateDelegate {
   func userLocationDidUpdate()
 }
-
