@@ -3,10 +3,11 @@ import UIKit
 
 import Mapbox
 
-class LayerSelectView: UIScrollView, LayerManagerDelegate {
+class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate {
   let mapViewController: MapViewController
   
   lazy var layerManager = mapViewController.layerManager
+  let multicastScrollViewDidScrollDelegate = MulticastDelegate<(UIScrollViewDelegate)>()
   
   let stack = UIStackView()
   
@@ -16,6 +17,8 @@ class LayerSelectView: UIScrollView, LayerManagerDelegate {
     super.init(frame: CGRect())
   
     layerManager.multicastStyleDidChangeDelegate.add(delegate: self)
+    
+    delegate = self
     
     layer.cornerRadius = 8
     layer.cornerCurve = .continuous
@@ -36,7 +39,7 @@ class LayerSelectView: UIScrollView, LayerManagerDelegate {
     stack.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
     
     layerManager.layerGroups.forEach({
-      let section = Section(group: $0, mutuallyExclusive: mutuallyExclusive, layerManager: layerManager, mapViewController: mapViewController)
+      let section = Section(group: $0, mutuallyExclusive: mutuallyExclusive, layerManager: layerManager, mapViewController: mapViewController, scrollView: self)
       
       stack.addArrangedSubview(section)
       
@@ -49,6 +52,10 @@ class LayerSelectView: UIScrollView, LayerManagerDelegate {
     stack.arrangedSubviews.forEach({
       ($0 as! Section).update()
     })
+  }
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    multicastScrollViewDidScrollDelegate.invoke(invocation: {$0.scrollViewDidScroll?(scrollView)})
   }
   
   required init(coder: NSCoder) {

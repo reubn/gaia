@@ -9,6 +9,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   var layerManager: LayerManager?
   var mapViewController: MapViewController?
   var first = true
+  var active = false
 
   let preview = MGLMapView(frame: CGRect.zero)
   let previewSpacing:CGFloat = 15
@@ -64,6 +65,9 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   }
 
   func parentMapViewRegionIsChanging() {
+    active = self.isVisible()
+    if(!active){return}
+    
     let parent = mapViewController!.mapView.bounds
     let centerPoint = CGPoint(x: parent.width * 0.5, y: parent.height * 0.25)
     
@@ -75,7 +79,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     )
   }
 
-  func update(_layer: Layer, mutuallyExclusive: Bool, layerManager: LayerManager, mapViewController: MapViewController) {
+  func update(_layer: Layer, mutuallyExclusive: Bool, layerManager: LayerManager, mapViewController: MapViewController, scrollView: LayerSelectView) {
     self._layer = _layer
     self.layerManager = layerManager
     self.mapViewController = mapViewController
@@ -88,6 +92,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
 
     if(first) {
       mapViewController.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)
+      scrollView.multicastScrollViewDidScrollDelegate.add(delegate: self)
       parentMapViewRegionIsChanging()
       self.first = false
     }
@@ -102,6 +107,14 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   }
 }
 
+extension LayerCell: UIScrollViewDelegate {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    if(!active){
+      parentMapViewRegionIsChanging()
+    }
+  }
+}
+
 // https://stackoverflow.com/a/34641936
 extension UIView {
   func isVisible() -> Bool {
@@ -111,9 +124,7 @@ extension UIView {
   static func isVisible(view: UIView, inView: UIView?) -> Bool {
     guard let inView = inView else { return true }
     let viewFrame = inView.convert(view.bounds, from: view)
-    if viewFrame.intersects(inView.bounds) {
-        return isVisible(view: view, inView: inView.superview)
-    }
-    return false
+
+    return viewFrame.intersects(inView.bounds) ? isVisible(view: view, inView: inView.superview) : false
   }
 }

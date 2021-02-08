@@ -9,8 +9,11 @@ class Section: UIStackView {
   let mutuallyExclusive: Bool
   let layerManager: LayerManager
   let mapViewController: MapViewController
-  var layers: [Layer]
   let tableView = SectionTableView()
+  
+  unowned let scrollView: LayerSelectView
+
+  var layers: [Layer]
   
   var sectionOpenConstraint: NSLayoutConstraint!
   var sectionCollapsedConstraint: NSLayoutConstraint!
@@ -30,11 +33,12 @@ class Section: UIStackView {
     return view
   }()
   
-  init(group: LayerGroup, mutuallyExclusive: Bool, layerManager: LayerManager, mapViewController: MapViewController){
+  init(group: LayerGroup, mutuallyExclusive: Bool, layerManager: LayerManager, mapViewController: MapViewController, scrollView: LayerSelectView){
     self.group = group
     self.mutuallyExclusive = mutuallyExclusive
     self.layerManager = layerManager
     self.mapViewController = mapViewController
+    self.scrollView = scrollView
     self.layers = layerManager.getLayers(layerGroup: group).reversed()
     
     super.init(frame: CGRect())
@@ -163,7 +167,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LayerCell
     
-    cell.update(_layer: layers[indexPath.row], mutuallyExclusive: mutuallyExclusive, layerManager: layerManager, mapViewController: mapViewController)
+    cell.update(_layer: layers[indexPath.row], mutuallyExclusive: mutuallyExclusive, layerManager: layerManager, mapViewController: mapViewController, scrollView: scrollView)
     
     let cellGR = UITapGestureRecognizer(target: self, action: #selector(self.tableViewLabelClick))
     cell.isUserInteractionEnabled = true
