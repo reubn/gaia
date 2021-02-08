@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1B04BF6F25D077FC00FCD5D4 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B04BF6E25D077FC00FCD5D4 /* AppIcon.swift */; };
+		1B04BF7225D0B63B00FCD5D4 /* private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B04BF7125D0B63B00FCD5D4 /* private.swift */; };
 		1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 1B3401C225B33FAD0091FA3B /* FloatingPanel */; };
 		1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */; };
 		1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */; };
@@ -86,6 +87,7 @@
 
 /* Begin PBXFileReference section */
 		1B04BF6E25D077FC00FCD5D4 /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
+		1B04BF7125D0B63B00FCD5D4 /* private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = private.swift; sourceTree = "<group>"; };
 		1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelViewController.swift; sourceTree = "<group>"; };
 		1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectCoordinatorView.swift; sourceTree = "<group>"; };
 		1B3401CB25B473E40091FA3B /* LayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerCell.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 				1B3401C925B4637A0091FA3B /* MapView */,
 				1B6638B325B10B530071F03D /* Assets.xcassets */,
 				1B6638B825B10B530071F03D /* Info.plist */,
+				1B04BF7125D0B63B00FCD5D4 /* private.swift */,
 			);
 			path = Gaia;
 			sourceTree = "<group>";
@@ -430,6 +433,7 @@
 				1B3401EC25B4F1B00091FA3B /* MulticastDelegate.swift in Sources */,
 				1BA9BD1025BA2A5E00AC97C7 /* OfflineSelectLayers.swift in Sources */,
 				1B6638CC25B1E9BD0071F03D /* MapButtonGroup.swift in Sources */,
+				1B04BF7225D0B63B00FCD5D4 /* private.swift in Sources */,
 				1BA9BD1E25C0861400AC97C7 /* CoordinatorView.swift in Sources */,
 				1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */,
 				1B6638AC25B10B530071F03D /* MapViewController.swift in Sources */,
