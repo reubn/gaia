@@ -1,12 +1,12 @@
 import Foundation
 import UIKit
+import AVFoundation
 
 import Mapbox
 
 
-class AboutView: UIScrollView {
+class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegionIsChangingDelegate {
   let mapViewController: MapViewController
-  let keyCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: LAT1, longitude: LNG1)
   var isFlipped = false
   
   lazy var appIcon: UIButton = {
@@ -118,13 +118,46 @@ class AboutView: UIScrollView {
     
     appIcon.addTarget(self, action: #selector(flip), for: .touchUpInside)
     appIconBack.addTarget(self, action: #selector(flip), for: .touchUpInside)
+    
+    mapViewController.multicastUserLocationDidUpdateDelegate.add(delegate: self)
+    mapViewController.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)
+    
+    userLocationDidUpdate()
   }
   
-  @objc func flip() {
-    if(mapViewController.mapView.zoomLevel < 12 || !MGLCoordinateInCoordinateBounds(keyCoordinate, mapViewController.mapView.visibleCoordinateBounds)){
+  func userLocationDidUpdate() {
+    if(mapViewController.mapView.userLocation == nil) {return}
+    let userLocation = mapViewController.mapView.userLocation!.coordinate
+    
+    for (index, keyLocationPair) in KEY_LOCATIONS.enumerated() {
+      if(!keyLocationPair.seen && keyLocationPair.location.distance(to: userLocation) < 50) {
+        KEY_LOCATIONS[index].seen = true
+
+      }
+    }
+  }
+  
+  func parentMapViewRegionIsChanging() {
+    if(mapViewController.mapView.zoomLevel < 15) {
       return
     }
     
+    for (index, keyLocationPair) in KEY_LOCATIONS.enumerated() {
+      if(!keyLocationPair.seen && MGLCoordinateInCoordinateBounds(keyLocationPair.location, mapViewController.mapView.visibleCoordinateBounds)){
+        KEY_LOCATIONS[index].seen = true
+        
+        AudioServicesPlayAlertSound(SystemSoundID(1117))
+      }
+    }
+    
+  }
+  
+  @objc func flip() {
+    
+    if(KEY_LOCATIONS.filter({$0.seen}).count < KEY_LOCATIONS_NEEDED){
+      return
+    }
+
     let to = isFlipped ? appIcon : appIconBack
     let from = isFlipped ? appIconBack : appIcon
     
@@ -151,7 +184,14 @@ class AboutView: UIScrollView {
 }
 
 
-
+extension CLLocationCoordinate2D {
+  func distance(to: CLLocationCoordinate2D) -> CLLocationDistance {
+    let from = CLLocation(latitude: self.latitude, longitude: self.longitude)
+    let to = CLLocation(latitude: to.latitude, longitude: to.longitude)
+    
+    return from.distance(from: to)
+  }
+}
 
 
 
