@@ -45,7 +45,8 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     view.clipsToBounds = true
     
     view.isHidden = true
-    view.isUserInteractionEnabled = true
+    
+    view.addTarget(self, action: #selector(flip), for: .touchUpInside)
     
     addSubview(view)
     
@@ -117,7 +118,6 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     setDetails()
     
     appIcon.addTarget(self, action: #selector(flip), for: .touchUpInside)
-    appIconBack.addTarget(self, action: #selector(flip), for: .touchUpInside)
     
     mapViewController.multicastUserLocationDidUpdateDelegate.add(delegate: self)
     mapViewController.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)
@@ -130,21 +130,22 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     let userLocation = mapViewController.mapView.userLocation!.coordinate
     
     for (index, keyLocationPair) in KEY_LOCATIONS.enumerated() {
-      if(!keyLocationPair.seen && keyLocationPair.location.distance(to: userLocation) < 50) {
+      if(!keyLocationPair.seen && keyLocationPair.location.distance(to: userLocation) < KEY_LOCATIONS_NEEDED_LOCATION_METERS) {
         KEY_LOCATIONS[index].seen = true
-
+        KEY_LOCATIONS[index].seenReason = .location
       }
     }
   }
   
   func parentMapViewRegionIsChanging() {
-    if(mapViewController.mapView.zoomLevel < 15) {
+    if(mapViewController.mapView.zoomLevel < KEY_LOCATIONS_NEEDED_VIEW_ZOOM) {
       return
     }
     
     for (index, keyLocationPair) in KEY_LOCATIONS.enumerated() {
       if(!keyLocationPair.seen && MGLCoordinateInCoordinateBounds(keyLocationPair.location, mapViewController.mapView.visibleCoordinateBounds)){
         KEY_LOCATIONS[index].seen = true
+        KEY_LOCATIONS[index].seenReason = .view
         
         AudioServicesPlayAlertSound(SystemSoundID(1117))
       }
@@ -154,7 +155,8 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
   
   @objc func flip() {
     
-    if(KEY_LOCATIONS.filter({$0.seen}).count < KEY_LOCATIONS_NEEDED){
+    if(KEY_LOCATIONS.filter({$0.seenReason == .location}).count < KEY_LOCATIONS_NEEDED_LOCATION
+    || KEY_LOCATIONS.filter({$0.seenReason == .view}).count < KEY_LOCATIONS_NEEDED_VIEW){
       return
     }
 
