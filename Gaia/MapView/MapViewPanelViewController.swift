@@ -49,7 +49,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     stack.translatesAutoresizingMaskIntoConstraints = false
     stack.heightAnchor.constraint(equalToConstant: 30).isActive = true
     
-    stack.centerYAnchor.constraint(equalTo: popoverTitle.centerYAnchor).isActive = true
+    stack.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
     stack.leftAnchor.constraint(equalTo: popoverTitle.rightAnchor, constant: 10).isActive = true
     stack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
     
