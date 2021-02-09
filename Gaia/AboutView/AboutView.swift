@@ -7,6 +7,7 @@ import Mapbox
 
 class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegionIsChangingDelegate {
   let mapViewController: MapViewController
+  var emojiTimer: Timer? = nil
   var isFlipped = false
   
   lazy var appIcon: UIButton = {
@@ -34,7 +35,7 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
   lazy var appIconBack: UIButton = {
     let view = UIButton()
     
-    view.setTitle(MSG_EMOJI, for: .normal)
+    view.setTitle(MSG_EMOJI[MSG_EMOJI_INDEX], for: .normal)
     view.titleLabel!.font = .systemFont(ofSize: 72)
 
     let size: CGFloat = 200
@@ -47,7 +48,7 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     view.isHidden = true
     
     view.addTarget(self, action: #selector(flip), for: .touchUpInside)
-    
+
     addSubview(view)
     
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -154,7 +155,6 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
   }
   
   @objc func flip() {
-    
     if(KEY_LOCATIONS.filter({$0.seenReason == .location}).count < KEY_LOCATIONS_NEEDED_LOCATION
     || KEY_LOCATIONS.filter({$0.seenReason == .view}).count < KEY_LOCATIONS_NEEDED_VIEW){
       return
@@ -172,6 +172,18 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     isFlipped = !isFlipped
     setDetails()
     
+    if(!isFlipped) {emojiTimer?.invalidate()}
+    else {
+      emojiTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { timer in
+        if(self.mapViewController.presentedViewController != self.mapViewController.abfpc) {
+          timer.invalidate() // Release
+        }
+
+        MSG_EMOJI_INDEX = (MSG_EMOJI_INDEX + 1) % MSG_EMOJI.count
+        
+        self.appIconBack.setTitle(MSG_EMOJI[MSG_EMOJI_INDEX], for: .normal)
+      }
+    }
   }
   
   func setDetails(){
