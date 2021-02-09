@@ -28,7 +28,7 @@ class ElevationDisplay: MetricDisplay {
   }
   
   override func format() -> (String, String) {
-    if(value == nil) {return ("", "")}
+    if(value == nil) {return ("??", "??")}
     
     let value = self.value as! CLLocation
     
@@ -38,7 +38,7 @@ class ElevationDisplay: MetricDisplay {
       case .altitude:
         string = String(format: "%dm", Int(value.altitude))
       case .floor:
-        string = String(format: "%d", Int(value.floor?.level ?? 0))
+        string = value.floor != nil ? String(format: "%d", Int(value.floor!.level)) : "??"
     }
     
     return (string, string)

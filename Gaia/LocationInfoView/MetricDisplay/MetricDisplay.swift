@@ -56,6 +56,7 @@ class MetricDisplay: UIView {
     widthAnchor.constraint(equalToConstant: 100).isActive = true
     heightAnchor.constraint(equalToConstant: 20).isActive = true
     
+    updateValue()
   }
   
   func updateValue(){

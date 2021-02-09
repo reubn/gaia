@@ -28,7 +28,7 @@ class HeadingDisplay: MetricDisplay {
   }
   
   override func format() -> (String, String) {
-    if(value == nil) {return ("", "")}
+    if(value == nil) {return ("???°", "???°")}
     
     let value = self.value as! CLHeading
     
