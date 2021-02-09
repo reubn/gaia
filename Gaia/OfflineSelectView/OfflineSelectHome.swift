@@ -122,13 +122,17 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
       }
       
       if(pack.state == .complete) {
-        let action = UIAction(
+        children.append(UIAction(
+          title: "Preview",
+          image: UIImage(systemName: "eye")) { _ in
+            self.previewPack(pack: pack)
+        })
+        
+        children.append(UIAction(
           title: "Redownload",
           image: UIImage(systemName: "square.and.arrow.down")) { _ in
             self.offlineManager.redownloadPack(pack: pack)
-        }
-        
-        children.append(action)
+        })
       }
       
       if(pack.state == .active) {
@@ -158,6 +162,12 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let pack = offlineManager.downloads![indexPath.row]
+    
+    previewPack(pack: pack)
+    
+  }
+  
+  func previewPack(pack: MGLOfflinePack){
     let context = offlineManager.decodePackContext(pack: pack)!
 
     let bounds = MGLCoordinateBounds(context.bounds)
