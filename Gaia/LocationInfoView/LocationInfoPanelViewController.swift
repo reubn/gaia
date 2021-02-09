@@ -26,7 +26,7 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     mainView.addSubview(display)
     
     display.translatesAutoresizingMaskIntoConstraints = false
-    display.leftAnchor.constraint(equalTo: headingDisplay.rightAnchor, constant: 5).isActive = true
+    display.leftAnchor.constraint(equalTo: headingDisplay.rightAnchor, constant: 8).isActive = true
     display.topAnchor.constraint(equalTo: mainView.topAnchor).isActive = true
     
     return display
