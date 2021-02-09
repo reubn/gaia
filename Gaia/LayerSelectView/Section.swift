@@ -63,7 +63,7 @@ class Section: UIStackView {
     
     tableView.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(0.75)
     tableView.dataSource = self
-    
+    tableView.delegate = self
     tableView.dragDelegate = self // empty drag, drop delegate methods needed to enable moveRowAt... bug?
     tableView.dropDelegate = self // empty drag, drop delegate methods needed to enable moveRowAt... bug?
     tableView.dragInteractionEnabled = true
@@ -133,7 +133,7 @@ class Section: UIStackView {
   }
 }
 
-extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDropDelegate {
+extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDropDelegate, UITableViewDelegate {
   func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
     return [] // empty drag, drop delegate methods needed to enable moveRowAt... bug?
   }
@@ -176,13 +176,79 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
     return cell
   }
   
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    if editingStyle == .delete {
-      let layer = layers[indexPath.row]
-      layers.remove(at: indexPath.row)
+  func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    
+    let layer = self.layers[indexPath.row]
+    
+    return UIContextMenuConfiguration(identifier: nil, previewProvider: nil){actions -> UIMenu? in
+      
+      var children: [UIAction] = []
+ 
+      children.append(UIAction(
+        title: layer.enabled ? "Hide" : "Show",
+        image: UIImage(systemName: layer.enabled ? "eye.slash" : "eye")) { _ in
+        self.toggleLayer(layer: layer, mutuallyExclusive: false)
+      })
+      
+      children.append(UIAction(
+        title: "Isolate",
+        image: UIImage(systemName: "square.3.stack.3d.middle.fill")) { _ in
+          self.layerManager.filterLayers {
+            $0 == layer
+          }
+      })
+      
+      children.append(UIAction(
+        title: "Edit",
+        image: UIImage(systemName: "pencil")) { _ in
+//          self.editLayer(layer: layer)
+      })
+      
+      children.append(UIAction(
+        title: "Share",
+        image: UIImage(systemName: "square.and.arrow.up")) { _ in
+          do {
+            let encoder = JSONEncoder()
+            
+            let json = try encoder.encode([LayerDefinition(layer)])
+            
+            let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+            let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(layer.id).appendingPathExtension("json")
 
-      self.layerManager.removeLayer(layer: layer)
+            try json.write(to: temporaryFileURL, options: .atomic)
+            
+            let activityViewController = UIActivityViewController(activityItems: [temporaryFileURL], applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = tableView
+            self.mapViewController.lsfpc.present(activityViewController, animated: true, completion: nil)
+            
+          } catch {
+            print(error)
+        }
+      })
+      
+      let delete = UIAction(
+        title: "Delete",
+        image: UIImage(systemName: "trash"),
+        attributes: .destructive) { _ in
+          self.layers.remove(at: indexPath.row)
+          self.layerManager.removeLayer(layer: layer)
+      }
+      
+      children.append(delete)
+      
+      return UIMenu(title: "", children: children)
     }
+  }
+  
+  func toggleLayer(layer: Layer, mutuallyExclusive: Bool){
+    if(layer.enabled) {
+      layerManager.disableLayer(layer: layer)
+    }
+    else {
+      layerManager.enableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
+    }
+    
+    UISelectionFeedbackGenerator().selectionChanged()
   }
   
   @objc func tableViewLabelClick(sender : UITapGestureRecognizer){
@@ -192,14 +258,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
   
     let layer = layers[position]
     
-    if(layer.enabled) {
-      layerManager.disableLayer(layer: layer)
-    }
-    else {
-      layerManager.enableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
-    }
-    
-    UISelectionFeedbackGenerator().selectionChanged()
+    toggleLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
   }
 }
 

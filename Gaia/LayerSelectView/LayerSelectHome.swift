@@ -66,6 +66,28 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate {
     self.mapViewController.lsfpc.present(alertController, animated: true, completion: nil)
   }
   
+  func showShareSheet(_ sender: UIButton, layers: [Layer]) {
+    let layerDefinitions = layers.map {LayerDefinition($0)}
+    
+    do {
+      let encoder = JSONEncoder()
+      
+      let json = try encoder.encode(layerDefinitions)
+      
+      let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+      let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent("gaiaLayerDefinitions").appendingPathExtension("json")
+
+      try json.write(to: temporaryFileURL, options: .atomic)
+      
+      let activityViewController = UIActivityViewController(activityItems: [temporaryFileURL], applicationActivities: nil)
+      activityViewController.popoverPresentationController?.sourceView = sender
+      self.mapViewController.lsfpc.present(activityViewController, animated: true, completion: nil)
+      
+    } catch {
+      print(error)
+    }
+  }
+
   func viewWillEnter(){
     print("enter LSH")
     
@@ -87,26 +109,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate {
     if(button == .new) {
       showActionSheet(panelButton)
     } else if(button == .share) {
-      
-      let layerDefinitions = layerManager.layers.map {LayerDefinition($0)}
-      
-      do {
-        let encoder = JSONEncoder()
-        
-        let json = try encoder.encode(layerDefinitions)
-        
-        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent("gaiaLayerDefinitions").appendingPathExtension("json")
-
-        try json.write(to: temporaryFileURL, options: .atomic)
-        
-        let activityViewController = UIActivityViewController(activityItems: [temporaryFileURL], applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = panelButton
-        self.mapViewController.lsfpc.present(activityViewController, animated: true, completion: nil)
-        
-      } catch {
-        print(error)
-      }
+      showShareSheet(panelButton, layers: layerManager.layers)
     }
   }
   
