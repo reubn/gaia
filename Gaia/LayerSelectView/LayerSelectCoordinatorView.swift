@@ -1,7 +1,10 @@
 import Foundation
 import UIKit
 
+import AnyCodable
 import Mapbox
+import CoreGPX
+
 
 class LayerSelectCoordinatorView: CoordinatorView {
   let mapViewController: MapViewController
@@ -40,7 +43,15 @@ class LayerSelectCoordinatorView: CoordinatorView {
         super.done()
       }
     } catch {
-      print("Unexpected error: \(error).")
+      let gpx = GPXParser(withData: data).parsedData()
+      
+      if(gpx != nil) {
+        let layerDefinition = LayerDefinition(gpx!)
+        _ = self.layerManager.newLayer(layerDefinition)
+      
+        self.layerManager.saveLayers()
+        super.done()
+      }
     }
   }
   
@@ -48,10 +59,3 @@ class LayerSelectCoordinatorView: CoordinatorView {
     fatalError("init(coder:) has not been implemented")
   }
 }
-
-
-
-
-
-
-

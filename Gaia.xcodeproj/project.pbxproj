@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1B04BF6F25D077FC00FCD5D4 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B04BF6E25D077FC00FCD5D4 /* AppIcon.swift */; };
 		1B04BF7225D0B63B00FCD5D4 /* private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B04BF7125D0B63B00FCD5D4 /* private.swift */; };
+		1B04BF7525D1CB5F00FCD5D4 /* CoreGPX in Frameworks */ = {isa = PBXBuildFile; productRef = 1B04BF7425D1CB5F00FCD5D4 /* CoreGPX */; };
 		1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 1B3401C225B33FAD0091FA3B /* FloatingPanel */; };
 		1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */; };
 		1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */; };
@@ -18,6 +19,9 @@
 		1B3401D225B474420091FA3B /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401D125B474420091FA3B /* Section.swift */; };
 		1B3401D525B4A1570091FA3B /* LayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401D425B4A1570091FA3B /* LayerManager.swift */; };
 		1B3401EC25B4F1B00091FA3B /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401EB25B4F1AF0091FA3B /* MulticastDelegate.swift */; };
+		1B6033BD25D1DBD300211150 /* toHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033BC25D1DBD300211150 /* toHex.swift */; };
+		1B6033BF25D1DBEE00211150 /* randomSystemColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */; };
+		1B6033C125D1DC4A00211150 /* randomString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033C025D1DC4A00211150 /* randomString.swift */; };
 		1B62CE8A25D023EF00D06E55 /* AppIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B62CE8925D023EF00D06E55 /* AppIconButton.swift */; };
 		1B62CE8F25D0288400D06E55 /* AboutPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B62CE8C25D0288400D06E55 /* AboutPanelViewController.swift */; };
 		1B62CE9025D0288400D06E55 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B62CE8D25D0288400D06E55 /* AboutView.swift */; };
@@ -96,6 +100,9 @@
 		1B3401D125B474420091FA3B /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		1B3401D425B4A1570091FA3B /* LayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerManager.swift; sourceTree = "<group>"; };
 		1B3401EB25B4F1AF0091FA3B /* MulticastDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
+		1B6033BC25D1DBD300211150 /* toHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = toHex.swift; sourceTree = "<group>"; };
+		1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = randomSystemColor.swift; sourceTree = "<group>"; };
+		1B6033C025D1DC4A00211150 /* randomString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = randomString.swift; sourceTree = "<group>"; };
 		1B62CE8925D023EF00D06E55 /* AppIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconButton.swift; sourceTree = "<group>"; };
 		1B62CE8C25D0288400D06E55 /* AboutPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutPanelViewController.swift; sourceTree = "<group>"; };
 		1B62CE8D25D0288400D06E55 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -153,6 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B7644C625CB418D00572A70 /* AnyCodable in Frameworks */,
+				1B04BF7525D1CB5F00FCD5D4 /* CoreGPX in Frameworks */,
 				1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */,
 				1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */,
 				1B6638C125B10B610071F03D /* Mapbox.framework in Frameworks */,
@@ -224,6 +232,9 @@
 				1B7644B425CA169D00572A70 /* MemoryConsciousFloatingPanelController.swift */,
 				1B8C079225C493E5008C08B2 /* SelectableLabel.swift */,
 				1B04BF6E25D077FC00FCD5D4 /* AppIcon.swift */,
+				1B6033BC25D1DBD300211150 /* toHex.swift */,
+				1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */,
+				1B6033C025D1DC4A00211150 /* randomString.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -367,6 +378,7 @@
 			packageProductDependencies = (
 				1B3401C225B33FAD0091FA3B /* FloatingPanel */,
 				1B7644C525CB418D00572A70 /* AnyCodable */,
+				1B04BF7425D1CB5F00FCD5D4 /* CoreGPX */,
 			);
 			productName = Gaia;
 			productReference = 1B6638A425B10B530071F03D /* Gaia.app */;
@@ -398,6 +410,7 @@
 			packageReferences = (
 				1B3401C125B33FAD0091FA3B /* XCRemoteSwiftPackageReference "FloatingPanel" */,
 				1B7644C425CB418D00572A70 /* XCRemoteSwiftPackageReference "AnyCodable" */,
+				1B04BF7325D1CB5F00FCD5D4 /* XCRemoteSwiftPackageReference "CoreGPX" */,
 			);
 			productRefGroup = 1B6638A525B10B530071F03D /* Products */;
 			projectDirPath = "";
@@ -427,6 +440,7 @@
 			files = (
 				1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */,
 				1B7644C325CAFA7300572A70 /* StyleJSON.swift in Sources */,
+				1B6033BD25D1DBD300211150 /* toHex.swift in Sources */,
 				1B8C079325C493E5008C08B2 /* SelectableLabel.swift in Sources */,
 				1B6638CE25B1EA5F0071F03D /* MapButton.swift in Sources */,
 				1B62CE8A25D023EF00D06E55 /* AppIconButton.swift in Sources */,
@@ -453,6 +467,7 @@
 				1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */,
 				1BBD3FFA25B89181007B8BC7 /* OfflineSelectCoordinatorView.swift in Sources */,
 				1BA9BD0E25BA281800AC97C7 /* OfflineSelectArea.swift in Sources */,
+				1B6033C125D1DC4A00211150 /* randomString.swift in Sources */,
 				1BBD3FF325B708A6007B8BC7 /* MapViewPanelViewController.swift in Sources */,
 				1B7644C125CAFA2F00572A70 /* LayerDefinition.swift in Sources */,
 				1B3401CC25B473E40091FA3B /* LayerCell.swift in Sources */,
@@ -470,6 +485,7 @@
 				1B8C078F25C48245008C08B2 /* LocationInfoPanelViewController.swift in Sources */,
 				1B3401D025B474260091FA3B /* SectionTableView.swift in Sources */,
 				1B7644BF25CAD61900572A70 /* Layer+CoreData.swift in Sources */,
+				1B6033BF25D1DBEE00211150 /* randomSystemColor.swift in Sources */,
 				1B8C078E25C48245008C08B2 /* LocationInfoPanelLayout.swift in Sources */,
 				1B3401D525B4A1570091FA3B /* LayerManager.swift in Sources */,
 				1B62CE9025D0288400D06E55 /* AboutView.swift in Sources */,
@@ -688,6 +704,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1B04BF7325D1CB5F00FCD5D4 /* XCRemoteSwiftPackageReference "CoreGPX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vincentneo/CoreGPX";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.8.2;
+			};
+		};
 		1B3401C125B33FAD0091FA3B /* XCRemoteSwiftPackageReference "FloatingPanel" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SCENEE/FloatingPanel";
@@ -707,6 +731,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1B04BF7425D1CB5F00FCD5D4 /* CoreGPX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B04BF7325D1CB5F00FCD5D4 /* XCRemoteSwiftPackageReference "CoreGPX" */;
+			productName = CoreGPX;
+		};
 		1B3401C225B33FAD0091FA3B /* FloatingPanel */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1B3401C125B33FAD0091FA3B /* XCRemoteSwiftPackageReference "FloatingPanel" */;

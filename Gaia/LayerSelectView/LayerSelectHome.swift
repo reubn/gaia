@@ -50,7 +50,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate {
     }))
 
     alertController.addAction(UIAlertAction(title: "Import from File", style: .default, handler: {_ in
-      let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.json], asCopy: true)
+      let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.json, UTType.xml], asCopy: true)
       documentPicker.delegate = self
       documentPicker.shouldShowFileExtensions = true
       

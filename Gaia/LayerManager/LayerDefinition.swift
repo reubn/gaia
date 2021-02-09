@@ -1,4 +1,7 @@
 import Foundation
+import UIKit
+
+import CoreGPX
 
 struct LayerDefinition: Codable {
   let metadata: Metadata
@@ -33,3 +36,58 @@ extension LayerDefinition {
     )
   }
 }
+
+extension LayerDefinition {
+  init(_ gpx: GPXRoot){
+      let features: [String: Any] = [
+        "type": "FeatureCollection",
+        "features": gpx.tracks.flatMap {track in
+          track.tracksegments.map {trackSegment in
+            [
+              "type": "Feature",
+              "properties": [
+                "colour": "#" + UIColor.randomSystemColor().toHex()!
+              ],
+              "geometry": [
+                "type": "LineString",
+                "coordinates": trackSegment.trackpoints.map {trackPoint in
+                  [trackPoint.longitude!, trackPoint.latitude!]
+                }
+              ]
+            ]
+          }
+        }
+      ]
+      
+      let id = "gpx_" + randomString(length: 6)
+    
+    self.init(
+      metadata: LayerDefinition.Metadata(
+        id: id,
+        name: id,
+        group: "overlay",
+        groupIndex: 0
+      ),
+      styleJSON: StyleJSON(
+        sources: [
+          id: [
+            "type": "geojson",
+            "data": features
+          ]
+          ],
+        layers: [
+          [
+            "id": id,
+            "source": id,
+            "type": "line",
+            "paint": [
+              "line-color": ["get", "colour"],
+              "line-width": 5
+            ]
+          ]
+        ]
+      )
+    )
+  }
+}
+
