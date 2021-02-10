@@ -43,29 +43,6 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate {
     layerSelectView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
   }
   
-  func showActionSheet(_ sender: UIButton) {
-    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-    alertController.addAction(UIAlertAction(title: "Import from URL", style: .default, handler: {_ in
-      self.coordinatorView.goTo(1)
-    }))
-
-    alertController.addAction(UIAlertAction(title: "Import from File", style: .default, handler: {_ in
-      let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.json, UTType.xml], asCopy: true)
-      documentPicker.delegate = self
-      documentPicker.shouldShowFileExtensions = true
-      
-      self.mapViewController.lsfpc.present(documentPicker, animated: true, completion: nil)
-    }))
-
-    alertController.addAction(UIAlertAction(title: "Dismiss", style: .cancel))
-    
-    if let popoverController = alertController.popoverPresentationController {
-      popoverController.sourceView = sender
-    }
-
-    self.mapViewController.lsfpc.present(alertController, animated: true, completion: nil)
-  }
-  
   func showShareSheet(_ sender: UIButton, layers: [Layer]) {
     let layerDefinitions = layers.map {LayerDefinition($0)}
     
@@ -97,18 +74,38 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate {
     
     coordinatorView.panelViewController.title = "Layers"
     coordinatorView.panelViewController.panelButtons = [.share, .new, .dismiss]
+
+    let newButton = coordinatorView.panelViewController.getPanelButton(.new)
+    newButton.menu = UIMenu(title: "", children: [
+      UIAction(title: "Import from URL", image: UIImage(systemName: "link"), handler: {_ in
+        self.coordinatorView.goTo(1)
+      }),
+      UIAction(title: "Import from File", image: UIImage(systemName: "doc"), handler: {_ in
+        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.json, UTType.xml], asCopy: true)
+        documentPicker.delegate = self
+        documentPicker.shouldShowFileExtensions = true
+
+        self.mapViewController.lsfpc.present(documentPicker, animated: true, completion: nil)
+      })
+    ])
+    newButton.adjustsImageWhenHighlighted = false
+    newButton.showsMenuAsPrimaryAction = true
   }
   
   func viewWillExit(){
     print("exit LSH")
+    
+    let newButton = coordinatorView.panelViewController.getPanelButton(.new)
+    
+    newButton.menu = nil
+    newButton.adjustsImageWhenHighlighted = true
+    newButton.showsMenuAsPrimaryAction = false
   }
   
   func panelButtonTapped(button: PanelButton){
     let panelButton = coordinatorView.panelViewController.getPanelButton(button)
     
-    if(button == .new) {
-      showActionSheet(panelButton)
-    } else if(button == .share) {
+    if(button == .share) {
       showShareSheet(panelButton, layers: layerManager.layers)
     }
   }
