@@ -20,7 +20,8 @@ class LayerSelectCoordinatorView: CoordinatorView {
     
     story = [
       LayerSelectHome(coordinatorView: self, mapViewController: mapViewController),
-      LayerSelectImport(coordinatorView: self, mapViewController: mapViewController)
+      LayerSelectImport(coordinatorView: self, mapViewController: mapViewController),
+      LayerSelectEdit(coordinatorView: self, mapViewController: mapViewController)
     ]
     
     super.ready()

@@ -5,10 +5,6 @@ import UniformTypeIdentifiers
 import Mapbox
 
 class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerEditDelegate {
-  func layerEditWasRequested(layer: Layer) {
-    print("layerEditWasRequested")
-  }
-  
   unowned let coordinatorView: LayerSelectCoordinatorView
   let mapViewController: MapViewController
   
@@ -92,6 +88,9 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
         documentPicker.shouldShowFileExtensions = true
 
         self.mapViewController.lsfpc.present(documentPicker, animated: true, completion: nil)
+      }),
+      UIAction(title: "New", image: UIImage(systemName: "plus"), handler: {_ in
+        self.coordinatorView.goTo(2)
       })
     ])
     newButton.adjustsImageWhenHighlighted = false
@@ -114,6 +113,10 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     if(button == .share) {
       showShareSheet(panelButton, layers: layerManager.layers)
     }
+  }
+  
+  func layerEditWasRequested(layer: Layer) {
+    coordinatorView.goTo(2, data: layer)
   }
   
   required init(coder: NSCoder) {
