@@ -49,6 +49,7 @@
 		1B8C079125C4833D008C08B2 /* LocationInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C079025C4833D008C08B2 /* LocationInfoView.swift */; };
 		1B8C079325C493E5008C08B2 /* SelectableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C079225C493E5008C08B2 /* SelectableLabel.swift */; };
 		1B96528825D58EFC0017A43E /* LayerSelectConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96528725D58EFC0017A43E /* LayerSelectConfig.swift */; };
+		1B96528D25D5C3DA0017A43E /* KeyboardLayoutGuide in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */; };
 		1BA9BD0A25BA1C6300AC97C7 /* OfflineSelectHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0925BA1C6300AC97C7 /* OfflineSelectHome.swift */; };
 		1BA9BD0C25BA266700AC97C7 /* CoordinatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0B25BA266700AC97C7 /* CoordinatedView.swift */; };
 		1BA9BD0E25BA281800AC97C7 /* OfflineSelectArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0D25BA281800AC97C7 /* OfflineSelectArea.swift */; };
@@ -165,6 +166,7 @@
 				1B04BF7525D1CB5F00FCD5D4 /* CoreGPX in Frameworks */,
 				1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */,
 				1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */,
+				1B96528D25D5C3DA0017A43E /* KeyboardLayoutGuide in Frameworks */,
 				1B6638C125B10B610071F03D /* Mapbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -382,6 +384,7 @@
 				1B3401C225B33FAD0091FA3B /* FloatingPanel */,
 				1B7644C525CB418D00572A70 /* AnyCodable */,
 				1B04BF7425D1CB5F00FCD5D4 /* CoreGPX */,
+				1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */,
 			);
 			productName = Gaia;
 			productReference = 1B6638A425B10B530071F03D /* Gaia.app */;
@@ -414,6 +417,7 @@
 				1B3401C125B33FAD0091FA3B /* XCRemoteSwiftPackageReference "FloatingPanel" */,
 				1B7644C425CB418D00572A70 /* XCRemoteSwiftPackageReference "AnyCodable" */,
 				1B04BF7325D1CB5F00FCD5D4 /* XCRemoteSwiftPackageReference "CoreGPX" */,
+				1B96528B25D5C3DA0017A43E /* XCRemoteSwiftPackageReference "KeyboardLayoutGuide" */,
 			);
 			productRefGroup = 1B6638A525B10B530071F03D /* Products */;
 			projectDirPath = "";
@@ -732,6 +736,14 @@
 				minimumVersion = 0.4.0;
 			};
 		};
+		1B96528B25D5C3DA0017A43E /* XCRemoteSwiftPackageReference "KeyboardLayoutGuide" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/freshOS/KeyboardLayoutGuide";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.7.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -749,6 +761,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1B7644C425CB418D00572A70 /* XCRemoteSwiftPackageReference "AnyCodable" */;
 			productName = AnyCodable;
+		};
+		1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B96528B25D5C3DA0017A43E /* XCRemoteSwiftPackageReference "KeyboardLayoutGuide" */;
+			productName = KeyboardLayoutGuide;
 		};
 /* End XCSwiftPackageProductDependency section */
 
