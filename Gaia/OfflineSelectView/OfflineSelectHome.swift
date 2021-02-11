@@ -43,7 +43,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     
   }
   
-  func viewWillEnter(){
+  func viewWillEnter(data: Any?){
     print("enter OSH")
     
     if(coordinatorView.mapViewController.osfpc.viewIfLoaded?.window != nil) {

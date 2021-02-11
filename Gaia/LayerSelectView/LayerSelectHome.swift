@@ -71,7 +71,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     }
   }
 
-  func viewWillEnter(){
+  func viewWillEnter(data: Any?){
     print("enter LSH")
     
     if(coordinatorView.mapViewController.lsfpc.viewIfLoaded?.window != nil) {

@@ -11,7 +11,7 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
     super.init(frame: CGRect())
   }
   
-  func viewWillEnter(){
+  func viewWillEnter(data: Any?){
     print("enter OSZ")
     
     coordinatorView.mapViewController.osfpc.move(to: .tip, animated: true)

@@ -29,7 +29,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate {
     layerSelectView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
   }
   
-  func viewWillEnter(){
+  func viewWillEnter(data: Any?){
     print("enter OSL")
     
     coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)

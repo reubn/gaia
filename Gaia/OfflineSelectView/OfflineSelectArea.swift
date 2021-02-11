@@ -11,7 +11,7 @@ class OfflineSelectArea: UIView, CoordinatedView {
     super.init(frame: CGRect())
   }
   
-  func viewWillEnter(){
+  func viewWillEnter(data: Any?){
     print("enter OSA")
     coordinatorView.mapViewController.osfpc.move(to: .tip, animated: true)
     coordinatorView.panelViewController.title = "Select Area"

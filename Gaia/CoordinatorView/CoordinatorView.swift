@@ -10,7 +10,7 @@ class CoordinatorView: UIScrollView {
     super.init(frame: CGRect())
   }
   
-  private func read(direction: Int = 1, newPosition: Int? = nil){
+  private func read(direction: Int = 1, newPosition: Int? = nil, data: Any? = nil){
     let previousChapter = storyPosition >= 0 && storyPosition < story.count ? story[storyPosition] : nil
     
     let testStoryNextPosition = newPosition ?? storyPosition + direction
@@ -28,7 +28,7 @@ class CoordinatorView: UIScrollView {
     previousChapter?.viewWillExit()
     previousChapter?.removeFromSuperview()
     
-    chapter.viewWillEnter()
+    chapter.viewWillEnter(data: data)
     addSubview(chapter)
     
     chapter.translatesAutoresizingMaskIntoConstraints = false
@@ -55,8 +55,8 @@ class CoordinatorView: UIScrollView {
     read(newPosition: 0)
   }
   
-  func goTo(_ newPosition: Int){
-    read(newPosition: newPosition)
+  func goTo(_ newPosition: Int, data: Any? = nil){
+    read(newPosition: newPosition, data: data)
   }
   
   func panelButtonTapped(button: PanelButton) {

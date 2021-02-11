@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 protocol CoordinatedView: UIView {
-  func viewWillEnter()
+  func viewWillEnter(data: Any?)
   func viewWillExit()
 
   func panelButtonTapped(button: PanelButton)

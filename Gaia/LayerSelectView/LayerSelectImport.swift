@@ -46,7 +46,7 @@ class LayerSelectImport: UIView, CoordinatedView, UITextFieldDelegate {
     clipsToBounds = true
   }
   
-  func viewWillEnter(){
+  func viewWillEnter(data: Any?){
     print("enter LSI")
     
     if(coordinatorView.mapViewController.lsfpc.viewIfLoaded?.window != nil) {
