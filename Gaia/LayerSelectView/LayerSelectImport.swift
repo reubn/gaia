@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 
 import Mapbox
+import KeyboardLayoutGuide
 
 class LayerSelectImport: UIView, CoordinatedView, UITextFieldDelegate {
   unowned let coordinatorView: LayerSelectCoordinatorView
@@ -57,7 +58,7 @@ class LayerSelectImport: UIView, CoordinatedView, UITextFieldDelegate {
     
     urlInput.translatesAutoresizingMaskIntoConstraints = false
     urlInput.heightAnchor.constraint(equalToConstant: 60).isActive = true
-    urlInput.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -120).isActive = true
+    urlInput.bottomAnchor.constraint(equalTo: keyboardLayoutGuide.topAnchor).isActive = true
     urlInput.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
     urlInput.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
     

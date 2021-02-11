@@ -27,6 +27,15 @@
           "revision": "b4423bcaa2d818c8671d85350f5e5635394511fa",
           "version": "2.1.0"
         }
+      },
+      {
+        "package": "KeyboardLayoutGuide",
+        "repositoryURL": "https://github.com/freshOS/KeyboardLayoutGuide",
+        "state": {
+          "branch": null,
+          "revision": "2a62a1a0b64e3c7db227c7da67e94292c1897903",
+          "version": "1.7.0"
+        }
       }
     ]
   },
