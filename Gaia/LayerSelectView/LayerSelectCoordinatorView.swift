@@ -46,11 +46,13 @@ class LayerSelectCoordinatorView: CoordinatorView {
       let gpx = GPXParser(withData: data).parsedData()
       
       if(gpx != nil) {
-        let layerDefinition = LayerDefinition(gpx!)
-        _ = self.layerManager.newLayer(layerDefinition)
-      
-        self.layerManager.saveLayers()
-        super.done()
+        DispatchQueue.main.async {
+          let layerDefinition = LayerDefinition(gpx!)
+          _ = self.layerManager.newLayer(layerDefinition)
+        
+          self.layerManager.saveLayers()
+          super.done()
+        }
       }
     }
   }
