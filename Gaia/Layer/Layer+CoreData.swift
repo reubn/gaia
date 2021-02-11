@@ -38,14 +38,18 @@ extension Layer: Identifiable {}
 extension Layer {
   convenience init(_ layerDefinition: LayerDefinition, context: NSManagedObjectContext){
     self.init(context: context)
-
+    
+    self.enabled = false
+    
+    self.update(layerDefinition)
+  }
+  
+  func update(_ layerDefinition: LayerDefinition){
     self.id = layerDefinition.metadata.id
     self.name = layerDefinition.metadata.name
     self.group = layerDefinition.metadata.group
     self.groupIndex = Int16(layerDefinition.metadata.groupIndex)
     
     self.styleJSON = layerDefinition.styleJSON
-
-    self.enabled = false
   }
 }
