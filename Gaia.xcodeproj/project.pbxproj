@@ -48,6 +48,7 @@
 		1B8C078F25C48245008C08B2 /* LocationInfoPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */; };
 		1B8C079125C4833D008C08B2 /* LocationInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C079025C4833D008C08B2 /* LocationInfoView.swift */; };
 		1B8C079325C493E5008C08B2 /* SelectableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C079225C493E5008C08B2 /* SelectableLabel.swift */; };
+		1B96528825D58EFC0017A43E /* LayerSelectConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96528725D58EFC0017A43E /* LayerSelectConfig.swift */; };
 		1BA9BD0A25BA1C6300AC97C7 /* OfflineSelectHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0925BA1C6300AC97C7 /* OfflineSelectHome.swift */; };
 		1BA9BD0C25BA266700AC97C7 /* CoordinatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0B25BA266700AC97C7 /* CoordinatedView.swift */; };
 		1BA9BD0E25BA281800AC97C7 /* OfflineSelectArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0D25BA281800AC97C7 /* OfflineSelectArea.swift */; };
@@ -130,6 +131,7 @@
 		1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelViewController.swift; sourceTree = "<group>"; };
 		1B8C079025C4833D008C08B2 /* LocationInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoView.swift; sourceTree = "<group>"; };
 		1B8C079225C493E5008C08B2 /* SelectableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableLabel.swift; sourceTree = "<group>"; };
+		1B96528725D58EFC0017A43E /* LayerSelectConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectConfig.swift; sourceTree = "<group>"; };
 		1BA9BD0925BA1C6300AC97C7 /* OfflineSelectHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectHome.swift; sourceTree = "<group>"; };
 		1BA9BD0B25BA266700AC97C7 /* CoordinatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatedView.swift; sourceTree = "<group>"; };
 		1BA9BD0D25BA281800AC97C7 /* OfflineSelectArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectArea.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */,
 				1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */,
 				1BA9BD1F25C2100F00AC97C7 /* LayerSelectView.swift */,
+				1B96528725D58EFC0017A43E /* LayerSelectConfig.swift */,
 				1BA9BD2325C212A900AC97C7 /* LayerSelectHome.swift */,
 				1BA9BD2525C21D7C00AC97C7 /* LayerSelectImport.swift */,
 				1B3401D125B474420091FA3B /* Section.swift */,
@@ -458,6 +461,7 @@
 				1BA9BD1225BB879200AC97C7 /* DownloadCell.swift in Sources */,
 				1BA9BD1B25BF3CD000AC97C7 /* DownloadsTableView.swift in Sources */,
 				1BEE8D6025C59A4D004260C1 /* ElevationDisplay.swift in Sources */,
+				1B96528825D58EFC0017A43E /* LayerSelectConfig.swift in Sources */,
 				1B04BF6F25D077FC00FCD5D4 /* AppIcon.swift in Sources */,
 				1B7644B525CA169D00572A70 /* MemoryConsciousFloatingPanelController.swift in Sources */,
 				1B3401CE25B473FB0091FA3B /* SectionLabel.swift in Sources */,

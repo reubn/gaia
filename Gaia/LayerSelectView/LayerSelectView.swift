@@ -11,7 +11,7 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
   
   let stack = UIStackView()
   
-  init(mutuallyExclusive: Bool, mapViewController: MapViewController){
+  init(layerSelectConfig: LayerSelectConfig, mapViewController: MapViewController){
     self.mapViewController = mapViewController
     
     super.init(frame: CGRect())
@@ -39,7 +39,7 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     stack.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
     
     layerManager.layerGroups.forEach({
-      let section = Section(group: $0, mutuallyExclusive: mutuallyExclusive, layerManager: layerManager, mapViewController: mapViewController, scrollView: self)
+      let section = Section(group: $0, layerSelectConfig: layerSelectConfig, layerManager: layerManager, mapViewController: mapViewController, scrollView: self)
       
       stack.addArrangedSubview(section)
       
@@ -62,3 +62,4 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     fatalError("init(coder:) has not been implemented")
   }
 }
+

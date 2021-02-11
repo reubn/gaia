@@ -6,7 +6,7 @@ import Mapbox
 
 class Section: UIStackView {
   let group: LayerGroup
-  let mutuallyExclusive: Bool
+  let layerSelectConfig: LayerSelectConfig
   let layerManager: LayerManager
   let mapViewController: MapViewController
   let tableView = SectionTableView()
@@ -33,9 +33,9 @@ class Section: UIStackView {
     return view
   }()
   
-  init(group: LayerGroup, mutuallyExclusive: Bool, layerManager: LayerManager, mapViewController: MapViewController, scrollView: LayerSelectView){
+  init(group: LayerGroup, layerSelectConfig: LayerSelectConfig, layerManager: LayerManager, mapViewController: MapViewController, scrollView: LayerSelectView){
     self.group = group
-    self.mutuallyExclusive = mutuallyExclusive
+    self.layerSelectConfig = layerSelectConfig
     self.layerManager = layerManager
     self.mapViewController = mapViewController
     self.scrollView = scrollView
@@ -66,7 +66,7 @@ class Section: UIStackView {
     tableView.delegate = self
     tableView.dragDelegate = self // empty drag, drop delegate methods needed to enable moveRowAt... bug?
     tableView.dropDelegate = self // empty drag, drop delegate methods needed to enable moveRowAt... bug?
-    tableView.dragInteractionEnabled = true
+    tableView.dragInteractionEnabled = layerSelectConfig.reorderLayers
     
     tableView.isScrollEnabled = false
     tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
@@ -167,7 +167,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LayerCell
     
-    cell.update(_layer: layers[indexPath.row], mutuallyExclusive: mutuallyExclusive, layerManager: layerManager, mapViewController: mapViewController, scrollView: scrollView)
+    cell.update(_layer: layers[indexPath.row], layerSelectConfig: layerSelectConfig, layerManager: layerManager, mapViewController: mapViewController, scrollView: scrollView)
     
     let cellGR = UITapGestureRecognizer(target: self, action: #selector(self.tableViewLabelClick))
     cell.isUserInteractionEnabled = true
@@ -177,6 +177,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    if(!layerSelectConfig.layerContextActions) {return nil}
     
     let layer = self.layers[indexPath.row]
     
@@ -201,7 +202,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       children.append(UIAction(
         title: "Edit",
         image: UIImage(systemName: "pencil")) { _ in
-//          self.editLayer(layer: layer)
+          self.layerSelectConfig.layerEditDelegate?.layerEditWasRequested(layer: layer)
       })
       
       children.append(UIAction(
@@ -258,7 +259,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
   
     let layer = layers[position]
     
-    toggleLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
+    toggleLayer(layer: layer, mutuallyExclusive: layerSelectConfig.mutuallyExclusive)
   }
 }
 

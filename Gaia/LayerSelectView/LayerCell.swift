@@ -79,13 +79,14 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     )
   }
 
-  func update(_layer: Layer, mutuallyExclusive: Bool, layerManager: LayerManager, mapViewController: MapViewController, scrollView: LayerSelectView) {
+  func update(_layer: Layer, layerSelectConfig: LayerSelectConfig, layerManager: LayerManager, mapViewController: MapViewController, scrollView: LayerSelectView) {
     self._layer = _layer
     self.layerManager = layerManager
     self.mapViewController = mapViewController
 
     preview.styleURL = Style(sortedLayers: [_layer]).url
     
+    let mutuallyExclusive = layerSelectConfig.mutuallyExclusive
     backgroundColor = !mutuallyExclusive && _layer.enabled ? .systemBlue : .clear
     tintColor = !mutuallyExclusive && _layer.enabled ? .white : nil
     title.textColor = !mutuallyExclusive && _layer.enabled ? .white : UIColor.label

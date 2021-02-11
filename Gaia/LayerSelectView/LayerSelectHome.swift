@@ -4,12 +4,18 @@ import UniformTypeIdentifiers
 
 import Mapbox
 
-class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate {
+class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerEditDelegate {
+  func layerEditWasRequested(layer: Layer) {
+    print("layerEditWasRequested")
+  }
+  
   unowned let coordinatorView: LayerSelectCoordinatorView
   let mapViewController: MapViewController
   
+  lazy var layerSelectConfig = LayerSelectConfig(mutuallyExclusive: true, layerContextActions: true, reorderLayers: true, layerEditDelegate: self)
+  
   lazy var layerManager = mapViewController.layerManager
-  lazy var layerSelectView = LayerSelectView(mutuallyExclusive: true, mapViewController: mapViewController)
+  lazy var layerSelectView = LayerSelectView(layerSelectConfig: layerSelectConfig, mapViewController: mapViewController)
   
   func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
     if let url = urls.first {
