@@ -62,10 +62,3 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     fatalError("init(coder:) has not been implemented")
   }
 }
-
-
-
-
-
-
-
