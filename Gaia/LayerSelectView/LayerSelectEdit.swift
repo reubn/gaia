@@ -115,6 +115,8 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     
     jsonEditor.becomeFirstResponder()
     jsonEditor.selectedRange = NSRange(location: 0, length: 0)
+    
+    mapViewController.lsfpc.track(scrollView: jsonEditor)
   }
   
   func viewWillExit(){
