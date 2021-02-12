@@ -3,21 +3,29 @@ import UIKit
 
 class PanelActionButton: UIButton {
   private let colour: UIColor
+  private let backgroundColour: UIColor?
   private let deemphasise: Bool
   
-  init(_ systemName: String, colour: UIColor = .systemBlue, deemphasise: Bool = false){
+  init(_ systemName: String, colour: UIColor = .systemBlue, backgroundColour: UIColor? = nil, deemphasise: Bool = false){
     self.colour = colour
+    self.backgroundColour = backgroundColour
     self.deemphasise = deemphasise
     
     super.init(frame: CGRect())
   
     setImage(UIImage(systemName: systemName, withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
-    tintColor = deemphasise ? colour : .white
-    backgroundColor = deemphasise ? .white : colour
+    print(systemName, backgroundColour, deemphasise, deemphasise || (backgroundColour != nil))
+    tintColor = (deemphasise || (backgroundColour != nil)) ? colour : .white
+    backgroundColor = backgroundColour ?? (deemphasise ? .white : colour)
     
     contentVerticalAlignment = .fill
     contentHorizontalAlignment = .fill
     imageView!.contentMode = .scaleAspectFit
+    
+    setSize()
+  }
+  
+  func setSize(){
     imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
     layer.cornerRadius = 15
     layer.cornerCurve = .circular
@@ -35,12 +43,12 @@ class PanelActionButton: UIButton {
     didSet {
       if(deemphasise) {
         tintColor = isEnabled
-          ? deemphasise ? colour : .white
+          ? (deemphasise || backgroundColour != nil) ? colour : .white
           : .systemGray
         
       } else {
         backgroundColor = isEnabled
-          ? deemphasise ? .white : colour
+          ? backgroundColour ?? (deemphasise ? .white : colour)
           : .systemGray
       }
       
