@@ -35,14 +35,14 @@ class OfflineManager {
   }
   
   func downloadPack(layers: [Layer], bounds: MGLCoordinateBounds, fromZoomLevel: Double, toZoomLevel: Double) {
-    let style = Style(sortedLayers: layers)
-    let region = MGLTilePyramidOfflineRegion(styleURL: style.url, bounds: bounds, fromZoomLevel: fromZoomLevel, toZoomLevel: toZoomLevel)
+    let compositeStyle = CompositeStyle(sortedLayers: layers)
+    let region = MGLTilePyramidOfflineRegion(styleURL: compositeStyle.url, bounds: bounds, fromZoomLevel: fromZoomLevel, toZoomLevel: toZoomLevel)
     
     let layerMetadata = layers.map {LayerDefinition.Metadata($0)}
       
     let packContext = PackContext(
       layerMetadata: layerMetadata,
-      styleJSON: style.styleJSON,
+      style: compositeStyle.style,
       bounds: PackContext.Bounds(bounds),
       name: DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .medium, timeStyle: .short),
       toZoomLevel: Int(toZoomLevel),
@@ -116,7 +116,7 @@ protocol OfflineModeDelegate {
 
 struct PackContext: Codable {
   let layerMetadata: [LayerDefinition.Metadata]
-  let styleJSON: StyleJSON
+  let style: Style
   let bounds: Bounds
   let name: String
   let toZoomLevel: Int?

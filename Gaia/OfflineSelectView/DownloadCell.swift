@@ -181,7 +181,7 @@ class DownloadCell: UITableViewCell {
     
     status = pack.state
     
-    preview.styleURL = Style.toURL(styleJSON: context!.styleJSON)
+    preview.styleURL = CompositeStyle.toURL(style: context!.style)
     preview.setVisibleCoordinateBounds(MGLCoordinateBounds(context!.bounds), animated: false)
   }
 

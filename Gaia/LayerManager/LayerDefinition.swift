@@ -6,7 +6,7 @@ import CoreGPX
 struct LayerDefinition: Codable {
   let metadata: Metadata
   
-  let styleJSON: StyleJSON
+  let style: Style
   
   struct Metadata: Codable {
     let id: String
@@ -32,7 +32,7 @@ extension LayerDefinition {
   init(_ layer: Layer){
     self.init(
       metadata: Metadata(layer),
-      styleJSON: layer.styleJSON
+      style: layer.style
     )
   }
 }
@@ -68,7 +68,7 @@ extension LayerDefinition {
         group: "overlay",
         groupIndex: 0
       ),
-      styleJSON: StyleJSON(
+      style: Style(
         sources: [
           id: [
             "type": "geojson",

@@ -9,7 +9,7 @@ class LayerManager {
   var groups: [String: [Layer]]?
   var magicLayers: [Layer]?
 
-  let multicastStyleDidChangeDelegate = MulticastDelegate<(LayerManagerDelegate)>()
+  let multicastCompositeStyleDidChangeDelegate = MulticastDelegate<(LayerManagerDelegate)>()
 
   let layerGroups = [
     LayerGroup(id: "overlay", name: "Overlays", colour: .systemPink),
@@ -95,7 +95,7 @@ class LayerManager {
   }
 
   func informDelegates(){
-    multicastStyleDidChangeDelegate.invoke(invocation: {$0.styleDidChange(style: style)})
+    multicastCompositeStyleDidChangeDelegate.invoke(invocation: {$0.compositeStyleDidChange(compositeStyle: compositeStyle)})
   }
   
   func saveLayers(){
@@ -177,9 +177,9 @@ class LayerManager {
     }
   }
   
-  var style: Style {
+  var compositeStyle: CompositeStyle {
     get {
-      Style(sortedLayers: sortedLayers)
+      CompositeStyle(sortedLayers: sortedLayers)
     }
   }
 }
@@ -192,5 +192,5 @@ struct LayerGroup {
 
 
 protocol LayerManagerDelegate {
-  func styleDidChange(style: Style)
+  func compositeStyleDidChange(compositeStyle: CompositeStyle)
 }

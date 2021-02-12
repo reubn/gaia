@@ -87,7 +87,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     "group": "",
     "groupIndex": 0,
   },
-  "styleJSON": {
+  "style": {
     "sources": {
       "\(randomId)": {
         ...

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Layer" representedClassName="Layer" syncable="YES">
         <attribute name="enabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="group" attributeType="String"/>
         <attribute name="groupIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
-        <attribute name="styleJSONString" optional="YES" attributeType="String"/>
+        <attribute name="styleString" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Layer" positionX="-63" positionY="-18" width="128" height="119"/>
+        <element name="Layer" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

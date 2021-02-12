@@ -84,7 +84,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     self.layerManager = layerManager
     self.mapViewController = mapViewController
 
-    preview.styleURL = Style(sortedLayers: [_layer]).url
+    preview.styleURL = CompositeStyle(sortedLayers: [_layer]).url
     
     let mutuallyExclusive = layerSelectConfig.mutuallyExclusive
     backgroundColor = !mutuallyExclusive && _layer.enabled ? .systemBlue : .clear

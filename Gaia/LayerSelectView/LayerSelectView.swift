@@ -16,7 +16,7 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     
     super.init(frame: CGRect())
   
-    layerManager.multicastStyleDidChangeDelegate.add(delegate: self)
+    layerManager.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
     
     delegate = self
     
@@ -48,7 +48,7 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     })
   }
   
-  func styleDidChange(style _: Style) {
+  func compositeStyleDidChange(compositeStyle _: CompositeStyle) {
     stack.arrangedSubviews.forEach({
       ($0 as! Section).update()
     })

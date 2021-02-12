@@ -12,21 +12,21 @@ public class Layer: NSManagedObject {
   @NSManaged public var groupIndex: Int16
   @NSManaged public var id: String
   @NSManaged public var name: String
-  @NSManaged private var styleJSONString: String
+  @NSManaged private var styleString: String
   
-  var styleJSON: StyleJSON {
+  var style: Style {
     get {
       let decoder = JSONDecoder()
       
-      let data = styleJSONString.data(using: .utf8)
+      let data = styleString.data(using: .utf8)
       
-      return try! decoder.decode(StyleJSON.self, from: data!)
+      return try! decoder.decode(Style.self, from: data!)
     }
     
     set {
       let encoder = JSONEncoder()
       
-      styleJSONString = String(data: try! encoder.encode(newValue), encoding: .utf8)!
+      styleString = String(data: try! encoder.encode(newValue), encoding: .utf8)!
     }
   }
 }
@@ -50,6 +50,6 @@ extension Layer {
     self.group = layerDefinition.metadata.group
     self.groupIndex = Int16(layerDefinition.metadata.groupIndex)
     
-    self.styleJSON = layerDefinition.styleJSON
+    self.style = layerDefinition.style
   }
 }

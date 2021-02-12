@@ -18,7 +18,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate {
     
     super.init(frame: CGRect())
     
-    layerManager.multicastStyleDidChangeDelegate.add(delegate: self)
+    layerManager.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
     
     addSubview(layerSelectView)
     
@@ -44,7 +44,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate {
     print("exit OSL")
   }
   
-  func styleDidChange(style: Style) {
+  func compositeStyleDidChange(compositeStyle: CompositeStyle) {
     updatePanel()
   }
   

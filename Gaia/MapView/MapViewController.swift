@@ -29,12 +29,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     super.viewDidLoad()
 
     mapView = MGLMapView(frame: view.bounds)
-    layerManager.multicastStyleDidChangeDelegate.add(delegate: self)
+    layerManager.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
     offlineManager.multicastOfflineModeDidChangeDelegate.add(delegate: self)
     
-    let initialStyle = layerManager.style
-    mapView.styleURL = initialStyle.url
-    updateUIColourScheme(style: initialStyle)
+    let initialCompositeStyle = layerManager.compositeStyle
+    mapView.styleURL = initialCompositeStyle.url
+    updateUIColourScheme(compositeStyle: initialCompositeStyle)
 
     mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     mapView.logoView.isHidden = true
@@ -128,14 +128,14 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     userLocationButton.updateArrowForTrackingMode(mode: mode)
   }
   
-  func styleDidChange(style: Style) {
-    mapView.styleURL = style.url
-    updateUIColourScheme(style: style)
+  func compositeStyleDidChange(compositeStyle: CompositeStyle) {
+    mapView.styleURL = compositeStyle.url
+    updateUIColourScheme(compositeStyle: compositeStyle)
   }
   
-  func updateUIColourScheme(style: Style){
+  func updateUIColourScheme(compositeStyle: CompositeStyle){
     DispatchQueue.main.async { [self] in
-      let dark = style.needsDarkUI
+      let dark = compositeStyle.needsDarkUI
       mapView.window?.overrideUserInterfaceStyle = dark ? .dark : .light
       mapView.window?.tintColor = dark ? .white : uiColourTint
       mapView.compassView.image = compassImage(dark: dark)
