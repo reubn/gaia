@@ -21,21 +21,6 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     return label
   }()
   
-  lazy var dismissButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
-    button.contentVerticalAlignment = .fill
-    button.contentHorizontalAlignment = .fill
-    button.imageView!.contentMode = .scaleAspectFit
-    button.tintColor = UIColor.systemGray2
-
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.widthAnchor.constraint(equalToConstant: 30).isActive = true
-    button.heightAnchor.constraint(equalTo: button.widthAnchor).isActive = true
-
-    return button
-  }()
-  
   lazy var buttonsView: UIStackView = {
     let stack = UIStackView()
     
@@ -58,8 +43,8 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   
   let uiImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
   
-  private lazy var buttonsMap: [PanelButton: UIButton] = [
-    .dismiss: dismissButton,
+  private lazy var buttonsMap: [PanelButton: PanelActionButton] = [
+    .dismiss: PanelSmallActionButton("xmark.circle.fill", weight: .regular, colour: .systemGray2, backgroundColour: .clear),
     .accept: PanelActionButton("checkmark", colour: .systemGreen),
     .reject: PanelActionButton("xmark", colour: .systemRed),
     .next: PanelActionButton("arrow.right"),
@@ -88,11 +73,11 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     }
   }
   
-  @objc private func _panelButtonTapped(_ sender: UIButton){
+  @objc private func _panelButtonTapped(_ sender: PanelActionButton){
     panelButtonTapped(button: buttonsMap.key(forValue: sender)!)
   }
   
-  func getPanelButton(_ button: PanelButton) -> UIButton {
+  func getPanelButton(_ button: PanelButton) -> PanelActionButton {
     return buttonsMap[button]!
   }
   

@@ -45,7 +45,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     layerSelectView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
   }
   
-  func showShareSheet(_ sender: UIButton, layers: [Layer]) {
+  func showShareSheet(_ sender: PanelActionButton, layers: [Layer]) {
     let layerDefinitions = layers.map {LayerDefinition($0)}
     
     do {

@@ -55,3 +55,11 @@ class PanelActionButton: UIButton {
     }
   }
 }
+
+class PanelSmallActionButton: PanelActionButton {
+  override func setSize(){
+    translatesAutoresizingMaskIntoConstraints = false
+    widthAnchor.constraint(equalToConstant: 30).isActive = true
+    heightAnchor.constraint(equalTo: widthAnchor).isActive = true
+  }
+}

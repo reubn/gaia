@@ -9,7 +9,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   let mapViewController: MapViewController
   
   var _layer: Layer? = nil
-  var acceptButton: UIButton? = nil
+  var acceptButton: PanelActionButton? = nil
   
   lazy var layerManager = mapViewController.layerManager
   
