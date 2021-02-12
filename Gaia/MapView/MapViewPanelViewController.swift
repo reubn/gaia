@@ -25,7 +25,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     let stack = UIStackView()
     
     stack.axis = .horizontal
-    stack.alignment = .leading
+    stack.alignment = .center
     stack.distribution = .fillProportionally
     stack.spacing = 10
     
@@ -44,8 +44,8 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   let uiImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
   
   private lazy var buttonsMap: [PanelButton: PanelActionButton] = [
-    .dismiss: PanelSmallActionButton("xmark.circle.fill", colour: .systemGray2, backgroundColour: .clear),
-    .help: PanelSmallActionButton("questionmark.circle.fill", colour: .systemIndigo, backgroundColour: .clear),
+    .dismiss: PanelSmallActionButton("xmark", weight: .bold, colour: UIColor.systemBackground.withAlphaComponent(0.75), backgroundColour: .systemGray2),
+    .help: PanelSmallActionButton("questionmark", colour: .white, backgroundColour: .systemIndigo),
     .accept: PanelActionButton("checkmark", colour: .systemGreen),
     .reject: PanelActionButton("xmark", colour: .systemRed),
     .next: PanelActionButton("arrow.right"),
