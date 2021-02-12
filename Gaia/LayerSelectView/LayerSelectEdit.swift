@@ -67,7 +67,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
       if(layerDefinition == nil) {throw "No Layer"}
       
       let encoder = JSONEncoder()
-      encoder.outputFormatting = [.sortedKeys, .prettyPrinted]
+      encoder.outputFormatting = [.sortedKeys, .prettyPrinted, .withoutEscapingSlashes]
 
       let jsonData = try encoder.encode(layerDefinition)
       let jsonString = String(data: jsonData, encoding: .utf8)!
