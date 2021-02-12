@@ -45,6 +45,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   
   private lazy var buttonsMap: [PanelButton: PanelActionButton] = [
     .dismiss: PanelSmallActionButton("xmark.circle.fill", colour: .systemGray2, backgroundColour: .clear),
+    .help: PanelSmallActionButton("questionmark.circle.fill", colour: .systemIndigo, backgroundColour: .clear),
     .accept: PanelActionButton("checkmark", colour: .systemGreen),
     .reject: PanelActionButton("xmark", colour: .systemRed),
     .next: PanelActionButton("arrow.right"),
@@ -163,6 +164,7 @@ enum PanelButton {
   case new
   case star
   case share
+  case help
 }
 
 extension Dictionary where Value: Equatable {

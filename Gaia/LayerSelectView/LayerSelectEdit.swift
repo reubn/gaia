@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import SafariServices
 
 import Mapbox
 import KeyboardLayoutGuide
@@ -57,7 +58,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     }
     
     coordinatorView.panelViewController.title = _layer != nil ? "Edit Layer" : "New Layer"
-    coordinatorView.panelViewController.panelButtons = [.previous, .accept]
+    coordinatorView.panelViewController.panelButtons = [.previous, .accept, .help]
     
     acceptButton = coordinatorView.panelViewController.getPanelButton(.accept)
 
@@ -124,6 +125,12 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   func panelButtonTapped(button: PanelButton){
     if(button == .accept) {process()}
     else if(button == .previous) {coordinatorView.goTo(0)}
+    else if(button == .help) {
+
+
+      let vc = SFSafariViewController(url: URL(string: "https://docs.mapbox.com/mapbox-gl-js/style-spec/root")!)
+      mapViewController.lsfpc.present(vc, animated: true)
+    }
   }
   
   func process(){
