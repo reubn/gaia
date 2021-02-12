@@ -129,6 +129,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
 
 
       let vc = SFSafariViewController(url: URL(string: "https://docs.mapbox.com/mapbox-gl-js/style-spec/root")!)
+      vc.modalPresentationStyle = .popover
       mapViewController.lsfpc.present(vc, animated: true)
     }
   }
