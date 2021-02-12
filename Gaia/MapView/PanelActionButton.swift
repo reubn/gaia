@@ -6,15 +6,15 @@ class PanelActionButton: UIButton {
   private let backgroundColour: UIColor?
   private let deemphasise: Bool
   
-  init(_ systemName: String, colour: UIColor = .systemBlue, backgroundColour: UIColor? = nil, deemphasise: Bool = false){
+  init(_ systemName: String, weight: UIImage.SymbolWeight = .semibold, colour: UIColor = .systemBlue, backgroundColour: UIColor? = nil, deemphasise: Bool = false){
     self.colour = colour
     self.backgroundColour = backgroundColour
     self.deemphasise = deemphasise
     
     super.init(frame: CGRect())
   
-    setImage(UIImage(systemName: systemName, withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), for: .normal)
-    print(systemName, backgroundColour, deemphasise, deemphasise || (backgroundColour != nil))
+    setImage(UIImage(systemName: systemName, withConfiguration: UIImage.SymbolConfiguration(weight: weight)), for: .normal)
+    
     tintColor = (deemphasise || (backgroundColour != nil)) ? colour : .white
     backgroundColor = backgroundColour ?? (deemphasise ? .white : colour)
     
