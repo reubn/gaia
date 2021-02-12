@@ -29,8 +29,6 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     textView.autocapitalizationType = .none
     textView.autocorrectionType = .no
     
-    textView.text = "https://r3.cedar/config"
-    
     addSubview(textView)
     
     return textView
