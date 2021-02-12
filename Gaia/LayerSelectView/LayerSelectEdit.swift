@@ -114,7 +114,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     jsonEditor.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
     
     jsonEditor.becomeFirstResponder()
-
+    jsonEditor.selectedRange = NSRange(location: 0, length: 0)
   }
   
   func viewWillExit(){
