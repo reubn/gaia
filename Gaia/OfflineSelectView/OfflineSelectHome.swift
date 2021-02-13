@@ -9,6 +9,8 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   
   lazy var layerManager = mapViewController.layerManager
   lazy var offlineManager = mapViewController.offlineManager
+  
+  lazy var emptyState = OfflineSelectHomeEmpty(offlineManager: offlineManager)
 
   lazy var tableView: UITableView = {
     let tableView = DownloadsTableView()
@@ -34,6 +36,13 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     
     offlineManager.multicastDownloadDidUpdateDelegate.add(delegate: self)
     
+    addSubview(emptyState)
+    
+    emptyState.translatesAutoresizingMaskIntoConstraints = false
+    emptyState.topAnchor.constraint(equalTo: topAnchor).isActive = true
+    emptyState.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+    emptyState.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor).isActive = true
+    
     addSubview(tableView)
 
     tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -54,6 +63,8 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     coordinatorView.panelViewController.panelButtons = [.new, .dismiss]
     
     offlineManager.refreshDownloads()
+    
+    emptyState.update()
   }
   
   func viewWillExit(){
@@ -69,16 +80,25 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     if(pack != nil){
       let index = offlineManager.downloads!.firstIndex(of: pack!)
       
-      if(index == nil) {tableView.reloadData(); return}
+      if(index == nil) {
+        update()
+        
+        return
+      }
       
       let indexPath = IndexPath(row: index!, section: 0)
       let cell = tableView.cellForRow(at: indexPath) as? DownloadCell
       
       if(cell != nil) {cell!.update(pack: pack!, mapViewController: mapViewController)}
-      else {tableView.reloadData()}
+      else {update()}
     } else {
-      tableView.reloadData()
+      update()
     }
+  }
+  
+  func update(){
+    emptyState.update()
+    tableView.reloadData()
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

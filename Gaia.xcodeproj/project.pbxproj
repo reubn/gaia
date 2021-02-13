@@ -51,6 +51,8 @@
 		1B96528825D58EFC0017A43E /* LayerSelectConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96528725D58EFC0017A43E /* LayerSelectConfig.swift */; };
 		1B96528A25D5BC550017A43E /* LayerSelectEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96528925D5BC550017A43E /* LayerSelectEdit.swift */; };
 		1B96528D25D5C3DA0017A43E /* KeyboardLayoutGuide in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */; };
+		1B96529225D7E5F20017A43E /* LayerSelectViewEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96529125D7E5F20017A43E /* LayerSelectViewEmpty.swift */; };
+		1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */; };
 		1BA9BD0A25BA1C6300AC97C7 /* OfflineSelectHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0925BA1C6300AC97C7 /* OfflineSelectHome.swift */; };
 		1BA9BD0C25BA266700AC97C7 /* CoordinatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0B25BA266700AC97C7 /* CoordinatedView.swift */; };
 		1BA9BD0E25BA281800AC97C7 /* OfflineSelectArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0D25BA281800AC97C7 /* OfflineSelectArea.swift */; };
@@ -135,6 +137,8 @@
 		1B8C079225C493E5008C08B2 /* SelectableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableLabel.swift; sourceTree = "<group>"; };
 		1B96528725D58EFC0017A43E /* LayerSelectConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectConfig.swift; sourceTree = "<group>"; };
 		1B96528925D5BC550017A43E /* LayerSelectEdit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayerSelectEdit.swift; sourceTree = "<group>"; };
+		1B96529125D7E5F20017A43E /* LayerSelectViewEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectViewEmpty.swift; sourceTree = "<group>"; };
+		1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectHomeEmpty.swift; sourceTree = "<group>"; };
 		1BA9BD0925BA1C6300AC97C7 /* OfflineSelectHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectHome.swift; sourceTree = "<group>"; };
 		1BA9BD0B25BA266700AC97C7 /* CoordinatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatedView.swift; sourceTree = "<group>"; };
 		1BA9BD0D25BA281800AC97C7 /* OfflineSelectArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectArea.swift; sourceTree = "<group>"; };
@@ -183,6 +187,7 @@
 				1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */,
 				1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */,
 				1BA9BD1F25C2100F00AC97C7 /* LayerSelectView.swift */,
+				1B96529125D7E5F20017A43E /* LayerSelectViewEmpty.swift */,
 				1B96528725D58EFC0017A43E /* LayerSelectConfig.swift */,
 				1BA9BD2325C212A900AC97C7 /* LayerSelectHome.swift */,
 				1BA9BD2525C21D7C00AC97C7 /* LayerSelectImport.swift */,
@@ -339,6 +344,7 @@
 				1BBD3FF725B88F56007B8BC7 /* OfflineSelectPanelViewController.swift */,
 				1BBD3FF925B89181007B8BC7 /* OfflineSelectCoordinatorView.swift */,
 				1BA9BD0925BA1C6300AC97C7 /* OfflineSelectHome.swift */,
+				1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */,
 				1BA9BD0D25BA281800AC97C7 /* OfflineSelectArea.swift */,
 				1BA9BD1325BE248600AC97C7 /* OfflineSelectZoom.swift */,
 				1BA9BD0F25BA2A5E00AC97C7 /* OfflineSelectLayers.swift */,
@@ -450,6 +456,7 @@
 			files = (
 				1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */,
 				1B7644C325CAFA7300572A70 /* Style.swift in Sources */,
+				1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */,
 				1B6033BD25D1DBD300211150 /* toHex.swift in Sources */,
 				1B8C079325C493E5008C08B2 /* SelectableLabel.swift in Sources */,
 				1B6638CE25B1EA5F0071F03D /* MapButton.swift in Sources */,
@@ -498,6 +505,7 @@
 				1B3401D025B474260091FA3B /* SectionTableView.swift in Sources */,
 				1B7644BF25CAD61900572A70 /* Layer+CoreData.swift in Sources */,
 				1B6033BF25D1DBEE00211150 /* randomSystemColor.swift in Sources */,
+				1B96529225D7E5F20017A43E /* LayerSelectViewEmpty.swift in Sources */,
 				1B8C078E25C48245008C08B2 /* LocationInfoPanelLayout.swift in Sources */,
 				1B3401D525B4A1570091FA3B /* LayerManager.swift in Sources */,
 				1B62CE9025D0288400D06E55 /* AboutView.swift in Sources */,

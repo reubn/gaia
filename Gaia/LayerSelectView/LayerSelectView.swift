@@ -11,6 +11,8 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
   
   let stack = UIStackView()
   
+  lazy var emptyState = LayerSelectViewEmpty(layerManager: layerManager)
+  
   init(layerSelectConfig: LayerSelectConfig, mapViewController: MapViewController){
     self.mapViewController = mapViewController
     
@@ -38,11 +40,20 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     stack.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     stack.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
     
+    stack.addSubview(emptyState)
+    
+    emptyState.translatesAutoresizingMaskIntoConstraints = false
+    emptyState.topAnchor.constraint(equalTo: topAnchor).isActive = true
+    emptyState.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+    emptyState.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor).isActive = true
+    
+    emptyState.update()
+    
     layerManager.layerGroups.forEach({
       let section = Section(group: $0, layerSelectConfig: layerSelectConfig, layerManager: layerManager, mapViewController: mapViewController, scrollView: self)
-      
+
       stack.addArrangedSubview(section)
-      
+
       section.translatesAutoresizingMaskIntoConstraints = false
       section.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
     })
@@ -52,6 +63,8 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     stack.arrangedSubviews.forEach({
       ($0 as! Section).update()
     })
+    
+    emptyState.update()
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -62,4 +75,3 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     fatalError("init(coder:) has not been implemented")
   }
 }
-
