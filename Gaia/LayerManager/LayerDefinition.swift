@@ -64,7 +64,7 @@ extension LayerDefinition {
     self.init(
       metadata: LayerDefinition.Metadata(
         id: id,
-        name: id,
+        name: "GPX Import",
         group: "overlay",
         groupIndex: 0
       ),
