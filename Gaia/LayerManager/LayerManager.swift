@@ -108,10 +108,10 @@ class LayerManager {
     }
   }
   
-  func newLayer(_ layerDefinition: LayerDefinition) -> Layer? {
+  func newLayer(_ layerDefinition: LayerDefinition, enabled: Bool = false) -> Layer? {
     if(layers.contains(where: {$0.id == layerDefinition.metadata.id})) {return nil}
     
-    let layer = Layer(layerDefinition, context: managedContext)
+    let layer = Layer(layerDefinition, context: managedContext, enabled: enabled)
 
     return layer
   }

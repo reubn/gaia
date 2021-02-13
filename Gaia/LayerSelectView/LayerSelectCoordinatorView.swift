@@ -49,7 +49,7 @@ class LayerSelectCoordinatorView: CoordinatorView {
       if(gpx != nil) {
         DispatchQueue.main.async {
           let layerDefinition = LayerDefinition(gpx!)
-          _ = self.layerManager.newLayer(layerDefinition)
+          _ = self.layerManager.newLayer(layerDefinition, enabled: true)
         
           self.layerManager.saveLayers()
           super.done()

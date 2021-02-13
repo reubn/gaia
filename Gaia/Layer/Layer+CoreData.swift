@@ -36,10 +36,10 @@ extension Layer: Identifiable {}
 
 // Layer from LayerDefinition
 extension Layer {
-  convenience init(_ layerDefinition: LayerDefinition, context: NSManagedObjectContext){
+  convenience init(_ layerDefinition: LayerDefinition, context: NSManagedObjectContext, enabled: Bool){
     self.init(context: context)
     
-    self.enabled = false
+    self.enabled = enabled
     
     self.update(layerDefinition)
   }
