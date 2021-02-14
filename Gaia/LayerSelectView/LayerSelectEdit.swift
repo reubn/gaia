@@ -9,10 +9,27 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   unowned let coordinatorView: LayerSelectCoordinatorView
   let mapViewController: MapViewController
   
+  let colourRegex = try! NSRegularExpression(pattern: "(?<=#)([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})")
+  
   var _layer: Layer? = nil
   var acceptButton: PanelActionButton? = nil
+  var colourEditingRange: NSRange? = nil
   
   lazy var layerManager = mapViewController.layerManager
+  
+  lazy var colorWell: UIColorWell = {
+    let colorWell = UIColorWell()
+    
+    colorWell.isHidden = true
+
+    addSubview(colorWell)
+    
+    colorWell.translatesAutoresizingMaskIntoConstraints = false
+    colorWell.rightAnchor.constraint(equalTo: jsonEditor.rightAnchor, constant: -10).isActive = true
+    colorWell.bottomAnchor.constraint(equalTo: jsonEditor.bottomAnchor, constant: -10).isActive = true
+    
+    return colorWell
+  }()
   
   lazy var jsonEditor: UITextView = {
     let textView = UITextView()
@@ -106,14 +123,19 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
 """
     }
     
+
     jsonEditor.translatesAutoresizingMaskIntoConstraints = false
     jsonEditor.topAnchor.constraint(equalTo: topAnchor).isActive = true
-    jsonEditor.bottomAnchor.constraint(equalTo: keyboardLayoutGuide.topAnchor).isActive = true
+    jsonEditor.bottomAnchor.constraint(equalTo: keyboardLayoutGuideNoSafeArea.topAnchor, constant: -10).isActive = true
     jsonEditor.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
     jsonEditor.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
     
     jsonEditor.becomeFirstResponder()
     jsonEditor.selectedRange = NSRange(location: 0, length: 0)
+    
+    parseTextForColours()
+    
+    colorWell.addTarget(self, action: #selector(colourChanged), for: .valueChanged)
     
     mapViewController.lsfpc.track(scrollView: jsonEditor)
   }
@@ -126,8 +148,6 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     if(button == .accept) {process()}
     else if(button == .previous) {coordinatorView.goTo(0)}
     else if(button == .help) {
-
-
       let vc = SFSafariViewController(url: URL(string: "https://docs.mapbox.com/mapbox-gl-js/style-spec/root")!)
       vc.modalPresentationStyle = .popover
       mapViewController.lsfpc.present(vc, animated: true)
@@ -155,6 +175,40 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   
   func textViewDidChange(_ textView: UITextView){
     acceptButton?.isEnabled = true
+    parseTextForColours()
+  }
+  
+  func parseTextForColours(){
+    let colourMatches = colourRegex.matches(jsonEditor.text)
+
+    if(colourMatches.count == 1) {
+      let match = colourMatches[0]
+      let range = match.range
+      
+      let hex = String(jsonEditor.text[range])
+      let uiColor = UIColor(hex: hex)
+
+      if(uiColor != nil) {
+        self.colorWell.selectedColor = uiColor!
+        self.colorWell.isHidden = false
+        self.colourEditingRange = range
+      }
+    } else {
+      self.colorWell.selectedColor = nil
+      self.colorWell.isHidden = true
+    }
+  }
+  
+  @objc func colourChanged(){
+    let selectedColour = colorWell.selectedColor!
+    
+    let hexString = selectedColour.toHex()!
+
+    let replaced = (jsonEditor.text as NSString).replacingCharacters(in: colourEditingRange!, with: hexString)
+    
+    colourEditingRange = NSRange(location: colourEditingRange!.location, length: hexString.count)
+
+    jsonEditor.text = String(replaced)
   }
 
   required init(coder: NSCoder) {
@@ -163,3 +217,20 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
 }
 
 extension String: Error {}
+extension String {
+  subscript(_ range: NSRange) -> String {
+    let start = self.index(self.startIndex, offsetBy: range.lowerBound)
+    let end = self.index(self.startIndex, offsetBy: range.upperBound)
+    let subString = self[start..<end]
+    
+    return String(subString)
+  }
+}
+
+extension NSRegularExpression {
+  func matches(_ string: String) -> [NSTextCheckingResult] {
+    let range = NSRange(location: 0, length: string.utf16.count)
+    
+    return matches(in: string, range: range)
+  }
+}
