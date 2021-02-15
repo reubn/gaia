@@ -12,7 +12,7 @@ class LayerSelectImport: UIView, CoordinatedView {
   
   lazy var urlInput: UITextField = {
     let textField = TextField()
-    textField.placeholder = "https://server.com/layerDefinitions.json"
+    textField.placeholder = "/{x}/{y}/{z}, .gpx, or .json"
     textField.attributedPlaceholder = NSAttributedString(string: textField.placeholder!, attributes: [.foregroundColor: UIColor.gray])
     textField.textColor = .darkGray
     textField.backgroundColor = .white
@@ -74,25 +74,63 @@ class LayerSelectImport: UIView, CoordinatedView {
     if(button == .accept) {process()}
     else if(button == .previous) {coordinatorView.back()}
   }
+  
+  func validateURL(url: String) -> URLCheckingResult {
+    let validAsIs = url.isValidURL()
+    if(validAsIs) {
+      return .validAsIs
+    }
+    
+    let urlEncoded = url.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+    let validIfEncoded = urlEncoded?.isValidURL() ?? false
+    
+    if(validIfEncoded) {
+      return .validIfEncoded(urlEncoded!)
+    }
+    
+    return .notValid
+  }
 
   @objc func urlChanged(){
     let acceptButton = coordinatorView.panelViewController.getPanelButton(.accept)
+    let urlValidation = validateURL(url: urlInput.text ?? "")
     
-    acceptButton.isEnabled = (urlInput.text ?? "").isValidURL()
+    switch urlValidation {
+      case .validAsIs:
+        acceptButton.isEnabled = true
+      case .validIfEncoded:
+        acceptButton.isEnabled = true
+      case .notValid:
+        acceptButton.isEnabled = false
+    }
   }
   
   @objc func process(){
-    let string = (urlInput.text ?? "")
+    let rawURL = (urlInput.text ?? "")
+    let urlValidation = validateURL(url: rawURL)
     
-    if(string.isValidURL()) {
-      urlInput.resignFirstResponder()
-      
-      if let url = URL(string: string) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
-          if let data = data {self.coordinatorView.done(data: data)}
-        }.resume()
-      }
+    var requestURL = rawURL
+
+    switch urlValidation {
+      case .validAsIs: ()
+      case .validIfEncoded(let encoded):
+        requestURL = encoded
+      case .notValid: return
     }
+    
+    URLSession.shared.dataTask(with: URL(string: requestURL)!) {data, response, error in
+      let importAccepted = self.coordinatorView.done(data: data, url: rawURL)
+      
+      DispatchQueue.main.async {
+        if(importAccepted){
+          self.urlInput.resignFirstResponder()
+          self.urlInput.text = ""
+        } else {
+          let acceptButton = self.coordinatorView.panelViewController.getPanelButton(.accept)
+          acceptButton.isEnabled = false
+        }
+      }
+    }.resume()
   }
 
   required init(coder: NSCoder) {
@@ -152,4 +190,10 @@ extension String {
     
     return predicate.evaluate(with: self)
   }
+}
+
+enum URLCheckingResult {
+  case validAsIs
+  case validIfEncoded(String)
+  case notValid
 }

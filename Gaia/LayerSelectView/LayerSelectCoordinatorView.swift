@@ -27,33 +27,47 @@ class LayerSelectCoordinatorView: CoordinatorView {
     super.ready()
   }
   
-  func done(data: Data){
-    do {
-      let decoder = JSONDecoder()
+  func done(data optionalData: Data? = nil, url: String? = nil) -> Bool {
+    let data = optionalData ?? Data()
+    
+    var layerDefinitions: [LayerDefinition] = []
+ 
+    let decoder = JSONDecoder()
 
-      let contents = try (try? decoder.decode([LayerDefinition].self, from: data)) ?? [decoder.decode(LayerDefinition.self, from: data)]
+    let jsonLayerDefinitions = try? (try? decoder.decode([LayerDefinition].self, from: data)) ?? [decoder.decode(LayerDefinition.self, from: data)]
+    
+    if(jsonLayerDefinitions != nil) {
+      layerDefinitions = jsonLayerDefinitions!
+    } else {
+      let validURLScheme = url != nil && ["{x}", "{y}", "{z}"].allSatisfy({url!.contains($0)})
       
+      if(validURLScheme) {
+        layerDefinitions = [LayerDefinition(xyzURL: url!)]
+      } else {
+        let gpx = GPXParser(withData: data).parsedData()
+        
+        if((gpx?.tracks.count ?? 0) != 0 ) {
+          layerDefinitions = [LayerDefinition(gpx: gpx!)]
+        }
+      }
+    }
+    
+    if(layerDefinitions.count > 0) {
       DispatchQueue.main.async {
-        for layerDefinition in contents {
-          _ = self.layerManager.newLayer(layerDefinition)
+        let enabled = layerDefinitions.count == 1
+        
+        for layerDefinition in layerDefinitions {
+          _ = self.layerManager.newLayer(layerDefinition, enabled: enabled)
         }
         
         self.layerManager.saveLayers()
         super.done()
       }
-    } catch {
-      let gpx = GPXParser(withData: data).parsedData()
       
-      if(gpx != nil) {
-        DispatchQueue.main.async {
-          let layerDefinition = LayerDefinition(gpx!)
-          _ = self.layerManager.newLayer(layerDefinition, enabled: true)
-        
-          self.layerManager.saveLayers()
-          super.done()
-        }
-      }
+      return true
     }
+    
+    return false
   }
   
   required init(coder: NSCoder) {

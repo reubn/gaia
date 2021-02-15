@@ -35,32 +35,58 @@ extension LayerDefinition {
       style: layer.style
     )
   }
-}
-
-extension LayerDefinition {
-      let features: [String: Any] = [
-        "type": "FeatureCollection",
-        "features": gpx.tracks.flatMap {track in
-          track.tracksegments.map {trackSegment in
-            [
-              "type": "Feature",
-              "properties": [
-                "colour": "#" + UIColor.randomSystemColor().toHex()!
-              ],
-              "geometry": [
-                "type": "LineString",
-                "coordinates": trackSegment.trackpoints.map {trackPoint in
-                  [trackPoint.longitude!, trackPoint.latitude!]
-                }
-              ]
+  
+  init(xyzURL: String){
+    let id = "xyz_" + randomString(length: 6)
+    
+    self.init(
+      metadata: LayerDefinition.Metadata(
+        id: id,
+        name: "XYZ Import",
+        group: "uncategorised",
+        groupIndex: 0
+      ),
+      style: Style(
+        sources: [
+          id: [
+            "type": "raster",
+            "tiles": [xyzURL]
+          ]
+        ],
+        layers: [
+          [
+            "id": id,
+            "source": id,
+            "type": "raster"
+          ]
+        ]
+      )
+    )
+  }
+  
   init(gpx: GPXRoot){
     let id = "gpx_" + randomString(length: 6)
-            ]
-          }
-        }
-      ]
-      
     
+    let features: [String: Any] = [
+      "type": "FeatureCollection",
+      "features": gpx.tracks.flatMap {track in
+        track.tracksegments.map {trackSegment in
+          [
+            "type": "Feature",
+            "properties": [
+              "colour": "#" + UIColor.randomSystemColor().toHex()!
+            ],
+            "geometry": [
+              "type": "LineString",
+              "coordinates": trackSegment.trackpoints.map {trackPoint in
+                [trackPoint.longitude!, trackPoint.latitude!]
+              }
+            ]
+          ]
+        }
+      }
+    ]
+
     self.init(
       metadata: LayerDefinition.Metadata(
         id: id,
@@ -74,7 +100,7 @@ extension LayerDefinition {
             "type": "geojson",
             "data": features
           ]
-          ],
+        ],
         layers: [
           [
             "id": id,
