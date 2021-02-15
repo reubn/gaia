@@ -68,7 +68,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     
     _layer = data as? Layer
     
-    let layerDefinition = _layer != nil ? LayerDefinition(_layer!) : nil
+    let layerDefinition = _layer != nil ? LayerDefinition(layer: _layer!) : nil
     
     if(coordinatorView.mapViewController.lsfpc.viewIfLoaded?.window != nil) {
       coordinatorView.mapViewController.lsfpc.move(to: .full, animated: true)

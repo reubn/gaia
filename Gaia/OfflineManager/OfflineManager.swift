@@ -38,7 +38,7 @@ class OfflineManager {
     let compositeStyle = CompositeStyle(sortedLayers: layers)
     let region = MGLTilePyramidOfflineRegion(styleURL: compositeStyle.url, bounds: bounds, fromZoomLevel: fromZoomLevel, toZoomLevel: toZoomLevel)
     
-    let layerMetadata = layers.map {LayerDefinition.Metadata($0)}
+    let layerMetadata = layers.map {LayerDefinition.Metadata(layer: $0)}
       
     let packContext = PackContext(
       layerMetadata: layerMetadata,

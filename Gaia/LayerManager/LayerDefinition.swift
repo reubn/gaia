@@ -18,7 +18,7 @@ struct LayerDefinition: Codable {
 
 
 extension LayerDefinition.Metadata {
-  init(_ layer: Layer){
+  init(layer: Layer){
     self.init(
       id: layer.id,
       name: layer.name,
@@ -29,16 +29,15 @@ extension LayerDefinition.Metadata {
 }
 
 extension LayerDefinition {
-  init(_ layer: Layer){
+  init(layer: Layer){
     self.init(
-      metadata: Metadata(layer),
+      metadata: Metadata(layer: layer),
       style: layer.style
     )
   }
 }
 
 extension LayerDefinition {
-  init(_ gpx: GPXRoot){
       let features: [String: Any] = [
         "type": "FeatureCollection",
         "features": gpx.tracks.flatMap {track in
@@ -54,6 +53,7 @@ extension LayerDefinition {
                   [trackPoint.longitude!, trackPoint.latitude!]
                 }
               ]
+  init(gpx: GPXRoot){
             ]
           }
         }

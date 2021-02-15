@@ -52,7 +52,7 @@ class LayerManager {
   }
 
   func layerSortingFunction(a: Layer, b: Layer) -> Bool {
-    return layerSortingFunction(a: LayerDefinition.Metadata(a), b: LayerDefinition.Metadata(b))
+    return layerSortingFunction(a: LayerDefinition.Metadata(layer: a), b: LayerDefinition.Metadata(layer: b))
   }
   
   func layerSortingFunction(a: LayerDefinition.Metadata, b: LayerDefinition.Metadata) -> Bool {

@@ -46,7 +46,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
   }
   
   func showShareSheet(_ sender: PanelActionButton, layers: [Layer]) {
-    let layerDefinitions = layers.map {LayerDefinition($0)}
+    let layerDefinitions = layers.map {LayerDefinition(layer: $0)}
     
     do {
       let encoder = JSONEncoder()
