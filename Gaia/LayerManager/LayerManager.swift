@@ -12,6 +12,7 @@ class LayerManager {
   let multicastCompositeStyleDidChangeDelegate = MulticastDelegate<(LayerManagerDelegate)>()
 
   let layerGroups = [
+    LayerGroup(id: "uncategorised", name: "Uncategorised", colour: .systemPurple),
     LayerGroup(id: "overlay", name: "Overlays", colour: .systemPink),
     LayerGroup(id: "aerial", name: "Aerial Imagery", colour: .systemGreen),
     LayerGroup(id: "base", name: "Base Maps", colour: .systemBlue),
