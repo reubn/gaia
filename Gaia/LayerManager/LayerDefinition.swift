@@ -54,12 +54,12 @@ extension LayerDefinition {
                 }
               ]
   init(gpx: GPXRoot){
+    let id = "gpx_" + randomString(length: 6)
             ]
           }
         }
       ]
       
-      let id = "gpx_" + randomString(length: 6)
     
     self.init(
       metadata: LayerDefinition.Metadata(
