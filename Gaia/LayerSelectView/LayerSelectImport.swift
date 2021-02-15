@@ -4,7 +4,7 @@ import UIKit
 import Mapbox
 import KeyboardLayoutGuide
 
-class LayerSelectImport: UIView, CoordinatedView, UITextFieldDelegate {
+class LayerSelectImport: UIView, CoordinatedView {
   unowned let coordinatorView: LayerSelectCoordinatorView
   let mapViewController: MapViewController
   
@@ -24,7 +24,6 @@ class LayerSelectImport: UIView, CoordinatedView, UITextFieldDelegate {
     textField.autocapitalizationType = .none
     textField.autocorrectionType = .no
     
-//    textField.delegate = self
     textField.addTarget(self, action: #selector(urlChanged), for: .editingChanged)
     textField.addTarget(self, action: #selector(process), for: .editingDidEndOnExit)
     
