@@ -31,8 +31,6 @@ class LayerSelectCoordinatorView: CoordinatorView {
     do {
       let decoder = JSONDecoder()
 
-      
-      print(contents)
       let contents = try (try? decoder.decode([LayerDefinition].self, from: data)) ?? [decoder.decode(LayerDefinition.self, from: data)]
       
       DispatchQueue.main.async {
