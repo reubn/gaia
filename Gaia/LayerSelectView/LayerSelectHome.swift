@@ -14,15 +14,16 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
   lazy var layerSelectView = LayerSelectView(layerSelectConfig: layerSelectConfig, mapViewController: mapViewController)
   
   func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    var result: Bool = false
+    
     if let url = urls.first {
-      print(url)
-      
       let data = try? Data(contentsOf: url)
       if(data != nil) {
-        self.coordinatorView.done(data: data!)
+       result = self.coordinatorView.done(data: data!)
       }
-      
     }
+    
+    UINotificationFeedbackGenerator().notificationOccurred(result ? .success : .error)
   }
 
   init(coordinatorView: LayerSelectCoordinatorView, mapViewController: MapViewController){

@@ -90,6 +90,20 @@ class LayerSelectImport: UIView, CoordinatedView {
     
     return .notValid
   }
+  
+  func handleRejection(){
+    let acceptButton = self.coordinatorView.panelViewController.getPanelButton(.accept)
+    acceptButton.isEnabled = false
+    
+    UINotificationFeedbackGenerator().notificationOccurred(.error)
+  }
+  
+  func handleSuccess(){
+    self.urlInput.resignFirstResponder()
+    self.urlInput.text = ""
+    
+    UINotificationFeedbackGenerator().notificationOccurred(.success)
+  }
 
   @objc func urlChanged(){
     let acceptButton = coordinatorView.panelViewController.getPanelButton(.accept)
@@ -115,7 +129,7 @@ class LayerSelectImport: UIView, CoordinatedView {
       case .validAsIs: ()
       case .validIfEncoded(let encoded):
         requestURL = encoded
-      case .notValid: return
+      case .notValid: return handleRejection()
     }
     
     URLSession.shared.dataTask(with: URL(string: requestURL)!) {data, response, error in
@@ -123,11 +137,9 @@ class LayerSelectImport: UIView, CoordinatedView {
       
       DispatchQueue.main.async {
         if(importAccepted){
-          self.urlInput.resignFirstResponder()
-          self.urlInput.text = ""
+          self.handleSuccess()
         } else {
-          let acceptButton = self.coordinatorView.panelViewController.getPanelButton(.accept)
-          acceptButton.isEnabled = false
+          self.handleRejection()
         }
       }
     }.resume()

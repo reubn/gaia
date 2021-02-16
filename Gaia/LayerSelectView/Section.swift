@@ -242,14 +242,18 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
   }
   
   func toggleLayer(layer: Layer, mutuallyExclusive: Bool){
+    var result: Bool
+    
     if(layer.enabled) {
-      layerManager.disableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
+      result = layerManager.disableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
     }
     else {
-      layerManager.enableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
+      result = layerManager.enableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
     }
     
-    UISelectionFeedbackGenerator().selectionChanged()
+    if(result) {
+      UISelectionFeedbackGenerator().selectionChanged()
+    }
   }
   
   @objc func tableViewLabelClick(sender : UITapGestureRecognizer){

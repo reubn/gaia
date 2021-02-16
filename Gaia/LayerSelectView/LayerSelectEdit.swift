@@ -167,9 +167,12 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
       
       layerManager.saveLayers()
       
+      UINotificationFeedbackGenerator().notificationOccurred(.success)
+      
       coordinatorView.goTo(0)
     } catch {
       acceptButton?.isEnabled = false
+      UINotificationFeedbackGenerator().notificationOccurred(.error)
     }
   }
   

@@ -123,7 +123,7 @@ class LayerManager {
     saveLayers()
   }
 
-  func enableLayer(layer: Layer, mutuallyExclusive: Bool) {
+  @discardableResult func enableLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
     if(layer.group == "overlay" || !mutuallyExclusive) {
       layer.enabled = true
     } else {
@@ -135,14 +135,19 @@ class LayerManager {
     }
 
     saveLayers()
+    
+    return true
   }
 
-  func disableLayer(layer: Layer, mutuallyExclusive: Bool) {
+  @discardableResult func disableLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
     if(layer.group == "overlay" || !mutuallyExclusive || activeLayers.filter({$0.group != "overlay"}).count > 1) {
       layer.enabled = false
+      saveLayers()
+      
+      return true
     }
-
-    saveLayers()
+    
+    return false
   }
   
   func filterLayers(_ shouldBeEnabled: (Layer) -> Bool){
