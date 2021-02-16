@@ -137,8 +137,10 @@ class LayerManager {
     saveLayers()
   }
 
-  func disableLayer(layer: Layer) {
-    layer.enabled = false
+  func disableLayer(layer: Layer, mutuallyExclusive: Bool) {
+    if(layer.group == "overlay" || !mutuallyExclusive || activeLayers.filter({$0.group != "overlay"}).count > 1) {
+      layer.enabled = false
+    }
 
     saveLayers()
   }
@@ -166,7 +168,7 @@ class LayerManager {
 
       // and hide them
       activeOverlayLayers.forEach({
-        disableLayer(layer: $0)
+        disableLayer(layer: $0, mutuallyExclusive: false)
       })
     } else {
       // no active overlays, restore

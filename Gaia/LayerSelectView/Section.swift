@@ -243,7 +243,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
   
   func toggleLayer(layer: Layer, mutuallyExclusive: Bool){
     if(layer.enabled) {
-      layerManager.disableLayer(layer: layer)
+      layerManager.disableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
     }
     else {
       layerManager.enableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
