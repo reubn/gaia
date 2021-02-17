@@ -128,6 +128,31 @@ class Section: UIStackView {
     tableView.reloadData()
   }
   
+  func toggleLayer(layer: Layer, mutuallyExclusive: Bool){
+    var result: Bool
+    
+    if(layer.enabled) {
+      result = layerManager.disableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
+    }
+    else {
+      result = layerManager.enableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
+    }
+    
+    if(result) {
+      UISelectionFeedbackGenerator().selectionChanged()
+    }
+  }
+  
+  @objc func tableViewLabelClick(sender : UITapGestureRecognizer){
+    let tapLocation = sender.location(in: tableView)
+    let indexPath = self.tableView.indexPathForRow(at: tapLocation)
+    let position = indexPath?.row ?? 0
+  
+    let layer = layers[position]
+    
+    toggleLayer(layer: layer, mutuallyExclusive: layerSelectConfig.mutuallyExclusive)
+  }
+  
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -239,31 +264,6 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       
       return UIMenu(title: "", children: children)
     }
-  }
-  
-  func toggleLayer(layer: Layer, mutuallyExclusive: Bool){
-    var result: Bool
-    
-    if(layer.enabled) {
-      result = layerManager.disableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
-    }
-    else {
-      result = layerManager.enableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
-    }
-    
-    if(result) {
-      UISelectionFeedbackGenerator().selectionChanged()
-    }
-  }
-  
-  @objc func tableViewLabelClick(sender : UITapGestureRecognizer){
-    let tapLocation = sender.location(in: tableView)
-    let indexPath = self.tableView.indexPathForRow(at: tapLocation)
-    let position = indexPath?.row ?? 0
-  
-    let layer = layers[position]
-    
-    toggleLayer(layer: layer, mutuallyExclusive: layerSelectConfig.mutuallyExclusive)
   }
 }
 
