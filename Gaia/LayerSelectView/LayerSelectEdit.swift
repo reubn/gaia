@@ -158,17 +158,27 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     let string = jsonEditor.text!
     
     do {
+      var result: Bool
       let decoder = JSONDecoder()
       
       let data = string.data(using: .utf8)!
-      let layerDefinition = try decoder.decode(LayerDefinition.self, from: data)
+
+      if(_layer != nil) {
+        let layerDefinition = try decoder.decode(LayerDefinition.self, from: data)
+        
+        _layer!.update(layerDefinition)
+        layerManager.saveLayers()
+        
+        result = true
+      } else {
+        result = coordinatorView.done(data: data, url: nil)
+      }
       
-      _layer?.update(layerDefinition)
-      
-      layerManager.saveLayers()
+      if(!result) {
+        throw "Could Not Save Edit"
+      }
       
       UINotificationFeedbackGenerator().notificationOccurred(.success)
-      
       coordinatorView.goTo(0)
     } catch {
       acceptButton?.isEnabled = false
