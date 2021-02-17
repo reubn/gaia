@@ -226,7 +226,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       
       children.append(UIAction(
         title: "Edit",
-        image: UIImage(systemName: "pencil")) { _ in
+        image: UIImage(systemName: "slider.horizontal.3")) { _ in
           self.layerSelectConfig.layerEditDelegate?.layerEditWasRequested(layer: layer)
       })
       
