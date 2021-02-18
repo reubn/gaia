@@ -62,7 +62,19 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     return display
   }()
   
-  lazy var metricDisplays = [headingDisplay, elevationDisplay]
+  lazy var distanceDisplay: DistanceDisplay = {
+    let display = DistanceDisplay()
+    
+    mainView.addSubview(display)
+    
+    display.translatesAutoresizingMaskIntoConstraints = false
+    display.leftAnchor.constraint(equalTo: mainView.leftAnchor).isActive = true
+    display.topAnchor.constraint(equalTo: mainView.topAnchor).isActive = true
+    
+    return display
+  }()
+  
+  lazy var metricDisplays = [headingDisplay, elevationDisplay, distanceDisplay]
   
   init(mapViewController: MapViewController, location: LocationInfoType){
     self.mapViewController = mapViewController
@@ -82,6 +94,9 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     mainView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     
     update(location: location)
+    
+    mapViewController.multicastUserLocationDidUpdateDelegate.add(delegate: self)
+    userLocationDidUpdate()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -91,25 +106,26 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
   func update(location: LocationInfoType){
     self.location = location
     
+    for display in metricDisplays {
+      display.isHidden = true
+    }
+    
     switch location {
       case .user:
-        mapViewController.multicastUserLocationDidUpdateDelegate.add(delegate: self)
-        userLocationDidUpdate()
-        
-        for display in metricDisplays {
-          display.isHidden = false
-        }
+        headingDisplay.isHidden = false
+        elevationDisplay.isHidden = false
         
         removePointsFromMap()
       case .map(let coordinate):
-        mapViewController.multicastUserLocationDidUpdateDelegate.remove(delegate: self)
         setCoordinateTitle(coordinate: coordinate)
         displayPointOnMap(coordinate: coordinate)
         
-        for display in metricDisplays {
-          display.isHidden = true
-        }
+        distanceDisplay.isHidden = false
         
+        var value = (self.distanceDisplay.value as! CoordinatePair)
+        value.a = coordinate
+        self.distanceDisplay.value = value
+
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
     }
   }
@@ -139,7 +155,14 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     let heading = mapViewController.mapView.userLocation!.heading
     let location = mapViewController.mapView.userLocation!.location
     
-    setCoordinateTitle(coordinate: coordinate)
+    if case .user = self.location {
+      setCoordinateTitle(coordinate: coordinate)
+    } else {
+      var value = (self.distanceDisplay.value as! CoordinatePair)
+      value.b = coordinate
+      self.distanceDisplay.value = value
+    }
+    
     
     if(heading != nil) {
       self.headingDisplay.value = heading!
