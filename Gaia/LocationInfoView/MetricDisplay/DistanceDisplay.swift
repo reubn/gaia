@@ -67,7 +67,7 @@ class DistanceDisplay: MetricDisplay {
   func formatImperial(meters: Double) -> String {
     let yards = meters * 1.0936133
     
-    let miles = yards >= 1760
+    let miles = yards >= 500
     
     let value = miles ? (yards / 1760) : yards
     let suffix = miles ? "mi" : "yd"
