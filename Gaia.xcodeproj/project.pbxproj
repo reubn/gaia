@@ -53,6 +53,7 @@
 		1B96529225D7E5F20017A43E /* LayerSelectViewEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96529125D7E5F20017A43E /* LayerSelectViewEmpty.swift */; };
 		1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */; };
 		1BA03E3425DDAEEE00EE273C /* CLLocationCoordinate-format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate-format.swift */; };
+		1BA03E3625DE8BE300EE273C /* UIImage-draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA03E3525DE8BE300EE273C /* UIImage-draw.swift */; };
 		1BA9BD0A25BA1C6300AC97C7 /* OfflineSelectHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0925BA1C6300AC97C7 /* OfflineSelectHome.swift */; };
 		1BA9BD0C25BA266700AC97C7 /* CoordinatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0B25BA266700AC97C7 /* CoordinatedView.swift */; };
 		1BA9BD0E25BA281800AC97C7 /* OfflineSelectArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0D25BA281800AC97C7 /* OfflineSelectArea.swift */; };
@@ -139,6 +140,7 @@
 		1B96529125D7E5F20017A43E /* LayerSelectViewEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectViewEmpty.swift; sourceTree = "<group>"; };
 		1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectHomeEmpty.swift; sourceTree = "<group>"; };
 		1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate-format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate-format.swift"; sourceTree = "<group>"; };
+		1BA03E3525DE8BE300EE273C /* UIImage-draw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage-draw.swift"; sourceTree = "<group>"; };
 		1BA9BD0925BA1C6300AC97C7 /* OfflineSelectHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectHome.swift; sourceTree = "<group>"; };
 		1BA9BD0B25BA266700AC97C7 /* CoordinatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatedView.swift; sourceTree = "<group>"; };
 		1BA9BD0D25BA281800AC97C7 /* OfflineSelectArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectArea.swift; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */,
 				1B6033C025D1DC4A00211150 /* randomString.swift */,
 				1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate-format.swift */,
+				1BA03E3525DE8BE300EE273C /* UIImage-draw.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -512,6 +515,7 @@
 				1B7644C825CC3E9000572A70 /* PanelActionButton.swift in Sources */,
 				1B6638B225B10B530071F03D /* Gaia.xcdatamodeld in Sources */,
 				1B6638CA25B19FFF0071F03D /* UserLocationButton.swift in Sources */,
+				1BA03E3625DE8BE300EE273C /* UIImage-draw.swift in Sources */,
 				1BBD3FFF25B8B0B5007B8BC7 /* CompositeStyle.swift in Sources */,
 				1BA9BD0C25BA266700AC97C7 /* CoordinatedView.swift in Sources */,
 			);

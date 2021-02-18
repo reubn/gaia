@@ -20,8 +20,16 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
   }()
     
   lazy var mapLayer: MGLStyleLayer = mapViewController.mapView.style?.layer(withIdentifier: "location") ?? {
-    let layer =  MGLCircleStyleLayer(identifier: "location", source: mapSource)
-    layer.circleColor = NSExpression(forConstantValue: UIColor.systemOrange)
+    let layer = MGLSymbolStyleLayer(identifier: "location", source: mapSource)
+    
+    let front = UIImage(named: "mapPin")!.withTintColor(.systemPink)
+    let back = UIImage(named: "mapPinBack")!
+  
+    let image = front.draw(inFrontOf: back)
+    mapViewController.mapView.style?.setImage(image, forName: "location")
+     
+    layer.iconImageName = NSExpression(forConstantValue: "location")
+    layer.iconScale = NSExpression(forConstantValue: 0.5)
     
     mapViewController.mapView.style?.addLayer(layer)
     
@@ -79,7 +87,7 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
   override func viewWillDisappear(_ animated: Bool) {
     removePointsFromMap()
   }
-  
+
   func update(location: LocationInfoType){
     self.location = location
     
@@ -91,13 +99,18 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
         for display in metricDisplays {
           display.isHidden = false
         }
+        
+        removePointsFromMap()
       case .map(let coordinate):
         mapViewController.multicastUserLocationDidUpdateDelegate.remove(delegate: self)
         setCoordinateTitle(coordinate: coordinate)
         displayPointOnMap(coordinate: coordinate)
+        
         for display in metricDisplays {
           display.isHidden = true
         }
+        
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
     }
   }
   
