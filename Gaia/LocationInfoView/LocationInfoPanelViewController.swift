@@ -6,7 +6,7 @@ import LinkPresentation
 import Mapbox
 import FloatingPanel
 
-class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationDidUpdateDelegate {
+class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationDidUpdateDelegate, MapViewTappedDelegate {
   let mapViewController: MapViewController
   
   var location: LocationInfoType
@@ -105,6 +105,8 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     
     mapViewController.multicastUserLocationDidUpdateDelegate.add(delegate: self)
     userLocationDidUpdate()
+    
+    mapViewController.multicastMapViewTappedDelegate.add(delegate: self)
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -182,11 +184,11 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
   }
   
   override func panelButtonTapped(button: PanelButton) {
+    super.panelButtonTapped(button: button)
+    
     let panelButton = getPanelButton(button)
     
-    if(button == .dismiss){
-      dismiss(animated: true, completion: nil)
-    } else if(button == .share){
+    if(button == .share){
       showShareSheet(panelButton)
     }
   }
@@ -210,6 +212,12 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     activityViewController.popoverPresentationController?.sourceView = sender
 
     present(activityViewController, animated: true, completion: nil)
+  }
+  
+  func mapViewTapped(){
+    if case .map = location {
+      dismiss(animated: true, completion: nil)
+    }
   }
   
   required init?(coder aDecoder: NSCoder) {

@@ -19,6 +19,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   let multicastParentMapViewRegionIsChangingDelegate = MulticastDelegate<(ParentMapViewRegionIsChangingDelegate)>()
   let multicastUserLocationDidUpdateDelegate = MulticastDelegate<(UserLocationDidUpdateDelegate)>()
+  let multicastMapViewTappedDelegate = MulticastDelegate<(MapViewTappedDelegate)>()
 
   var mapView: MGLMapView!
   var rasterLayer: MGLRasterStyleLayer?
@@ -49,6 +50,14 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapView.tintColor = .systemBlue // user location should always be blue
 
     mapView.delegate = self
+    
+    let singleTapGR = UITapGestureRecognizer(target: self, action: #selector(mapViewTapped))
+    
+    for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+      singleTapGR.require(toFail: recognizer)
+    }
+    
+    mapView.addGestureRecognizer(singleTapGR)
 
     view.addSubview(mapView)
 
@@ -95,6 +104,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     appIconButton.addTarget(self, action: #selector(appIconButtonTapped), for: .touchUpInside)
     
+  }
+  
+  @objc func mapViewTapped(){
+    multicastMapViewTappedDelegate.invoke(invocation: {$0.mapViewTapped()})
   }
   
   func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?){
@@ -319,4 +332,8 @@ protocol ParentMapViewRegionIsChangingDelegate {
 
 protocol UserLocationDidUpdateDelegate {
   func userLocationDidUpdate()
+}
+
+protocol MapViewTappedDelegate {
+  func mapViewTapped()
 }
