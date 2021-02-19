@@ -11,30 +11,38 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
   
   var location: LocationInfoType
 
-  lazy var mapSource: MGLSource = mapViewController.mapView.style?.source(withIdentifier: "location") ?? {
-    let source = MGLShapeSource(identifier: "location", features: [], options: nil)
-    
-    mapViewController.mapView.style?.addSource(source)
-    
-    return source
-  }()
-    
-  lazy var mapLayer: MGLStyleLayer = mapViewController.mapView.style?.layer(withIdentifier: "location") ?? {
-    let layer = MGLSymbolStyleLayer(identifier: "location", source: mapSource)
-    
-    let front = UIImage(named: "mapPin")!.withTintColor(.systemPink)
-    let back = UIImage(named: "mapPinBack")!
-  
-    let image = front.draw(inFrontOf: back)
-    mapViewController.mapView.style?.setImage(image, forName: "location")
-     
-    layer.iconImageName = NSExpression(forConstantValue: "location")
-    layer.iconScale = NSExpression(forConstantValue: 0.5)
-    
-    mapViewController.mapView.style?.addLayer(layer)
-    
-    return layer
-  }()
+  var mapSource: MGLSource {
+    get {
+      mapViewController.mapView.style?.source(withIdentifier: "location") ?? {
+        let source = MGLShapeSource(identifier: "location", features: [], options: nil)
+        
+        mapViewController.mapView.style?.addSource(source)
+        
+        return source
+      }()
+    }
+  }
+
+  var mapLayer: MGLStyleLayer {
+    get {
+      mapViewController.mapView.style?.layer(withIdentifier: "location") ?? {
+        let layer = MGLSymbolStyleLayer(identifier: "location", source: mapSource)
+        
+        let front = UIImage(named: "mapPin")!.withTintColor(.systemPink)
+        let back = UIImage(named: "mapPinBack")!
+      
+        let image = front.draw(inFrontOf: back)
+        mapViewController.mapView.style?.setImage(image, forName: "location")
+         
+        layer.iconImageName = NSExpression(forConstantValue: "location")
+        layer.iconScale = NSExpression(forConstantValue: 0.5)
+        
+        mapViewController.mapView.style?.addLayer(layer)
+        
+        return layer
+      }()
+    }
+  }
   
   lazy var mainView = UIView()
 
