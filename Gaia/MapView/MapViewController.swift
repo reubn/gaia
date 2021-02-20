@@ -19,6 +19,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   let multicastParentMapViewRegionIsChangingDelegate = MulticastDelegate<(ParentMapViewRegionIsChangingDelegate)>()
   let multicastUserLocationDidUpdateDelegate = MulticastDelegate<(UserLocationDidUpdateDelegate)>()
+  let multicastMapViewTappedDelegate = MulticastDelegate<(MapViewTappedDelegate)>()
 
   var mapView: MGLMapView!
   var rasterLayer: MGLRasterStyleLayer?
@@ -49,8 +50,19 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapView.tintColor = .systemBlue // user location should always be blue
 
     mapView.delegate = self
+    
+    let singleTapGR = UITapGestureRecognizer(target: self, action: #selector(mapViewTapped))
+    
+    for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+      singleTapGR.require(toFail: recognizer)
+    }
+    
+    mapView.addGestureRecognizer(singleTapGR)
 
     view.addSubview(mapView)
+
+    let mapLongPressGR = UILongPressGestureRecognizer(target: self, action: #selector(mapLongPress))
+    mapView.addGestureRecognizer(mapLongPressGR)
 
     let userLocationButton = UserLocationButton(initialMode: mapView.userTrackingMode)
     userLocationButton.addTarget(self, action: #selector(locationButtonTapped), for: .touchUpInside)
@@ -94,6 +106,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
   }
   
+  @objc func mapViewTapped(){
+    multicastMapViewTappedDelegate.invoke(invocation: {$0.mapViewTapped()})
+  }
+  
   func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?){
     multicastUserLocationDidUpdateDelegate.invoke(invocation: {$0.userLocationDidUpdate()})
     
@@ -105,7 +121,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
-    openLocationInfoPanel()
+    openLocationInfoPanel(location: .user)
     
     mapView.deselectAnnotation(annotation, animated: false)
   }
@@ -145,6 +161,15 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   func offlineModeDidChange(offline: Bool){
     offlineButton.setImage(offline ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
   }
+  
+  @objc func mapLongPress(gestureReconizer: UILongPressGestureRecognizer){
+    if gestureReconizer.state == UIGestureRecognizer.State.began {
+      let point = gestureReconizer.location(in: mapView)
+      let coordinate = mapView.convert(point, toCoordinateFrom: nil)
+      
+      openLocationInfoPanel(location: .map(coordinate))
+    }
+  }
 
   @objc func locationButtonTapped(sender: UserLocationButton) {
     var mode: MGLUserTrackingMode
@@ -167,19 +192,24 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   @objc func locationButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
     if gestureReconizer.state == UIGestureRecognizer.State.began {
-      openLocationInfoPanel()
+      openLocationInfoPanel(location: .user)
     }
   }
   
-  func openLocationInfoPanel() {
+  func openLocationInfoPanel(location: LocationInfoType) {
     if presentedViewController != nil {
       let isMe = presentedViewController == lifpc
-      presentedViewController!.dismiss(animated: isMe, completion: nil)
       
-      if(isMe) {return}
+      if(isMe) {
+        ((presentedViewController as! MemoryConsciousFloatingPanelController).contentViewController! as! LocationInfoPanelViewController).update(location: location)
+        
+        return
+      } else {
+        presentedViewController!.dismiss(animated: false, completion: nil)
+      }
     }
 
-    let locationInfoPanelViewController = LocationInfoPanelViewController(mapViewController: self)
+    let locationInfoPanelViewController = LocationInfoPanelViewController(mapViewController: self, location: location)
     
     lifpc.layout = locationInfoPanelLayout
     lifpc.delegate = locationInfoPanelViewController
@@ -302,4 +332,8 @@ protocol ParentMapViewRegionIsChangingDelegate {
 
 protocol UserLocationDidUpdateDelegate {
   func userLocationDidUpdate()
+}
+
+protocol MapViewTappedDelegate {
+  func mapViewTapped()
 }
