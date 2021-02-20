@@ -8,6 +8,7 @@ public class Layer: NSManagedObject {
   }
 
   @NSManaged public var enabled: Bool
+  @NSManaged public var favourite: Bool
   @NSManaged public var group: String
   @NSManaged public var groupIndex: Int16
   @NSManaged public var id: String
@@ -36,10 +37,11 @@ extension Layer: Identifiable {}
 
 // Layer from LayerDefinition
 extension Layer {
-  convenience init(_ layerDefinition: LayerDefinition, context: NSManagedObjectContext, enabled: Bool){
+  convenience init(_ layerDefinition: LayerDefinition, context: NSManagedObjectContext, enabled: Bool = false, favourite: Bool = false){
     self.init(context: context)
     
     self.enabled = enabled
+    self.favourite = favourite
     
     self.update(layerDefinition)
   }

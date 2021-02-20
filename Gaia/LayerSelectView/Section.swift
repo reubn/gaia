@@ -39,7 +39,7 @@ class Section: UIStackView {
     self.layerManager = layerManager
     self.mapViewController = mapViewController
     self.scrollView = scrollView
-    self.layers = layerManager.getLayers(layerGroup: group).reversed()
+    self.layers = group.getLayers().reversed()
     
     super.init(frame: CGRect())
         
@@ -115,7 +115,7 @@ class Section: UIStackView {
   }
   
   func update() {
-    self.layers = layerManager.getLayers(layerGroup: group).reversed()
+    self.layers = group.getLayers().reversed()
     
     if(self.layers.count > 0) {
       if(openState == .hidden) {
@@ -228,6 +228,14 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
         title: "Edit",
         image: UIImage(systemName: "slider.horizontal.3")) { _ in
           self.layerSelectConfig.layerEditDelegate?.layerEditWasRequested(layer: layer)
+      })
+      
+      children.append(UIAction(
+        title: layer.favourite ? "Unfavourite" : "Favourite",
+        image: UIImage(systemName: layer.favourite ? "star.slash.fill" : "star.fill")) { _ in
+        layer.favourite = !layer.favourite
+        
+        self.layerManager.saveLayers()
       })
       
       children.append(UIAction(

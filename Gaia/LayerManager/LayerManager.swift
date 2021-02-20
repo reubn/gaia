@@ -11,12 +11,12 @@ class LayerManager {
 
   let multicastCompositeStyleDidChangeDelegate = MulticastDelegate<(LayerManagerDelegate)>()
 
-  let layerGroups = [
-    LayerGroup(id: "uncategorised", name: "Uncategorised", colour: .systemPurple),
-    LayerGroup(id: "overlay", name: "Overlays", colour: .systemPink),
-    LayerGroup(id: "aerial", name: "Aerial Imagery", colour: .systemGreen),
-    LayerGroup(id: "base", name: "Base Maps", colour: .systemBlue),
-    LayerGroup(id: "historic", name: "Historic", colour: .systemIndigo)
+  lazy var layerGroups = [
+    LayerGroup(layerManager: self, id: "uncategorised", name: "Uncategorised", colour: .systemPurple),
+    LayerGroup(layerManager: self, id: "overlay", name: "Overlays", colour: .systemPink),
+    LayerGroup(layerManager: self, id: "aerial", name: "Aerial Imagery", colour: .systemGreen),
+    LayerGroup(layerManager: self, id: "base", name: "Base Maps", colour: .systemBlue),
+    LayerGroup(layerManager: self, id: "historic", name: "Historic", colour: .systemIndigo)
   ]
   
   var layers: [Layer]{
@@ -193,9 +193,20 @@ class LayerManager {
 }
 
 struct LayerGroup {
+  unowned let layerManager: LayerManager
   let id: String
   let name: String
   let colour: UIColor
+  
+  var selectionFunction: (([Layer]) -> [Layer])? = nil
+  
+  func getLayers() -> [Layer] {
+    if(selectionFunction == nil) {
+      return layerManager.getLayers(layerGroup: self)
+    } else {
+      return selectionFunction!(layerManager.layers)
+    }
+  }
 }
 
 

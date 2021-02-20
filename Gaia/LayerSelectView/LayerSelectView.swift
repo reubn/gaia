@@ -49,8 +49,32 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     
     emptyState.update()
     
+    if(layerSelectConfig.showFavourites) {
+      var favouritesLayerSelectConfig = layerSelectConfig
+      favouritesLayerSelectConfig.reorderLayers = false
+      
+      let favouritesSection = Section(
+        group: LayerGroup(layerManager: layerManager, id: "favourite", name: "Favourites", colour: .systemOrange, selectionFunction: {layers in layers.filter({$0.favourite}).sorted(by: self.layerManager.layerSortingFunction)}),
+        layerSelectConfig: favouritesLayerSelectConfig,
+        layerManager: layerManager,
+        mapViewController: mapViewController,
+        scrollView: self
+      )
+      
+      stack.addArrangedSubview(favouritesSection)
+
+      favouritesSection.translatesAutoresizingMaskIntoConstraints = false
+      favouritesSection.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
+    }
+    
     layerManager.layerGroups.forEach({
-      let section = Section(group: $0, layerSelectConfig: layerSelectConfig, layerManager: layerManager, mapViewController: mapViewController, scrollView: self)
+      let section = Section(
+        group: $0,
+        layerSelectConfig: layerSelectConfig,
+        layerManager: layerManager,
+        mapViewController: mapViewController,
+        scrollView: self
+      )
 
       stack.addArrangedSubview(section)
 
