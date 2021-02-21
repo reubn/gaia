@@ -198,13 +198,13 @@ struct LayerGroup {
   let name: String
   let colour: UIColor
   
-  var selectionFunction: (([Layer]) -> [Layer])? = nil
+  var selectionFunction: ((LayerManager) -> [Layer])? = nil
   
   func getLayers() -> [Layer] {
     if(selectionFunction == nil) {
       return layerManager.getLayers(layerGroup: self)
     } else {
-      return selectionFunction!(layerManager.layers)
+      return selectionFunction!(layerManager)
     }
   }
 }

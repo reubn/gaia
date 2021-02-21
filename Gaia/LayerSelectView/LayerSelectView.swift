@@ -54,7 +54,7 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
       favouritesLayerSelectConfig.reorderLayers = false
       
       let favouritesSection = Section(
-        group: LayerGroup(layerManager: layerManager, id: "favourite", name: "Favourites", colour: .systemOrange, selectionFunction: {layers in layers.filter({$0.favourite}).sorted(by: self.layerManager.layerSortingFunction)}),
+        group: LayerGroup(layerManager: layerManager, id: "favourite", name: "Favourites", colour: .systemOrange, selectionFunction: {layerManager in layerManager.layers.filter({$0.favourite}).sorted(by: layerManager.layerSortingFunction)}),
         layerSelectConfig: favouritesLayerSelectConfig,
         layerManager: layerManager,
         mapViewController: mapViewController,
