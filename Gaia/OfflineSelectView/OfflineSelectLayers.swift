@@ -7,7 +7,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate {
   unowned let coordinatorView: OfflineSelectCoordinatorView
   let mapViewController: MapViewController
   
-  lazy var layerSelectConfig = LayerSelectConfig(mutuallyExclusive: false, layerContextActions: false, reorderLayers: false, layerEditDelegate: nil)
+  lazy var layerSelectConfig = LayerSelectConfig(mutuallyExclusive: false, layerContextActions: false, reorderLayers: false, showFavourites: true)
   
   lazy var layerManager = mapViewController.layerManager
   lazy var layerSelectView = LayerSelectView(layerSelectConfig: layerSelectConfig, mapViewController: mapViewController)

@@ -1,11 +1,13 @@
 import Foundation
 
 struct LayerSelectConfig {
-  let mutuallyExclusive: Bool
-  let layerContextActions: Bool
-  let reorderLayers: Bool
+  var mutuallyExclusive: Bool = true
+  var layerContextActions: Bool = true
+  var reorderLayers: Bool = true
   
-  unowned let layerEditDelegate: LayerEditDelegate?
+  var showFavourites: Bool = true
+  
+  unowned var layerEditDelegate: LayerEditDelegate? = nil
 }
 
 protocol LayerEditDelegate: class {
