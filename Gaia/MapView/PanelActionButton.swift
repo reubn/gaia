@@ -62,13 +62,13 @@ class PanelSmallActionButton: PanelActionButton {
   override func getDefaultWeight() -> UIImage.SymbolWeight{.semibold}
 
   override func setSize(){
-    imageEdgeInsets = UIEdgeInsets(top: 5.5, left: 5.5, bottom: 5.5, right: 5.5)
-    layer.cornerRadius = 13
+    imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
+    layer.cornerRadius = 15
     layer.cornerCurve = .circular
     
     
     translatesAutoresizingMaskIntoConstraints = false
-    widthAnchor.constraint(equalToConstant: 26).isActive = true
+    widthAnchor.constraint(equalToConstant: 30).isActive = true
     heightAnchor.constraint(equalTo: widthAnchor).isActive = true
   }
 }

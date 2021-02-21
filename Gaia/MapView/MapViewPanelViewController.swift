@@ -44,7 +44,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   let uiImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
   
   private lazy var buttonsMap: [PanelButton: PanelActionButton] = [
-    .dismiss: PanelSmallActionButton("xmark", weight: .bold, colour: UIColor.systemBackground.withAlphaComponent(0.75), backgroundColour: .systemGray2),
+    .dismiss: PanelSmallActionButton("xmark", weight: .bold, colour: .systemGray, backgroundColour: .tertiarySystemBackground),
     .help: PanelSmallActionButton("questionmark", colour: .white, backgroundColour: .systemIndigo),
     .accept: PanelActionButton("checkmark", colour: .systemGreen),
     .reject: PanelActionButton("xmark", colour: .systemRed),
@@ -86,7 +86,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     if(button == .dismiss) {
       dismiss(animated: true, completion: nil)
       
-      return 
+      return
     }
   }
   
