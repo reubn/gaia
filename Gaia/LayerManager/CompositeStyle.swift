@@ -12,7 +12,7 @@ class CompositeStyle {
   }
   
   var url: URL? {
-    CompositeStyle.toURL(style: style)
+    style.toURL()
   }
   
   var style: Style {
@@ -34,31 +34,5 @@ class CompositeStyle {
   
   init(sortedLayers: [Layer]){
     self.sortedLayers = sortedLayers
-  }
-  
-  static func toURL(data: Data) -> URL? {
-    do {
-      let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-      let temporaryFilename = ProcessInfo().globallyUniqueString
-      let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(temporaryFilename)
-
-      try data.write(to: temporaryFileURL, options: .atomic)
-      
-      return temporaryFileURL
-    }
-    catch {
-      return nil
-    }
-  }
-  
-  static func toURL(style: Style) -> URL? {
-    do {
-      let encoder = JSONEncoder()
-
-      return CompositeStyle.toURL(data: try encoder.encode(style))
-      
-    } catch {
-      return nil
-    }
   }
 }
