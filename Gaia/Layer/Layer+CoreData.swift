@@ -15,18 +15,27 @@ public class Layer: NSManagedObject {
   @NSManaged public var name: String
   @NSManaged private var styleString: String
   
+  private var _style: Style?
+  
   var style: Style {
     get {
+      if(_style != nil) {
+        return _style!
+      }
+      
       let decoder = JSONDecoder()
       
       let data = styleString.data(using: .utf8)
       
-      return try! decoder.decode(Style.self, from: data!)
+      _style = try! decoder.decode(Style.self, from: data!)
+      
+      return _style!
     }
     
     set {
       let encoder = JSONEncoder()
       
+      _style = newValue
       styleString = String(data: try! encoder.encode(newValue), encoding: .utf8)!
     }
   }
