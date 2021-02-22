@@ -9,7 +9,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   var layerManager: LayerManager?
   var mapViewController: MapViewController?
   var first = true
-  var active = false
+  var visible = false
   var displayedStyleURL: URL?
   var needsUpdating = false
 
@@ -67,8 +67,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   }
 
   func parentMapViewRegionIsChanging() {
-    active = self.isVisible()
-    if(!active){return}
+    visible = self.isVisible()
+    if(!visible){return}
     needsUpdating = false
 
     let parent = mapViewController!.mapView.bounds
@@ -123,7 +123,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
 
 extension LayerCell: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    if(!active || needsUpdating){
+    if(!visible || needsUpdating){
       parentMapViewRegionIsChanging()
     }
   }
