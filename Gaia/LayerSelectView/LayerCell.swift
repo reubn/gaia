@@ -10,6 +10,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   var mapViewController: MapViewController?
   var first = true
   var active = false
+  var displayedStyleURL: URL?
+  var needsUpdating = false
 
   let preview = MGLMapView(frame: CGRect.zero)
   let previewSpacing:CGFloat = 15
@@ -67,7 +69,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   func parentMapViewRegionIsChanging() {
     active = self.isVisible()
     if(!active){return}
-    
+    needsUpdating = false
+
     let parent = mapViewController!.mapView.bounds
     let centerPoint = CGPoint(x: parent.width * 0.5, y: parent.height * 0.25)
     
@@ -77,6 +80,10 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
       direction: mapViewController!.mapView.direction,
       animated: false
     )
+    
+    if(preview.styleURL != displayedStyleURL) {
+      preview.styleURL = displayedStyleURL
+    }
   }
 
   func update(_layer: Layer, layerSelectConfig: LayerSelectConfig, layerManager: LayerManager, mapViewController: MapViewController, scrollView: LayerSelectView) {
@@ -84,7 +91,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     self.layerManager = layerManager
     self.mapViewController = mapViewController
 
-    preview.styleURL = _layer.style.toURL()
+    let newStyleURL = _layer.style.toURL()
+    displayedStyleURL = newStyleURL
     
     let mutuallyExclusive = layerSelectConfig.mutuallyExclusive
     backgroundColor = !mutuallyExclusive && _layer.enabled ? .systemBlue : .clear
@@ -92,15 +100,20 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     title.textColor = !mutuallyExclusive && _layer.enabled ? .white : UIColor.label
 
     if(first) {
+      self.first = false
+      
       mapViewController.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)
       scrollView.multicastScrollViewDidScrollDelegate.add(delegate: self)
-      parentMapViewRegionIsChanging()
-      self.first = false
     }
 
     title.text = _layer.name
 
     accessoryType = _layer.enabled ? .checkmark : .none
+
+    DispatchQueue.main.async { // allow time for .isVisible() to return correct result
+      self.needsUpdating = true
+      self.parentMapViewRegionIsChanging()
+    }
   }
 
   required init?(coder: NSCoder) {
@@ -110,7 +123,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
 
 extension LayerCell: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    if(!active){
+    if(!active || needsUpdating){
       parentMapViewRegionIsChanging()
     }
   }
