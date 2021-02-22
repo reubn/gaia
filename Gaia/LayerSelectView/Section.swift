@@ -11,6 +11,8 @@ class Section: UIStackView {
   let mapViewController: MapViewController
   let tableView = SectionTableView()
   
+  var cellReuseCache: [String: LayerCell] = [:]
+  
   unowned let scrollView: LayerSelectView
 
   var layers: [Layer]
@@ -190,9 +192,15 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LayerCell
-    
-    cell.update(_layer: layers[indexPath.row], layerSelectConfig: layerSelectConfig, layerManager: layerManager, mapViewController: mapViewController, scrollView: scrollView)
+    let _layer = layers[indexPath.row]
+    let cell = cellReuseCache[_layer.id] ?? { // UITableView's dequeue is dumb and won't reuse the same cell for the same layer consistantly
+      let newCell = LayerCell()
+      cellReuseCache[_layer.id] = newCell
+      
+      return newCell
+    }()
+
+    cell.update(_layer: _layer, layerSelectConfig: layerSelectConfig, layerManager: layerManager, mapViewController: mapViewController, scrollView: scrollView)
     
     let cellGR = UITapGestureRecognizer(target: self, action: #selector(self.tableViewLabelClick))
     cell.isUserInteractionEnabled = true
