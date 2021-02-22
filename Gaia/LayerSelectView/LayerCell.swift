@@ -10,7 +10,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   var mapViewController: MapViewController?
   var first = true
   var visible = false
-  var displayedStyleURL: URL?
+  var queuedStyle: Style?
+  var displayedStyle: Style?
   var needsUpdating = false
 
   let preview = MGLMapView(frame: CGRect.zero)
@@ -81,8 +82,9 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
       animated: false
     )
     
-    if(preview.styleURL != displayedStyleURL) {
-      preview.styleURL = displayedStyleURL
+    if(queuedStyle != displayedStyle) {
+      displayedStyle = queuedStyle
+      preview.styleURL = displayedStyle!.toURL()
     }
   }
 
@@ -91,8 +93,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     self.layerManager = layerManager
     self.mapViewController = mapViewController
 
-    let newStyleURL = _layer.style.toURL()
-    displayedStyleURL = newStyleURL
+    queuedStyle = _layer.style
     
     let mutuallyExclusive = layerSelectConfig.mutuallyExclusive
     backgroundColor = !mutuallyExclusive && _layer.enabled ? .systemBlue : .clear
