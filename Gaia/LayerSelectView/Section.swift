@@ -52,6 +52,8 @@ class Section: UIStackView {
     
     let label = SectionLabel()
     label.text = group.name.uppercased()
+    label.accessibilityLabel = "Toggle" + group.name + " Group"
+    label.accessibilityTraits = .header
     label.backgroundColor = group.colour
 
     addArrangedSubview(label)

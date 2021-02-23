@@ -26,6 +26,8 @@ extension MapViewController {
     mapView.compassView.layer.shadowOffset = CGSize(width: 0, height: 0);
     mapView.compassView.layer.shadowOpacity = 0.25;
     mapView.compassView.layer.shadowRadius = 10;
+    
+    mapView.compassView.accessibilityLabel = "Compass"
   }
   
   func compassImage(dark: Bool = true) -> UIImage? {

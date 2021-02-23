@@ -108,6 +108,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     }
 
     title.text = _layer.name
+    accessibilityLabel = title.text! + " Layer"
 
     accessoryType = _layer.enabled ? .checkmark : .none
 

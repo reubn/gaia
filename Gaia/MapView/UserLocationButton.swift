@@ -46,12 +46,16 @@ class UserLocationButton: MapButton {
     switch mode {
       case .none:
         updateArrow(fillColor: UIColor.clear, strokeColor: tintColor, rotation: rotatedArrow)
+        accessibilityValue = "none"
       case .follow:
         updateArrow(fillColor: tintColor, strokeColor: tintColor, rotation: rotatedArrow)
+        accessibilityValue = "user location"
       case .followWithHeading:
         updateArrow(fillColor: tintColor, strokeColor: tintColor, rotation: 0)
+        accessibilityValue = "user location with heading"
       case .followWithCourse:
         updateArrow(fillColor: UIColor.systemPink, strokeColor: UIColor.systemPurple, rotation: 0)
+        accessibilityValue = "user location with course"
       @unknown default:
         fatalError("Unknown user tracking mode")
     }

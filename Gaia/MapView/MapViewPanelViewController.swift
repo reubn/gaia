@@ -12,6 +12,8 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
     label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.2
     
+    label.accessibilityTraits = .header
+    
     view.addSubview(label)
     
     label.translatesAutoresizingMaskIntoConstraints = false

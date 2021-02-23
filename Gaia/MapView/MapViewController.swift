@@ -67,6 +67,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     let userLocationButton = UserLocationButton(initialMode: mapView.userTrackingMode)
     userLocationButton.addTarget(self, action: #selector(locationButtonTapped), for: .touchUpInside)
     userLocationButton.translatesAutoresizingMaskIntoConstraints = false
+    userLocationButton.accessibilityLabel = "Change Tracking Mode"
+    
     self.userLocationButton = userLocationButton
     
     let userLocationButtonLongGR = UILongPressGestureRecognizer(target: self, action: #selector(locationButtonLongPressed))
@@ -75,6 +77,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 
     layersButton.setImage(UIImage(systemName: "map"), for: .normal)
     layersButton.addTarget(self, action: #selector(layersButtonTapped), for: .touchUpInside)
+    layersButton.accessibilityLabel = "Layers"
     
     let layersButtonLongGR = UILongPressGestureRecognizer(target: self, action: #selector(layersButtonLongPressed))
     layersButtonLongGR.minimumPressDuration = 0.4
@@ -82,6 +85,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     offlineButton.setImage(offlineManager.offlineMode ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
     offlineButton.addTarget(self, action: #selector(offlineButtonTapped), for: .touchUpInside)
+    offlineButton.accessibilityLabel = "Downloads"
     
     let offlineButtonLongGR = UILongPressGestureRecognizer(target: self, action: #selector(offlineButtonLongPressed))
     offlineButtonLongGR.minimumPressDuration = 0.4
@@ -103,6 +107,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     appIconButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 15).isActive = true
     
     appIconButton.addTarget(self, action: #selector(appIconButtonTapped), for: .touchUpInside)
+    appIconButton.accessibilityLabel = "About"
     
   }
   
