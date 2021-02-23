@@ -91,6 +91,10 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     emptyState.update()
   }
   
+  func heightDidChange() {
+    multicastScrollViewDidScrollDelegate.invoke(invocation: {$0.scrollViewDidScroll?(self)})
+  }
+  
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     multicastScrollViewDidScrollDelegate.invoke(invocation: {$0.scrollViewDidScroll?(scrollView)})
   }

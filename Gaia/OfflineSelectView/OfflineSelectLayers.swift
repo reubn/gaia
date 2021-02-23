@@ -3,7 +3,7 @@ import UIKit
 
 import Mapbox
 
-class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate {
+class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelDidMoveDelegate {
   unowned let coordinatorView: OfflineSelectCoordinatorView
   let mapViewController: MapViewController
   
@@ -32,6 +32,8 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate {
   func viewWillEnter(data: Any?){
     print("enter OSL")
     
+    coordinatorView.panelViewController.panelDidMoveDelegate = self
+    
     coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
     coordinatorView.panelViewController.panelButtons = [.previous, .next]
     
@@ -42,6 +44,8 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate {
   
   func viewWillExit(){
     print("exit OSL")
+    
+    coordinatorView.panelViewController.panelDidMoveDelegate = nil
   }
   
   func compositeStyleDidChange(compositeStyle: CompositeStyle) {
@@ -69,6 +73,10 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate {
     } else if(button == .previous){
       coordinatorView.back()
     }
+  }
+  
+  func panelDidMove() {
+    layerSelectView.heightDidChange()
   }
   
   required init(coder: NSCoder) {

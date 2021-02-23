@@ -4,7 +4,7 @@ import UniformTypeIdentifiers
 
 import Mapbox
 
-class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerEditDelegate {
+class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerEditDelegate, PanelDidMoveDelegate {
   unowned let coordinatorView: LayerSelectCoordinatorView
   let mapViewController: MapViewController
   
@@ -71,6 +71,8 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
   func viewWillEnter(data: Any?){
     print("enter LSH")
     
+    coordinatorView.panelViewController.panelDidMoveDelegate = self
+    
     if(coordinatorView.mapViewController.lsfpc.viewIfLoaded?.window != nil) {
       coordinatorView.mapViewController.lsfpc.move(to: .half, animated: true)
     }
@@ -101,6 +103,8 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
   func viewWillExit(){
     print("exit LSH")
     
+    coordinatorView.panelViewController.panelDidMoveDelegate = nil
+    
     let newButton = coordinatorView.panelViewController.getPanelButton(.new)
     
     newButton.menu = nil
@@ -118,6 +122,10 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
   
   func layerEditWasRequested(layer: Layer) {
     coordinatorView.goTo(2, data: layer)
+  }
+  
+  func panelDidMove() {
+    layerSelectView.heightDidChange()
   }
   
   required init(coder: NSCoder) {

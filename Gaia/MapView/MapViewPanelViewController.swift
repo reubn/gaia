@@ -4,6 +4,8 @@ import Mapbox
 import FloatingPanel
 
 class MapViewPanelViewController: UIViewController, FloatingPanelControllerDelegate {
+  var panelDidMoveDelegate: PanelDidMoveDelegate?
+  
   lazy var popoverTitle: SelectableLabel = {
     let label = SelectableLabel()
     label.text = title
@@ -135,11 +137,13 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   }
   
   func floatingPanelDidMove(_ vc: FloatingPanelController) {
-      if vc.isAttracting == false {
-          let loc = vc.surfaceLocation
-          let minY = vc.surfaceLocation(for: .full).y - 6.0
-          vc.surfaceLocation = CGPoint(x: loc.x, y: max(loc.y, minY))
-      }
+    self.panelDidMoveDelegate?.panelDidMove()
+    
+    if vc.isAttracting == false {
+      let loc = vc.surfaceLocation
+      let minY = vc.surfaceLocation(for: .full).y - 6.0
+      vc.surfaceLocation = CGPoint(x: loc.x, y: max(loc.y, minY))
+    }
   }
   
   func floatingPanelDidEndAttracting(_ fpc: FloatingPanelController) {
@@ -147,6 +151,7 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   }
   
   func floatingPanelDidEndDragging(_ fpc: FloatingPanelController, willAttract attract: Bool){
+    
     if(!attract) {
       uiImpactFeedbackGenerator.impactOccurred()
     }
@@ -167,6 +172,10 @@ enum PanelButton {
   case star
   case share
   case help
+}
+
+protocol PanelDidMoveDelegate {
+  func panelDidMove()
 }
 
 extension Dictionary where Value: Equatable {
