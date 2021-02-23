@@ -116,6 +116,10 @@ class Section: UIStackView {
         sectionCollapsedConstraint.isActive = false
         sectionHiddenConstraint.isActive = true
     }
+    
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // needs more delay
+      self.scrollView.heightDidChange()
+    }
   }
   
   func update() {
