@@ -5,6 +5,7 @@ import FloatingPanel
 class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDelegate, OfflineModeDelegate {
   let layerManager = LayerManager()
   let offlineManager = OfflineManager()
+  let hudManager = HUDManager()
   
   let lsfpc = MemoryConsciousFloatingPanelController()
   let osfpc = MemoryConsciousFloatingPanelController()

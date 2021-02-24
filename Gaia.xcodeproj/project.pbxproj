@@ -10,6 +10,8 @@
 		1B04BF6F25D077FC00FCD5D4 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B04BF6E25D077FC00FCD5D4 /* AppIcon.swift */; };
 		1B04BF7225D0B63B00FCD5D4 /* private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B04BF7125D0B63B00FCD5D4 /* private.swift */; };
 		1B04BF7525D1CB5F00FCD5D4 /* CoreGPX in Frameworks */ = {isa = PBXBuildFile; productRef = 1B04BF7425D1CB5F00FCD5D4 /* CoreGPX */; };
+		1B0D09B725E6B0B900ED5345 /* HUDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09B625E6B0B900ED5345 /* HUDManager.swift */; };
+		1B0D09B925E6C1CA00ED5345 /* HUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09B825E6C1CA00ED5345 /* HUDView.swift */; };
 		1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 1B3401C225B33FAD0091FA3B /* FloatingPanel */; };
 		1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */; };
 		1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */; };
@@ -99,6 +101,8 @@
 /* Begin PBXFileReference section */
 		1B04BF6E25D077FC00FCD5D4 /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		1B04BF7125D0B63B00FCD5D4 /* private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = private.swift; sourceTree = "<group>"; };
+		1B0D09B625E6B0B900ED5345 /* HUDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDManager.swift; sourceTree = "<group>"; };
+		1B0D09B825E6C1CA00ED5345 /* HUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDView.swift; sourceTree = "<group>"; };
 		1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelViewController.swift; sourceTree = "<group>"; };
 		1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectCoordinatorView.swift; sourceTree = "<group>"; };
 		1B3401CB25B473E40091FA3B /* LayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerCell.swift; sourceTree = "<group>"; };
@@ -184,6 +188,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B0D09B525E6B08400ED5345 /* HUDManager */ = {
+			isa = PBXGroup;
+			children = (
+				1B0D09B625E6B0B900ED5345 /* HUDManager.swift */,
+				1B0D09B825E6C1CA00ED5345 /* HUDView.swift */,
+			);
+			path = HUDManager;
+			sourceTree = "<group>";
+		};
 		1B3401C825B4635F0091FA3B /* LayerSelectView */ = {
 			isa = PBXGroup;
 			children = (
@@ -288,6 +301,7 @@
 		1B6638A625B10B530071F03D /* Gaia */ = {
 			isa = PBXGroup;
 			children = (
+				1B0D09B525E6B08400ED5345 /* HUDManager */,
 				1B62CE8B25D0283300D06E55 /* AboutView */,
 				1B7644BB25CAD61900572A70 /* Layer */,
 				1BA9BD1C25C0860300AC97C7 /* CoordinatorView */,
@@ -496,6 +510,7 @@
 				1B6033C125D1DC4A00211150 /* randomString.swift in Sources */,
 				1BBD3FF325B708A6007B8BC7 /* MapViewPanelViewController.swift in Sources */,
 				1B7644C125CAFA2F00572A70 /* LayerDefinition.swift in Sources */,
+				1B0D09B925E6C1CA00ED5345 /* HUDView.swift in Sources */,
 				1B3401CC25B473E40091FA3B /* LayerCell.swift in Sources */,
 				1B62CE9125D0288400D06E55 /* AboutPanelLayout.swift in Sources */,
 				1BBD3FFD25B8927E007B8BC7 /* OfflineManager.swift in Sources */,
@@ -520,6 +535,7 @@
 				1B6638B225B10B530071F03D /* Gaia.xcdatamodeld in Sources */,
 				1B6638CA25B19FFF0071F03D /* UserLocationButton.swift in Sources */,
 				1BA03E3625DE8BE300EE273C /* UIImage-draw.swift in Sources */,
+				1B0D09B725E6B0B900ED5345 /* HUDManager.swift in Sources */,
 				1BBD3FFF25B8B0B5007B8BC7 /* CompositeStyle.swift in Sources */,
 				1BA9BD0C25BA266700AC97C7 /* CoordinatedView.swift in Sources */,
 			);
