@@ -96,13 +96,19 @@ class LayerSelectImport: UIView, CoordinatedView {
     acceptButton.isEnabled = false
     
     UINotificationFeedbackGenerator().notificationOccurred(.error)
+    mapViewController.hudManager.displayMessage(message: HUDMessage(title: "Import Error", systemName: "xmark.octagon.fill", tintColour: .systemRed))
   }
   
-  func handleSuccess(){
+  func handleSuccess(count: Int){
     self.urlInput.resignFirstResponder()
     self.urlInput.text = ""
     
     UINotificationFeedbackGenerator().notificationOccurred(.success)
+    
+    let message = count == 1
+      ? HUDMessage(title: "Layer Imported", systemName: "square.and.arrow.down.fill", tintColour: .systemBlue)
+      : HUDMessage(title: "\(count) Layers Imported", systemName: "square.and.arrow.down.on.square.fill", tintColour: .systemBlue)
+    mapViewController.hudManager.displayMessage(message: message)
   }
 
   @objc func urlChanged(){
@@ -133,11 +139,11 @@ class LayerSelectImport: UIView, CoordinatedView {
     }
     
     URLSession.shared.dataTask(with: URL(string: requestURL)!) {data, response, error in
-      let importAccepted = self.coordinatorView.done(data: data, url: rawURL)
+      let importsAccepted = self.coordinatorView.done(data: data, url: rawURL)
       
       DispatchQueue.main.async {
-        if(importAccepted){
-          self.handleSuccess()
+        if(importsAccepted != 0){
+          self.handleSuccess(count: importsAccepted)
         } else {
           self.handleRejection()
         }

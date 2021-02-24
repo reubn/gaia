@@ -27,7 +27,7 @@ class LayerSelectCoordinatorView: CoordinatorView {
     super.ready()
   }
   
-  func done(data optionalData: Data? = nil, url: String? = nil) -> Bool {
+  func done(data optionalData: Data? = nil, url: String? = nil) -> Int {
     let data = optionalData ?? Data()
     
     var layerDefinitions: [LayerDefinition] = []
@@ -54,20 +54,18 @@ class LayerSelectCoordinatorView: CoordinatorView {
     
     if(layerDefinitions.count > 0) {
       DispatchQueue.main.async {
-        let enabled = layerDefinitions.count == 1
+        let single = layerDefinitions.count == 1
         
         for layerDefinition in layerDefinitions {
-          _ = self.layerManager.newLayer(layerDefinition, enabled: enabled)
+          _ = self.layerManager.newLayer(layerDefinition, enabled: single)
         }
         
         self.layerManager.saveLayers()
         super.done()
       }
-      
-      return true
     }
     
-    return false
+    return layerDefinitions.count
   }
   
   required init(coder: NSCoder) {

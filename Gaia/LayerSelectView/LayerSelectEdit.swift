@@ -15,6 +15,8 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   var acceptButton: PanelActionButton? = nil
   var colourEditingRange: NSRange? = nil
   
+  var initialText: String = ""
+  
   lazy var layerManager = mapViewController.layerManager
   
   lazy var colorWell: UIColorWell = {
@@ -88,7 +90,10 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
       let jsonData = try encoder.encode(layerDefinition)
       let jsonString = String(data: jsonData, encoding: .utf8)!
       
-      jsonEditor.text = jsonString.replacingOccurrences(of: "\" : ", with: "\": ")
+      let editorText = jsonString.replacingOccurrences(of: "\" : ", with: "\": ")
+      jsonEditor.text = editorText
+      
+      initialText = editorText
       
     } catch {
       print(error)
@@ -157,8 +162,15 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   func process(){
     let string = jsonEditor.text!
     
+    if(string == initialText){
+      coordinatorView.goTo(0)
+      
+      return
+    }
+    
     do {
       var result: Bool
+      var newLayer = false
       let decoder = JSONDecoder()
       
       let data = string.data(using: .utf8)!
@@ -171,7 +183,8 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
         
         result = true
       } else {
-        result = coordinatorView.done(data: data, url: nil)
+        result = coordinatorView.done(data: data, url: nil) != 0
+        newLayer = true
       }
       
       if(!result) {
@@ -179,10 +192,17 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
       }
       
       UINotificationFeedbackGenerator().notificationOccurred(.success)
+      
+      let message = newLayer
+        ? HUDMessage(title: "Layer Created", systemName: "plus.square.fill", tintColour: .systemBlue)
+        : HUDMessage(title: "Edit Saved", systemName: "slider.horizontal.3", tintColour: .systemBlue)
+      mapViewController.hudManager.displayMessage(message: message)
+      
       coordinatorView.goTo(0)
     } catch {
       acceptButton?.isEnabled = false
       UINotificationFeedbackGenerator().notificationOccurred(.error)
+      mapViewController.hudManager.displayMessage(message: HUDMessage(title: "Syntax Error", systemName: "xmark.octagon.fill", tintColour: .systemRed))
     }
   }
   

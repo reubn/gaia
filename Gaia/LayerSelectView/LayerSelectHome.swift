@@ -14,16 +14,27 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
   lazy var layerSelectView = LayerSelectView(layerSelectConfig: layerSelectConfig, mapViewController: mapViewController)
   
   func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-    var result: Bool = false
+    var importsAccepted = 0
     
     if let url = urls.first {
       let data = try? Data(contentsOf: url)
       if(data != nil) {
-       result = self.coordinatorView.done(data: data!)
+        importsAccepted = self.coordinatorView.done(data: data!)
       }
     }
     
-    UINotificationFeedbackGenerator().notificationOccurred(result ? .success : .error)
+    if(importsAccepted == 0) {
+      UINotificationFeedbackGenerator().notificationOccurred(.error)
+      mapViewController.hudManager.displayMessage(message: HUDMessage(title: "Import Error", systemName: "xmark.octagon.fill", tintColour: .systemRed))
+    }
+    else {
+      UINotificationFeedbackGenerator().notificationOccurred(.success)
+      
+      let message = importsAccepted == 1
+        ? HUDMessage(title: "Layer Imported", systemName: "square.and.arrow.down.fill", tintColour: .systemBlue)
+        : HUDMessage(title: "\(importsAccepted) Layers Imported", systemName: "square.and.arrow.down.on.square.fill", tintColour: .systemBlue)
+      mapViewController.hudManager.displayMessage(message: message)
+    }
   }
 
   init(coordinatorView: LayerSelectCoordinatorView, mapViewController: MapViewController){

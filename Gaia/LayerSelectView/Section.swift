@@ -278,8 +278,12 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
         title: "Delete",
         image: UIImage(systemName: "trash"),
         attributes: .destructive) { _ in
+          let layerName = layer.name
           self.layers.remove(at: indexPath.row)
           self.layerManager.removeLayer(layer: layer)
+        
+          UINotificationFeedbackGenerator().notificationOccurred(.success)
+          self.mapViewController.hudManager.displayMessage(message: HUDMessage(title: layerName + " Deleted", systemName: "trash.fill", tintColour: .systemRed))
       }
       
       children.append(delete)
