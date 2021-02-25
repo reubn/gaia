@@ -25,15 +25,11 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     
     if(importsAccepted == 0) {
       UINotificationFeedbackGenerator().notificationOccurred(.error)
-      mapViewController.hudManager.displayMessage(message: HUDMessage(title: "Import Error", systemName: "xmark.octagon.fill", tintColour: .systemRed))
+      mapViewController.hudManager.displayMessage(message: .importError)
     }
     else {
       UINotificationFeedbackGenerator().notificationOccurred(.success)
-      
-      let message = importsAccepted == 1
-        ? HUDMessage(title: "Layer Imported", systemName: "square.and.arrow.down.fill", tintColour: .systemBlue)
-        : HUDMessage(title: "\(importsAccepted) Layers Imported", systemName: "square.and.arrow.down.on.square.fill", tintColour: .systemBlue)
-      mapViewController.hudManager.displayMessage(message: message)
+      mapViewController.hudManager.displayMessage(message: .layersImported(importsAccepted))
     }
   }
 

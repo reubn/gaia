@@ -96,7 +96,7 @@ class LayerSelectImport: UIView, CoordinatedView {
     acceptButton.isEnabled = false
     
     UINotificationFeedbackGenerator().notificationOccurred(.error)
-    mapViewController.hudManager.displayMessage(message: HUDMessage(title: "Import Error", systemName: "xmark.octagon.fill", tintColour: .systemRed))
+    mapViewController.hudManager.displayMessage(message: .importError)
   }
   
   func handleSuccess(count: Int){
@@ -104,11 +104,7 @@ class LayerSelectImport: UIView, CoordinatedView {
     self.urlInput.text = ""
     
     UINotificationFeedbackGenerator().notificationOccurred(.success)
-    
-    let message = count == 1
-      ? HUDMessage(title: "Layer Imported", systemName: "square.and.arrow.down.fill", tintColour: .systemBlue)
-      : HUDMessage(title: "\(count) Layers Imported", systemName: "square.and.arrow.down.on.square.fill", tintColour: .systemBlue)
-    mapViewController.hudManager.displayMessage(message: message)
+    mapViewController.hudManager.displayMessage(message: .layersImported(count))
   }
 
   @objc func urlChanged(){

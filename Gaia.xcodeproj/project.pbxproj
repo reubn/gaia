@@ -12,6 +12,7 @@
 		1B04BF7525D1CB5F00FCD5D4 /* CoreGPX in Frameworks */ = {isa = PBXBuildFile; productRef = 1B04BF7425D1CB5F00FCD5D4 /* CoreGPX */; };
 		1B0D09B725E6B0B900ED5345 /* HUDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09B625E6B0B900ED5345 /* HUDManager.swift */; };
 		1B0D09B925E6C1CA00ED5345 /* HUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09B825E6C1CA00ED5345 /* HUDView.swift */; };
+		1B0D09BB25E7A0E200ED5345 /* HUDMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09BA25E7A0E200ED5345 /* HUDMessages.swift */; };
 		1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 1B3401C225B33FAD0091FA3B /* FloatingPanel */; };
 		1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */; };
 		1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */; };
@@ -103,6 +104,7 @@
 		1B04BF7125D0B63B00FCD5D4 /* private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = private.swift; sourceTree = "<group>"; };
 		1B0D09B625E6B0B900ED5345 /* HUDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDManager.swift; sourceTree = "<group>"; };
 		1B0D09B825E6C1CA00ED5345 /* HUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDView.swift; sourceTree = "<group>"; };
+		1B0D09BA25E7A0E200ED5345 /* HUDMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDMessages.swift; sourceTree = "<group>"; };
 		1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelViewController.swift; sourceTree = "<group>"; };
 		1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectCoordinatorView.swift; sourceTree = "<group>"; };
 		1B3401CB25B473E40091FA3B /* LayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerCell.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 			children = (
 				1B0D09B625E6B0B900ED5345 /* HUDManager.swift */,
 				1B0D09B825E6C1CA00ED5345 /* HUDView.swift */,
+				1B0D09BA25E7A0E200ED5345 /* HUDMessages.swift */,
 			);
 			path = HUDManager;
 			sourceTree = "<group>";
@@ -516,6 +519,7 @@
 				1BBD3FFD25B8927E007B8BC7 /* OfflineManager.swift in Sources */,
 				1BA9BD2625C21D7C00AC97C7 /* LayerSelectImport.swift in Sources */,
 				1BBD3FF825B88F56007B8BC7 /* OfflineSelectPanelViewController.swift in Sources */,
+				1B0D09BB25E7A0E200ED5345 /* HUDMessages.swift in Sources */,
 				1B3401D225B474420091FA3B /* Section.swift in Sources */,
 				1BA9BD1925BF208600AC97C7 /* customCompass.swift in Sources */,
 				1BA9BD2025C2100F00AC97C7 /* LayerSelectView.swift in Sources */,

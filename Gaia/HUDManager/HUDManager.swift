@@ -27,13 +27,7 @@ struct HUDMessage: Hashable {
   let title: String
   var systemName: String? = nil
   
-  var tintColour: UIColor = .secondaryLabel
+  var tintColour: UIColor? = nil
   
   var duration: Double = 2
-  
-  enum Emphasis {
-    case neutral
-    case positive
-    case negative
-  }
 }

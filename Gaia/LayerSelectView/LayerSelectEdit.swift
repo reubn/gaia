@@ -192,17 +192,13 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
       }
       
       UINotificationFeedbackGenerator().notificationOccurred(.success)
-      
-      let message = newLayer
-        ? HUDMessage(title: "Layer Created", systemName: "plus.square.fill", tintColour: .systemBlue)
-        : HUDMessage(title: "Edit Saved", systemName: "slider.horizontal.3", tintColour: .systemBlue)
-      mapViewController.hudManager.displayMessage(message: message)
+      mapViewController.hudManager.displayMessage(message: newLayer ? .layerCreated : .layerSaved)
       
       coordinatorView.goTo(0)
     } catch {
       acceptButton?.isEnabled = false
       UINotificationFeedbackGenerator().notificationOccurred(.error)
-      mapViewController.hudManager.displayMessage(message: HUDMessage(title: "Syntax Error", systemName: "xmark.octagon.fill", tintColour: .systemRed))
+      mapViewController.hudManager.displayMessage(message: .syntaxError)
     }
   }
   

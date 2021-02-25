@@ -9,6 +9,8 @@ class HUDView: UIView {
   let index: Int
   let _window: UIWindow
   
+  let defaultIconColour: UIColor = .secondaryLabel
+  
 //  lazy var visible: CGFloat = self._window.safeAreaInsets.top - 4 + (self.size.height * (CGFloat(index) + 1)) + (4 * CGFloat(index))
   lazy var visible: CGFloat = self._window.safeAreaInsets.top - 4 + self.size.height
   
@@ -17,7 +19,7 @@ class HUDView: UIView {
     
     let imageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: iconSize, height: iconSize)))
     imageView.contentMode = .scaleAspectFit
-    imageView.tintColor = .secondaryLabel
+    imageView.tintColor = defaultIconColour
     
     addSubview(imageView)
     
@@ -116,7 +118,7 @@ class HUDView: UIView {
     CATransaction.commit()
       
     UIView.animate(withDuration: showDuration, delay: showDuration - 0.15, options: [.curveEaseOut, .preferredFramesPerSecond60], animations: {
-      self.icon.tintColor = self.message.tintColour
+      self.icon.tintColor = self.message.tintColour ?? self.defaultIconColour
       self.icon.layoutIfNeeded()
     })
   }

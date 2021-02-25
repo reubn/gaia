@@ -162,7 +162,7 @@ class LayerManager {
     groups![layerGroup.id] ?? []
   }
 
-  public func magic() -> Bool {
+  public func magic() -> (count: Int, restore: Bool) {
     let overlayGroup = layerGroups.first(where: {$0.id == "overlay"})!
     let overlayLayers = getLayers(layerGroup: overlayGroup)
 
@@ -176,16 +176,17 @@ class LayerManager {
         disableLayer(layer: $0, mutuallyExclusive: false)
       })
       
-      return false
+      return (count: activeOverlayLayers.count, restore: false)
     } else {
       // no active overlays, restore
-      (magicLayers ?? overlayLayers).forEach({
+      let layersToRestore = magicLayers ?? overlayLayers
+      layersToRestore.forEach({
         enableLayer(layer: $0, mutuallyExclusive: false)
       })
 
       magicLayers = nil
       
-      return true
+      return (count: layersToRestore.count, restore: true)
     }
   }
   

@@ -283,7 +283,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
           self.layerManager.removeLayer(layer: layer)
         
           UINotificationFeedbackGenerator().notificationOccurred(.success)
-          self.mapViewController.hudManager.displayMessage(message: HUDMessage(title: layerName + " Deleted", systemName: "trash.fill", tintColour: .systemRed))
+          self.mapViewController.hudManager.displayMessage(message: .layerDeleted(layerName))
       }
       
       children.append(delete)

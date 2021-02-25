@@ -263,12 +263,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   @objc func layersButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
     if gestureReconizer.state == UIGestureRecognizer.State.began {
-      let restoring = layerManager.magic()
+      let change = layerManager.magic()
       
-      let message = restoring
-        ? HUDMessage(title: "Layers Restored", systemName: "sparkles", tintColour: .systemYellow, duration: 1)
-        : HUDMessage(title: "Layers Hidden", systemName: "sparkles", tintColour: .secondaryLabel, duration: 1)
-      hudManager.displayMessage(message: message)
+      hudManager.displayMessage(message: .magic(change))
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
   }
