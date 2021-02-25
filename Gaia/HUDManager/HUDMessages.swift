@@ -24,9 +24,9 @@ extension HUDMessage {
     
     return HUDMessage(
       title: "\(quantity) \(restore ? "Restored" : "Hidden")",
-      systemName: "sparkles",
-      tintColour: restore ? .systemYellow : nil,
-      duration: 1
+      systemName: "wand.and.stars",
+      tintColour: restore ? .systemIndigo : nil,
+      duration: 1.25
     )
   }
 }
