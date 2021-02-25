@@ -59,8 +59,6 @@ class HUDView: UIView {
     layer.shadowOpacity = 0.25;
     layer.shadowRadius = 10;
 
-    clipsToBounds = true
-
     let subView = UIView(frame: bounds)
     subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     subView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.75)
