@@ -4,20 +4,25 @@ import UIKit
 class HUDManager {
   lazy var window = UIApplication.shared.windows.first(where: {$0.isKeyWindow})!
   
-  var messages: Set<HUDMessage> = []
+  var currentHUDView: HUDView?
   
   func displayMessage(message: HUDMessage){
     let hudView = HUDView(
       window: window,
       message: message,
-      index: messages.count
+      index: 0
     )
     
-    self.messages.insert(message)
+    if(currentHUDView != nil) {
+      currentHUDView!.hide()
+    }
+    
+    currentHUDView = hudView
     hudView.show()
     
     DispatchQueue.main.asyncAfter(deadline: .now() + message.duration) {
-      self.messages.remove(message)
+      self.currentHUDView = nil
+      
       hudView.hide()
     }
   }
