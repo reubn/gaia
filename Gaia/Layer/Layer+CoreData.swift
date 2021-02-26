@@ -7,6 +7,7 @@ public class Layer: NSManagedObject {
       return NSFetchRequest<Layer>(entityName: "Layer")
   }
 
+  @NSManaged public var visible: Bool
   @NSManaged public var enabled: Bool
   @NSManaged public var favourite: Bool
   @NSManaged public var group: String
@@ -46,11 +47,12 @@ extension Layer: Identifiable {}
 
 // Layer from LayerDefinition
 extension Layer {
-  convenience init(_ layerDefinition: LayerDefinition, context: NSManagedObjectContext, enabled: Bool = false, favourite: Bool = false){
+  convenience init(_ layerDefinition: LayerDefinition, context: NSManagedObjectContext, visible: Bool = false, favourite: Bool = false, enabled: Bool = true){
     self.init(context: context)
     
-    self.enabled = enabled
+    self.visible = visible
     self.favourite = favourite
+    self.enabled = enabled
     
     self.update(layerDefinition)
   }

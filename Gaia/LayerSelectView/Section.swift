@@ -17,6 +17,8 @@ class Section: UIStackView {
 
   var layers: [Layer]
   
+  var normallyCollapsed: Bool
+  
   var sectionOpenConstraint: NSLayoutConstraint!
   var sectionCollapsedConstraint: NSLayoutConstraint!
   var sectionHiddenConstraint: NSLayoutConstraint!
@@ -35,12 +37,14 @@ class Section: UIStackView {
     return view
   }()
   
-  init(group: LayerGroup, layerSelectConfig: LayerSelectConfig, layerManager: LayerManager, mapViewController: MapViewController, scrollView: LayerSelectView){
+  init(group: LayerGroup, layerSelectConfig: LayerSelectConfig, layerManager: LayerManager, mapViewController: MapViewController, scrollView: LayerSelectView, normallyCollapsed: Bool = false){
     self.group = group
     self.layerSelectConfig = layerSelectConfig
     self.layerManager = layerManager
     self.mapViewController = mapViewController
     self.scrollView = scrollView
+    self.normallyCollapsed = normallyCollapsed
+    
     self.layers = group.getLayers().reversed()
     
     super.init(frame: CGRect())
@@ -123,11 +127,13 @@ class Section: UIStackView {
   }
   
   func update() {
-    self.layers = group.getLayers().reversed()
+    self.layers = layerSelectConfig.showDisabled.contains(.inline)
+      ? group.getLayers().reversed()
+      : group.getLayers().filter({$0.enabled}).reversed()
     
     if(self.layers.count > 0) {
       if(openState == .hidden) {
-        openState = .open
+        openState =  normallyCollapsed ? .collapsed : .open
       }
     } else {
       openState = .hidden
@@ -139,7 +145,7 @@ class Section: UIStackView {
   func toggleLayer(layer: Layer, mutuallyExclusive: Bool){
     var result: Bool
     
-    if(layer.enabled) {
+    if(layer.visible) {
       result = layerManager.disableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
     }
     else {
@@ -158,7 +164,9 @@ class Section: UIStackView {
   
     let layer = layers[position]
     
-    toggleLayer(layer: layer, mutuallyExclusive: layerSelectConfig.mutuallyExclusive)
+    if(layer.enabled) {
+      toggleLayer(layer: layer, mutuallyExclusive: layerSelectConfig.mutuallyExclusive)
+    }
   }
   
   required init(coder: NSCoder) {
@@ -225,9 +233,18 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       var children: [UIAction] = []
  
       children.append(UIAction(
-        title: layer.enabled ? "Hide" : "Show",
-        image: UIImage(systemName: layer.enabled ? "eye.slash" : "eye")) { _ in
-        self.toggleLayer(layer: layer, mutuallyExclusive: false)
+        title: layer.visible ? "Hide" : "Show",
+        image: UIImage(systemName: layer.visible ? "eye.slash" : "eye")) { _ in
+          self.toggleLayer(layer: layer, mutuallyExclusive: false)
+      })
+      
+      children.append(UIAction(
+        title: layer.enabled ? "Disable" : "Enable",
+        image: UIImage(systemName: layer.enabled ? "square.slash.fill" : "checkmark.square.fill")) { _ in
+          layer.enabled = !layer.enabled
+          layer.favourite = false
+        
+          self.layerManager.saveLayers()
       })
       
       children.append(UIAction(
@@ -244,13 +261,15 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
           self.layerSelectConfig.layerEditDelegate?.layerEditWasRequested(layer: layer)
       })
       
-      children.append(UIAction(
-        title: layer.favourite ? "Unfavourite" : "Favourite",
-        image: UIImage(systemName: layer.favourite ? "star.slash.fill" : "star.fill")) { _ in
-        layer.favourite = !layer.favourite
-        
-        self.layerManager.saveLayers()
-      })
+      if(layer.enabled) {
+        children.append(UIAction(
+          title: layer.favourite ? "Unfavourite" : "Favourite",
+          image: UIImage(systemName: layer.favourite ? "star.slash.fill" : "star.fill")) { _ in
+          layer.favourite = !layer.favourite
+          
+          self.layerManager.saveLayers()
+        })
+      }
       
       children.append(UIAction(
         title: "Share",

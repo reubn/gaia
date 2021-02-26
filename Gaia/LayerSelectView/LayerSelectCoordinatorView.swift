@@ -57,7 +57,7 @@ class LayerSelectCoordinatorView: CoordinatorView {
         let single = layerDefinitions.count == 1
         
         for layerDefinition in layerDefinitions {
-          _ = self.layerManager.newLayer(layerDefinition, enabled: single)
+          _ = self.layerManager.newLayer(layerDefinition, visible: single)
         }
         
         self.layerManager.saveLayers()

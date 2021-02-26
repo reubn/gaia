@@ -31,15 +31,27 @@ class LayerManager {
     }
   }
 
-  var activeLayers: [Layer]{
+  var visibleLayers: [Layer]{
     get {
-      layers.filter({$0.enabled})
+      layers.filter({$0.visible})
+    }
+  }
+  
+  var favouriteLayers: [Layer]{
+    get {
+      layers.filter({$0.favourite})
+    }
+  }
+  
+  var disabledLayers: [Layer]{
+    get {
+      layers.filter({!$0.enabled})
     }
   }
 
   var sortedLayers: [Layer]{
     get {
-      activeLayers.sorted(by: layerSortingFunction)
+      visibleLayers.sorted(by: layerSortingFunction)
     }
   }
   
@@ -52,6 +64,8 @@ class LayerManager {
   }
 
   func layerSortingFunction(a: Layer, b: Layer) -> Bool {
+    if(a.group == b.group && !a.enabled && b.enabled) {return true} // sort disabled layers below within same group
+    
     return layerSortingFunction(a: LayerDefinition.Metadata(layer: a), b: LayerDefinition.Metadata(layer: b))
   }
   
@@ -109,10 +123,10 @@ class LayerManager {
     }
   }
   
-  func newLayer(_ layerDefinition: LayerDefinition, enabled: Bool = false) -> Layer? {
+  func newLayer(_ layerDefinition: LayerDefinition, visible: Bool = false) -> Layer? {
     if(layers.contains(where: {$0.id == layerDefinition.metadata.id})) {return nil}
     
-    let layer = Layer(layerDefinition, context: managedContext, enabled: enabled)
+    let layer = Layer(layerDefinition, context: managedContext, visible: visible)
 
     return layer
   }
@@ -125,11 +139,11 @@ class LayerManager {
 
   @discardableResult func enableLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
     if(layer.group == "overlay" || !mutuallyExclusive) {
-      layer.enabled = true
+      layer.visible = true
     } else {
       for _layer in layers {
         if(_layer.group != "overlay") {
-          _layer.enabled = _layer == layer
+          _layer.visible = _layer == layer
         }
       }
     }
@@ -140,8 +154,8 @@ class LayerManager {
   }
 
   @discardableResult func disableLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
-    if(layer.group == "overlay" || !mutuallyExclusive || activeLayers.filter({$0.group != "overlay"}).count > 1) {
-      layer.enabled = false
+    if(layer.group == "overlay" || !mutuallyExclusive || visibleLayers.filter({$0.group != "overlay"}).count > 1) {
+      layer.visible = false
       saveLayers()
       
       return true
@@ -152,7 +166,7 @@ class LayerManager {
   
   func filterLayers(_ shouldBeEnabled: (Layer) -> Bool){
     for layer in layers {
-      layer.enabled = shouldBeEnabled(layer)
+      layer.visible = shouldBeEnabled(layer)
     }
     
     saveLayers()
@@ -166,20 +180,20 @@ class LayerManager {
     let overlayGroup = layerGroups.first(where: {$0.id == "overlay"})!
     let overlayLayers = getLayers(layerGroup: overlayGroup)
 
-    let activeOverlayLayers = overlayLayers.filter({$0.enabled})
-    if(activeOverlayLayers.count > 0) {
-      // active overlays, capture
-      magicLayers = activeOverlayLayers
+    let visibleOverlayLayers = overlayLayers.filter({$0.visible})
+    if(visibleOverlayLayers.count > 0) {
+      // visible overlays, capture
+      magicLayers = visibleOverlayLayers
 
       // and hide them
-      activeOverlayLayers.forEach({
+      visibleOverlayLayers.forEach({
         disableLayer(layer: $0, mutuallyExclusive: false)
       })
       
-      return (count: activeOverlayLayers.count, restore: false)
+      return (count: visibleOverlayLayers.count, restore: false)
     } else {
-      // no active overlays, restore
-      let layersToRestore = magicLayers ?? overlayLayers
+      // no visible overlays, restore
+      let layersToRestore = magicLayers ?? overlayLayers.filter({$0.enabled})
       layersToRestore.forEach({
         enableLayer(layer: $0, mutuallyExclusive: false)
       })

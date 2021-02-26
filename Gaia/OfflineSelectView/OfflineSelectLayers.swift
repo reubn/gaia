@@ -7,7 +7,13 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
   unowned let coordinatorView: OfflineSelectCoordinatorView
   let mapViewController: MapViewController
   
-  lazy var layerSelectConfig = LayerSelectConfig(mutuallyExclusive: false, layerContextActions: false, reorderLayers: false, showFavourites: true)
+  lazy var layerSelectConfig = LayerSelectConfig(
+    mutuallyExclusive: false,
+    layerContextActions: false,
+    reorderLayers: false,
+    showFavourites: true,
+    showDisabled: []
+  )
   
   lazy var layerManager = mapViewController.layerManager
   lazy var layerSelectView = LayerSelectView(layerSelectConfig: layerSelectConfig, mapViewController: mapViewController)
@@ -53,7 +59,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
   }
   
   func updatePanel(){
-    let count = layerManager.activeLayers.count
+    let count = layerManager.visibleLayers.count
     
     let nextButton = coordinatorView.panelViewController.getPanelButton(.next)
     nextButton.isEnabled = count > 0

@@ -54,7 +54,7 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
       favouritesLayerSelectConfig.reorderLayers = false
       
       let favouritesSection = Section(
-        group: LayerGroup(layerManager: layerManager, id: "favourite", name: "Favourites", colour: .systemOrange, selectionFunction: {layerManager in layerManager.layers.filter({$0.favourite}).sorted(by: layerManager.layerSortingFunction)}),
+        group: LayerGroup(layerManager: layerManager, id: "favourite", name: "Favourites", colour: .systemOrange, selectionFunction: {layerManager in layerManager.favouriteLayers.sorted(by: layerManager.layerSortingFunction)}),
         layerSelectConfig: favouritesLayerSelectConfig,
         layerManager: layerManager,
         mapViewController: mapViewController,
@@ -66,7 +66,7 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
       favouritesSection.translatesAutoresizingMaskIntoConstraints = false
       favouritesSection.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
     }
-    
+
     layerManager.layerGroups.forEach({
       let section = Section(
         group: $0,
@@ -81,6 +81,25 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
       section.translatesAutoresizingMaskIntoConstraints = false
       section.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
     })
+    
+    if(layerSelectConfig.showDisabled.contains(.section)) {
+      var disabledLayerSelectConfig = layerSelectConfig
+      disabledLayerSelectConfig.reorderLayers = false
+      
+      let disabledSection = Section(
+        group: LayerGroup(layerManager: layerManager, id: "disabled", name: "Disabled", colour: .systemGray, selectionFunction: {layerManager in layerManager.disabledLayers.sorted(by: layerManager.layerSortingFunction)}),
+        layerSelectConfig: disabledLayerSelectConfig,
+        layerManager: layerManager,
+        mapViewController: mapViewController,
+        scrollView: self,
+        normallyCollapsed: true
+      )
+      
+      stack.addArrangedSubview(disabledSection)
+
+      disabledSection.translatesAutoresizingMaskIntoConstraints = false
+      disabledSection.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
+    }
   }
   
   func compositeStyleDidChange(compositeStyle _: CompositeStyle) {

@@ -17,12 +17,14 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   let preview = MGLMapView(frame: CGRect.zero)
   let previewSpacing:CGFloat = 15
   let title = UILabel()
+  
+  lazy var height = contentView.heightAnchor.constraint(equalToConstant: 100)
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     autoresizingMask = .flexibleHeight
-    let height = contentView.heightAnchor.constraint(equalToConstant: 100)
+
     height.priority = UILayoutPriority(rawValue: 999)
     height.isActive = true
 
@@ -68,6 +70,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   }
 
   func parentMapViewRegionIsChanging() {
+    if(displayedStyle != nil && !(_layer?.enabled ?? false)){return}
+    
     visible = self.isVisible()
     if(!visible){return}
     needsUpdating = false
@@ -95,10 +99,21 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
 
     queuedStyle = _layer.style
     
+    height.constant = _layer.enabled ? 100 : 80
+    contentView.layer.opacity = _layer.enabled ? 1 : 0.5
+    
     let mutuallyExclusive = layerSelectConfig.mutuallyExclusive
-    backgroundColor = !mutuallyExclusive && _layer.enabled ? .systemBlue : .clear
-    tintColor = !mutuallyExclusive && _layer.enabled ? .white : nil
-    title.textColor = !mutuallyExclusive && _layer.enabled ? .white : UIColor.label
+    backgroundColor = !mutuallyExclusive && _layer.visible
+      ? .systemBlue
+      : .clear
+    
+    tintColor = !mutuallyExclusive && _layer.visible
+      ? .white
+      : nil
+    
+    title.textColor = !mutuallyExclusive && _layer.visible
+      ? .white
+      : .label
 
     if(first) {
       self.first = false
@@ -110,7 +125,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     title.text = _layer.name
     accessibilityLabel = title.text! + " Layer"
 
-    accessoryType = _layer.enabled ? .checkmark : .none
+    accessoryType = _layer.visible ? .checkmark : .none
 
     DispatchQueue.main.async { // allow time for .isVisible() to return correct result
       self.needsUpdating = true

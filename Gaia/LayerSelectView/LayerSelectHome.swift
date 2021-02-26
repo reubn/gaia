@@ -8,7 +8,10 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
   unowned let coordinatorView: LayerSelectCoordinatorView
   let mapViewController: MapViewController
   
-  lazy var layerSelectConfig = LayerSelectConfig(layerEditDelegate: self)
+  lazy var layerSelectConfig = LayerSelectConfig(
+    showDisabled: [.inline, .section],
+    layerEditDelegate: self
+  )
   
   lazy var layerManager = mapViewController.layerManager
   lazy var layerSelectView = LayerSelectView(layerSelectConfig: layerSelectConfig, mapViewController: mapViewController)
