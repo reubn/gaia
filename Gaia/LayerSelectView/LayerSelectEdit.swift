@@ -68,9 +68,12 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   func viewWillEnter(data: Any?){
     print("enter LSE")
     
-    _layer = data as? Layer
+    var duplicateFromLayer: Layer?
+    (_layer, duplicateFromLayer) = data as! (Layer?, Layer?)
     
-    let layerDefinition = _layer != nil ? LayerDefinition(layer: _layer!) : nil
+    let layerDefinition = (_layer ?? duplicateFromLayer) != nil
+      ? LayerDefinition(layer: (_layer ?? duplicateFromLayer)!)
+      : nil
     
     if(coordinatorView.mapViewController.lsfpc.viewIfLoaded?.window != nil) {
       coordinatorView.mapViewController.lsfpc.move(to: .full, animated: true)

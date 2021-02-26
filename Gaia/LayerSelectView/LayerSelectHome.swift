@@ -131,7 +131,11 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
   }
   
   func layerEditWasRequested(layer: Layer) {
-    coordinatorView.goTo(2, data: layer)
+    coordinatorView.goTo(2, data: (layer, nil as Layer?))
+  }
+  
+  func layerEditWasRequested(duplicateFromLayer: Layer) {
+    coordinatorView.goTo(2, data: (nil as Layer?, duplicateFromLayer))
   }
   
   func panelDidMove() {

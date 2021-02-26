@@ -261,6 +261,12 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
           self.layerSelectConfig.layerEditDelegate?.layerEditWasRequested(layer: layer)
       })
       
+      children.append(UIAction(
+        title: "Duplicate",
+        image: UIImage(systemName: "plus.square.fill.on.square.fill")) { _ in
+        self.layerSelectConfig.layerEditDelegate?.layerEditWasRequested(duplicateFromLayer: layer)
+      })
+      
       if(layer.enabled) {
         children.append(UIAction(
           title: layer.favourite ? "Unfavourite" : "Favourite",
