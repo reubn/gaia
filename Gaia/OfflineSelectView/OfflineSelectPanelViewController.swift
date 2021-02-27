@@ -5,11 +5,10 @@ import Mapbox
 import FloatingPanel
 
 class OfflineSelectPanelViewController: MapViewPanelViewController {
-  let mapViewController: MapViewController
-  lazy var coordinatorView = OfflineSelectCoordinatorView(mapViewController: mapViewController, panelViewController: self)
+    lazy var coordinatorView = OfflineSelectCoordinatorView(panelViewController: self)
   
-  init(mapViewController: MapViewController){
-    self.mapViewController = mapViewController
+  init(){
+    
     super.init(title: "Downloads")
     
     self.panelButtons = [.dismiss]

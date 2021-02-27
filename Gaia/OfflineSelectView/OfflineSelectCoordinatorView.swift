@@ -4,7 +4,6 @@ import UIKit
 import Mapbox
 
 class OfflineSelectCoordinatorView: CoordinatorView {
-  let mapViewController: MapViewController
   unowned let panelViewController: OfflineSelectPanelViewController
   
   var selectedArea: MGLCoordinateBounds?
@@ -12,19 +11,16 @@ class OfflineSelectCoordinatorView: CoordinatorView {
   var selectedLayers: [Layer]?
   var selectedZoomFrom: Double?
   var selectedZoomTo: Double?
-  
-  lazy var offlineManager = mapViewController.offlineManager
 
-  init(mapViewController: MapViewController, panelViewController: OfflineSelectPanelViewController){
-    self.mapViewController = mapViewController
+  init(panelViewController: OfflineSelectPanelViewController){
     self.panelViewController = panelViewController
     
     super.init()
     
     story = [
-      OfflineSelectHome(coordinatorView: self, mapViewController: mapViewController),
+      OfflineSelectHome(coordinatorView: self),
       OfflineSelectArea(coordinatorView: self),
-      OfflineSelectLayers(coordinatorView: self, mapViewController: mapViewController),
+      OfflineSelectLayers(coordinatorView: self),
       OfflineSelectZoom(coordinatorView: self)
     ]
     
@@ -32,7 +28,7 @@ class OfflineSelectCoordinatorView: CoordinatorView {
   }
   
   override func done(){
-    offlineManager.downloadPack(layers: selectedLayers!, bounds: selectedArea!, fromZoomLevel: selectedZoom! - 2, toZoomLevel: selectedZoom!)
+    OfflineManager.shared.downloadPack(layers: selectedLayers!, bounds: selectedArea!, fromZoomLevel: selectedZoom! - 2, toZoomLevel: selectedZoom!)
     
     super.done()
   }

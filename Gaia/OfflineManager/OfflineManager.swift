@@ -104,6 +104,8 @@ class OfflineManager {
   @objc func offlinePackProgressDidChange(notification: NSNotification) {
     multicastDownloadDidUpdateDelegate.invoke(invocation: {$0.downloadDidUpdate(pack: notification.object as? MGLOfflinePack)})
   }
+  
+  static let shared = OfflineManager()
 }
 
 protocol OfflineManagerDelegate {

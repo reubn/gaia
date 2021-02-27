@@ -2,8 +2,6 @@ import Foundation
 import UIKit
 
 class LayerSelectViewEmpty: UIView {
-  let layerManager: LayerManager
-  
   lazy var title: UILabel = {
     let label = UILabel()
       
@@ -36,15 +34,14 @@ class LayerSelectViewEmpty: UIView {
     return label
   }()
   
-  init(layerManager: LayerManager){
-    self.layerManager = layerManager
+  init(){
     super.init(frame: CGRect())
     
     update()
   }
   
   func update(){
-    if(layerManager.layers.isEmpty){
+    if(LayerManager.shared.layers.isEmpty){
       title.text = "You need some Layers"
       subtitle.text = "Add or Import to get started"
       isHidden = false

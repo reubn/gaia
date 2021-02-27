@@ -12,11 +12,11 @@ class LayerManager {
   let multicastCompositeStyleDidChangeDelegate = MulticastDelegate<(LayerManagerDelegate)>()
 
   lazy var layerGroups = [
-    LayerGroup(layerManager: self, id: "uncategorised", name: "Uncategorised", colour: .systemPurple),
-    LayerGroup(layerManager: self, id: "overlay", name: "Overlays", colour: .systemPink),
-    LayerGroup(layerManager: self, id: "aerial", name: "Aerial Imagery", colour: .systemGreen),
-    LayerGroup(layerManager: self, id: "base", name: "Base Maps", colour: .systemBlue),
-    LayerGroup(layerManager: self, id: "historic", name: "Historic", colour: .systemIndigo)
+    LayerGroup(id: "uncategorised", name: "Uncategorised", colour: .systemPurple),
+    LayerGroup(id: "overlay", name: "Overlays", colour: .systemPink),
+    LayerGroup(id: "aerial", name: "Aerial Imagery", colour: .systemGreen),
+    LayerGroup(id: "base", name: "Base Maps", colour: .systemBlue),
+    LayerGroup(id: "historic", name: "Historic", colour: .systemIndigo)
   ]
   
   var layers: [Layer]{
@@ -52,6 +52,12 @@ class LayerManager {
   var sortedLayers: [Layer]{
     get {
       visibleLayers.sorted(by: layerSortingFunction)
+    }
+  }
+  
+  var compositeStyle: CompositeStyle {
+    get {
+      CompositeStyle(sortedLayers: sortedLayers)
     }
   }
   
@@ -204,26 +210,21 @@ class LayerManager {
     }
   }
   
-  var compositeStyle: CompositeStyle {
-    get {
-      CompositeStyle(sortedLayers: sortedLayers)
-    }
-  }
+  static let shared = LayerManager()
 }
 
 struct LayerGroup {
-  unowned let layerManager: LayerManager
   let id: String
   let name: String
   let colour: UIColor
   
-  var selectionFunction: ((LayerManager) -> [Layer])? = nil
+  var selectionFunction: (() -> [Layer])? = nil
   
   func getLayers() -> [Layer] {
     if(selectionFunction == nil) {
-      return layerManager.getLayers(layerGroup: self)
+      return LayerManager.shared.getLayers(layerGroup: self)
     } else {
-      return selectionFunction!(layerManager)
+      return selectionFunction!()
     }
   }
 }

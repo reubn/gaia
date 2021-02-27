@@ -2,8 +2,6 @@ import Foundation
 import UIKit
 
 class OfflineSelectHomeEmpty: UIView {
-  let offlineManager: OfflineManager
-  
   lazy var title: UILabel = {
     let label = UILabel()
       
@@ -36,21 +34,11 @@ class OfflineSelectHomeEmpty: UIView {
     return label
   }()
   
-  init(offlineManager: OfflineManager){
-    self.offlineManager = offlineManager
-    
-    super.init(frame: CGRect())
-  }
-  
   func update(){
-    if(offlineManager.downloads?.count ?? 0 == 0){
+    if(OfflineManager.shared.downloads?.count ?? 0 == 0){
       title.text = "Saved Regions"
       subtitle.text = "Download areas to use when offline"
       isHidden = false
     } else {isHidden = true}
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 }

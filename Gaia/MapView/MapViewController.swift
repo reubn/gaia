@@ -3,10 +3,6 @@ import Mapbox
 import FloatingPanel
 
 class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDelegate, OfflineModeDelegate {
-  let layerManager = LayerManager()
-  let offlineManager = OfflineManager()
-  let hudManager = HUDManager()
-  
   let lsfpc = MemoryConsciousFloatingPanelController()
   let osfpc = MemoryConsciousFloatingPanelController()
   let lifpc = MemoryConsciousFloatingPanelController()
@@ -31,10 +27,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     super.viewDidLoad()
 
     mapView = MGLMapView(frame: view.bounds)
-    layerManager.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
-    offlineManager.multicastOfflineModeDidChangeDelegate.add(delegate: self)
+    LayerManager.shared.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
+    OfflineManager.shared.multicastOfflineModeDidChangeDelegate.add(delegate: self)
     
-    let initialCompositeStyle = layerManager.compositeStyle
+    let initialCompositeStyle = LayerManager.shared.compositeStyle
     mapView.styleURL = initialCompositeStyle.url
     updateUIColourScheme(compositeStyle: initialCompositeStyle)
 
@@ -84,7 +80,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     layersButtonLongGR.minimumPressDuration = 0.4
     layersButton.addGestureRecognizer(layersButtonLongGR)
     
-    offlineButton.setImage(offlineManager.offlineMode ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
+    offlineButton.setImage(OfflineManager.shared.offlineMode ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
     offlineButton.addTarget(self, action: #selector(offlineButtonTapped), for: .touchUpInside)
     offlineButton.accessibilityLabel = "Downloads"
     
@@ -215,7 +211,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       }
     }
 
-    let locationInfoPanelViewController = LocationInfoPanelViewController(mapViewController: self, location: location)
+    let locationInfoPanelViewController = LocationInfoPanelViewController(location: location)
     
     lifpc.layout = locationInfoPanelLayout
     lifpc.delegate = locationInfoPanelViewController
@@ -242,7 +238,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       if(isMe) {return}
     }
 
-    let layerSelectPanelViewController = LayerSelectPanelViewController(mapViewController: self)
+    let layerSelectPanelViewController = LayerSelectPanelViewController()
     
     lsfpc.layout = layerSelectPanelLayout
     lsfpc.delegate = layerSelectPanelViewController
@@ -263,9 +259,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   @objc func layersButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
     if gestureReconizer.state == UIGestureRecognizer.State.began {
-      let change = layerManager.magic()
+      let change = LayerManager.shared.magic()
       
-      hudManager.displayMessage(message: .magic(change))
+      HUDManager.shared.displayMessage(message: .magic(change))
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
   }
@@ -278,7 +274,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       if(isMe) {return}
     }
     
-    let offlineSelectPanelViewController = OfflineSelectPanelViewController(mapViewController: self)
+    let offlineSelectPanelViewController = OfflineSelectPanelViewController()
    
     osfpc.layout = offlineSelectPanelLayout
     osfpc.delegate = offlineSelectPanelViewController
@@ -299,7 +295,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   @objc func offlineButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
     if gestureReconizer.state == UIGestureRecognizer.State.began {
-      offlineManager.offlineMode = !offlineManager.offlineMode
+      OfflineManager.shared.offlineMode = !OfflineManager.shared.offlineMode
       
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
@@ -313,7 +309,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       if(isMe) {return}
     }
 
-    let aboutPanelViewController = AboutPanelViewController(mapViewController: self)
+    let aboutPanelViewController = AboutPanelViewController()
     
     abfpc.layout = aboutPanelLayout
     abfpc.delegate = aboutPanelViewController
@@ -331,6 +327,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 
     self.present(abfpc, animated: true, completion: nil)
   }
+  
+  static let shared = MapViewController()
 }
 
 protocol ParentMapViewRegionIsChangingDelegate {

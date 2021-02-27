@@ -26,6 +26,8 @@ class HUDManager {
       hudView.hide()
     }
   }
+  
+  static let shared = HUDManager()
 }
 
 struct HUDMessage: Hashable {

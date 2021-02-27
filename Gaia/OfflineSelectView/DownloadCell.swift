@@ -10,8 +10,7 @@ class DownloadCell: UITableViewCell {
   let previewSpacing: CGFloat = 15
   
   var pack: MGLOfflinePack?
-  var mapViewController: MapViewController?
-  var context: PackContext? = nil
+    var context: PackContext? = nil
   
   var _status: MGLOfflinePackState?
   var status: MGLOfflinePackState? {
@@ -162,16 +161,16 @@ class DownloadCell: UITableViewCell {
   }
   
 
-  func update(pack: MGLOfflinePack, mapViewController: MapViewController) {
+  func update(pack: MGLOfflinePack) {
     self.pack = pack
-    self.mapViewController = mapViewController
+    
 
-    context = mapViewController.offlineManager.decodePackContext(pack: pack)
+    context = OfflineManager.shared.decodePackContext(pack: pack)
     
     if(context == nil) {return}
     
     let layersMetadata = context!.layerMetadata
-    let orderedLayersMetadata = layersMetadata.sorted(by: mapViewController.layerManager.layerSortingFunction).reversed()
+    let orderedLayersMetadata = layersMetadata.sorted(by: LayerManager.shared.layerSortingFunction).reversed()
     
     let byteString = ByteCountFormatter.string(fromByteCount: Int64(pack.progress.countOfBytesCompleted), countStyle: .memory)
     let layersString = orderedLayersMetadata.map({$0.name}).joined(separator: ", ")

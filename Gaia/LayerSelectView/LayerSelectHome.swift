@@ -6,15 +6,13 @@ import Mapbox
 
 class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerEditDelegate, PanelDidMoveDelegate {
   unowned let coordinatorView: LayerSelectCoordinatorView
-  let mapViewController: MapViewController
-  
+    
   lazy var layerSelectConfig = LayerSelectConfig(
     showDisabled: [.inline, .section],
     layerEditDelegate: self
   )
   
-  lazy var layerManager = mapViewController.layerManager
-  lazy var layerSelectView = LayerSelectView(layerSelectConfig: layerSelectConfig, mapViewController: mapViewController)
+  lazy var layerSelectView = LayerSelectView(layerSelectConfig: layerSelectConfig)
   
   func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
     var importsAccepted = 0
@@ -28,17 +26,16 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     
     if(importsAccepted == 0) {
       UINotificationFeedbackGenerator().notificationOccurred(.error)
-      mapViewController.hudManager.displayMessage(message: .importError)
+      HUDManager.shared.displayMessage(message: .importError)
     }
     else {
       UINotificationFeedbackGenerator().notificationOccurred(.success)
-      mapViewController.hudManager.displayMessage(message: .layersImported(importsAccepted))
+      HUDManager.shared.displayMessage(message: .layersImported(importsAccepted))
     }
   }
 
-  init(coordinatorView: LayerSelectCoordinatorView, mapViewController: MapViewController){
+  init(coordinatorView: LayerSelectCoordinatorView){
     self.coordinatorView = coordinatorView
-    self.mapViewController = mapViewController
     
     super.init(frame: CGRect())
     
@@ -71,7 +68,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
       
       let activityViewController = UIActivityViewController(activityItems: [temporaryFileURL], applicationActivities: nil)
       activityViewController.popoverPresentationController?.sourceView = sender
-      self.mapViewController.lsfpc.present(activityViewController, animated: true, completion: nil)
+      MapViewController.shared.lsfpc.present(activityViewController, animated: true, completion: nil)
       
     } catch {
       print(error)
@@ -83,8 +80,8 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     
     coordinatorView.panelViewController.panelDidMoveDelegate = self
     
-    if(coordinatorView.mapViewController.lsfpc.viewIfLoaded?.window != nil) {
-      coordinatorView.mapViewController.lsfpc.move(to: .half, animated: true)
+    if(MapViewController.shared.lsfpc.viewIfLoaded?.window != nil) {
+      MapViewController.shared.lsfpc.move(to: .half, animated: true)
     }
     
     coordinatorView.panelViewController.title = "Layers"
@@ -100,7 +97,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
         documentPicker.delegate = self
         documentPicker.shouldShowFileExtensions = true
 
-        self.mapViewController.lsfpc.present(documentPicker, animated: true, completion: nil)
+        MapViewController.shared.lsfpc.present(documentPicker, animated: true, completion: nil)
       }),
       UIAction(title: "New", image: UIImage(systemName: "plus"), handler: {_ in
         self.coordinatorView.goTo(2)
@@ -126,7 +123,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     let panelButton = coordinatorView.panelViewController.getPanelButton(button)
     
     if(button == .share) {
-      showShareSheet(panelButton, layers: layerManager.layers)
+      showShareSheet(panelButton, layers: LayerManager.shared.layers)
     }
   }
   

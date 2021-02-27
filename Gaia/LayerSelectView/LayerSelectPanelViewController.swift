@@ -4,12 +4,9 @@ import UIKit
 import FloatingPanel
 
 class LayerSelectPanelViewController: MapViewPanelViewController {
-  let mapViewController: MapViewController
-  lazy var coordinatorView = LayerSelectCoordinatorView(mapViewController: mapViewController, panelViewController: self)
+  lazy var coordinatorView = LayerSelectCoordinatorView(panelViewController: self)
   
-  init(mapViewController: MapViewController){
-    self.mapViewController = mapViewController
-    
+  init(){
     super.init(title: "Layers")
     
     self.panelButtons = [.dismiss]

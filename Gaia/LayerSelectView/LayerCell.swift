@@ -6,8 +6,7 @@ import Mapbox
 
 class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   var _layer: Layer?
-  var layerManager: LayerManager?
-  var mapViewController: MapViewController?
+  
   var first = true
   var visible = false
   var queuedStyle: Style?
@@ -76,13 +75,13 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     if(!visible){return}
     needsUpdating = false
 
-    let parent = mapViewController!.mapView.bounds
+    let parent = MapViewController.shared.mapView.bounds
     let centerPoint = CGPoint(x: parent.width * 0.5, y: parent.height * 0.25)
     
     preview.setCenter(
-      mapViewController!.mapView.convert(centerPoint, toCoordinateFrom: nil),
-      zoomLevel: mapViewController!.mapView.zoomLevel - 0.5,
-      direction: mapViewController!.mapView.direction,
+      MapViewController.shared.mapView.convert(centerPoint, toCoordinateFrom: nil),
+      zoomLevel: MapViewController.shared.mapView.zoomLevel - 0.5,
+      direction: MapViewController.shared.mapView.direction,
       animated: false
     )
     
@@ -92,11 +91,9 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     }
   }
 
-  func update(_layer: Layer, layerSelectConfig: LayerSelectConfig, layerManager: LayerManager, mapViewController: MapViewController, scrollView: LayerSelectView) {
+  func update(_layer: Layer, layerSelectConfig: LayerSelectConfig, scrollView: LayerSelectView) {
     self._layer = _layer
-    self.layerManager = layerManager
-    self.mapViewController = mapViewController
-
+ 
     queuedStyle = _layer.style
     
     height.constant = _layer.enabled ? 100 : 80
@@ -118,7 +115,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     if(first) {
       self.first = false
       
-      mapViewController.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)
+      MapViewController.shared.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)
       scrollView.multicastScrollViewDidScrollDelegate.add(delegate: self)
     }
 

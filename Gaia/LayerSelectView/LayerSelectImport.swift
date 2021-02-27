@@ -6,10 +6,7 @@ import KeyboardLayoutGuide
 
 class LayerSelectImport: UIView, CoordinatedView {
   unowned let coordinatorView: LayerSelectCoordinatorView
-  let mapViewController: MapViewController
-  
-  lazy var layerManager = mapViewController.layerManager
-  
+
   lazy var urlInput: UITextField = {
     let textField = TextField()
     textField.placeholder = "/{x}/{y}/{z}, .gpx, or .json"
@@ -34,9 +31,9 @@ class LayerSelectImport: UIView, CoordinatedView {
     return textField
   }()
 
-  init(coordinatorView: LayerSelectCoordinatorView, mapViewController: MapViewController){
+  init(coordinatorView: LayerSelectCoordinatorView){
     self.coordinatorView = coordinatorView
-    self.mapViewController = mapViewController
+    
     
     super.init(frame: CGRect())
 
@@ -48,8 +45,8 @@ class LayerSelectImport: UIView, CoordinatedView {
   func viewWillEnter(data: Any?){
     print("enter LSI")
     
-    if(coordinatorView.mapViewController.lsfpc.viewIfLoaded?.window != nil) {
-      coordinatorView.mapViewController.lsfpc.move(to: .half, animated: true)
+    if(MapViewController.shared.lsfpc.viewIfLoaded?.window != nil) {
+      MapViewController.shared.lsfpc.move(to: .half, animated: true)
     }
     
     coordinatorView.panelViewController.title = "Import Layer"
@@ -96,7 +93,7 @@ class LayerSelectImport: UIView, CoordinatedView {
     acceptButton.isEnabled = false
     
     UINotificationFeedbackGenerator().notificationOccurred(.error)
-    mapViewController.hudManager.displayMessage(message: .importError)
+    HUDManager.shared.displayMessage(message: .importError)
   }
   
   func handleSuccess(count: Int){
@@ -104,7 +101,7 @@ class LayerSelectImport: UIView, CoordinatedView {
     self.urlInput.text = ""
     
     UINotificationFeedbackGenerator().notificationOccurred(.success)
-    mapViewController.hudManager.displayMessage(message: .layersImported(count))
+    HUDManager.shared.displayMessage(message: .layersImported(count))
   }
 
   @objc func urlChanged(){

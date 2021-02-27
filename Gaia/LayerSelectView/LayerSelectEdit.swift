@@ -7,8 +7,7 @@ import KeyboardLayoutGuide
 
 class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   unowned let coordinatorView: LayerSelectCoordinatorView
-  let mapViewController: MapViewController
-  
+    
   let colourRegex = try! NSRegularExpression(pattern: "(?<=#)([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})")
   
   var _layer: Layer? = nil
@@ -16,8 +15,6 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   var colourEditingRange: NSRange? = nil
   
   var initialText: String = ""
-  
-  lazy var layerManager = mapViewController.layerManager
   
   lazy var colorWell: UIColorWell = {
     let colorWell = UIColorWell()
@@ -54,9 +51,9 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     return textView
   }()
 
-  init(coordinatorView: LayerSelectCoordinatorView, mapViewController: MapViewController){
+  init(coordinatorView: LayerSelectCoordinatorView){
     self.coordinatorView = coordinatorView
-    self.mapViewController = mapViewController
+    
     
     super.init(frame: CGRect())
 
@@ -75,8 +72,8 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
       ? LayerDefinition(layer: (_layer ?? duplicateFromLayer)!)
       : nil
     
-    if(coordinatorView.mapViewController.lsfpc.viewIfLoaded?.window != nil) {
-      coordinatorView.mapViewController.lsfpc.move(to: .full, animated: true)
+    if(MapViewController.shared.lsfpc.viewIfLoaded?.window != nil) {
+      MapViewController.shared.lsfpc.move(to: .full, animated: true)
     }
     
     coordinatorView.panelViewController.title = _layer != nil ? "Edit Layer" : "New Layer"
@@ -145,7 +142,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     
     colorWell.addTarget(self, action: #selector(colourChanged), for: .valueChanged)
     
-    mapViewController.lsfpc.track(scrollView: jsonEditor)
+    MapViewController.shared.lsfpc.track(scrollView: jsonEditor)
   }
   
   func viewWillExit(){
@@ -158,7 +155,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     else if(button == .help) {
       let vc = SFSafariViewController(url: URL(string: "https://docs.mapbox.com/mapbox-gl-js/style-spec/root")!)
       vc.modalPresentationStyle = .popover
-      mapViewController.lsfpc.present(vc, animated: true)
+      MapViewController.shared.lsfpc.present(vc, animated: true)
     }
   }
   
@@ -182,7 +179,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
         let layerDefinition = try decoder.decode(LayerDefinition.self, from: data)
         
         _layer!.update(layerDefinition)
-        layerManager.saveLayers()
+        LayerManager.shared.saveLayers()
         
         result = true
       } else {
@@ -195,13 +192,13 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
       }
       
       UINotificationFeedbackGenerator().notificationOccurred(.success)
-      mapViewController.hudManager.displayMessage(message: newLayer ? .layerCreated : .layerSaved)
+      HUDManager.shared.displayMessage(message: newLayer ? .layerCreated : .layerSaved)
       
       coordinatorView.goTo(0)
     } catch {
       acceptButton?.isEnabled = false
       UINotificationFeedbackGenerator().notificationOccurred(.error)
-      mapViewController.hudManager.displayMessage(message: .syntaxError)
+      HUDManager.shared.displayMessage(message: .syntaxError)
     }
   }
   

@@ -5,11 +5,10 @@ import Mapbox
 import FloatingPanel
 
 class AboutPanelViewController: MapViewPanelViewController {
-  let mapViewController: MapViewController
-  lazy var mainView = AboutView(mapViewController: mapViewController)
+    lazy var mainView = AboutView()
   
-  init(mapViewController: MapViewController){
-    self.mapViewController = mapViewController
+  init(){
+    
     super.init(title: nil)
     
     self.panelButtons = [.dismiss]

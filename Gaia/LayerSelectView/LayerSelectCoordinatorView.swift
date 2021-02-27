@@ -7,21 +7,17 @@ import CoreGPX
 
 
 class LayerSelectCoordinatorView: CoordinatorView {
-  let mapViewController: MapViewController
   unowned let panelViewController: LayerSelectPanelViewController
   
-  lazy var layerManager = mapViewController.layerManager
-  
-  init(mapViewController: MapViewController, panelViewController: LayerSelectPanelViewController){
-    self.mapViewController = mapViewController
+  init(panelViewController: LayerSelectPanelViewController){
     self.panelViewController = panelViewController
     
     super.init()
     
     story = [
-      LayerSelectHome(coordinatorView: self, mapViewController: mapViewController),
-      LayerSelectImport(coordinatorView: self, mapViewController: mapViewController),
-      LayerSelectEdit(coordinatorView: self, mapViewController: mapViewController)
+      LayerSelectHome(coordinatorView: self),
+      LayerSelectImport(coordinatorView: self),
+      LayerSelectEdit(coordinatorView: self)
     ]
     
     super.ready()
@@ -57,10 +53,10 @@ class LayerSelectCoordinatorView: CoordinatorView {
         let single = layerDefinitions.count == 1
         
         for layerDefinition in layerDefinitions {
-          _ = self.layerManager.newLayer(layerDefinition, visible: single)
+          _ = LayerManager.shared.newLayer(layerDefinition, visible: single)
         }
         
-        self.layerManager.saveLayers()
+        LayerManager.shared.saveLayers()
         super.done()
       }
     }

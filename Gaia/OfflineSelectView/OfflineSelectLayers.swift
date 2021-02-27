@@ -5,8 +5,7 @@ import Mapbox
 
 class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelDidMoveDelegate {
   unowned let coordinatorView: OfflineSelectCoordinatorView
-  let mapViewController: MapViewController
-  
+    
   lazy var layerSelectConfig = LayerSelectConfig(
     mutuallyExclusive: false,
     layerContextActions: false,
@@ -14,17 +13,16 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
     showFavourites: true,
     showDisabled: []
   )
-  
-  lazy var layerManager = mapViewController.layerManager
-  lazy var layerSelectView = LayerSelectView(layerSelectConfig: layerSelectConfig, mapViewController: mapViewController)
 
-  init(coordinatorView: OfflineSelectCoordinatorView, mapViewController: MapViewController){
+  lazy var layerSelectView = LayerSelectView(layerSelectConfig: layerSelectConfig)
+
+  init(coordinatorView: OfflineSelectCoordinatorView){
     self.coordinatorView = coordinatorView
-    self.mapViewController = mapViewController
+    
     
     super.init(frame: CGRect())
     
-    layerManager.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
+    LayerManager.shared.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
     
     addSubview(layerSelectView)
     
@@ -40,7 +38,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
     
     coordinatorView.panelViewController.panelDidMoveDelegate = self
     
-    coordinatorView.mapViewController.osfpc.move(to: .full, animated: true)
+    MapViewController.shared.osfpc.move(to: .full, animated: true)
     coordinatorView.panelViewController.panelButtons = [.previous, .next]
     
     coordinatorView.selectedLayers = nil
@@ -59,7 +57,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
   }
   
   func updatePanel(){
-    let count = layerManager.visibleLayers.count
+    let count = LayerManager.shared.visibleLayers.count
     
     let nextButton = coordinatorView.panelViewController.getPanelButton(.next)
     nextButton.isEnabled = count > 0
@@ -74,7 +72,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
   
   func panelButtonTapped(button: PanelButton){
     if(button == .next){
-      coordinatorView.selectedLayers = layerManager.sortedLayers
+      coordinatorView.selectedLayers = LayerManager.shared.sortedLayers
       coordinatorView.forward()
     } else if(button == .previous){
       coordinatorView.back()

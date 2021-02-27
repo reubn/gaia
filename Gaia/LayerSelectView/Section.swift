@@ -7,8 +7,7 @@ import Mapbox
 class Section: UIStackView {
   let group: LayerGroup
   let layerSelectConfig: LayerSelectConfig
-  let layerManager: LayerManager
-  let mapViewController: MapViewController
+  
   let tableView = SectionTableView()
   
   var cellReuseCache: [String: LayerCell] = [:]
@@ -37,11 +36,10 @@ class Section: UIStackView {
     return view
   }()
   
-  init(group: LayerGroup, layerSelectConfig: LayerSelectConfig, layerManager: LayerManager, mapViewController: MapViewController, scrollView: LayerSelectView, normallyCollapsed: Bool = false){
+  init(group: LayerGroup, layerSelectConfig: LayerSelectConfig, scrollView: LayerSelectView, normallyCollapsed: Bool = false){
     self.group = group
     self.layerSelectConfig = layerSelectConfig
-    self.layerManager = layerManager
-    self.mapViewController = mapViewController
+    
     self.scrollView = scrollView
     self.normallyCollapsed = normallyCollapsed
     
@@ -146,10 +144,10 @@ class Section: UIStackView {
     var result: Bool
     
     if(layer.visible) {
-      result = layerManager.disableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
+      result = LayerManager.shared.disableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
     }
     else {
-      result = layerManager.enableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
+      result = LayerManager.shared.enableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
     }
     
     if(result) {
@@ -198,7 +196,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       layer.groupIndex = Int16(index) // reset indexes on group layers
     }
     
-    layerManager.saveLayers()
+    LayerManager.shared.saveLayers()
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -214,7 +212,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       return newCell
     }()
 
-    cell.update(_layer: _layer, layerSelectConfig: layerSelectConfig, layerManager: layerManager, mapViewController: mapViewController, scrollView: scrollView)
+    cell.update(_layer: _layer, layerSelectConfig: layerSelectConfig, scrollView: scrollView)
     
     let cellGR = UITapGestureRecognizer(target: self, action: #selector(self.tableViewLabelClick))
     cell.isUserInteractionEnabled = true
@@ -248,13 +246,13 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
             layer.visible = false
           }
           
-          self.layerManager.saveLayers()
+          LayerManager.shared.saveLayers()
       })
       
       children.append(UIAction(
         title: "Isolate",
         image: UIImage(systemName: "square.3.stack.3d.middle.fill")) { _ in
-          self.layerManager.filterLayers {
+          LayerManager.shared.filterLayers {
             $0 == layer
           }
       })
@@ -277,7 +275,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
           image: UIImage(systemName: layer.favourite ? "star.slash.fill" : "star.fill")) { _ in
           layer.favourite = !layer.favourite
           
-          self.layerManager.saveLayers()
+          LayerManager.shared.saveLayers()
         })
       }
       
@@ -296,7 +294,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
             
             let activityViewController = UIActivityViewController(activityItems: [temporaryFileURL], applicationActivities: nil)
             activityViewController.popoverPresentationController?.sourceView = tableView
-            self.mapViewController.lsfpc.present(activityViewController, animated: true, completion: nil)
+            MapViewController.shared.lsfpc.present(activityViewController, animated: true, completion: nil)
             
           } catch {
             print(error)
@@ -309,10 +307,10 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
         attributes: .destructive) { _ in
           let layerName = layer.name
           self.layers.remove(at: indexPath.row)
-          self.layerManager.removeLayer(layer: layer)
+          LayerManager.shared.removeLayer(layer: layer)
         
           UINotificationFeedbackGenerator().notificationOccurred(.success)
-          self.mapViewController.hudManager.displayMessage(message: .layerDeleted(layerName))
+          HUDManager.shared.displayMessage(message: .layerDeleted(layerName))
       }
       
       children.append(delete)

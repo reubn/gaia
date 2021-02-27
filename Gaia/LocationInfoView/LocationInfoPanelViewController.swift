@@ -7,16 +7,14 @@ import Mapbox
 import FloatingPanel
 
 class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationDidUpdateDelegate, MapViewTappedDelegate {
-  let mapViewController: MapViewController
-  
   var location: LocationInfoType
 
   var mapSource: MGLSource {
     get {
-      mapViewController.mapView.style?.source(withIdentifier: "location") ?? {
+      MapViewController.shared.mapView.style?.source(withIdentifier: "location") ?? {
         let source = MGLShapeSource(identifier: "location", features: [], options: nil)
         
-        mapViewController.mapView.style?.addSource(source)
+        MapViewController.shared.mapView.style?.addSource(source)
         
         return source
       }()
@@ -25,19 +23,19 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
 
   var mapLayer: MGLStyleLayer {
     get {
-      mapViewController.mapView.style?.layer(withIdentifier: "location") ?? {
+      MapViewController.shared.mapView.style?.layer(withIdentifier: "location") ?? {
         let layer = MGLSymbolStyleLayer(identifier: "location", source: mapSource)
         
         let front = UIImage(named: "mapPin")!.withTintColor(.systemPink)
         let back = UIImage(named: "mapPinBack")!
       
         let image = front.draw(inFrontOf: back)
-        mapViewController.mapView.style?.setImage(image, forName: "location")
+        MapViewController.shared.mapView.style?.setImage(image, forName: "location")
          
         layer.iconImageName = NSExpression(forConstantValue: "location")
         layer.iconScale = NSExpression(forConstantValue: 0.5)
         
-        mapViewController.mapView.style?.addLayer(layer)
+        MapViewController.shared.mapView.style?.addLayer(layer)
         
         return layer
       }()
@@ -84,8 +82,7 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
   
   lazy var metricDisplays = [headingDisplay, elevationDisplay, distanceDisplay]
   
-  init(mapViewController: MapViewController, location: LocationInfoType){
-    self.mapViewController = mapViewController
+  init(location: LocationInfoType){
     self.location = location
     
     super.init(title: "")
@@ -103,10 +100,10 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     
     update(location: location)
     
-    mapViewController.multicastUserLocationDidUpdateDelegate.add(delegate: self)
+    MapViewController.shared.multicastUserLocationDidUpdateDelegate.add(delegate: self)
     userLocationDidUpdate()
     
-    mapViewController.multicastMapViewTappedDelegate.add(delegate: self)
+    MapViewController.shared.multicastMapViewTappedDelegate.add(delegate: self)
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -149,8 +146,8 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
   }
   
   func removePointsFromMap(){
-    mapViewController.mapView.style?.removeSource(mapSource)
-    mapViewController.mapView.style?.removeLayer(mapLayer)
+    MapViewController.shared.mapView.style?.removeSource(mapSource)
+    MapViewController.shared.mapView.style?.removeLayer(mapLayer)
   }
 
   func setCoordinateTitle(coordinate: CLLocationCoordinate2D){
@@ -159,11 +156,11 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
   }
   
   func userLocationDidUpdate() {
-    if(mapViewController.mapView.userLocation == nil) {return}
+    if(MapViewController.shared.mapView.userLocation == nil) {return}
     
-    let coordinate = mapViewController.mapView.userLocation!.coordinate
-    let heading = mapViewController.mapView.userLocation!.heading
-    let location = mapViewController.mapView.userLocation!.location
+    let coordinate = MapViewController.shared.mapView.userLocation!.coordinate
+    let heading = MapViewController.shared.mapView.userLocation!.heading
+    let location = MapViewController.shared.mapView.userLocation!.location
     
     if case .user = self.location {
       setCoordinateTitle(coordinate: coordinate)
@@ -198,7 +195,7 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     
     switch location {
       case .user:
-        coordinate = mapViewController.mapView.userLocation!.coordinate
+        coordinate = MapViewController.shared.mapView.userLocation!.coordinate
       case .map(let coord):
         coordinate = coord
     }

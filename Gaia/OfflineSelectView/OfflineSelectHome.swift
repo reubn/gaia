@@ -5,12 +5,8 @@ import Mapbox
 
 class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableViewDataSource, OfflineManagerDelegate {
   unowned let coordinatorView: OfflineSelectCoordinatorView
-  let mapViewController: MapViewController
-  
-  lazy var layerManager = mapViewController.layerManager
-  lazy var offlineManager = mapViewController.offlineManager
-  
-  lazy var emptyState = OfflineSelectHomeEmpty(offlineManager: offlineManager)
+
+  lazy var emptyState = OfflineSelectHomeEmpty()
 
   lazy var tableView: UITableView = {
     let tableView = DownloadsTableView()
@@ -28,13 +24,12 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     return tableView
   }()
   
-  init(coordinatorView: OfflineSelectCoordinatorView, mapViewController: MapViewController){
+  init(coordinatorView: OfflineSelectCoordinatorView){
     self.coordinatorView = coordinatorView
-    self.mapViewController = mapViewController
-    
+ 
     super.init(frame: CGRect())
     
-    offlineManager.multicastDownloadDidUpdateDelegate.add(delegate: self)
+    OfflineManager.shared.multicastDownloadDidUpdateDelegate.add(delegate: self)
     
     addSubview(emptyState)
     
@@ -55,14 +50,14 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   func viewWillEnter(data: Any?){
     print("enter OSH")
     
-    if(coordinatorView.mapViewController.osfpc.viewIfLoaded?.window != nil) {
-      coordinatorView.mapViewController.osfpc.move(to: .half, animated: true)
+    if(MapViewController.shared.osfpc.viewIfLoaded?.window != nil) {
+      MapViewController.shared.osfpc.move(to: .half, animated: true)
     }
     
     coordinatorView.panelViewController.title = "Downloads"
     coordinatorView.panelViewController.panelButtons = [.new, .dismiss]
     
-    offlineManager.refreshDownloads()
+    OfflineManager.shared.refreshDownloads()
     
     emptyState.update()
   }
@@ -78,7 +73,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   
   func downloadDidUpdate(pack: MGLOfflinePack?) {
     if(pack != nil){
-      let index = offlineManager.downloads!.firstIndex(of: pack!)
+      let index = OfflineManager.shared.downloads!.firstIndex(of: pack!)
       
       if(index == nil) {
         update()
@@ -89,7 +84,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
       let indexPath = IndexPath(row: index!, section: 0)
       let cell = tableView.cellForRow(at: indexPath) as? DownloadCell
       
-      if(cell != nil) {cell!.update(pack: pack!, mapViewController: mapViewController)}
+      if(cell != nil) {cell!.update(pack: pack!)}
       else {update()}
     } else {
       update()
@@ -102,7 +97,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if let packs = offlineManager.downloads {
+    if let packs = OfflineManager.shared.downloads {
       return packs.count
     } else {
       return 0
@@ -112,14 +107,14 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = DownloadCell(style: .subtitle, reuseIdentifier: "cell")
      
-    cell.update(pack: offlineManager.downloads![indexPath.row], mapViewController: mapViewController)
+    cell.update(pack: OfflineManager.shared.downloads![indexPath.row])
      
     return cell
    
   }
   
   func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    let downloads = offlineManager.downloads!
+    let downloads = OfflineManager.shared.downloads!
     
     if(downloads.count <= indexPath.row) {
       return nil
@@ -151,7 +146,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
         children.append(UIAction(
           title: "Redownload",
           image: UIImage(systemName: "square.and.arrow.down")) { _ in
-            self.offlineManager.redownloadPack(pack: pack)
+            OfflineManager.shared.redownloadPack(pack: pack)
         })
       }
       
@@ -170,7 +165,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
         title: "Delete",
         image: UIImage(systemName: "trash"),
         attributes: .destructive) { _ in
-          self.offlineManager.deletePack(pack: pack)
+          OfflineManager.shared.deletePack(pack: pack)
       }
       
       children.append(delete)
@@ -181,26 +176,26 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let pack = offlineManager.downloads![indexPath.row]
+    let pack = OfflineManager.shared.downloads![indexPath.row]
     
     previewPack(pack: pack)
     
   }
   
   func previewPack(pack: MGLOfflinePack){
-    let context = offlineManager.decodePackContext(pack: pack)!
+    let context = OfflineManager.shared.decodePackContext(pack: pack)!
 
     let bounds = MGLCoordinateBounds(context.bounds)
     
-    layerManager.filterLayers({layer in
+    LayerManager.shared.filterLayers({layer in
       context.layerMetadata.contains(where: {layerMetadata in
         layerMetadata.id == layer.id
       })
     })
     
-    mapViewController.mapView.setDirection(0, animated: false)
-    mapViewController.mapView.setVisibleCoordinateBounds(bounds, animated: true)
-    coordinatorView.mapViewController.osfpc.dismiss(animated: true, completion: nil)
+    MapViewController.shared.mapView.setDirection(0, animated: false)
+    MapViewController.shared.mapView.setVisibleCoordinateBounds(bounds, animated: true)
+    MapViewController.shared.osfpc.dismiss(animated: true, completion: nil)
   }
   
   required init(coder: NSCoder) {

@@ -4,21 +4,16 @@ import UIKit
 import Mapbox
 
 class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate {
-  let mapViewController: MapViewController
-  
-  lazy var layerManager = mapViewController.layerManager
   let multicastScrollViewDidScrollDelegate = MulticastDelegate<(UIScrollViewDelegate)>()
   
   let stack = UIStackView()
   
-  lazy var emptyState = LayerSelectViewEmpty(layerManager: layerManager)
+  lazy var emptyState = LayerSelectViewEmpty()
   
-  init(layerSelectConfig: LayerSelectConfig, mapViewController: MapViewController){
-    self.mapViewController = mapViewController
-    
+  init(layerSelectConfig: LayerSelectConfig){
     super.init(frame: CGRect())
   
-    layerManager.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
+    LayerManager.shared.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
     
     delegate = self
     
@@ -54,10 +49,10 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
       favouritesLayerSelectConfig.reorderLayers = false
       
       let favouritesSection = Section(
-        group: LayerGroup(layerManager: layerManager, id: "favourite", name: "Favourites", colour: .systemOrange, selectionFunction: {layerManager in layerManager.favouriteLayers.sorted(by: layerManager.layerSortingFunction)}),
+        group: LayerGroup(id: "favourite", name: "Favourites", colour: .systemOrange, selectionFunction: {
+          LayerManager.shared.favouriteLayers.sorted(by: LayerManager.shared.layerSortingFunction)
+        }),
         layerSelectConfig: favouritesLayerSelectConfig,
-        layerManager: layerManager,
-        mapViewController: mapViewController,
         scrollView: self
       )
       
@@ -67,12 +62,10 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
       favouritesSection.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
     }
 
-    layerManager.layerGroups.forEach({
+    LayerManager.shared.layerGroups.forEach({
       let section = Section(
         group: $0,
         layerSelectConfig: layerSelectConfig,
-        layerManager: layerManager,
-        mapViewController: mapViewController,
         scrollView: self
       )
 
@@ -87,10 +80,10 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
       disabledLayerSelectConfig.reorderLayers = false
       
       let disabledSection = Section(
-        group: LayerGroup(layerManager: layerManager, id: "disabled", name: "Disabled", colour: .systemGray, selectionFunction: {layerManager in layerManager.disabledLayers.sorted(by: layerManager.layerSortingFunction)}),
+        group: LayerGroup(id: "disabled", name: "Disabled", colour: .systemGray, selectionFunction: {
+          LayerManager.shared.disabledLayers.sorted(by: LayerManager.shared.layerSortingFunction)
+        }),
         layerSelectConfig: disabledLayerSelectConfig,
-        layerManager: layerManager,
-        mapViewController: mapViewController,
         scrollView: self,
         normallyCollapsed: true
       )

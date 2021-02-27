@@ -5,8 +5,7 @@ import AVFoundation
 import Mapbox
 
 class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegionIsChangingDelegate {
-  let mapViewController: MapViewController
-  var emojiTimer: Timer? = nil
+    var emojiTimer: Timer? = nil
   var isFlipped = false
   
   lazy var appIcon: UIButton = {
@@ -110,8 +109,8 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     return label
   }()
   
-  init(mapViewController: MapViewController){
-    self.mapViewController = mapViewController
+  init(){
+    
     
     super.init(frame: CGRect())
 
@@ -119,15 +118,15 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     
     appIcon.addTarget(self, action: #selector(flip), for: .touchUpInside)
     
-    mapViewController.multicastUserLocationDidUpdateDelegate.add(delegate: self)
-    mapViewController.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)
+    MapViewController.shared.multicastUserLocationDidUpdateDelegate.add(delegate: self)
+    MapViewController.shared.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)
     
     userLocationDidUpdate()
   }
   
   func userLocationDidUpdate() {
-    if(mapViewController.mapView.userLocation == nil) {return}
-    let userLocation = mapViewController.mapView.userLocation!.coordinate
+    if(MapViewController.shared.mapView.userLocation == nil) {return}
+    let userLocation = MapViewController.shared.mapView.userLocation!.coordinate
     
     for (index, keyLocationPair) in KEY_LOCATIONS.enumerated() {
       if(!keyLocationPair.seen && keyLocationPair.location.distance(to: userLocation) < KEY_LOCATIONS_NEEDED_LOCATION_METERS) {
@@ -138,12 +137,12 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
   }
   
   func parentMapViewRegionIsChanging() {
-    if(mapViewController.mapView.zoomLevel < KEY_LOCATIONS_NEEDED_VIEW_ZOOM) {
+    if(MapViewController.shared.mapView.zoomLevel < KEY_LOCATIONS_NEEDED_VIEW_ZOOM) {
       return
     }
     
     for (index, keyLocationPair) in KEY_LOCATIONS.enumerated() {
-      if(!keyLocationPair.seen && MGLCoordinateInCoordinateBounds(keyLocationPair.location, mapViewController.mapView.visibleCoordinateBounds)){
+      if(!keyLocationPair.seen && MGLCoordinateInCoordinateBounds(keyLocationPair.location, MapViewController.shared.mapView.visibleCoordinateBounds)){
         KEY_LOCATIONS[index].seen = true
         KEY_LOCATIONS[index].seenReason = .view
         
@@ -174,7 +173,7 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     if(!isFlipped) {emojiTimer?.invalidate()}
     else {
       emojiTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { timer in
-        if(self.mapViewController.presentedViewController != self.mapViewController.abfpc) {
+        if(MapViewController.shared.presentedViewController != MapViewController.shared.abfpc) {
           timer.invalidate() // Release
         }
 
