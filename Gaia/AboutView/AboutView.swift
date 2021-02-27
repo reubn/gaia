@@ -4,7 +4,6 @@ import AVFoundation
 
 import Mapbox
 
-
 class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegionIsChangingDelegate {
   let mapViewController: MapViewController
   var emojiTimer: Timer? = nil
