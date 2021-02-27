@@ -242,8 +242,12 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
         title: layer.enabled ? "Disable" : "Enable",
         image: UIImage(systemName: layer.enabled ? "square.slash.fill" : "checkmark.square.fill")) { _ in
           layer.enabled = !layer.enabled
-          layer.favourite = false
-        
+          
+          if(!layer.enabled){
+            layer.favourite = false
+            layer.visible = false
+          }
+          
           self.layerManager.saveLayers()
       })
       
