@@ -12,12 +12,36 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   var queuedStyle: Style?
   var displayedStyle: Style?
   var needsUpdating = false
+  
+  var disabledCount: Int? {
+    didSet {
+      if(oldValue != disabledCount) {
+        disabledCountDisplay.isHidden = disabledCount == nil
+        disabledCountDisplay.text = "+" + String(disabledCount ?? 0)
+      }
+    }
+  }
 
   let preview = MGLMapView(frame: CGRect.zero)
-  let previewSpacing:CGFloat = 15
+  let previewSpacing: CGFloat = 15
   let title = UILabel()
   
   lazy var height = contentView.heightAnchor.constraint(equalToConstant: 100)
+  
+  lazy var disabledCountDisplay: UILabel = {
+    let label = UILabel()
+    label.font = .systemFont(ofSize: 18, weight: .medium)
+    label.textColor = .label
+    label.numberOfLines = 0
+    
+    addSubview(label)
+    
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+    label.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
+    
+    return label
+  }()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -91,8 +115,9 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     }
   }
 
-  func update(_layer: Layer, layerSelectConfig: LayerSelectConfig, scrollView: LayerSelectView) {
+  func update(_layer: Layer, layerSelectConfig: LayerSelectConfig, scrollView: LayerSelectView, disabledCount: Int?) {
     self._layer = _layer
+    self.disabledCount = disabledCount
  
     queuedStyle = _layer.style
     

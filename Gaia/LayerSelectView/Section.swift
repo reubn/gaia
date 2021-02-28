@@ -28,6 +28,24 @@ class Section: UIStackView {
     }
   }
   
+  var showAllDisabled: Bool = false {
+    didSet {
+      update()
+    }
+  }
+  
+  var numberDisabled: Int {
+    get {layers.filter({!$0.enabled}).count}
+  }
+  
+  var numberDisabledHidden: Int {
+    get {
+      numberDisabled > 1
+        ? numberDisabled - 1
+        : 0
+    }
+  }
+  
   lazy var spacerView: UIView = {
     let view = UIView()
     
@@ -164,6 +182,8 @@ class Section: UIStackView {
     
     if(layer.enabled) {
       toggleLayer(layer: layer, mutuallyExclusive: layerSelectConfig.mutuallyExclusive)
+    } else {
+      showAllDisabled = !showAllDisabled
     }
   }
   
@@ -200,7 +220,11 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return layers.count
+    if(showAllDisabled) {return layers.count}
+    
+    return numberDisabled == 0
+      ? layers.count
+      : layers.count - (numberDisabled - 1)
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -211,8 +235,12 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       
       return newCell
     }()
+    
+    let disabledCount = !showAllDisabled && !_layer.enabled && numberDisabledHidden > 0
+      ? numberDisabledHidden
+      : nil
 
-    cell.update(_layer: _layer, layerSelectConfig: layerSelectConfig, scrollView: scrollView)
+    cell.update(_layer: _layer, layerSelectConfig: layerSelectConfig, scrollView: scrollView, disabledCount: disabledCount)
     
     let cellGR = UITapGestureRecognizer(target: self, action: #selector(self.tableViewLabelClick))
     cell.isUserInteractionEnabled = true
