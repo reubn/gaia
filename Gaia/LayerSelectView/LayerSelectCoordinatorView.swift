@@ -48,6 +48,10 @@ class LayerSelectCoordinatorView: CoordinatorView {
       }
     }
     
+    return done(layerDefinitions: layerDefinitions)
+  }
+  
+  func done(layerDefinitions: [LayerDefinition]) -> Int {
     if(layerDefinitions.count > 0) {
       DispatchQueue.main.async {
         let single = layerDefinitions.count == 1

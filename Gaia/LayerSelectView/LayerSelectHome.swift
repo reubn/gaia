@@ -99,6 +99,21 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
 
         MapViewController.shared.lsfpc.present(documentPicker, animated: true, completion: nil)
       }),
+      UIAction(title: "New from Map", image: UIImage(systemName: "map"), handler: {_ in
+        let randomId = randomString(length: 6)
+        
+        let layerDefinition = LayerDefinition(
+          metadata: LayerDefinition.Metadata(
+            id: "composite_\(randomId)",
+            name: "Composite Layer",
+            group: "uncategorised",
+            groupIndex: 0
+          ),
+          style: LayerManager.shared.compositeStyle.style
+        )
+        
+        _ = self.coordinatorView.done(layerDefinitions: [layerDefinition])
+      }),
       UIAction(title: "New", image: UIImage(systemName: "plus"), handler: {_ in
         self.coordinatorView.goTo(2)
       })
