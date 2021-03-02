@@ -49,7 +49,18 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   var previewIsBlurred = false {
     didSet {
       if(oldValue != previewIsBlurred) {
-        previewBlur.isHidden = !previewIsBlurred
+        CATransaction.begin()
+        CATransaction.setAnimationTimingFunction(
+          self.previewIsBlurred
+            ? CAMediaTimingFunction(controlPoints: 0.83, 0.20, 0, 1.15)
+            : CAMediaTimingFunction(controlPoints: 0.29, 0.93, 0, 0.92)
+        )
+        
+        UIView.animate(withDuration: self.previewIsBlurred ? 0.5 : 0.4) {
+          self.previewBlur.layer.opacity = self.previewIsBlurred ? 1 : 0
+        }
+        
+        CATransaction.commit()
       }
     }
   }
@@ -62,7 +73,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
 
     visualEffectView.frame = preview.bounds
     visualEffectView.backgroundColor = .clear
-    visualEffectView.isHidden = true
+    visualEffectView.layer.opacity = 0
     
     previewBlurHack = UIViewPropertyAnimator(duration: 1, curve: .linear) {
       visualEffectView.effect = blurEffect
