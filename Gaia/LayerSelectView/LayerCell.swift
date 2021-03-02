@@ -166,9 +166,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
       preview.styleURL = displayedStyle!.toURL()
       
       let (minZoom, maxZoom) = displayedStyle!.getVisibleZoomLevels()
-      print((minZoom, maxZoom))
       
-      maximumZoomLevel = maxZoom ?? 30
+      maximumZoomLevel = maxZoom ?? 22
       minimumZoomLevel = minZoom ?? 0
     }
     
