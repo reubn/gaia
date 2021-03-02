@@ -7,10 +7,15 @@ import Mapbox
 class DownloadCell: UITableViewCell {
   let _t = 16
   
+  let cellHeight: CGFloat = 100
   let previewSpacing: CGFloat = 15
+  lazy var previewSize: CGFloat = cellHeight - (2 * previewSpacing)
   
   var pack: MGLOfflinePack?
-    var context: PackContext? = nil
+  var context: PackContext? = nil
+  var first = true
+  
+  var layersString = ""
   
   var _status: MGLOfflinePackState?
   var status: MGLOfflinePackState? {
@@ -59,7 +64,7 @@ class DownloadCell: UITableViewCell {
     contentView.addSubview(stack)
     
     stack.translatesAutoresizingMaskIntoConstraints = false
-    stack.leftAnchor.constraint(equalTo: preview.rightAnchor, constant: previewSpacing).isActive = true
+    stack.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: previewSpacing + previewSize + previewSpacing).isActive = true
     stack.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -previewSpacing).isActive = true
     stack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     
@@ -92,7 +97,7 @@ class DownloadCell: UITableViewCell {
   
   lazy var preview: MGLMapView = {
     let preview = MGLMapView()
-    preview.layer.cornerRadius = 10
+    preview.layer.cornerRadius = 5
     preview.layer.cornerCurve = .continuous
     preview.clipsToBounds = true
     preview.backgroundColor = .black
@@ -113,10 +118,8 @@ class DownloadCell: UITableViewCell {
     contentView.addSubview(preview)
 
     preview.translatesAutoresizingMaskIntoConstraints = false
-    preview.widthAnchor.constraint(equalTo: preview.heightAnchor).isActive = true
-    preview.topAnchor.constraint(equalTo: contentView.topAnchor, constant: previewSpacing).isActive = true
-    preview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -previewSpacing).isActive = true
-    preview.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: previewSpacing).isActive = true
+    preview.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+    preview.centerXAnchor.constraint(equalTo: contentView.leftAnchor, constant: previewSpacing + (previewSize / 2)).isActive = true
     
     return preview
   }()
@@ -153,7 +156,7 @@ class DownloadCell: UITableViewCell {
 
     autoresizingMask = .flexibleHeight
     
-    let height = contentView.heightAnchor.constraint(equalToConstant: 100)
+    let height = contentView.heightAnchor.constraint(equalToConstant: cellHeight)
     height.priority = UILayoutPriority(rawValue: 999)
     height.isActive = true
 
@@ -164,24 +167,41 @@ class DownloadCell: UITableViewCell {
   func update(pack: MGLOfflinePack) {
     self.pack = pack
     
-
     context = OfflineManager.shared.decodePackContext(pack: pack)
     
     if(context == nil) {return}
-    
-    let layersMetadata = context!.layerMetadata
-    let orderedLayersMetadata = layersMetadata.sorted(by: LayerManager.shared.layerSortingFunction).reversed()
-    
+
     let byteString = ByteCountFormatter.string(fromByteCount: Int64(pack.progress.countOfBytesCompleted), countStyle: .memory)
-    let layersString = orderedLayersMetadata.map({$0.name}).joined(separator: ", ")
     
     title.text = context!.name
     subtitle.text = String(format: "%@ - %@ @ %d-%d", byteString, layersString, context!.fromZoomLevel!, context!.toZoomLevel!)
     
     status = pack.state
     
-    preview.styleURL = context!.style.toURL()
-    preview.setVisibleCoordinateBounds(MGLCoordinateBounds(context!.bounds), animated: false)
+    if(first) {
+      first = false
+      
+      let layersMetadata = context!.layerMetadata
+      let orderedLayersMetadata = layersMetadata.sorted(by: LayerManager.shared.layerSortingFunction).reversed()
+      layersString = orderedLayersMetadata.map({$0.name}).joined(separator: ", ")
+      
+      let bounds = MGLCoordinateBounds(context!.bounds)
+      let coordinateSpan = MGLCoordinateBoundsGetCoordinateSpan(bounds)
+      
+      let height = coordinateSpan.latitudeDelta
+      let width = coordinateSpan.longitudeDelta
+      
+      if(height >= width){
+        preview.heightAnchor.constraint(equalToConstant: previewSize).isActive = true
+        preview.widthAnchor.constraint(equalTo: preview.heightAnchor, multiplier: CGFloat(width / height)).isActive = true
+      } else {
+        preview.widthAnchor.constraint(equalToConstant: previewSize).isActive = true
+        preview.heightAnchor.constraint(equalTo: preview.widthAnchor, multiplier: CGFloat(height / width)).isActive = true
+      }
+      
+      preview.styleURL = context!.style.toURL()
+      preview.setVisibleCoordinateBounds(bounds, animated: false)
+    }
   }
 
   required init?(coder: NSCoder) {
