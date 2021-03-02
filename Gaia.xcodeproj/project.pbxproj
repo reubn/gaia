@@ -13,6 +13,9 @@
 		1B0D09B725E6B0B900ED5345 /* HUDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09B625E6B0B900ED5345 /* HUDManager.swift */; };
 		1B0D09B925E6C1CA00ED5345 /* HUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09B825E6C1CA00ED5345 /* HUDView.swift */; };
 		1B0D09BB25E7A0E200ED5345 /* HUDMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09BA25E7A0E200ED5345 /* HUDMessages.swift */; };
+		1B0D09CA25EE956000ED5345 /* AnyDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09C725EE956000ED5345 /* AnyDecodable.swift */; };
+		1B0D09CB25EE956000ED5345 /* AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09C825EE956000ED5345 /* AnyCodable.swift */; };
+		1B0D09CC25EE956000ED5345 /* AnyEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09C925EE956000ED5345 /* AnyEncodable.swift */; };
 		1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 1B3401C225B33FAD0091FA3B /* FloatingPanel */; };
 		1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */; };
 		1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */; };
@@ -44,7 +47,6 @@
 		1B7644BF25CAD61900572A70 /* Layer+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644BD25CAD61900572A70 /* Layer+CoreData.swift */; };
 		1B7644C125CAFA2F00572A70 /* LayerDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C025CAFA2F00572A70 /* LayerDefinition.swift */; };
 		1B7644C325CAFA7300572A70 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C225CAFA7300572A70 /* Style.swift */; };
-		1B7644C625CB418D00572A70 /* AnyCodable in Frameworks */ = {isa = PBXBuildFile; productRef = 1B7644C525CB418D00572A70 /* AnyCodable */; };
 		1B7644C825CC3E9000572A70 /* PanelActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C725CC3E9000572A70 /* PanelActionButton.swift */; };
 		1B8C078A25C43C58008C08B2 /* MapViewPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078925C43C58008C08B2 /* MapViewPanelLayout.swift */; };
 		1B8C078E25C48245008C08B2 /* LocationInfoPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */; };
@@ -105,6 +107,9 @@
 		1B0D09B625E6B0B900ED5345 /* HUDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDManager.swift; sourceTree = "<group>"; };
 		1B0D09B825E6C1CA00ED5345 /* HUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDView.swift; sourceTree = "<group>"; };
 		1B0D09BA25E7A0E200ED5345 /* HUDMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDMessages.swift; sourceTree = "<group>"; };
+		1B0D09C725EE956000ED5345 /* AnyDecodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyDecodable.swift; sourceTree = "<group>"; };
+		1B0D09C825EE956000ED5345 /* AnyCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyCodable.swift; sourceTree = "<group>"; };
+		1B0D09C925EE956000ED5345 /* AnyEncodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyEncodable.swift; sourceTree = "<group>"; };
 		1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelViewController.swift; sourceTree = "<group>"; };
 		1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectCoordinatorView.swift; sourceTree = "<group>"; };
 		1B3401CB25B473E40091FA3B /* LayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerCell.swift; sourceTree = "<group>"; };
@@ -178,7 +183,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B7644C625CB418D00572A70 /* AnyCodable in Frameworks */,
 				1B04BF7525D1CB5F00FCD5D4 /* CoreGPX in Frameworks */,
 				1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */,
 				1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */,
@@ -199,6 +203,16 @@
 			);
 			path = HUDManager;
 			sourceTree = "<group>";
+		};
+		1B0D09C625EE956000ED5345 /* AnyCodable */ = {
+			isa = PBXGroup;
+			children = (
+				1B0D09C725EE956000ED5345 /* AnyDecodable.swift */,
+				1B0D09C825EE956000ED5345 /* AnyCodable.swift */,
+				1B0D09C925EE956000ED5345 /* AnyEncodable.swift */,
+			);
+			path = AnyCodable;
+			sourceTree = SOURCE_ROOT;
 		};
 		1B3401C825B4635F0091FA3B /* LayerSelectView */ = {
 			isa = PBXGroup;
@@ -326,6 +340,7 @@
 		1B6638BF25B10B610071F03D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1B0D09C625EE956000ED5345 /* AnyCodable */,
 				1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */,
 				1B6638C025B10B610071F03D /* Mapbox.framework */,
 			);
@@ -414,7 +429,6 @@
 			name = Gaia;
 			packageProductDependencies = (
 				1B3401C225B33FAD0091FA3B /* FloatingPanel */,
-				1B7644C525CB418D00572A70 /* AnyCodable */,
 				1B04BF7425D1CB5F00FCD5D4 /* CoreGPX */,
 				1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */,
 			);
@@ -447,7 +461,6 @@
 			mainGroup = 1B66389B25B10B530071F03D;
 			packageReferences = (
 				1B3401C125B33FAD0091FA3B /* XCRemoteSwiftPackageReference "FloatingPanel" */,
-				1B7644C425CB418D00572A70 /* XCRemoteSwiftPackageReference "AnyCodable" */,
 				1B04BF7325D1CB5F00FCD5D4 /* XCRemoteSwiftPackageReference "CoreGPX" */,
 				1B96528B25D5C3DA0017A43E /* XCRemoteSwiftPackageReference "KeyboardLayoutGuide" */,
 			);
@@ -482,6 +495,7 @@
 				1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */,
 				1B6033BD25D1DBD300211150 /* UIColor-hex.swift in Sources */,
 				1B8C079325C493E5008C08B2 /* SelectableLabel.swift in Sources */,
+				1B0D09CB25EE956000ED5345 /* AnyCodable.swift in Sources */,
 				1B6638CE25B1EA5F0071F03D /* MapButton.swift in Sources */,
 				1BA03E3425DDAEEE00EE273C /* CLLocationCoordinate2D.swift in Sources */,
 				1B62CE8A25D023EF00D06E55 /* AppIconButton.swift in Sources */,
@@ -531,12 +545,14 @@
 				1B3401D025B474260091FA3B /* SectionTableView.swift in Sources */,
 				1B7644BF25CAD61900572A70 /* Layer+CoreData.swift in Sources */,
 				1B6033BF25D1DBEE00211150 /* randomSystemColor.swift in Sources */,
+				1B0D09CA25EE956000ED5345 /* AnyDecodable.swift in Sources */,
 				1B96529225D7E5F20017A43E /* LayerSelectViewEmpty.swift in Sources */,
 				1B8C078E25C48245008C08B2 /* LocationInfoPanelLayout.swift in Sources */,
 				1B3401D525B4A1570091FA3B /* LayerManager.swift in Sources */,
 				1B62CE9025D0288400D06E55 /* AboutView.swift in Sources */,
 				1B7644C825CC3E9000572A70 /* PanelActionButton.swift in Sources */,
 				1B6638B225B10B530071F03D /* Gaia.xcdatamodeld in Sources */,
+				1B0D09CC25EE956000ED5345 /* AnyEncodable.swift in Sources */,
 				1B6638CA25B19FFF0071F03D /* UserLocationButton.swift in Sources */,
 				1BA03E3625DE8BE300EE273C /* UIImage-draw.swift in Sources */,
 				1B0D09B725E6B0B900ED5345 /* HUDManager.swift in Sources */,
@@ -769,14 +785,6 @@
 				minimumVersion = 2.1.0;
 			};
 		};
-		1B7644C425CB418D00572A70 /* XCRemoteSwiftPackageReference "AnyCodable" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Flight-School/AnyCodable";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.0;
-			};
-		};
 		1B96528B25D5C3DA0017A43E /* XCRemoteSwiftPackageReference "KeyboardLayoutGuide" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/freshOS/KeyboardLayoutGuide";
@@ -797,11 +805,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1B3401C125B33FAD0091FA3B /* XCRemoteSwiftPackageReference "FloatingPanel" */;
 			productName = FloatingPanel;
-		};
-		1B7644C525CB418D00572A70 /* AnyCodable */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1B7644C425CB418D00572A70 /* XCRemoteSwiftPackageReference "AnyCodable" */;
-			productName = AnyCodable;
 		};
 		1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */ = {
 			isa = XCSwiftPackageProductDependency;
