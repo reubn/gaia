@@ -139,6 +139,10 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     title.leftAnchor.constraint(equalTo: preview.rightAnchor, constant: previewSpacing).isActive = true
     title.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
   }
+  
+  deinit {
+    previewBlurHack?.stopAnimation(true)
+  }
 
   func parentMapViewRegionIsChanging() {
     if(displayedStyle != nil && !(_layer?.enabled ?? false)){return}
