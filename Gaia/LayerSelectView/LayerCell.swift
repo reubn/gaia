@@ -13,6 +13,9 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   var displayedStyle: Style?
   var needsUpdating = false
   
+  var maximumZoomLevel: Double = 30
+  var minimumZoomLevel: Double = 0
+  
   var disabledCount: Int? {
     didSet {
       if(oldValue != disabledCount) {
@@ -42,7 +45,52 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     
     return label
   }()
+  
+  var previewIsBlurred = false {
+    didSet {
+      if(oldValue != previewIsBlurred) {
+        previewBlur.isHidden = !previewIsBlurred
+      }
+    }
+  }
+  
+  var previewBlurHack: UIViewPropertyAnimator?
+  
+  lazy var previewBlur: UIVisualEffectView = {
+    let blurEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
+    let visualEffectView = UIVisualEffectView(effect: nil)
 
+    visualEffectView.frame = preview.bounds
+    visualEffectView.backgroundColor = .clear
+    visualEffectView.isHidden = true
+    
+    previewBlurHack = UIViewPropertyAnimator(duration: 1, curve: .linear) {
+      visualEffectView.effect = blurEffect
+    }
+    previewBlurHack!.fractionComplete = 0.1
+
+    preview.addSubview(visualEffectView)
+    
+    let icon = UIImageView(image: UIImage(systemName: "plus.magnifyingglass"))
+    icon.contentMode = .scaleAspectFit
+    
+    visualEffectView.contentView.addSubview(icon)
+    
+    icon.translatesAutoresizingMaskIntoConstraints = false
+    icon.widthAnchor.constraint(equalTo: visualEffectView.widthAnchor, multiplier: 0.4).isActive = true
+    icon.heightAnchor.constraint(equalTo: icon.widthAnchor).isActive = true
+    icon.centerXAnchor.constraint(equalTo: visualEffectView.centerXAnchor).isActive = true
+    icon.centerYAnchor.constraint(equalTo: visualEffectView.centerYAnchor).isActive = true
+    
+    visualEffectView.translatesAutoresizingMaskIntoConstraints = false
+    visualEffectView.widthAnchor.constraint(equalTo: preview.widthAnchor).isActive = true
+    visualEffectView.topAnchor.constraint(equalTo: preview.topAnchor).isActive = true
+    visualEffectView.bottomAnchor.constraint(equalTo: preview.bottomAnchor).isActive = true
+    visualEffectView.leftAnchor.constraint(equalTo: preview.leftAnchor).isActive = true
+    
+    return visualEffectView
+  }()
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -97,22 +145,39 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     
     visible = self.isVisible()
     if(!visible){return}
-    needsUpdating = false
+    
+    if(queuedStyle != displayedStyle) {
+      displayedStyle = queuedStyle
+      preview.styleURL = displayedStyle!.toURL()
+      
+      let (minZoom, maxZoom) = displayedStyle!.getVisibleZoomLevels()
+      print((minZoom, maxZoom))
+      
+      maximumZoomLevel = maxZoom ?? 30
+      minimumZoomLevel = minZoom ?? 0
+    }
+    
+    let zoomLevel = MapViewController.shared.mapView.zoomLevel
+    
+    if(zoomLevel < minimumZoomLevel - 2){
+      previewIsBlurred = true
 
+      return
+    } else {
+      previewIsBlurred = false
+    }
+    
     let parent = MapViewController.shared.mapView.bounds
     let centerPoint = CGPoint(x: parent.width * 0.5, y: parent.height * 0.25)
     
     preview.setCenter(
       MapViewController.shared.mapView.convert(centerPoint, toCoordinateFrom: nil),
-      zoomLevel: MapViewController.shared.mapView.zoomLevel - 0.5,
+      zoomLevel: zoomLevel - 0.5,
       direction: MapViewController.shared.mapView.direction,
       animated: false
     )
     
-    if(queuedStyle != displayedStyle) {
-      displayedStyle = queuedStyle
-      preview.styleURL = displayedStyle!.toURL()
-    }
+    needsUpdating = false
   }
 
   func update(_layer: Layer, layerSelectConfig: LayerSelectConfig, scrollView: LayerSelectView, disabledCount: Int?) {
@@ -136,6 +201,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     title.textColor = !mutuallyExclusive && _layer.visible
       ? .white
       : .label
+    
+    preview.tintColor = .white
 
     if(first) {
       self.first = false
