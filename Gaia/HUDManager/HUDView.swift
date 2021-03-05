@@ -96,7 +96,7 @@ class HUDView: UIView {
     
     rightAnchor.constraint(greaterThanOrEqualTo: title.rightAnchor, constant: padding).isActive = true
 
-    widthAnchor.constraint(greaterThanOrEqualToConstant: size.width).isActive = true
+//    widthAnchor.constraint(greaterThanOrEqualToConstant: size.width).isActive = true
     heightAnchor.constraint(equalToConstant: size.height).isActive = true
   }
   
