@@ -19,7 +19,7 @@ class HUDView: UIView {
     
     let imageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: iconSize, height: iconSize)))
     imageView.contentMode = .scaleAspectFit
-    imageView.tintColor = defaultIconColour
+    imageView.tintColor = message.tintColour == nil ? .tertiaryLabel : defaultIconColour
     
     addSubview(imageView)
     
