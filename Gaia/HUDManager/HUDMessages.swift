@@ -28,4 +28,8 @@ extension HUDMessage {
       tintColour: restore ? .systemIndigo : nil
     )
   }
+  
+  static func layer(_ layer: Layer) -> HUDMessage {
+    return HUDMessage.Quick(title: layer.name, systemName: "arrow.left.arrow.right.square.fill")
+  }
 }
