@@ -59,7 +59,18 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     view.addSubview(mapView)
 
     let mapLongPressGR = UILongPressGestureRecognizer(target: self, action: #selector(mapLongPress))
+    mapLongPressGR.numberOfTouchesRequired = 1
     mapView.addGestureRecognizer(mapLongPressGR)
+    
+    let mapDoubleTapGR = UITapGestureRecognizer(target: self, action: #selector(twoFingerTapped))
+    mapDoubleTapGR.numberOfTapsRequired = 1
+    mapDoubleTapGR.numberOfTouchesRequired = 2
+    mapView.addGestureRecognizer(mapDoubleTapGR)
+
+    let mapTripleTapGR = UITapGestureRecognizer(target: self, action: #selector(threeFingerTapped))
+    mapTripleTapGR.numberOfTapsRequired = 1
+    mapTripleTapGR.numberOfTouchesRequired = 3
+    mapView.addGestureRecognizer(mapTripleTapGR)
 
     let userLocationButton = UserLocationButton(initialMode: mapView.userTrackingMode)
     userLocationButton.addTarget(self, action: #selector(locationButtonTapped), for: .touchUpInside)
@@ -326,6 +337,24 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     abfpc.set(contentViewController: aboutPanelViewController)
 
     self.present(abfpc, animated: true, completion: nil)
+  }
+  
+  @objc func twoFingerTapped() {
+    let layer = LayerManager.shared.magicFavourite(forward: true)
+    
+    if(layer != nil) {
+      HUDManager.shared.displayMessage(message: .layer(layer!))
+      UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+    }
+  }
+  
+  @objc func threeFingerTapped() {
+    let layer = LayerManager.shared.magicFavourite(forward: false)
+    
+    if(layer != nil) {
+      HUDManager.shared.displayMessage(message: .layer(layer!))
+      UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+    }
   }
   
   static let shared = MapViewController()

@@ -210,6 +210,35 @@ class LayerManager {
     }
   }
   
+  public func magicFavourite(forward: Bool) -> Layer? {
+    let interestedLayers = favouriteLayers.filter({$0.group != "overlay"}).sorted(by: layerSortingFunction).reversed()
+    
+    if(interestedLayers.isEmpty) {return nil}
+    
+    let visibleFavouriteLayers = interestedLayers.filter({$0.visible})
+    let topVisibleFavouriteLayer = visibleFavouriteLayers.first
+    
+    switch visibleFavouriteLayers.count {
+    case 0: // enable the first favourite
+      let nextLayer = interestedLayers.first!
+      enableLayer(layer: nextLayer, mutuallyExclusive: true)
+      
+      return nextLayer
+    case 1: // move to next favourite, or wrap around
+      let currentIndex = interestedLayers.firstIndex(of: topVisibleFavouriteLayer!)!
+      let nextIndex = forward
+        ? interestedLayers.index(after: currentIndex, wrap: true)
+        : interestedLayers.index(before: currentIndex, wrap: true)
+      
+      let nextLayer = interestedLayers[nextIndex]
+      enableLayer(layer: nextLayer, mutuallyExclusive: true)
+      
+      return nextLayer
+    default: // handle more than one favourite visible
+      return nil
+    }
+  }
+  
   static let shared = LayerManager()
 }
 
