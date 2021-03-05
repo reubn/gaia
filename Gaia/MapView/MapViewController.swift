@@ -212,7 +212,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   func openLocationInfoPanel(location: LocationInfoType) {
     if presentedViewController != nil {
       let isMe = presentedViewController == lifpc
-      
+
       if(isMe) {
         ((presentedViewController as! MemoryConsciousFloatingPanelController).contentViewController! as! LocationInfoPanelViewController).update(location: location)
         

@@ -258,7 +258,6 @@ struct LayerGroup {
   }
 }
 
-
 protocol LayerManagerDelegate {
   func compositeStyleDidChange(compositeStyle: CompositeStyle)
 }
