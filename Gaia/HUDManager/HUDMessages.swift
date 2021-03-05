@@ -22,11 +22,10 @@ extension HUDMessage {
       ? "1 Layer"
       : "\(count) Layers"
     
-    return HUDMessage(
+    return HUDMessage.Quick(
       title: "\(quantity) \(restore ? "Restored" : "Hidden")",
       systemName: "wand.and.stars",
-      tintColour: restore ? .systemIndigo : nil,
-      duration: 1.25
+      tintColour: restore ? .systemIndigo : nil
     )
   }
 }

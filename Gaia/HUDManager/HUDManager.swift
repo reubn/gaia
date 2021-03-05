@@ -37,4 +37,13 @@ struct HUDMessage: Hashable {
   var tintColour: UIColor? = nil
   
   var duration: Double = 2
+  
+  static func Quick(title: String, systemName: String? = nil, tintColour: UIColor? = nil) -> HUDMessage {
+    HUDMessage(
+      title: title,
+      systemName: systemName,
+      tintColour: tintColour,
+      duration: 1.25
+    )
+  }
 }
