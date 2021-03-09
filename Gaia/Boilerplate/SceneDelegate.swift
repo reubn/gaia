@@ -1,4 +1,5 @@
 import UIKit
+import CoreLocation
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   var window: UIWindow?
@@ -10,6 +11,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window.rootViewController = MapViewController.shared
     window.makeKeyAndVisible()
     self.window = window
+    
+    if let url = connectionOptions.urlContexts.first?.url {
+      handleURL(url: url)
+    }
+  }
+  
+  func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    guard let url = URLContexts.first?.url else {return}
+    
+    handleURL(url: url)
   }
   
   func sceneDidDisconnect(_ scene: UIScene) {
@@ -41,5 +52,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     // Save changes in the application's managed object context when the application transitions to the background.
     (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+  }
+  
+  func handleURL(url: URL) {
+    print(url)
+    
+    let command = url.absoluteString.replacingOccurrences(of: "gaia://", with: "")
+    
+    let decodeAttempt = command.split(separator: ",").map({Double($0.trimmingCharacters(in: .whitespacesAndNewlines))}).filter({$0 != nil}) as! [Double]
+    
+    if(decodeAttempt.count == 2) {
+      let coordinate = CLLocationCoordinate2D(latitude: decodeAttempt[0], longitude: decodeAttempt[1])
+      
+      if(CLLocationCoordinate2DIsValid(coordinate)) {
+        MapViewController.shared.openLocationInfoPanel(location: .map(coordinate))
+      }
+    }
   }
 }
