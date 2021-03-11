@@ -25,6 +25,7 @@
 		1B3401D225B474420091FA3B /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401D125B474420091FA3B /* Section.swift */; };
 		1B3401D525B4A1570091FA3B /* LayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401D425B4A1570091FA3B /* LayerManager.swift */; };
 		1B3401EC25B4F1B00091FA3B /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401EB25B4F1AF0091FA3B /* MulticastDelegate.swift */; };
+		1B47B96925FA16EE00504761 /* URLInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47B96825FA16EE00504761 /* URLInterface.swift */; };
 		1B6033BD25D1DBD300211150 /* UIColor-hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033BC25D1DBD300211150 /* UIColor-hex.swift */; };
 		1B6033BF25D1DBEE00211150 /* randomSystemColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */; };
 		1B6033C125D1DC4A00211150 /* randomString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033C025D1DC4A00211150 /* randomString.swift */; };
@@ -119,6 +120,7 @@
 		1B3401D125B474420091FA3B /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		1B3401D425B4A1570091FA3B /* LayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerManager.swift; sourceTree = "<group>"; };
 		1B3401EB25B4F1AF0091FA3B /* MulticastDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
+		1B47B96825FA16EE00504761 /* URLInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLInterface.swift; sourceTree = "<group>"; };
 		1B6033BC25D1DBD300211150 /* UIColor-hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor-hex.swift"; sourceTree = "<group>"; };
 		1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = randomSystemColor.swift; sourceTree = "<group>"; };
 		1B6033C025D1DC4A00211150 /* randomString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = randomString.swift; sourceTree = "<group>"; };
@@ -291,6 +293,14 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		1B47B96725FA16BF00504761 /* URLInterface */ = {
+			isa = PBXGroup;
+			children = (
+				1B47B96825FA16EE00504761 /* URLInterface.swift */,
+			);
+			path = URLInterface;
+			sourceTree = "<group>";
+		};
 		1B62CE8B25D0283300D06E55 /* AboutView */ = {
 			isa = PBXGroup;
 			children = (
@@ -321,6 +331,7 @@
 		1B6638A625B10B530071F03D /* Gaia */ = {
 			isa = PBXGroup;
 			children = (
+				1B47B96725FA16BF00504761 /* URLInterface */,
 				1B0D09B525E6B08400ED5345 /* HUDManager */,
 				1B62CE8B25D0283300D06E55 /* AboutView */,
 				1B7644BB25CAD61900572A70 /* Layer */,
@@ -560,6 +571,7 @@
 				1B6638CA25B19FFF0071F03D /* UserLocationButton.swift in Sources */,
 				1BA03E3625DE8BE300EE273C /* UIImage-draw.swift in Sources */,
 				1B0D09B725E6B0B900ED5345 /* HUDManager.swift in Sources */,
+				1B47B96925FA16EE00504761 /* URLInterface.swift in Sources */,
 				1BBD3FFF25B8B0B5007B8BC7 /* CompositeStyle.swift in Sources */,
 				1BA9BD0C25BA266700AC97C7 /* CoordinatedView.swift in Sources */,
 			);

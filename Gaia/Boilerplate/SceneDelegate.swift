@@ -55,18 +55,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
   
   func handleURL(url: URL) {
-    print(url)
+    let command = URLInterface.shared.decode(url: url)
     
-    let command = url.absoluteString.replacingOccurrences(of: "gaia://", with: "")
-    
-    let decodeAttempt = command.split(separator: ",").map({Double($0.trimmingCharacters(in: .whitespacesAndNewlines))}).filter({$0 != nil}) as! [Double]
-    
-    if(decodeAttempt.count == 2) {
-      let coordinate = CLLocationCoordinate2D(latitude: decodeAttempt[0], longitude: decodeAttempt[1])
-      
-      if(CLLocationCoordinate2DIsValid(coordinate)) {
+    switch command {
+      case .coordinate(let coordinate):
         MapViewController.shared.openLocationInfoPanel(location: .map(coordinate))
-      }
+      default: ()
     }
   }
 }
