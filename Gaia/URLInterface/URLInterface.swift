@@ -1,40 +1,25 @@
 import Foundation
-import CoreLocation
 
 class URLInterface {
+  let identifier = "gaia://"
+  let separator: Character = "?"
+
+  func encode(command: Command) -> URL {
+    let string = toString(command: command)
+    
+    return URL(string: "\(identifier)\(string)") ?? URL(string: identifier)!
+  }
+  
   func decode(url: URL) -> Command {
+    let decoded = url.absoluteString
+      .replacingOccurrences(of: identifier, with: "")
+      .split(separator: separator, maxSplits: 1, omittingEmptySubsequences: true)
     
-    let decoded = url.absoluteString.replacingOccurrences(of: "gaia://", with: "").split(separator: "?", maxSplits: 1, omittingEmptySubsequences: true)
-    
-    let command = decoded[0]
+    let command = String(decoded[0])
     let parameters = String(decoded[1])
     
-    switch command {
-      case "go":
-        return go(parameters)
-      default:
-        return .invalid
-    }
-
+    return toCommand(command: command, parameters: parameters)
   }
-  
-  func go(_ parameters: String) -> Command {
-    let coords = parameters.split(separator: ",").map({Double($0.trimmingCharacters(in: .whitespacesAndNewlines))}).filter({$0 != nil}) as! [Double]
 
-    if(coords.count == 2) {
-      let coordinate = CLLocationCoordinate2D(latitude: coords[0], longitude: coords[1])
-
-      return CLLocationCoordinate2DIsValid(coordinate) ? .coordinate(coordinate) : .invalid
-    }
-    
-    return .invalid
-  }
-  
   static var shared = URLInterface()
-  
-  enum Command {
-    case coordinate(CLLocationCoordinate2D)
-    
-    case invalid
-  }
 }

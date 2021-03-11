@@ -234,7 +234,7 @@ class CoordinateActivityItemProvider: UIActivityItemProvider {
   let coordinate: CLLocationCoordinate2D
   
   override var item: Any {
-    get {URL(string: "http://google.com/maps/place/\(coordinate.latitude),\(coordinate.longitude)")!}
+    get {URLInterface.shared.encode(command: .go(coordinate))}
   }
   
   init(coordinate: CLLocationCoordinate2D) {

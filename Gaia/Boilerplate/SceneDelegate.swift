@@ -58,9 +58,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let command = URLInterface.shared.decode(url: url)
     
     switch command {
-      case .coordinate(let coordinate):
+      case .go(let coordinate):
         MapViewController.shared.openLocationInfoPanel(location: .map(coordinate))
-      default: ()
+      case .invalid:
+        HUDManager.shared.displayMessage(message: .urlCommandInvalid)
     }
   }
 }
