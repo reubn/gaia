@@ -38,7 +38,11 @@ extension URLInterface {
       as! [Double]
 
     if(coords.count == 2) {
-      let coordinate = CLLocationCoordinate2D(latitude: coords[0], longitude: coords[1])
+      var coordinate = CLLocationCoordinate2D(latitude: coords[0], longitude: coords[1])
+      
+      if(!CLLocationCoordinate2DIsValid(coordinate)) {
+        coordinate = CLLocationCoordinate2D(latitude: coords[1], longitude: coords[0])
+      }
 
       return CLLocationCoordinate2DIsValid(coordinate) ? .go(coordinate) : .invalid
     }
