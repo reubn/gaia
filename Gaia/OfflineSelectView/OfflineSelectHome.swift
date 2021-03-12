@@ -57,6 +57,9 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     coordinatorView.panelViewController.title = "Downloads"
     coordinatorView.panelViewController.panelButtons = [.new, .dismiss]
     
+    let newButton = coordinatorView.panelViewController.getPanelButton(.new)
+    newButton.isEnabled = !LayerManager.shared.compositeStyle.sortedLayers.isEmpty
+    
     OfflineManager.shared.refreshDownloads()
     
     emptyState.update()
