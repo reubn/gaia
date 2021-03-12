@@ -24,8 +24,6 @@ class LayerSelectImport: UIView, CoordinatedView {
     textField.addTarget(self, action: #selector(urlChanged), for: .editingChanged)
     textField.addTarget(self, action: #selector(process), for: .editingDidEndOnExit)
     
-    textField.text = "https://r3.cedar/config"
-    
     addSubview(textField)
     
     return textField
@@ -57,6 +55,11 @@ class LayerSelectImport: UIView, CoordinatedView {
     urlInput.bottomAnchor.constraint(equalTo: keyboardLayoutGuide.topAnchor).isActive = true
     urlInput.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
     urlInput.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+    
+    
+    urlInput.text = data != nil
+      ? (data as! URL).absoluteString
+      : ""
     
     urlInput.becomeFirstResponder()
     
