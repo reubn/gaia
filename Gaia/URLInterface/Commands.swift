@@ -4,6 +4,7 @@ import CoreLocation
 extension URLInterface {
   enum Command {
     case go(CLLocationCoordinate2D)
+    case layer(URL)
     
     case invalid
   }
@@ -12,6 +13,8 @@ extension URLInterface {
     switch command {
       case .go(let coordinate):
         return go(coordinate)
+      case .layer(let url):
+        return layer(url)
       case .invalid:
         return ""
     }
@@ -21,6 +24,8 @@ extension URLInterface {
     switch command {
       case "go":
         return go(parameters)
+      case "layer":
+        return layer(parameters)
       default:
         return .invalid
     }
@@ -45,6 +50,20 @@ extension URLInterface {
       }
 
       return CLLocationCoordinate2DIsValid(coordinate) ? .go(coordinate) : .invalid
+    }
+    
+    return .invalid
+  }
+  
+  func layer(_ url: URL) -> String {
+    "layer\(separator)\(url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+  }
+  
+  func layer(_ parameters: String) -> Command {
+    let url = URL(string: parameters.trimmingCharacters(in: .whitespacesAndNewlines).removingPercentEncoding ?? "")
+
+    if(url != nil) {
+      return .layer(url!)
     }
     
     return .invalid

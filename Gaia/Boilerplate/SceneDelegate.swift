@@ -60,6 +60,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     switch command {
       case .go(let coordinate):
         MapViewController.shared.openLocationInfoPanel(location: .map(coordinate))
+      case .layer(let url):
+        MapViewController.shared.openLayerSelectPanel(keepOpen: true)
+        (MapViewController.shared.lsfpc.contentViewController! as! LayerSelectPanelViewController).coordinatorView.goTo(1, data: url)
       case .invalid:
         HUDManager.shared.displayMessage(message: .urlCommandInvalid)
     }
