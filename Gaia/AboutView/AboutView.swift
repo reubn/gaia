@@ -5,13 +5,13 @@ import AVFoundation
 import Mapbox
 
 class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegionIsChangingDelegate {
-    var emojiTimer: Timer? = nil
+  var emojiTimer: Timer? = nil
   var isFlipped = false
   
   lazy var appIcon: UIButton = {
     let imageView = UIButton()
-    
-    imageView.setImage(UIImage(named: "AppIconHighRes")!, for: .normal)
+
+    imageView.setImage(UIImage(named: BUNDLE_ID_SUFFIX == ".dev" ? "AppIconHighRes.dev" : "AppIconHighRes")!, for: .normal)
     
     let size: CGFloat = 200
     
@@ -110,8 +110,6 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
   }()
   
   init(){
-    
-    
     super.init(frame: CGRect())
 
     setDetails()
@@ -185,7 +183,7 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
   }
   
   func setDetails(){
-    title.text = !isFlipped ? "Gaia" : MSG_TITLE
+    title.text = !isFlipped ? Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String : MSG_TITLE
     url.text = !isFlipped ? "https://reuben.science" : MSG_URL
     subtitle.text = !isFlipped ? "Phoebe x Finlay" : MSG_SUBTITLE
   }
