@@ -247,11 +247,22 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
 
   @objc func layersButtonTapped(sender: MapButton) {
+    openLayerSelectPanel()
+  }
+  
+  func openLayerSelectPanel(keepOpen: Bool = false) {
     if presentedViewController != nil {
       let isMe = presentedViewController == lsfpc
-      presentedViewController!.dismiss(animated: isMe, completion: nil)
       
-      if(isMe) {return}
+      if(isMe){
+        if(!keepOpen) {
+          presentedViewController!.dismiss(animated: true, completion: nil)
+        }
+        
+        return
+      } else {
+        presentedViewController!.dismiss(animated: false, completion: nil)
+      }
     }
 
     let layerSelectPanelViewController = LayerSelectPanelViewController()
