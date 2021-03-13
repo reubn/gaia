@@ -36,23 +36,11 @@ extension URLInterface {
   }
 
   func go(_ parameters: String) -> Command {
-    let coords = parameters
-      .split(separator: ",")
-      .map({Double($0.trimmingCharacters(in: .whitespacesAndNewlines))})
-      .filter({$0 != nil})
-      as! [Double]
-
-    if(coords.count == 2) {
-      var coordinate = CLLocationCoordinate2D(latitude: coords[0], longitude: coords[1])
-      
-      if(!CLLocationCoordinate2DIsValid(coordinate)) {
-        coordinate = CLLocationCoordinate2D(latitude: coords[1], longitude: coords[0])
-      }
-
-      return CLLocationCoordinate2DIsValid(coordinate) ? .go(coordinate) : .invalid
-    }
+    let coordinate = CLLocationCoordinate2D(parameters)
     
-    return .invalid
+    return coordinate != nil
+      ? .go(coordinate!)
+      : .invalid
   }
   
   func layer(_ url: URL) -> String {

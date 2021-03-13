@@ -22,4 +22,30 @@ extension CLLocationCoordinate2D {
     
     return from.distance(from: to)
   }
+  
+  init?(_ string: String) {
+    let coords = string
+      .split(separator: ",")
+      .map({Double($0.trimmingCharacters(in: .whitespacesAndNewlines))})
+      .filter({$0 != nil})
+      as! [Double]
+
+    if(coords.count == 2) {
+      self.init()
+      
+      self.latitude = coords[0]
+      self.longitude = coords[1]
+      
+      if(!CLLocationCoordinate2DIsValid(self)) {
+        self.latitude = coords[1]
+        self.longitude = coords[0]
+      }
+
+      if(!CLLocationCoordinate2DIsValid(self)){
+        return nil
+      }
+    } else {
+      return nil
+    }
+  }
 }
