@@ -124,6 +124,10 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
         
         removePointsFromMap()
       case .map(let coordinate):
+        if case .map(let coordinate) = location, !MGLCoordinateInCoordinateBounds(coordinate, MapViewController.shared.mapView.visibleCoordinateBounds) {
+          MapViewController.shared.mapView.setCenter(coordinate, animated: true)
+        }
+        
         setCoordinateTitle(coordinate: coordinate)
         displayPointOnMap(coordinate: coordinate)
         

@@ -209,12 +209,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
   }
   
-  func openLocationInfoPanel(location: LocationInfoType) {
-    if case .map(let coordinate) = location,
-       !MGLCoordinateInCoordinateBounds(coordinate, mapView.visibleCoordinateBounds) {
-      mapView.setCenter(coordinate, animated: true)
-    }
-    
+  func openLocationInfoPanel(location: LocationInfoType) {    
     if presentedViewController != nil {
       let isMe = presentedViewController == lifpc
 
