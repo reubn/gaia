@@ -6,7 +6,15 @@ import LinkPresentation
 import Mapbox
 import FloatingPanel
 
-class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationDidUpdateDelegate, MapViewTappedDelegate {
+class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationDidUpdateDelegate, MapViewTappedDelegate, SelectableLabelPasteDelegate {
+  func userDidPaste(content: String) {
+    let coordinate = CLLocationCoordinate2D(content)
+    
+    if(coordinate != nil){
+      update(location: .map(coordinate!))
+    }
+  }
+  
   var location: LocationInfoType
 
   var mapSource: MGLSource {
@@ -86,6 +94,7 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     self.location = location
     
     super.init(title: "")
+    self.popoverTitle.pasteDelegate = self
     
     self.panelButtons = [.share, .star, .dismiss]
     
