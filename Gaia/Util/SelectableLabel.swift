@@ -3,7 +3,16 @@ import UIKit
 
 class SelectableLabel: UILabel {
   var isSelectable = false
-  var textToSelect: String?
+  var selectionText: String? {
+    didSet {
+      isSelectable = selectionText != nil
+    }
+  }
+  
+  var pasteDelegate: SelectableLabelPasteDelegate?
+  var isPasteable: Bool {
+    get {pasteDelegate != nil}
+  }
   
   init() {
     super.init(frame: CGRect())
@@ -17,19 +26,24 @@ class SelectableLabel: UILabel {
   }
   
   override var canBecomeFirstResponder: Bool {
-    return isSelectable
+    return isSelectable || isPasteable
   }
   
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-    return action == #selector(copy(_:))
+    return (isSelectable && action == #selector(copy(_:)))
+        || (isPasteable && action == #selector(paste(_:)) && UIPasteboard.general.hasStrings)
   }
 
   override func copy(_ sender: Any?) {
-    UIPasteboard.general.string = textToSelect ?? text
+    UIPasteboard.general.string = selectionText ?? text
+  }
+  
+  override func paste(_ sender: Any?) {
+    pasteDelegate!.userDidPaste(content: UIPasteboard.general.string!)
   }
 
   @objc func handleLongPress(_ recogniser: UIGestureRecognizer) {
-    if(!isSelectable) {return}
+    if(!(isSelectable || isPasteable)) {return}
     
     if(recogniser.state == .began) {
       becomeFirstResponder()
@@ -42,3 +56,6 @@ class SelectableLabel: UILabel {
   }
 }
 
+protocol SelectableLabelPasteDelegate {
+  func userDidPaste(content: String)
+}

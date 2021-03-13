@@ -30,8 +30,7 @@ class MetricDisplay: UIView {
     let tuple = format()
     
     label.text = tuple.0
-    label.textToSelect = tuple.1
-    label.isSelectable = true
+    label.selectionText = tuple.1
     
     label.font = UIFont.monospacedSystemFont(ofSize: 20, weight: .medium)
     label.textColor = .secondaryLabel
@@ -63,7 +62,7 @@ class MetricDisplay: UIView {
     let tuple = format()
     
     valueLabel.text = tuple.0
-    valueLabel.textToSelect = tuple.1
+    valueLabel.selectionText = tuple.1
   }
   
   func updateEmoji(){

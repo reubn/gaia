@@ -86,7 +86,6 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     self.location = location
     
     super.init(title: "")
-    self.popoverTitle.isSelectable = true
     
     self.panelButtons = [.share, .star, .dismiss]
     
@@ -156,7 +155,7 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
 
   func setCoordinateTitle(coordinate: CLLocationCoordinate2D){
     self.popoverTitle.text = coordinate.format(toAccuracy: .low)
-    self.popoverTitle.textToSelect = coordinate.format(toAccuracy: .high)
+    self.popoverTitle.selectionText = coordinate.format(toAccuracy: .high)
   }
   
   func userLocationDidUpdate() {
