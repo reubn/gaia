@@ -51,7 +51,6 @@ class HUDView: UIView {
     self.index = index
     self._window = window
     
-    print(index)
     super.init(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: size))
     
     layer.shadowColor = UIColor.black.cgColor;
