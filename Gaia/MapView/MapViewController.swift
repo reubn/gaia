@@ -12,6 +12,38 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   let infoButton = MapButton()
   let offlineButton = MapButton()
   
+  lazy var warningIcon: UIImageView = {
+    let imageView = UIImageView(image: UIImage(systemName: "exclamationmark.triangle.fill")!)
+    
+    imageView.contentMode = .scaleAspectFit
+    imageView.tintColor = .systemYellow
+    
+    view.addSubview(imageView)
+    
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 15).isActive = true
+    imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 6).isActive = true
+    imageView.widthAnchor.constraint(equalToConstant: 36).isActive = true
+    imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
+    
+    return imageView
+  }()
+  
+  var warningIconVisible: Set<WarningIconReason> = [] {
+    didSet {
+      if(oldValue != warningIconVisible) {
+        CATransaction.begin()
+        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(controlPoints: 0.33, 1.18, 0.23, 0.93))
+        
+        UIView.animate(withDuration: 0.5){
+          self.warningIcon.layer.opacity = self.warningIconVisible.isEmpty ? 0 : 1
+        }
+        
+        CATransaction.commit()
+      }
+    }
+  }
+  
   let uiColourTint: UIColor = .systemBlue
   
   let multicastParentMapViewRegionIsChangingDelegate = MulticastDelegate<(ParentMapViewRegionIsChangingDelegate)>()
@@ -29,13 +61,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     super.viewDidLoad()
 
     mapView = MGLMapView(frame: view.bounds)
-    LayerManager.shared.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
-    OfflineManager.shared.multicastOfflineModeDidChangeDelegate.add(delegate: self)
+    view.addSubview(mapView)
     
-    let initialCompositeStyle = LayerManager.shared.compositeStyle
-    mapView.styleURL = initialCompositeStyle.url
-    updateUIColourScheme(compositeStyle: initialCompositeStyle)
-
     mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     mapView.logoView.isHidden = true
     mapView.attributionButton.isHidden = true
@@ -45,6 +72,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapView.zoomLevel = 11
     
     setUpCompass()
+    
+    LayerManager.shared.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
+    OfflineManager.shared.multicastOfflineModeDidChangeDelegate.add(delegate: self)
+    
+    compositeStyleDidChange(compositeStyle: LayerManager.shared.compositeStyle)
+    mapViewRegionIsChanging(mapView)
 
     mapView.tintColor = .systemBlue // user location should always be blue
 
@@ -59,8 +92,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
     
     mapView.addGestureRecognizer(singleTapGR)
-
-    view.addSubview(mapView)
 
     let mapLongPressGR = UILongPressGestureRecognizer(target: self, action: #selector(mapLongPress))
     mapLongPressGR.numberOfTouchesRequired = 1
@@ -120,7 +151,15 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     appIconButton.addTarget(self, action: #selector(appIconButtonTapped), for: .touchUpInside)
     appIconButton.accessibilityLabel = "About"
-    
+  }
+  
+  func checkZoomLevel(){
+    let (minimumZoom, _) = LayerManager.shared.compositeStyle.style.visibleZoomLevels
+    if(mapView.zoomLevel < minimumZoom - 2.5){
+      warningIconVisible.insert(.minZoom)
+    } else {
+      warningIconVisible.remove(.minZoom)
+    }
   }
   
   @objc func mapViewTapped(){
@@ -145,6 +184,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 
   func mapViewRegionIsChanging(_ mapView: MGLMapView) {
     multicastParentMapViewRegionIsChangingDelegate.invoke(invocation: {$0.parentMapViewRegionIsChanging()})
+    
+    checkZoomLevel()
   }
 
   func mapView(_ mapView: MGLMapView, didChange mode: MGLUserTrackingMode, animated: Bool) {
@@ -164,6 +205,14 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   func compositeStyleDidChange(compositeStyle: CompositeStyle) {
     mapView.styleURL = compositeStyle.url
     updateUIColourScheme(compositeStyle: compositeStyle)
+  
+    if(compositeStyle.isEmpty){
+      warningIconVisible.insert(.emptyStyle)
+    } else {
+      warningIconVisible.remove(.emptyStyle)
+    }
+    
+    checkZoomLevel()
   }
   
   func updateUIColourScheme(compositeStyle: CompositeStyle){
@@ -385,4 +434,10 @@ protocol UserLocationDidUpdateDelegate {
 
 protocol MapViewTappedDelegate {
   func mapViewTapped()
+}
+
+enum WarningIconReason: Equatable {
+  case minZoom
+  case maxZoom
+  case emptyStyle
 }
