@@ -55,9 +55,17 @@ class LayerManager {
     }
   }
   
+  private var _compositeStyle: CompositeStyle?
+  
   var compositeStyle: CompositeStyle {
     get {
-      CompositeStyle(sortedLayers: sortedLayers)
+      if(_compositeStyle != nil) {
+        return _compositeStyle!
+      }
+      
+      _compositeStyle = CompositeStyle(sortedLayers: sortedLayers)
+      
+      return _compositeStyle!
     }
   }
   
@@ -112,13 +120,9 @@ class LayerManager {
         $0.sorted(by: layerSortingFunction)
       })
       
-      informDelegates()
-
+      _compositeStyle = nil
+      multicastCompositeStyleDidChangeDelegate.invoke(invocation: {$0.compositeStyleDidChange(compositeStyle: compositeStyle)})
     } catch {print("Failed")}
-  }
-
-  func informDelegates(){
-    multicastCompositeStyleDidChangeDelegate.invoke(invocation: {$0.compositeStyleDidChange(compositeStyle: compositeStyle)})
   }
   
   func saveLayers(){
