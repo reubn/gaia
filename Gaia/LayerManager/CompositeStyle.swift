@@ -9,6 +9,10 @@ class CompositeStyle {
     return topNonOverlay?.needsDarkUI ?? true
   }
   
+  var isEmpty: Bool {
+    sortedLayers.isEmpty
+  }
+  
   var url: URL? {
     style.url
   }
