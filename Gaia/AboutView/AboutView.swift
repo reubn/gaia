@@ -192,3 +192,14 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     fatalError("init(coder:) has not been implemented")
   }
 }
+
+struct KeyLocationPair {
+  var location: CLLocationCoordinate2D
+  var seen: Bool = false
+  var seenReason: SeenReason? = nil
+  
+  enum SeenReason {
+    case location
+    case view
+  }
+}
