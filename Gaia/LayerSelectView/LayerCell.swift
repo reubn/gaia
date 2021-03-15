@@ -29,6 +29,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   let previewSpacing: CGFloat = 15
   let title = UILabel()
   
+  lazy var canvasView = CanvasView(size: 15, frame: preview.frame)
+  
   lazy var height = contentView.heightAnchor.constraint(equalToConstant: 100)
   
   lazy var disabledCountDisplay: UILabel = {
@@ -137,6 +139,14 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     preview.topAnchor.constraint(equalTo: contentView.topAnchor, constant: previewSpacing).isActive = true
     preview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -previewSpacing).isActive = true
     preview.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: previewSpacing).isActive = true
+    
+    preview.insertSubview(canvasView, at: 0)
+    
+    canvasView.translatesAutoresizingMaskIntoConstraints = false
+    canvasView.topAnchor.constraint(equalTo: preview.topAnchor).isActive = true
+    canvasView.leftAnchor.constraint(equalTo: preview.leftAnchor).isActive = true
+    canvasView.bottomAnchor.constraint(equalTo: preview.bottomAnchor).isActive = true
+    canvasView.rightAnchor.constraint(equalTo: preview.rightAnchor).isActive = true
 
     title.font = UIFont.systemFont(ofSize: 18)
     title.textColor = UIColor.label

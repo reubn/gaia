@@ -23,6 +23,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   var userLocationButton: UserLocationButton?
   var firstTimeLocating = true
   
+  lazy var canvasView = CanvasView(frame: mapView.frame)
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -47,6 +49,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapView.tintColor = .systemBlue // user location should always be blue
 
     mapView.delegate = self
+    
+    view.insertSubview(canvasView, belowSubview: mapView)
     
     let singleTapGR = UITapGestureRecognizer(target: self, action: #selector(mapViewTapped))
     

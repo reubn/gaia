@@ -85,6 +85,7 @@
 		1BBD3FFA25B89181007B8BC7 /* OfflineSelectCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF925B89181007B8BC7 /* OfflineSelectCoordinatorView.swift */; };
 		1BBD3FFD25B8927E007B8BC7 /* OfflineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */; };
 		1BBD3FFF25B8B0B5007B8BC7 /* CompositeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FFE25B8B0B5007B8BC7 /* CompositeStyle.swift */; };
+		1BD6A3B825FF4CAA001E503D /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3B725FF4CAA001E503D /* CanvasView.swift */; };
 		1BEE8D5B25C58FF5004260C1 /* MetricDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5A25C58FF5004260C1 /* MetricDisplay.swift */; };
 		1BEE8D5E25C599B3004260C1 /* HeadingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */; };
 		1BEE8D6025C59A4D004260C1 /* ElevationDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */; };
@@ -181,6 +182,7 @@
 		1BBD3FF925B89181007B8BC7 /* OfflineSelectCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectCoordinatorView.swift; sourceTree = "<group>"; };
 		1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineManager.swift; sourceTree = "<group>"; };
 		1BBD3FFE25B8B0B5007B8BC7 /* CompositeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeStyle.swift; sourceTree = "<group>"; };
+		1BD6A3B725FF4CAA001E503D /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		1BEE8D5A25C58FF5004260C1 /* MetricDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricDisplay.swift; sourceTree = "<group>"; };
 		1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingDisplay.swift; sourceTree = "<group>"; };
 		1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplay.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 				1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */,
 				1B8C078925C43C58008C08B2 /* MapViewPanelLayout.swift */,
 				1B7644C725CC3E9000572A70 /* PanelActionButton.swift */,
+				1BD6A3B725FF4CAA001E503D /* CanvasView.swift */,
 			);
 			path = MapView;
 			sourceTree = "<group>";
@@ -510,6 +513,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BD6A3B825FF4CAA001E503D /* CanvasView.swift in Sources */,
 				1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */,
 				1B9DDAFC25F2AC1E00B3407F /* ReversedCollection.swift in Sources */,
 				1B7644C325CAFA7300572A70 /* Style.swift in Sources */,
