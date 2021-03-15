@@ -42,9 +42,6 @@ public class Layer: NSManagedObject {
   }
 }
 
-
-extension Layer: Identifiable {}
-
 // Layer from LayerDefinition
 extension Layer {
   convenience init(_ layerDefinition: LayerDefinition, context: NSManagedObjectContext, visible: Bool = false, favourite: Bool = false, enabled: Bool = true){
