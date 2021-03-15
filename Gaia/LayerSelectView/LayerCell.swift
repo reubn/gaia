@@ -13,7 +13,6 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   var displayedStyle: Style?
   var needsUpdating = false
   
-  var maximumZoomLevel: Double = 30
   var minimumZoomLevel: Double = 0
   
   var disabledCount: Int? {
@@ -173,12 +172,9 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     
     if(queuedStyle != displayedStyle) {
       displayedStyle = queuedStyle
-      preview.styleURL = displayedStyle!.toURL()
+      preview.styleURL = displayedStyle!.url
       
-      let (minZoom, maxZoom) = displayedStyle!.getVisibleZoomLevels()
-      
-      maximumZoomLevel = maxZoom ?? 22
-      minimumZoomLevel = minZoom ?? 0
+      (minimumZoomLevel, _) = displayedStyle!.visibleZoomLevels
     }
     
     let zoomLevel = MapViewController.shared.mapView.zoomLevel

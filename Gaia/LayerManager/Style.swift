@@ -12,7 +12,7 @@ struct Style: Codable, Equatable {
   typealias Source = AnyCodable
   typealias Layer = AnyCodable
   
-  func getVisibleZoomLevels() -> (min: Double?, max: Double?){
+  var visibleZoomLevels: (min: Double, max: Double) {
     var mins: [Double] = []
     var maxes: [Double] = []
     
@@ -30,13 +30,12 @@ struct Style: Codable, Equatable {
     }
 
     return (
-      min: mins.max(),
-      max: maxes.min()
+      min: mins.max() ?? 0,
+      max: maxes.min() ?? 22
     )
   }
   
-  
-  func toURL() -> URL? {
+  var url: URL? {
     do {
       let encoder = JSONEncoder()
       

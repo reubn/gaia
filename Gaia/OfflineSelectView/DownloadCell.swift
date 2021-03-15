@@ -199,7 +199,7 @@ class DownloadCell: UITableViewCell {
         preview.heightAnchor.constraint(equalTo: preview.widthAnchor, multiplier: CGFloat(height / width)).isActive = true
       }
       
-      preview.styleURL = context!.style.toURL()
+      preview.styleURL = context!.style.url
       preview.setVisibleCoordinateBounds(bounds, animated: false)
     }
   }

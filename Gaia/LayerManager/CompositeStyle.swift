@@ -10,7 +10,7 @@ class CompositeStyle {
   }
   
   var url: URL? {
-    style.toURL()
+    style.url
   }
   
   var style: Style {
