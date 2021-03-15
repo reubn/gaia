@@ -4,7 +4,7 @@ import UIKit
 class CanvasView: UIView {
   let squareSize: CGFloat
   
-  init(size: CGFloat = 20, frame: CGRect) {
+  init(frame: CGRect, size: CGFloat = 20) {
     squareSize = size
     super.init(frame: frame)
   }

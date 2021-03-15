@@ -29,7 +29,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   let previewSpacing: CGFloat = 15
   let title = UILabel()
   
-  lazy var canvasView = CanvasView(size: 10, frame: preview.frame)
+  lazy var canvasView = CanvasView(frame: preview.frame, size: 10)
   
   lazy var height = contentView.heightAnchor.constraint(equalToConstant: 100)
   
