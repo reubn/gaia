@@ -70,7 +70,9 @@ class LayerManager {
   }
 
   func layerSortingFunction(a: Layer, b: Layer) -> Bool {
-    if(a.group == b.group && !a.enabled && b.enabled) {return true} // sort disabled layers below within same group
+    if(a.group == b.group && a.enabled != b.enabled) {
+      return b.enabled // sort disabled layers below within same group
+    }
     
     return layerSortingFunction(a: LayerDefinition.Metadata(layer: a), b: LayerDefinition.Metadata(layer: b))
   }
