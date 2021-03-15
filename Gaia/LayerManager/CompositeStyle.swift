@@ -6,9 +6,7 @@ class CompositeStyle {
   var needsDarkUI: Bool {
     let topNonOverlay = sortedLayers.reversed().first(where: {$0.group != "overlay"})
 
-    if(topNonOverlay == nil) {return true}
-
-    return topNonOverlay!.group == "aerial"
+    return topNonOverlay?.needsDarkUI ?? true
   }
   
   var url: URL? {

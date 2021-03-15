@@ -16,6 +16,10 @@ public class Layer: NSManagedObject {
   @NSManaged public var name: String
   @NSManaged private var styleString: String
   
+  var needsDarkUI: Bool {
+    return group == "aerial" || group == "overlay"
+  }
+  
   private var _style: Style?
   
   var style: Style {
