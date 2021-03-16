@@ -255,50 +255,17 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
     let layer = self.layers[indexPath.row]
     
     return UIContextMenuConfiguration(identifier: nil, previewProvider: nil){actions -> UIMenu? in
-      
-      var children: [UIAction] = []
+      var topChildren: [UIMenuElement] = []
+      var moreChildren: [UIMenuElement] = []
  
-      children.append(UIAction(
+      topChildren.append(UIAction(
         title: layer.visible ? "Hide" : "Show",
         image: UIImage(systemName: layer.visible ? "eye.slash" : "eye")) { _ in
           self.toggleLayer(layer: layer, mutuallyExclusive: false)
       })
       
-      children.append(UIAction(
-        title: layer.enabled ? "Disable" : "Enable",
-        image: UIImage(systemName: layer.enabled ? "square.slash.fill" : "checkmark.square.fill")) { _ in
-          layer.enabled = !layer.enabled
-          
-          if(!layer.enabled){
-            layer.pinned = false
-            layer.visible = false
-          }
-          
-          LayerManager.shared.saveLayers()
-      })
-      
-      children.append(UIAction(
-        title: "Isolate",
-        image: UIImage(systemName: "square.3.stack.3d.middle.fill")) { _ in
-          LayerManager.shared.filterLayers {
-            $0 == layer
-          }
-      })
-      
-      children.append(UIAction(
-        title: "Edit",
-        image: UIImage(systemName: "slider.horizontal.3")) { _ in
-          self.layerSelectConfig.layerEditDelegate?.layerEditWasRequested(layer: layer)
-      })
-      
-      children.append(UIAction(
-        title: "Duplicate",
-        image: UIImage(systemName: "plus.square.fill.on.square.fill")) { _ in
-        self.layerSelectConfig.layerEditDelegate?.layerEditWasRequested(duplicateFromLayer: layer)
-      })
-      
       if(layer.enabled) {
-        children.append(UIAction(
+        topChildren.append(UIAction(
           title: layer.pinned ? "Unpin" : "Pin",
           image: UIImage(systemName: layer.pinned ? "pin.slash.fill" : "pin.fill")) { _ in
           layer.pinned = !layer.pinned
@@ -307,27 +274,68 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
         })
       }
       
-      children.append(UIAction(
+      topChildren.append(UIAction(
+        title: "Edit",
+        image: UIImage(systemName: "slider.horizontal.3")) { _ in
+          self.layerSelectConfig.layerEditDelegate?.layerEditWasRequested(layer: layer)
+      })
+      
+      // More Submenu
+      moreChildren.append(UIAction(
+        title: "Isolate",
+        image: UIImage(systemName: "square.3.stack.3d.middle.fill")) { _ in
+          LayerManager.shared.filterLayers {
+            $0 == layer
+          }
+      })
+      
+      moreChildren.append(UIAction(
+        title: "Duplicate",
+        image: UIImage(systemName: "plus.square.fill.on.square.fill")) { _ in
+        self.layerSelectConfig.layerEditDelegate?.layerEditWasRequested(duplicateFromLayer: layer)
+      })
+
+      moreChildren.append(UIAction(
         title: "Share",
         image: UIImage(systemName: "square.and.arrow.up")) { _ in
           do {
             let encoder = JSONEncoder()
-            
+
             let json = try encoder.encode([LayerDefinition(layer: layer)])
-            
+
             let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
             let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(layer.id).appendingPathExtension("json")
 
             try json.write(to: temporaryFileURL, options: .atomic)
-            
+
             let activityViewController = UIActivityViewController(activityItems: [temporaryFileURL], applicationActivities: nil)
             activityViewController.popoverPresentationController?.sourceView = tableView
             MapViewController.shared.lsfpc.present(activityViewController, animated: true, completion: nil)
-            
+
           } catch {
             print(error)
         }
       })
+      
+      moreChildren.insert(UIAction(
+        title: layer.enabled ? "Disable" : "Enable",
+        image: UIImage(systemName: layer.enabled ? "square.slash.fill" : "checkmark.square.fill"),
+        attributes: layer.enabled ? .destructive : []) { _ in
+          layer.enabled = !layer.enabled
+
+          if(!layer.enabled){
+            layer.pinned = false
+            layer.visible = false
+          }
+
+          LayerManager.shared.saveLayers()
+      }, at: layer.enabled ? moreChildren.endIndex : moreChildren.startIndex)
+      
+      topChildren.append(UIMenu(
+        title: "More",
+        image: UIImage(systemName: "ellipsis"),
+        children: moreChildren
+      ))
       
       let delete = UIAction(
         title: "Delete",
@@ -341,9 +349,9 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
           HUDManager.shared.displayMessage(message: .layerDeleted(layerName))
       }
       
-      children.append(delete)
+      topChildren.append(delete)
       
-      return UIMenu(title: "", children: children)
+      return UIMenu(title: "", children: topChildren)
     }
   }
 }
