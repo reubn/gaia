@@ -173,6 +173,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     if(queuedStyle != displayedStyle) {
       displayedStyle = queuedStyle
       preview.styleURL = displayedStyle!.url
+      canvasView.overrideUserInterfaceStyle = _layer!.needsDarkUI ? .dark : .light
+      canvasView.setNeedsDisplay()
       
       (minimumZoomLevel, _) = displayedStyle!.visibleZoomLevels
     }
