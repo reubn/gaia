@@ -10,7 +10,7 @@ class HeadingDisplay: MetricDisplay {
     }
   }
   
-  let emojiLookup: [Mode: String] = [.true: "🐻‍❄️", .magnetic: "🧭"]
+  let emojiLookup: [Mode: String] = [.true: "⬆️", .magnetic: "🧭"]
   
   override init(){
     super.init()

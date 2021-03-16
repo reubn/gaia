@@ -7,7 +7,7 @@ class BearingDisplay: MetricDisplay {
     super.init()
     
     value = CoordinatePair()
-    emoji = "🧭"
+    emoji = "⬆️"
   }
   
   @objc override func tapped() {}
