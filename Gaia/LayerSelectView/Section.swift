@@ -270,7 +270,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
           layer.enabled = !layer.enabled
           
           if(!layer.enabled){
-            layer.favourite = false
+            layer.pinned = false
             layer.visible = false
           }
           
@@ -299,9 +299,9 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       
       if(layer.enabled) {
         children.append(UIAction(
-          title: layer.favourite ? "Unfavourite" : "Favourite",
-          image: UIImage(systemName: layer.favourite ? "star.slash.fill" : "star.fill")) { _ in
-          layer.favourite = !layer.favourite
+          title: layer.pinned ? "Unpin" : "Pin",
+          image: UIImage(systemName: layer.pinned ? "pin.slash.fill" : "pin.fill")) { _ in
+          layer.pinned = !layer.pinned
           
           LayerManager.shared.saveLayers()
         })

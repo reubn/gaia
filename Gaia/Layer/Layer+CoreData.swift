@@ -9,7 +9,7 @@ public class Layer: NSManagedObject {
 
   @NSManaged public var visible: Bool
   @NSManaged public var enabled: Bool
-  @NSManaged public var favourite: Bool
+  @NSManaged public var pinned: Bool
   @NSManaged public var group: String
   @NSManaged public var groupIndex: Int16
   @NSManaged public var id: String
@@ -48,11 +48,11 @@ public class Layer: NSManagedObject {
 
 // Layer from LayerDefinition
 extension Layer {
-  convenience init(_ layerDefinition: LayerDefinition, context: NSManagedObjectContext, visible: Bool = false, favourite: Bool = false, enabled: Bool = true){
+  convenience init(_ layerDefinition: LayerDefinition, context: NSManagedObjectContext, visible: Bool = false, pinned: Bool = false, enabled: Bool = true){
     self.init(context: context)
     
     self.visible = visible
-    self.favourite = favourite
+    self.pinned = pinned
     self.enabled = enabled
     
     self.update(layerDefinition)

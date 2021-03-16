@@ -238,7 +238,7 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
 enum LocationInfoType {
   case user
   case map(CLLocationCoordinate2D)
-//  case favourite
+//  case pinned
 }
 
 

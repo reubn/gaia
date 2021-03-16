@@ -404,7 +404,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   @objc func twoFingerTapped() {
-    let layer = LayerManager.shared.magicFavourite(forward: true)
+    let layer = LayerManager.shared.magicPinned(forward: true)
     
     if(layer != nil) {
       HUDManager.shared.displayMessage(message: .layer(layer!))
@@ -413,7 +413,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   @objc func threeFingerTapped() {
-    let layer = LayerManager.shared.magicFavourite(forward: false)
+    let layer = LayerManager.shared.magicPinned(forward: false)
     
     if(layer != nil) {
       HUDManager.shared.displayMessage(message: .layer(layer!))

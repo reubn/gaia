@@ -37,9 +37,9 @@ class LayerManager {
     }
   }
   
-  var favouriteLayers: [Layer]{
+  var pinnedLayers: [Layer]{
     get {
-      layers.filter({$0.favourite})
+      layers.filter({$0.pinned})
     }
   }
   
@@ -216,22 +216,22 @@ class LayerManager {
     }
   }
   
-  public func magicFavourite(forward: Bool) -> Layer? {
-    let interestedLayers = favouriteLayers.filter({$0.group != "overlay"}).sorted(by: layerSortingFunction).reversed()
+  public func magicPinned(forward: Bool) -> Layer? {
+    let interestedLayers = pinnedLayers.filter({$0.group != "overlay"}).sorted(by: layerSortingFunction).reversed()
     
     if(interestedLayers.isEmpty) {return nil}
     
-    let visibleFavouriteLayers = interestedLayers.filter({$0.visible})
-    let topVisibleFavouriteLayer = visibleFavouriteLayers.first
+    let visiblePinnedLayers = interestedLayers.filter({$0.visible})
+    let topVisiblePinnedLayer = visiblePinnedLayers.first
     
-    switch visibleFavouriteLayers.count {
-    case 0: // enable the first favourite
+    switch visiblePinnedLayers.count {
+    case 0: // enable the first pinned
       let nextLayer = interestedLayers.first!
       enableLayer(layer: nextLayer, mutuallyExclusive: true)
       
       return nextLayer
-    case 1: // move to next favourite, or wrap around
-      let currentIndex = interestedLayers.firstIndex(of: topVisibleFavouriteLayer!)!
+    case 1: // move to next pinned, or wrap around
+      let currentIndex = interestedLayers.firstIndex(of: topVisiblePinnedLayer!)!
       let nextIndex = forward
         ? interestedLayers.index(after: currentIndex, wrap: true)
         : interestedLayers.index(before: currentIndex, wrap: true)
@@ -240,7 +240,7 @@ class LayerManager {
       enableLayer(layer: nextLayer, mutuallyExclusive: true)
       
       return nextLayer
-    default: // handle more than one favourite visible
+    default: // handle more than one pinned visible
       return nil
     }
   }

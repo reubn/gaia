@@ -5,7 +5,7 @@ struct LayerSelectConfig {
   var layerContextActions: Bool = true
   var reorderLayers: Bool = true
   
-  var showFavourites: Bool = true
+  var showPinned: Bool = true
   var showDisabled: [ShowDisabledStyle] = [.section]
   
   unowned var layerEditDelegate: LayerEditDelegate? = nil

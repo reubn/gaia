@@ -10,7 +10,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
     mutuallyExclusive: false,
     layerContextActions: false,
     reorderLayers: false,
-    showFavourites: true,
+    showPinned: true,
     showDisabled: []
   )
 

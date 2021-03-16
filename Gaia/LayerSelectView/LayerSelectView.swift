@@ -44,22 +44,22 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     
     emptyState.update()
     
-    if(layerSelectConfig.showFavourites) {
-      var favouritesLayerSelectConfig = layerSelectConfig
-      favouritesLayerSelectConfig.reorderLayers = false
+    if(layerSelectConfig.showPinned) {
+      var pinnedLayerSelectConfig = layerSelectConfig
+      pinnedLayerSelectConfig.reorderLayers = false
       
-      let favouritesSection = Section(
-        group: LayerGroup(id: "favourite", name: "Favourites", colour: .systemOrange, selectionFunction: {
-          LayerManager.shared.favouriteLayers.sorted(by: LayerManager.shared.layerSortingFunction)
+      let pinnedSection = Section(
+        group: LayerGroup(id: "pinned", name: "Pins", colour: .systemIndigo, selectionFunction: {
+          LayerManager.shared.pinnedLayers.sorted(by: LayerManager.shared.layerSortingFunction)
         }),
-        layerSelectConfig: favouritesLayerSelectConfig,
+        layerSelectConfig: pinnedLayerSelectConfig,
         scrollView: self
       )
       
-      stack.addArrangedSubview(favouritesSection)
+      stack.addArrangedSubview(pinnedSection)
 
-      favouritesSection.translatesAutoresizingMaskIntoConstraints = false
-      favouritesSection.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
+      pinnedSection.translatesAutoresizingMaskIntoConstraints = false
+      pinnedSection.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
     }
 
     LayerManager.shared.layerGroups.forEach({
