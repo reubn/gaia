@@ -9,7 +9,7 @@ class SelectableLabel: UILabel {
     }
   }
   
-  var pasteDelegate: SelectableLabelPasteDelegate?
+  unowned var pasteDelegate: SelectableLabelPasteDelegate?
   var isPasteable: Bool {
     get {pasteDelegate != nil}
   }
@@ -56,6 +56,6 @@ class SelectableLabel: UILabel {
   }
 }
 
-protocol SelectableLabelPasteDelegate {
+protocol SelectableLabelPasteDelegate: AnyObject {
   func userDidPaste(content: String)
 }
