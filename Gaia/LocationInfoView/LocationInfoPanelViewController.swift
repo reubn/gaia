@@ -224,30 +224,7 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
       showShareSheet(panelButton)
     }
   }
-  
-  func showShareSheet(_ sender: PanelActionButton) {
-    let coordinate: CLLocationCoordinate2D
-    
-    switch location {
-      case .user:
-        coordinate = MapViewController.shared.mapView.userLocation!.coordinate
-      case .map(let coord):
-        coordinate = coord
-    }
-    
-    
-    let activityViewController = UIActivityViewController(
-      activityItems: [CoordinateActivityItemProvider(coordinate: coordinate)],
-      applicationActivities: [
-        GoogleMapsActivity(coordinate: coordinate),
-        GoogleMapsStreetViewActivity(coordinate: coordinate)
-      ]
-    )
-    
-    activityViewController.popoverPresentationController?.sourceView = sender
-    present(activityViewController, animated: true, completion: nil)
-  }
-  
+
   func mapViewTapped(){
     if case .map = location {
       dismiss(animated: true, completion: nil)
