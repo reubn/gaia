@@ -159,14 +159,14 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
         displayPointOnMap(coordinate: coordinate)
         
         metricDisplays = [bearingDisplay, distanceDisplay]
-        
-        do {var value = (self.distanceDisplay.value as! CoordinatePair)
-        value.a = coordinate
-        self.distanceDisplay.value = value}
-        
-        do {var value = (self.bearingDisplay.value as! CoordinatePair)
-        value.a = coordinate
-        self.bearingDisplay.value = value}
+
+        var distanceValue = (distanceDisplay.value as! CoordinatePair)
+        distanceValue.a = coordinate
+        distanceDisplay.value = distanceValue
+
+        var bearingValue = (bearingDisplay.value as! CoordinatePair)
+        bearingValue.a = coordinate
+        bearingDisplay.value = bearingValue
 
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
     }
@@ -200,13 +200,13 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     if case .user = self.location {
       setCoordinateTitle(coordinate: coordinate)
     } else {
-      do {var value = (self.distanceDisplay.value as! CoordinatePair)
-      value.b = coordinate
-      self.distanceDisplay.value = value}
-      
-      do {var value = (self.bearingDisplay.value as! CoordinatePair)
-      value.b = coordinate
-      self.bearingDisplay.value = value}
+      var distanceValue = (distanceDisplay.value as! CoordinatePair)
+      distanceValue.b = coordinate
+      distanceDisplay.value = distanceValue
+
+      var bearingValue = (bearingDisplay.value as! CoordinatePair)
+      bearingValue.b = coordinate
+      bearingDisplay.value = bearingValue
     }
     
     self.headingDisplay.value = heading
