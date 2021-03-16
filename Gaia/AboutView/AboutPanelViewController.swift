@@ -5,7 +5,7 @@ import Mapbox
 import FloatingPanel
 
 class AboutPanelViewController: MapViewPanelViewController {
-    lazy var mainView = AboutView()
+  lazy var mainView = AboutView()
   
   init(){
     
