@@ -86,6 +86,10 @@
 		1BBD3FFD25B8927E007B8BC7 /* OfflineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */; };
 		1BBD3FFF25B8B0B5007B8BC7 /* CompositeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FFE25B8B0B5007B8BC7 /* CompositeStyle.swift */; };
 		1BD6A3B825FF4CAA001E503D /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3B725FF4CAA001E503D /* CanvasView.swift */; };
+		1BD6A3BA2600DF25001E503D /* LocationInfoPanelShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */; };
+		1BD6A3BC2600E2E1001E503D /* BearingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */; };
+		1BD6A3BE2600E34B001E503D /* CoordinatePair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3BD2600E34B001E503D /* CoordinatePair.swift */; };
+		1BD6A3C02600FD49001E503D /* CLDegrees.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3BF2600FD49001E503D /* CLDegrees.swift */; };
 		1BEE8D5B25C58FF5004260C1 /* MetricDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5A25C58FF5004260C1 /* MetricDisplay.swift */; };
 		1BEE8D5E25C599B3004260C1 /* HeadingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */; };
 		1BEE8D6025C59A4D004260C1 /* ElevationDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */; };
@@ -183,6 +187,10 @@
 		1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineManager.swift; sourceTree = "<group>"; };
 		1BBD3FFE25B8B0B5007B8BC7 /* CompositeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeStyle.swift; sourceTree = "<group>"; };
 		1BD6A3B725FF4CAA001E503D /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelShare.swift; sourceTree = "<group>"; };
+		1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BearingDisplay.swift; sourceTree = "<group>"; };
+		1BD6A3BD2600E34B001E503D /* CoordinatePair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatePair.swift; sourceTree = "<group>"; };
+		1BD6A3BF2600FD49001E503D /* CLDegrees.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLDegrees.swift; sourceTree = "<group>"; };
 		1BEE8D5A25C58FF5004260C1 /* MetricDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricDisplay.swift; sourceTree = "<group>"; };
 		1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingDisplay.swift; sourceTree = "<group>"; };
 		1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplay.swift; sourceTree = "<group>"; };
@@ -291,12 +299,14 @@
 				1B8C079225C493E5008C08B2 /* SelectableLabel.swift */,
 				1B04BF6E25D077FC00FCD5D4 /* AppIcon.swift */,
 				1B6033BC25D1DBD300211150 /* UIColor-hex.swift */,
+				1BD6A3BF2600FD49001E503D /* CLDegrees.swift */,
 				1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */,
 				1B6033C025D1DC4A00211150 /* randomString.swift */,
 				1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate2D.swift */,
 				1BA03E3525DE8BE300EE273C /* UIImage-draw.swift */,
 				1B9DDAFB25F2AC1E00B3407F /* ReversedCollection.swift */,
 				1B47B96C25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift */,
+				1BD6A3BD2600E34B001E503D /* CoordinatePair.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -383,6 +393,7 @@
 			children = (
 				1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */,
 				1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */,
+				1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */,
 				1BEE8D5C25C599A0004260C1 /* MetricDisplay */,
 			);
 			path = LocationInfoView;
@@ -429,6 +440,7 @@
 				1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */,
 				1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */,
 				1BA03E3925DEB9BE00EE273C /* DistanceDisplay.swift */,
+				1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */,
 			);
 			path = MetricDisplay;
 			sourceTree = "<group>";
@@ -542,6 +554,7 @@
 				1B96528825D58EFC0017A43E /* LayerSelectConfig.swift in Sources */,
 				1B04BF6F25D077FC00FCD5D4 /* AppIcon.swift in Sources */,
 				1B7644B525CA169D00572A70 /* MemoryConsciousFloatingPanelController.swift in Sources */,
+				1BD6A3C02600FD49001E503D /* CLDegrees.swift in Sources */,
 				1B3401CE25B473FB0091FA3B /* SectionLabel.swift in Sources */,
 				1BA9BD1425BE248600AC97C7 /* OfflineSelectZoom.swift in Sources */,
 				1B8C078A25C43C58008C08B2 /* MapViewPanelLayout.swift in Sources */,
@@ -556,6 +569,7 @@
 				1B3401CC25B473E40091FA3B /* LayerCell.swift in Sources */,
 				1B62CE9125D0288400D06E55 /* AboutPanelLayout.swift in Sources */,
 				1BBD3FFD25B8927E007B8BC7 /* OfflineManager.swift in Sources */,
+				1BD6A3BE2600E34B001E503D /* CoordinatePair.swift in Sources */,
 				1BA9BD2625C21D7C00AC97C7 /* LayerSelectImport.swift in Sources */,
 				1BBD3FF825B88F56007B8BC7 /* OfflineSelectPanelViewController.swift in Sources */,
 				1B0D09BB25E7A0E200ED5345 /* HUDMessages.swift in Sources */,
@@ -564,6 +578,7 @@
 				1BA9BD2025C2100F00AC97C7 /* LayerSelectView.swift in Sources */,
 				1B6638A825B10B530071F03D /* AppDelegate.swift in Sources */,
 				1BA03E3A25DEB9BE00EE273C /* DistanceDisplay.swift in Sources */,
+				1BD6A3BC2600E2E1001E503D /* BearingDisplay.swift in Sources */,
 				1BBD3FF525B70C06007B8BC7 /* OfflineSelectPanelLayout.swift in Sources */,
 				1B6638AA25B10B530071F03D /* SceneDelegate.swift in Sources */,
 				1B8C078F25C48245008C08B2 /* LocationInfoPanelViewController.swift in Sources */,
@@ -586,6 +601,7 @@
 				1B47B96925FA16EE00504761 /* URLInterface.swift in Sources */,
 				1BBD3FFF25B8B0B5007B8BC7 /* CompositeStyle.swift in Sources */,
 				1BA9BD0C25BA266700AC97C7 /* CoordinatedView.swift in Sources */,
+				1BD6A3BA2600DF25001E503D /* LocationInfoPanelShare.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -23,6 +23,22 @@ extension CLLocationCoordinate2D {
     return from.distance(from: to)
   }
   
+  func bearing(to: CLLocationCoordinate2D) -> CLLocationDegrees {
+    let lat1 = self.latitude.toRadians
+    let lon1 = self.longitude.toRadians
+
+    let lat2 = to.latitude.toRadians
+    let lon2 = to.longitude.toRadians
+
+    let dLon = lon2 - lon1
+    let y = sin(dLon) * cos(lat2)
+    let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
+    
+    let θ = atan2(y, x)
+
+    return (θ * 180 / .pi) + 180
+  }
+  
   init?(_ string: String) {
     let coords = string
       .split(separator: ",")

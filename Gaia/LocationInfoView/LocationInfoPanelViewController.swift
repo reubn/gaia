@@ -74,8 +74,8 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     return display
   }()
   
-  lazy var distanceDisplay: DistanceDisplay = {
-    let display = DistanceDisplay()
+  lazy var bearingDisplay: BearingDisplay = {
+    let display = BearingDisplay()
     
     mainView.addSubview(display)
     
@@ -86,7 +86,26 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     return display
   }()
   
-  lazy var metricDisplays = [headingDisplay, elevationDisplay, distanceDisplay]
+  lazy var distanceDisplay: DistanceDisplay = {
+    let display = DistanceDisplay()
+    
+    mainView.addSubview(display)
+    
+    display.translatesAutoresizingMaskIntoConstraints = false
+    display.leftAnchor.constraint(equalTo: bearingDisplay.rightAnchor, constant: 8).isActive = true
+    display.topAnchor.constraint(equalTo: mainView.topAnchor).isActive = true
+    
+    return display
+  }()
+  
+  lazy var _allMetricDisplays = [headingDisplay, elevationDisplay, bearingDisplay, distanceDisplay]
+  lazy var metricDisplays: [MetricDisplay] = [] {
+    didSet {
+      for metricDisplay in _allMetricDisplays {
+        metricDisplay.isHidden = !metricDisplays.contains(metricDisplay)
+      }
+    }
+  }
   
   init(location: LocationInfoType){
     self.location = location
@@ -119,14 +138,9 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
   func update(location: LocationInfoType){
     self.location = location
     
-    for display in metricDisplays {
-      display.isHidden = true
-    }
-    
     switch location {
       case .user:
-        headingDisplay.isHidden = false
-        elevationDisplay.isHidden = false
+        metricDisplays = [headingDisplay, elevationDisplay]
         
         removePointsFromMap()
       case .map(let coordinate):
@@ -137,11 +151,15 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
         setCoordinateTitle(coordinate: coordinate)
         displayPointOnMap(coordinate: coordinate)
         
-        distanceDisplay.isHidden = false
+        metricDisplays = [bearingDisplay, distanceDisplay]
         
-        var value = (self.distanceDisplay.value as! CoordinatePair)
+        do {var value = (self.distanceDisplay.value as! CoordinatePair)
         value.a = coordinate
-        self.distanceDisplay.value = value
+        self.distanceDisplay.value = value}
+        
+        do {var value = (self.bearingDisplay.value as! CoordinatePair)
+        value.a = coordinate
+        self.bearingDisplay.value = value}
 
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
     }
@@ -175,19 +193,17 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     if case .user = self.location {
       setCoordinateTitle(coordinate: coordinate)
     } else {
-      var value = (self.distanceDisplay.value as! CoordinatePair)
+      do {var value = (self.distanceDisplay.value as! CoordinatePair)
       value.b = coordinate
-      self.distanceDisplay.value = value
+      self.distanceDisplay.value = value}
+      
+      do {var value = (self.bearingDisplay.value as! CoordinatePair)
+      value.b = coordinate
+      self.bearingDisplay.value = value}
     }
     
-    
-    if(heading != nil) {
-      self.headingDisplay.value = heading!
-    }
-    
-    if(location != nil) {
-      self.elevationDisplay.value = location!
-    }
+    self.headingDisplay.value = heading
+    self.elevationDisplay.value = location
   }
   
   override func panelButtonTapped(button: PanelButton) {
@@ -209,6 +225,8 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
       case .map(let coord):
         coordinate = coord
     }
+    
+    
     let activityViewController = UIActivityViewController(
       activityItems: [CoordinateActivityItemProvider(coordinate: coordinate)],
       applicationActivities: [
@@ -216,8 +234,8 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
         GoogleMapsStreetViewActivity(coordinate: coordinate)
       ]
     )
+    
     activityViewController.popoverPresentationController?.sourceView = sender
-
     present(activityViewController, animated: true, completion: nil)
   }
   
