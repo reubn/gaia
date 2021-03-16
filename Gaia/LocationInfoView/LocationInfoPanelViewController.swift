@@ -133,6 +133,8 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
   }
   
   override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    
     removePointsFromMap()
   }
   
