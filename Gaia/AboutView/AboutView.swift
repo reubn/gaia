@@ -84,6 +84,9 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     
     addSubview(label)
     
+    let labelTap = UITapGestureRecognizer(target: self, action: #selector(self.didTapURL(_:   )))
+    label.addGestureRecognizer(labelTap)
+    
     label.translatesAutoresizingMaskIntoConstraints = false
     
     label.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
@@ -179,6 +182,14 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
         
         self.appIconBack.setTitle(MSG_EMOJI[MSG_EMOJI_INDEX], for: .normal)
       }
+    }
+  }
+  
+  @objc func didTapURL(_ sender: UIGestureRecognizer) {
+    let url = URL(string: (sender.view as? UILabel)?.text ?? "")
+    
+    if(url != nil && UIApplication.shared.canOpenURL(url!)){
+      UIApplication.shared.open(url!)
     }
   }
   
