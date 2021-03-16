@@ -49,6 +49,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   let multicastParentMapViewRegionIsChangingDelegate = MulticastDelegate<(ParentMapViewRegionIsChangingDelegate)>()
   let multicastUserLocationDidUpdateDelegate = MulticastDelegate<(UserLocationDidUpdateDelegate)>()
   let multicastMapViewTappedDelegate = MulticastDelegate<(MapViewTappedDelegate)>()
+  let multicastMapViewStyleDidChangeDelegate = MulticastDelegate<(MapViewStyleDidChangeDelegate)>()
 
   var mapView: MGLMapView!
   var rasterLayer: MGLRasterStyleLayer?
@@ -213,6 +214,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
     
     checkZoomLevel()
+    
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // needs greater delay than async
+      self.multicastMapViewStyleDidChangeDelegate.invoke(invocation: {$0.compositeStyleDidChange(compositeStyle: compositeStyle)})
+    }
   }
   
   func updateUIColourScheme(compositeStyle: CompositeStyle){
@@ -435,6 +440,8 @@ protocol UserLocationDidUpdateDelegate {
 protocol MapViewTappedDelegate {
   func mapViewTapped()
 }
+
+typealias MapViewStyleDidChangeDelegate = LayerManagerDelegate
 
 enum WarningIconReason: Equatable {
   case minZoom

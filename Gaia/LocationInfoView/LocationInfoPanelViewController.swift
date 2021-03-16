@@ -4,7 +4,7 @@ import UIKit
 import Mapbox
 import FloatingPanel
 
-class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationDidUpdateDelegate, MapViewTappedDelegate, SelectableLabelPasteDelegate {
+class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationDidUpdateDelegate, MapViewTappedDelegate, SelectableLabelPasteDelegate, MapViewStyleDidChangeDelegate {
   func userDidPaste(content: String) {
     let coordinate = CLLocationCoordinate2D(content)
     
@@ -129,10 +129,17 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     userLocationDidUpdate()
     
     MapViewController.shared.multicastMapViewTappedDelegate.add(delegate: self)
+    MapViewController.shared.multicastMapViewStyleDidChangeDelegate.add(delegate: self)
   }
   
   override func viewWillDisappear(_ animated: Bool) {
     removePointsFromMap()
+  }
+  
+  func compositeStyleDidChange(compositeStyle: CompositeStyle) {
+    if case .map(let coordinate) = location {
+      displayPointOnMap(coordinate: coordinate)
+    }
   }
 
   func update(location: LocationInfoType){
