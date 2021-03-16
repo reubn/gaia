@@ -101,7 +101,7 @@ class CoordinateActivityItemProvider: UIActivityItemProvider {
     if(activityType != nil) {
       switch activityType! {
         case .message, .postToFacebook, .postToWeibo, .postToVimeo, .postToFlickr, .postToTwitter, .postToTencentWeibo:
-          return "Shared Location from Gaia:\n\(coordinate.format(toAccuracy: .low))\n\(item)"
+          return "Shared Location from Gaia:\n\n\(coordinate.format(toAccuracy: .low))\n\n\(item)"
         case .airDrop:
           return URL(string: "https://maps.apple.com?ll=\(coordinate.latitude),\(coordinate.longitude)")!
         case .copyToPasteboard:
