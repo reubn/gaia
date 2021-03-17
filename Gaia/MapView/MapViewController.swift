@@ -182,6 +182,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     LayerManager.shared.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
     OfflineManager.shared.multicastOfflineModeDidChangeDelegate.add(delegate: self)
     
+    _ = mapView
+    _ = canvasView
         compass()
     _ = mapButtonGroup
     _ = appIconButton
