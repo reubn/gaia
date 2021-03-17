@@ -12,31 +12,43 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   let infoButton = MapButton()
   let offlineButton = MapButton()
   
-  lazy var warningIcon: UIImageView = {
-    let imageView = UIImageView(image: UIImage(systemName: "exclamationmark.triangle.fill")!)
+  lazy var warningButtonGroup: MapButtonGroup = {
+    let mapButtonGroup = MapButtonGroup(arrangedSubviews: [warningButton])
     
-    imageView.contentMode = .scaleAspectFit
-    imageView.tintColor = .systemYellow
+    view.addSubview(mapButtonGroup)
     
-    view.addSubview(imageView)
+    mapButtonGroup.translatesAutoresizingMaskIntoConstraints = false
+    mapButtonGroup.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 6).isActive = true
+    mapButtonGroup.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 6).isActive = true
     
-    imageView.translatesAutoresizingMaskIntoConstraints = false
-    imageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 15).isActive = true
-    imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 6).isActive = true
-    imageView.widthAnchor.constraint(equalToConstant: 36).isActive = true
-    imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
-    
-    return imageView
+    return mapButtonGroup
   }()
   
-  var warningIconVisible: Set<WarningIconReason> = [] {
+  lazy var warningButton: MapButton = {
+    let button = MapButton()
+    button.setImage(UIImage(systemName: "exclamationmark.triangle.fill"), for: .normal)
+    
+    let inset: CGFloat = 10
+    button.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+    button.imageView!.contentMode = .scaleAspectFit
+    button.contentVerticalAlignment = .fill
+    button.contentHorizontalAlignment = .fill
+    
+    button.tintColor = .systemYellow
+//    button.addTarget(self, action: #selector(offlineButtonTapped), for: .touchUpInside)
+    button.accessibilityLabel = "Warning"
+    
+    return button
+  }()
+  
+  var warnings: Set<WarningReason> = [] {
     didSet {
-      if(oldValue != warningIconVisible) {
+      if(oldValue != warnings) {
         CATransaction.begin()
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(controlPoints: 0.33, 1.18, 0.23, 0.93))
         
         UIView.animate(withDuration: 0.5){
-          self.warningIcon.layer.opacity = self.warningIconVisible.isEmpty ? 0 : 1
+          self.warningButtonGroup.layer.opacity = self.warnings.isEmpty ? 0 : 1
         }
         
         CATransaction.commit()
@@ -157,9 +169,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   func checkZoomLevel(){
     let (minimumZoom, _) = LayerManager.shared.compositeStyle.style.visibleZoomLevels
     if(mapView.zoomLevel < minimumZoom - 2.5){
-      warningIconVisible.insert(.minZoom)
+      warnings.insert(.minZoom)
     } else {
-      warningIconVisible.remove(.minZoom)
+      warnings.remove(.minZoom)
     }
   }
   
@@ -208,9 +220,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     updateUIColourScheme(compositeStyle: compositeStyle)
   
     if(compositeStyle.isEmpty){
-      warningIconVisible.insert(.emptyStyle)
+      warnings.insert(.emptyStyle)
     } else {
-      warningIconVisible.remove(.emptyStyle)
+      warnings.remove(.emptyStyle)
     }
     
     checkZoomLevel()
@@ -443,8 +455,9 @@ protocol MapViewTappedDelegate {
 
 typealias MapViewStyleDidChangeDelegate = LayerManagerDelegate
 
-enum WarningIconReason: Equatable {
+enum WarningReason: Equatable {
   case minZoom
   case maxZoom
+  
   case emptyStyle
 }
