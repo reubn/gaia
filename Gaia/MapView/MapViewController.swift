@@ -225,6 +225,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       warnings.remove(.emptyStyle)
     }
     
+    if(compositeStyle.hasMultipleOpaque){
+      warnings.insert(.multipleOpaque)
+    } else {
+      warnings.remove(.multipleOpaque)
+    }
+    
     checkZoomLevel()
     
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // needs greater delay than async
@@ -460,4 +466,5 @@ enum WarningReason: Equatable {
   case maxZoom
   
   case emptyStyle
+  case multipleOpaque
 }

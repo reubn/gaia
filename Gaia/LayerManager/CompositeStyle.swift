@@ -13,6 +13,10 @@ class CompositeStyle {
     sortedLayers.isEmpty
   }
   
+  var hasMultipleOpaque: Bool {
+    sortedLayers.filter({$0.group != "overlay"}).count > 1
+  }
+  
   var url: URL? {
     style.url
   }
