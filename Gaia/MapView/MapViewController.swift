@@ -258,7 +258,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     checkZoomLevel()
     
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // needs greater delay than async
-      self.multicastMapViewStyleDidChangeDelegate.invoke(invocation: {$0.compositeStyleDidChange(compositeStyle: compositeStyle)})
+      self.multicastMapViewStyleDidChangeDelegate.invoke(invocation: {$0.styleDidChange()})
     }
   }
   
@@ -485,7 +485,9 @@ protocol MapViewTappedDelegate {
   func mapViewTapped()
 }
 
-typealias MapViewStyleDidChangeDelegate = LayerManagerDelegate
+protocol MapViewStyleDidChangeDelegate {
+  func styleDidChange()
+}
 
 enum WarningReason: Equatable {
   case minZoom

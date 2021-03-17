@@ -138,7 +138,7 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     removePointsFromMap()
   }
   
-  func compositeStyleDidChange(compositeStyle: CompositeStyle) {
+  func styleDidChange() {
     if case .map(let coordinate) = location {
       displayPointOnMap(coordinate: coordinate)
     }
