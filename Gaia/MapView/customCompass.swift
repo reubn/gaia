@@ -5,7 +5,7 @@ import UIKit
 import Mapbox
 
 extension MapViewController {
-  func setUpCompass(){
+  func compass(){
     let subView = UIView(frame: mapView.compassView.bounds)
     subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     subView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
