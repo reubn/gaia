@@ -8,10 +8,131 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   let lifpc = MemoryConsciousFloatingPanelController()
   let abfpc = MemoryConsciousFloatingPanelController()
   
-  let layersButton = MapButton()
-  let infoButton = MapButton()
-  let offlineButton = MapButton()
+  let multicastParentMapViewRegionIsChangingDelegate = MulticastDelegate<(ParentMapViewRegionIsChangingDelegate)>()
+  let multicastUserLocationDidUpdateDelegate = MulticastDelegate<(UserLocationDidUpdateDelegate)>()
+  let multicastMapViewTappedDelegate = MulticastDelegate<(MapViewTappedDelegate)>()
+  let multicastMapViewStyleDidChangeDelegate = MulticastDelegate<(MapViewStyleDidChangeDelegate)>()
+
+//  var rasterLayer: MGLRasterStyleLayer?
+  var firstTimeLocating = true
+
+  lazy var mapView: MGLMapView = {
+    let mapView = MGLMapView(frame: view.bounds)
+
+    mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    mapView.logoView.isHidden = true
+    mapView.attributionButton.isHidden = true
+    
+    mapView.userTrackingMode = .followWithHeading
+    mapView.compassView.compassVisibility = .visible
+    mapView.zoomLevel = 11
+    
+    mapView.tintColor = .systemBlue // user location should always be blue
+
+    mapView.delegate = self
+    
+    view.addSubview(mapView)
+
+    let singleTapGR = UITapGestureRecognizer(target: self, action: #selector(mapViewTapped))
+    for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+      singleTapGR.require(toFail: recognizer)
+    }
+    mapView.addGestureRecognizer(singleTapGR)
+
+    let longPress = UILongPressGestureRecognizer(target: self, action: #selector(mapLongPress))
+    longPress.numberOfTouchesRequired = 1
+    mapView.addGestureRecognizer(longPress)
+    
+    let twoFingerTap = UITapGestureRecognizer(target: self, action: #selector(twoFingerTapped))
+    twoFingerTap.numberOfTapsRequired = 1
+    twoFingerTap.numberOfTouchesRequired = 2
+    mapView.addGestureRecognizer(twoFingerTap)
+
+    let threeFingerTap = UITapGestureRecognizer(target: self, action: #selector(threeFingerTapped))
+    threeFingerTap.numberOfTapsRequired = 1
+    threeFingerTap.numberOfTouchesRequired = 3
+    mapView.addGestureRecognizer(threeFingerTap)
+    
+    return mapView
+  }()
   
+  lazy var canvasView: CanvasView = {
+    let canvasView = CanvasView(frame: mapView.frame)
+    
+    view.insertSubview(canvasView, belowSubview: mapView)
+    
+    return canvasView
+  }()
+  
+  lazy var userLocationButton: UserLocationButton = {
+    let userLocationButton = UserLocationButton(initialMode: mapView.userTrackingMode)
+    userLocationButton.addTarget(self, action: #selector(locationButtonTapped), for: .touchUpInside)
+    userLocationButton.translatesAutoresizingMaskIntoConstraints = false
+    userLocationButton.accessibilityLabel = "Change Tracking Mode"
+    
+    let userLocationButtonLongGR = UILongPressGestureRecognizer(target: self, action: #selector(locationButtonLongPressed))
+    userLocationButtonLongGR.minimumPressDuration = 0.4
+    userLocationButton.addGestureRecognizer(userLocationButtonLongGR)
+    
+    return userLocationButton
+  }()
+  
+  lazy var layersButton: MapButton = {
+    let button = MapButton()
+    button.setImage(UIImage(systemName: "map"), for: .normal)
+    button.addTarget(self, action: #selector(layersButtonTapped), for: .touchUpInside)
+    button.accessibilityLabel = "Layers"
+    
+    let longPress = UILongPressGestureRecognizer(target: self, action: #selector(layersButtonLongPressed))
+    longPress.minimumPressDuration = 0.4
+    button.addGestureRecognizer(longPress)
+    
+    return button
+  }()
+  
+  lazy var offlineButton: MapButton = {
+    let button = MapButton()
+    button.setImage(
+      OfflineManager.shared.offlineMode
+        ? UIImage(systemName: "icloud.slash.fill")
+        : UIImage(systemName: "square.and.arrow.down.on.square"
+    ), for: .normal)
+    button.addTarget(self, action: #selector(offlineButtonTapped), for: .touchUpInside)
+    button.accessibilityLabel = "Downloads"
+    
+    let longPress = UILongPressGestureRecognizer(target: self, action: #selector(offlineButtonLongPressed))
+    longPress.minimumPressDuration = 0.4
+    button.addGestureRecognizer(longPress)
+    
+    return button
+  }()
+  
+  lazy var mapButtonGroup: MapButtonGroup = {
+    let buttonGroup = MapButtonGroup(arrangedSubviews: [userLocationButton, layersButton, offlineButton])
+    
+    view.addSubview(buttonGroup)
+    
+    buttonGroup.translatesAutoresizingMaskIntoConstraints = false
+    buttonGroup.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 36 + 20).isActive = true
+    buttonGroup.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -6).isActive = true
+    
+    return buttonGroup
+  }()
+  
+  lazy var appIconButton: AppIconButton = {
+    let button = AppIconButton()
+    
+    view.addSubview(button)
+    
+    button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 10).isActive = true
+    button.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 15).isActive = true
+    
+    button.addTarget(self, action: #selector(appIconButtonTapped), for: .touchUpInside)
+    button.accessibilityLabel = "About"
+    
+    return button
+  }()
+
   lazy var warningButtonGroup: MapButtonGroup = {
     let mapButtonGroup = MapButtonGroup(arrangedSubviews: [warningButton])
     
@@ -35,7 +156,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     button.contentHorizontalAlignment = .fill
     
     button.tintColor = .systemYellow
-//    button.addTarget(self, action: #selector(offlineButtonTapped), for: .touchUpInside)
     button.accessibilityLabel = "Warning"
     
     return button
@@ -55,115 +175,19 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       }
     }
   }
-  
-  let uiColourTint: UIColor = .systemBlue
-  
-  let multicastParentMapViewRegionIsChangingDelegate = MulticastDelegate<(ParentMapViewRegionIsChangingDelegate)>()
-  let multicastUserLocationDidUpdateDelegate = MulticastDelegate<(UserLocationDidUpdateDelegate)>()
-  let multicastMapViewTappedDelegate = MulticastDelegate<(MapViewTappedDelegate)>()
-  let multicastMapViewStyleDidChangeDelegate = MulticastDelegate<(MapViewStyleDidChangeDelegate)>()
 
-  var mapView: MGLMapView!
-  var rasterLayer: MGLRasterStyleLayer?
-  var userLocationButton: UserLocationButton?
-  var firstTimeLocating = true
-  
-  lazy var canvasView = CanvasView(frame: mapView.frame)
-  
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    mapView = MGLMapView(frame: view.bounds)
-    view.addSubview(mapView)
-    
-    mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    mapView.logoView.isHidden = true
-    mapView.attributionButton.isHidden = true
-    
-    mapView.userTrackingMode = .followWithHeading
-    mapView.compassView.compassVisibility = .visible
-    mapView.zoomLevel = 11
-    
-    setUpCompass()
-    
     LayerManager.shared.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
     OfflineManager.shared.multicastOfflineModeDidChangeDelegate.add(delegate: self)
     
+    setUpCompass()
+    _ = mapButtonGroup
+    _ = appIconButton
+    
     compositeStyleDidChange(compositeStyle: LayerManager.shared.compositeStyle)
     mapViewRegionIsChanging(mapView)
-
-    mapView.tintColor = .systemBlue // user location should always be blue
-
-    mapView.delegate = self
-    
-    view.insertSubview(canvasView, belowSubview: mapView)
-    
-    let singleTapGR = UITapGestureRecognizer(target: self, action: #selector(mapViewTapped))
-    
-    for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-      singleTapGR.require(toFail: recognizer)
-    }
-    
-    mapView.addGestureRecognizer(singleTapGR)
-
-    let mapLongPressGR = UILongPressGestureRecognizer(target: self, action: #selector(mapLongPress))
-    mapLongPressGR.numberOfTouchesRequired = 1
-    mapView.addGestureRecognizer(mapLongPressGR)
-    
-    let mapDoubleTapGR = UITapGestureRecognizer(target: self, action: #selector(twoFingerTapped))
-    mapDoubleTapGR.numberOfTapsRequired = 1
-    mapDoubleTapGR.numberOfTouchesRequired = 2
-    mapView.addGestureRecognizer(mapDoubleTapGR)
-
-    let mapTripleTapGR = UITapGestureRecognizer(target: self, action: #selector(threeFingerTapped))
-    mapTripleTapGR.numberOfTapsRequired = 1
-    mapTripleTapGR.numberOfTouchesRequired = 3
-    mapView.addGestureRecognizer(mapTripleTapGR)
-
-    let userLocationButton = UserLocationButton(initialMode: mapView.userTrackingMode)
-    userLocationButton.addTarget(self, action: #selector(locationButtonTapped), for: .touchUpInside)
-    userLocationButton.translatesAutoresizingMaskIntoConstraints = false
-    userLocationButton.accessibilityLabel = "Change Tracking Mode"
-    
-    self.userLocationButton = userLocationButton
-    
-    let userLocationButtonLongGR = UILongPressGestureRecognizer(target: self, action: #selector(locationButtonLongPressed))
-    userLocationButtonLongGR.minimumPressDuration = 0.4
-    userLocationButton.addGestureRecognizer(userLocationButtonLongGR)
-
-    layersButton.setImage(UIImage(systemName: "map"), for: .normal)
-    layersButton.addTarget(self, action: #selector(layersButtonTapped), for: .touchUpInside)
-    layersButton.accessibilityLabel = "Layers"
-    
-    let layersButtonLongGR = UILongPressGestureRecognizer(target: self, action: #selector(layersButtonLongPressed))
-    layersButtonLongGR.minimumPressDuration = 0.4
-    layersButton.addGestureRecognizer(layersButtonLongGR)
-    
-    offlineButton.setImage(OfflineManager.shared.offlineMode ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
-    offlineButton.addTarget(self, action: #selector(offlineButtonTapped), for: .touchUpInside)
-    offlineButton.accessibilityLabel = "Downloads"
-    
-    let offlineButtonLongGR = UILongPressGestureRecognizer(target: self, action: #selector(offlineButtonLongPressed))
-    offlineButtonLongGR.minimumPressDuration = 0.4
-    offlineButton.addGestureRecognizer(offlineButtonLongGR)
-    
-    let mapButtonGroup = MapButtonGroup(arrangedSubviews: [userLocationButton, layersButton, offlineButton])
-
-    view.addSubview(mapButtonGroup)
-    
-    mapButtonGroup.translatesAutoresizingMaskIntoConstraints = false
-    mapButtonGroup.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 36 + 20).isActive = true
-    mapButtonGroup.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -6).isActive = true
-    
-    let appIconButton = AppIconButton()
-    
-    view.addSubview(appIconButton)
-    
-    appIconButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 10).isActive = true
-    appIconButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 15).isActive = true
-    
-    appIconButton.addTarget(self, action: #selector(appIconButtonTapped), for: .touchUpInside)
-    appIconButton.accessibilityLabel = "About"
   }
   
   func checkZoomLevel(){
@@ -202,8 +226,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
 
   func mapView(_ mapView: MGLMapView, didChange mode: MGLUserTrackingMode, animated: Bool) {
-    guard let userLocationButton = userLocationButton else { return }
-
     if(mode != .followWithHeading) {
       mapView.resetNorth()
 
@@ -239,6 +261,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   func updateUIColourScheme(compositeStyle: CompositeStyle){
+    let uiColourTint: UIColor = .systemBlue
+    
     DispatchQueue.main.async { [self] in
       let dark = compositeStyle.needsDarkUI
       mapView.window?.overrideUserInterfaceStyle = dark ? .dark : .light
