@@ -134,15 +134,15 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }()
 
   lazy var warningButtonGroup: MapButtonGroup = {
-    let mapButtonGroup = MapButtonGroup(arrangedSubviews: [warningButton])
+    let buttonGroup = MapButtonGroup(arrangedSubviews: [warningButton])
     
-    view.addSubview(mapButtonGroup)
+    view.addSubview(buttonGroup)
     
-    mapButtonGroup.translatesAutoresizingMaskIntoConstraints = false
-    mapButtonGroup.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 6).isActive = true
-    mapButtonGroup.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 6).isActive = true
+    buttonGroup.translatesAutoresizingMaskIntoConstraints = false
+    buttonGroup.leftAnchor.constraint(equalTo: mapButtonGroup.leftAnchor).isActive = true
+    buttonGroup.topAnchor.constraint(equalTo: mapButtonGroup.bottomAnchor, constant: 6).isActive = true
     
-    return mapButtonGroup
+    return buttonGroup
   }()
   
   lazy var warningButton: MapButton = {
