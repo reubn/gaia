@@ -5,7 +5,7 @@ import Mapbox
 
 class LayerManager {
   private let managedContext: NSManagedObjectContext
-  var delegate: LayerManagerDelegate?
+  
   var groups: [String: [Layer]]?
   var magicLayers: [Layer]?
 
