@@ -1,12 +1,18 @@
 import Foundation
 
-class CompositeStyle {
+struct CompositeStyle: Equatable, Hashable {
+  static func == (lhs: CompositeStyle, rhs: CompositeStyle) -> Bool {
+    lhs.sortedLayers == rhs.sortedLayers
+  }
+  
   let sortedLayers: [Layer]
   
+  var topNonOverlay: Layer? {
+    sortedLayers.reversed().first(where: {$0.group != "overlay"})
+  }
+  
   var needsDarkUI: Bool {
-    let topNonOverlay = sortedLayers.reversed().first(where: {$0.group != "overlay"})
-
-    return topNonOverlay?.needsDarkUI ?? true
+    topNonOverlay?.needsDarkUI ?? true
   }
   
   var isEmpty: Bool {
