@@ -158,11 +158,35 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     button.tintColor = .systemYellow
     button.accessibilityLabel = "Warning"
     
+    button.addTarget(self, action: #selector(warningButtonTapped), for: .touchUpInside)
+    
     return button
   }()
   
+  @objc func warningButtonTapped(){
+    if(warnings.isEmpty) {
+      return
+    }
+    
+    switch warnings.first! {
+      case .emptyStyle(let layers):
+        if(layers != nil) {
+          LayerManager.shared.filterLayers({layers!.contains($0)})
+          
+          HUDManager.shared.displayMessage(message: .noLayersWarningFixed)
+        }
+      case .minZoom(let minZoom):
+        mapView.setZoomLevel(minZoom, animated: true)
+        HUDManager.shared.displayMessage(message: .zoomWarningFixed)
+      case .multipleOpaque(let top):
+        LayerManager.shared.enableLayer(layer: top, mutuallyExclusive: true)
+        HUDManager.shared.displayMessage(message: .multipleOpaqueWarningFixed)
+    }
+  }
+  
   var warnings: Set<WarningReason> = [] {
     didSet {
+      print(warnings)
       if(oldValue != warnings) {
         CATransaction.begin()
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(controlPoints: 0.33, 1.18, 0.23, 0.93))
@@ -195,9 +219,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   func checkZoomLevel(){
     let (minimumZoom, _) = LayerManager.shared.compositeStyle.style.visibleZoomLevels
     if(mapView.zoomLevel < minimumZoom - 2.5){
-      warnings.insert(.minZoom)
-    } else {
-      warnings.remove(.minZoom)
+      warnings.insert(.minZoom(minimumZoom))
+    } else if(!warnings.isEmpty){
+      warnings = warnings.filter({if case .minZoom = $0 {return false}; return true})
     }
   }
   
@@ -243,16 +267,16 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapView.styleURL = to.url
     updateUIColourScheme(compositeStyle: to)
   
-      warnings.insert(.emptyStyle)
-    } else {
-      warnings.remove(.emptyStyle)
     if(to.isEmpty){
+      warnings.insert(.emptyStyle(from?.sortedLayers))
+    } else if(!warnings.isEmpty){
+      warnings = warnings.filter({if case .emptyStyle = $0 {return false}; return true})
     }
     
-      warnings.insert(.multipleOpaque)
-    } else {
-      warnings.remove(.multipleOpaque)
     if(to.hasMultipleOpaque){
+      warnings.insert(.multipleOpaque(to.topNonOverlay!))
+    } else if(!warnings.isEmpty){
+      warnings = warnings.filter({if case .multipleOpaque = $0 {return false}; return true})
     }
     
     checkZoomLevel()
@@ -489,10 +513,9 @@ protocol MapViewStyleDidChangeDelegate {
   func styleDidChange()
 }
 
-enum WarningReason: Equatable {
-  case minZoom
-  case maxZoom
+enum WarningReason: Equatable, Hashable {
+  case minZoom(Double)
   
-  case emptyStyle
-  case multipleOpaque
+  case emptyStyle([Layer]?)
+  case multipleOpaque(Layer)
 }
