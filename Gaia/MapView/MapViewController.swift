@@ -33,13 +33,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     view.addSubview(mapView)
 
-    let singleTapGR = UITapGestureRecognizer(target: self, action: #selector(mapViewTapped))
+    let singleTap = UITapGestureRecognizer(target: self, action: #selector(singleTapped))
     for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-      singleTapGR.require(toFail: recognizer)
+      singleTap.require(toFail: recognizer)
     }
-    mapView.addGestureRecognizer(singleTapGR)
+    mapView.addGestureRecognizer(singleTap)
 
-    let longPress = UILongPressGestureRecognizer(target: self, action: #selector(mapLongPress))
+    let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
     longPress.numberOfTouchesRequired = 1
     mapView.addGestureRecognizer(longPress)
     
@@ -201,7 +201,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
   }
   
-  @objc func mapViewTapped(){
+  @objc func singleTapped(){
     multicastMapViewTappedDelegate.invoke(invocation: {$0.mapViewTapped()})
   }
   
@@ -277,7 +277,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     offlineButton.setImage(offline ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
   }
   
-  @objc func mapLongPress(gestureReconizer: UILongPressGestureRecognizer){
+  @objc func longPressed(gestureReconizer: UILongPressGestureRecognizer){
     if gestureReconizer.state == UIGestureRecognizer.State.began {
       let point = gestureReconizer.location(in: mapView)
       let coordinate = mapView.convert(point, toCoordinateFrom: nil)
