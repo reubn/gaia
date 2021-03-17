@@ -188,7 +188,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     _ = mapButtonGroup
     _ = appIconButton
     
-    compositeStyleDidChange(compositeStyle: LayerManager.shared.compositeStyle)
+    compositeStyleDidChange(to: LayerManager.shared.compositeStyle, from: nil)
     mapViewRegionIsChanging(mapView)
   }
   
@@ -239,20 +239,20 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     userLocationButton.updateArrowForTrackingMode(mode: mode)
   }
   
-  func compositeStyleDidChange(compositeStyle: CompositeStyle) {
-    mapView.styleURL = compositeStyle.url
-    updateUIColourScheme(compositeStyle: compositeStyle)
+  func compositeStyleDidChange(to: CompositeStyle, from: CompositeStyle?) {
+    mapView.styleURL = to.url
+    updateUIColourScheme(compositeStyle: to)
   
-    if(compositeStyle.isEmpty){
       warnings.insert(.emptyStyle)
     } else {
       warnings.remove(.emptyStyle)
+    if(to.isEmpty){
     }
     
-    if(compositeStyle.hasMultipleOpaque){
       warnings.insert(.multipleOpaque)
     } else {
       warnings.remove(.multipleOpaque)
+    if(to.hasMultipleOpaque){
     }
     
     checkZoomLevel()

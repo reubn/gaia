@@ -95,7 +95,7 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     }
   }
   
-  func compositeStyleDidChange(compositeStyle _: CompositeStyle) {
+  func compositeStyleDidChange(to _: CompositeStyle, from _: CompositeStyle?) {
     stack.arrangedSubviews.forEach({
       ($0 as! Section).update()
     })

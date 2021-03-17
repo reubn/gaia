@@ -120,8 +120,10 @@ class LayerManager {
         $0.sorted(by: layerSortingFunction)
       })
       
-      _compositeStyle = nil
-      multicastCompositeStyleDidChangeDelegate.invoke(invocation: {$0.compositeStyleDidChange(compositeStyle: compositeStyle)})
+      let previous = _compositeStyle
+      
+      _compositeStyle = nil // flush cache
+      multicastCompositeStyleDidChangeDelegate.invoke(invocation: {$0.compositeStyleDidChange(to: compositeStyle, from: previous)})
     } catch {print("Failed")}
   }
   
@@ -265,5 +267,5 @@ struct LayerGroup {
 }
 
 protocol LayerManagerDelegate {
-  func compositeStyleDidChange(compositeStyle: CompositeStyle)
+  func compositeStyleDidChange(to: CompositeStyle, from: CompositeStyle?)
 }

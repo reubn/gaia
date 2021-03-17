@@ -52,7 +52,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
     coordinatorView.panelViewController.panelDidMoveDelegate = nil
   }
   
-  func compositeStyleDidChange(compositeStyle: CompositeStyle) {
+  func compositeStyleDidChange(to _: CompositeStyle, from _: CompositeStyle?) {
     updatePanel()
   }
   
