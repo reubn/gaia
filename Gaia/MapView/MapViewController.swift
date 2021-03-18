@@ -145,6 +145,22 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     return buttonGroup
   }()
   
+  lazy var warningIconCountBackground = UIImage(systemName: "circle.fill")!.withTintColor(.white)
+  lazy var warningIconCount: UIImageView = {
+    let imageView = UIImageView(image: nil)
+
+    warningButton.addSubview(imageView)
+    
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.widthAnchor.constraint(equalToConstant: 15).isActive = true
+    imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
+    
+    imageView.centerXAnchor.constraint(equalTo: warningButton.centerXAnchor, constant: (15 / 2) + 3).isActive = true
+    imageView.centerYAnchor.constraint(equalTo: warningButton.centerYAnchor, constant: 15 / 2).isActive = true
+    
+    return imageView
+  }()
+  
   lazy var warningButton: MapButton = {
     let button = MapButton()
     button.setImage(UIImage(systemName: "exclamationmark.triangle.fill"), for: .normal)
@@ -193,6 +209,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
         
         UIView.animate(withDuration: 0.5){
           self.warningButtonGroup.layer.opacity = self.warnings.isEmpty ? 0 : 1
+          if(oldValue.count != self.warnings.count) {
+            let foreground = UIImage(systemName: "\(self.warnings.count).circle.fill")!.withTintColor(.systemRed)
+            self.warningIconCount.image = foreground.draw(inFrontOf: self.warningIconCountBackground)
+          }
         }
         
         CATransaction.commit()
