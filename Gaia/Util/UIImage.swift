@@ -9,8 +9,9 @@ extension UIImage {
     let maxHeight = max(self.size.height, inFrontOf.size.height)
 
     let maxSize = CGSize(width: maxWidth, height: maxHeight)
+    let maxScale = max(self.scale, inFrontOf.scale)
     
-    UIGraphicsBeginImageContext(maxSize)
+    UIGraphicsBeginImageContextWithOptions(maxSize, false, maxScale)
           
     inFrontOf.draw(at: CGPoint(x: (maxWidth / 2) - (inFrontOf.size.width / 2), y: (maxHeight / 2) - (inFrontOf.size.height / 2)))
     self.draw(at: CGPoint(x: (maxWidth / 2) - (size.width / 2), y: (maxHeight / 2) - (size.height / 2)))
