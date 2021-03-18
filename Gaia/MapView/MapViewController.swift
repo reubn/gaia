@@ -184,7 +184,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       return
     }
     
-    switch warnings.first! {
+    // this could be better
+    let biggestResolver = warnings.first(where: {if case .multipleOpaque = $0 {return true}; return false}) ?? warnings.randomElement()!
+    
+    switch biggestResolver {
       case .emptyStyle(let layers):
         if(layers != nil) {
           LayerManager.shared.filterLayers({layers!.contains($0)})
