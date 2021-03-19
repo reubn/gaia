@@ -48,6 +48,26 @@ extension CLLocationCoordinate2D: Equatable, Hashable {
     return CLLocationDegrees(radians: θ) + 180
   }
   
+  func midpoint(between: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
+    let lat1 = self.latitude.toRadians
+    let lon1 = self.longitude.toRadians
+
+    let lat2 = between.latitude.toRadians
+    let lon2 = between.longitude.toRadians
+
+    let dLon = lon2 - lon1
+    let y = cos(lat2) * sin(dLon)
+    let x = cos(lat2) * cos(dLon)
+
+    let lat3 = atan2(sin(lat1) + sin(lat2), sqrt((cos(lat1) + x) * (cos(lat1) + x) + y * y))
+    let lon3 = lon1 + atan2(y, cos(lat1) + x)
+
+    return CLLocationCoordinate2D(
+      latitude: CLLocationDegrees(radians: lat3),
+      longitude: CLLocationDegrees(radians: lon3)
+    )
+  }
+  
   init?(_ string: String) {
     let coords = string
       .split(separator: ",")
