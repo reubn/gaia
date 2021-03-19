@@ -36,7 +36,7 @@ extension CLLocationCoordinate2D {
     
     let θ = atan2(y, x)
 
-    return (θ * 180 / .pi) + 180
+    return CLLocationDegrees(radians: θ) + 180
   }
   
   init?(_ string: String) {
