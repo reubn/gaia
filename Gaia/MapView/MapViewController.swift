@@ -202,6 +202,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       case .multipleOpaque(let top):
         LayerManager.shared.enableLayer(layer: top, mutuallyExclusive: true)
         HUDManager.shared.displayMessage(message: .multipleOpaqueWarningFixed)
+      case .bounds(let allBounds):
+        if let smallestBounds = allBounds.min(by: MGLCoordinateBounds.sortingByAreaFunc) {
+          mapView.setVisibleCoordinateBounds(smallestBounds, sensible: true, animated: true)
+          HUDManager.shared.displayMessage(message: .boundsWarningFixed)
+        }
     }
   }
   
@@ -250,6 +255,17 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
   }
   
+  func checkBounds(){
+    let allBounds = styleCachedConstraints!.boundsCovered
+    let allBoundsInView = allBounds.allSatisfy({MGLCoordinateBoundsIntersectsCoordinateBounds($0, mapView.visibleCoordinateBounds)})
+    
+    if(!allBoundsInView){
+      warnings.insert(.bounds(allBounds))
+    } else if(!warnings.isEmpty){
+      warnings = warnings.filter({if case .bounds = $0 {return false}; return true})
+    }
+  }
+  
   @objc func singleTapped(){
     multicastMapViewTappedDelegate.invoke(invocation: {$0.mapViewTapped()})
   }
@@ -274,6 +290,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     multicastParentMapViewRegionIsChangingDelegate.invoke(invocation: {$0.parentMapViewRegionIsChanging()})
     
     checkZoomLevel()
+    checkBounds()
   }
 
   func mapView(_ mapView: MGLMapView, didChange mode: MGLUserTrackingMode, animated: Bool) {
@@ -307,6 +324,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
     
     checkZoomLevel()
+    checkBounds()
     
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // needs greater delay than async
       self.multicastMapViewStyleDidChangeDelegate.invoke(invocation: {$0.styleDidChange()})
@@ -542,6 +560,7 @@ protocol MapViewStyleDidChangeDelegate {
 
 enum WarningReason: Equatable, Hashable {
   case minZoom(Double)
+  case bounds([MGLCoordinateBounds])
   
   case emptyStyle([Layer]?)
   case multipleOpaque(Layer)

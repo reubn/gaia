@@ -38,4 +38,5 @@ extension HUDMessage {
   static let noLayersWarningFixed = HUDMessage(title: "Layers Restored", systemName: "square.stack.3d.up.fill", tintColour: .systemGreen)
   static let zoomWarningFixed = HUDMessage(title: "Zoom Fixed", systemName: "arrow.up.left.and.down.right.magnifyingglass", tintColour: .systemGreen)
   static let multipleOpaqueWarningFixed = HUDMessage(title: "Layers Removed", systemName: "square.3.stack.3d.top.fill", tintColour: .systemGreen)
+  static let boundsWarningFixed = HUDMessage(title: "Bounds Fixed", systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left", tintColour: .systemGreen)
 }
