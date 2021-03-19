@@ -203,6 +203,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
         LayerManager.shared.enableLayer(layer: top, mutuallyExclusive: true)
         HUDManager.shared.displayMessage(message: .multipleOpaqueWarningFixed)
       case .bounds(let allBounds):
+        // this is silly, what we really want to do is generate a new bound that covers all of them
         if let smallestBounds = allBounds.min(by: MGLCoordinateBounds.sortingByAreaFunc) {
           mapView.setVisibleCoordinateBounds(smallestBounds, sensible: true, animated: true)
           HUDManager.shared.displayMessage(message: .boundsWarningFixed)
