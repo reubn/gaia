@@ -148,15 +148,16 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   lazy var warningIconCountBackground = UIImage(systemName: "circle.fill")!.withTintColor(.white)
   lazy var warningIconCount: UIImageView = {
     let imageView = UIImageView(image: nil)
+    let size: CGFloat = 15
 
     warningButton.addSubview(imageView)
     
     imageView.translatesAutoresizingMaskIntoConstraints = false
-    imageView.widthAnchor.constraint(equalToConstant: 15).isActive = true
+    imageView.widthAnchor.constraint(equalToConstant: size).isActive = true
     imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
     
-    imageView.centerXAnchor.constraint(equalTo: warningButton.centerXAnchor, constant: (15 / 2) + 3).isActive = true
-    imageView.centerYAnchor.constraint(equalTo: warningButton.centerYAnchor, constant: 15 / 2).isActive = true
+    imageView.centerXAnchor.constraint(equalTo: warningButton.centerXAnchor, constant: (size / 2) + 3).isActive = true
+    imageView.centerYAnchor.constraint(equalTo: warningButton.centerYAnchor, constant: size / 2).isActive = true
     
     return imageView
   }()
