@@ -13,7 +13,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   let multicastMapViewTappedDelegate = MulticastDelegate<(MapViewTappedDelegate)>()
   let multicastMapViewStyleDidChangeDelegate = MulticastDelegate<(MapViewStyleDidChangeDelegate)>()
 
-//  var rasterLayer: MGLRasterStyleLayer?
   var firstTimeLocating = true
 
   lazy var mapView: MGLMapView = {
