@@ -5,6 +5,11 @@ extension MGLCoordinateBounds: Equatable, Hashable {
   public static func == (lhs: Self, rhs: Self) -> Bool {
     MGLCoordinateBoundsEqualToCoordinateBounds(lhs, rhs)
   }
+  
+  public static func sortingByAreaFunc(lhs: Self, rhs: Self) -> Bool {
+    return lhs.area < rhs.area
+  }
+  
   public func hash(into hasher: inout Hasher) {
     hasher.combine(sw)
     hasher.combine(ne)
