@@ -9,4 +9,16 @@ extension MGLCoordinateBounds: Equatable, Hashable {
     hasher.combine(sw)
     hasher.combine(ne)
   }
+  
+  public var span: MGLCoordinateSpan {
+    MGLCoordinateBoundsGetCoordinateSpan(self)
+  }
+  
+  public var area: CLLocationDegrees {
+    span.latitudeDelta * span.longitudeDelta
+  }
+  
+  public var center: CLLocationCoordinate2D {
+    sw.midpoint(between: ne)
+  }
 }
