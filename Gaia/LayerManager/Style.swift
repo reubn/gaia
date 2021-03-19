@@ -1,6 +1,7 @@
 import Foundation
 
 import AnyCodable
+import Mapbox
 
 let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
 
@@ -33,6 +34,23 @@ struct Style: Codable, Equatable {
       min: mins.max() ?? 0,
       max: maxes.min() ?? 22
     )
+  }
+  
+  var boundsCovered: [MGLCoordinateBounds] {
+    var allBounds: [MGLCoordinateBounds] = []
+    
+    for (_, source) in sources {
+      let bounds = source.bounds?.value as? [CLLocationDegrees]
+      
+      if(bounds != nil && bounds!.count == 4) {
+        let sw = CLLocationCoordinate2D(latitude: bounds![1], longitude: bounds![0])
+        let ne = CLLocationCoordinate2D(latitude: bounds![3], longitude: bounds![2])
+        
+        allBounds.append(MGLCoordinateBoundsMake(sw, ne))
+      }
+    }
+
+    return allBounds
   }
   
   var url: URL? {
