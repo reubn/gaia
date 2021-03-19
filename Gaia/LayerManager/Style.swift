@@ -12,7 +12,7 @@ struct Style: Codable, Equatable {
   typealias Source = AnyCodable
   typealias Layer = AnyCodable
   
-  var visibleZoomLevels: (min: Double, max: Double) {
+  var zoomLevelsCovered: (min: Double, max: Double) {
     var mins: [Double] = []
     var maxes: [Double] = []
     

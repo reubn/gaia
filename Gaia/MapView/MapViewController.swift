@@ -241,7 +241,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   func checkZoomLevel(){
-    let (minimumZoom, _) = LayerManager.shared.compositeStyle.style.visibleZoomLevels
+    let (minimumZoom, _) = LayerManager.shared.compositeStyle.style.zoomLevelsCovered
     if(mapView.zoomLevel < minimumZoom - 2.5){
       warnings.insert(.minZoom(minimumZoom))
     } else if(!warnings.isEmpty){

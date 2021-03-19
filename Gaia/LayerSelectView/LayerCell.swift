@@ -176,7 +176,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
       canvasView.overrideUserInterfaceStyle = _layer!.needsDarkUI ? .dark : .light
       canvasView.setNeedsDisplay()
       
-      (minimumZoomLevel, _) = displayedStyle!.visibleZoomLevels
+      (minimumZoomLevel, _) = displayedStyle!.zoomLevelsCovered
     }
     
     let zoomLevel = MapViewController.shared.mapView.zoomLevel
