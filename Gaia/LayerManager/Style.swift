@@ -13,6 +13,11 @@ struct Style: Codable, Equatable {
   typealias Source = AnyCodable
   typealias Layer = AnyCodable
   
+  struct BoundInfo {
+    let individual: [MGLCoordinateBounds]
+    let superbound: MGLCoordinateBounds?
+  }
+  
   var zoomLevelsCovered: (min: Double, max: Double) {
     var mins: [Double] = []
     var maxes: [Double] = []
@@ -36,8 +41,14 @@ struct Style: Codable, Equatable {
     )
   }
   
-  var boundsCovered: [MGLCoordinateBounds] {
+  var bounds: BoundInfo {
     var allBounds: [MGLCoordinateBounds] = []
+    
+    var minLat: CLLocationDegrees?
+    var minLon: CLLocationDegrees?
+    
+    var maxLat: CLLocationDegrees?
+    var maxLon: CLLocationDegrees?
     
     for (_, source) in sources {
       let bounds = source.bounds?.value as? [CLLocationDegrees]
@@ -46,11 +57,26 @@ struct Style: Codable, Equatable {
         let sw = CLLocationCoordinate2D(latitude: bounds![1], longitude: bounds![0])
         let ne = CLLocationCoordinate2D(latitude: bounds![3], longitude: bounds![2])
         
+        minLat = min(minLat ?? bounds![1], bounds![1])
+        minLon = min(minLon ?? bounds![0], bounds![0])
+        
+        maxLat = max(maxLat ?? bounds![3], bounds![3])
+        maxLon = max(maxLon ?? bounds![2], bounds![2])
+        
         allBounds.append(MGLCoordinateBoundsMake(sw, ne))
       }
     }
+    
+    var superbound: MGLCoordinateBounds?
+    
+    if(minLat != nil) {
+      let sw = CLLocationCoordinate2D(latitude: minLat!, longitude: minLon!)
+      let ne = CLLocationCoordinate2D(latitude: maxLat!, longitude: maxLon!)
+      
+      superbound = MGLCoordinateBoundsMake(sw, ne)
+    }
 
-    return allBounds
+    return BoundInfo(individual: allBounds, superbound: superbound)
   }
   
   var url: URL? {

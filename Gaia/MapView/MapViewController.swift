@@ -15,7 +15,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 
   var firstTimeLocating = true
   
-  var styleCachedConstraints: (zoomLevelsCovered: (Double, Double), boundsCovered: [MGLCoordinateBounds])?
+  var styleCachedConstraints: (zoomLevelsCovered: (Double, Double), bounds: Style.BoundInfo)?
 
   lazy var mapView: MGLMapView = {
     let mapView = MGLMapView(frame: view.bounds)
@@ -202,12 +202,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       case .multipleOpaque(let top):
         LayerManager.shared.enableLayer(layer: top, mutuallyExclusive: true)
         HUDManager.shared.displayMessage(message: .multipleOpaqueWarningFixed)
-      case .bounds(let allBounds):
-        // this is silly, what we really want to do is generate a new bound that covers all of them
-        if let smallestBounds = allBounds.min(by: MGLCoordinateBounds.sortingByAreaFunc) {
-          mapView.setVisibleCoordinateBounds(smallestBounds, sensible: true, animated: true)
-          HUDManager.shared.displayMessage(message: .boundsWarningFixed)
-        }
+      case .bounds(let superbound):
+        mapView.setVisibleCoordinateBounds(superbound, sensible: true, animated: true)
+        HUDManager.shared.displayMessage(message: .boundsWarningFixed)
     }
   }
   
@@ -257,11 +254,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   func checkBounds(){
-    let allBounds = styleCachedConstraints!.boundsCovered
-    let allBoundsInView = allBounds.allSatisfy({MGLCoordinateBoundsIntersectsCoordinateBounds($0, mapView.visibleCoordinateBounds)})
+    let allBounds = styleCachedConstraints!.bounds.individual
+    let allBoundsInView = allBounds.contains(where: {MGLCoordinateBoundsIntersectsCoordinateBounds($0, mapView.visibleCoordinateBounds)})
     
-    if(!allBoundsInView){
-      warnings.insert(.bounds(allBounds))
+    if(!allBounds.isEmpty && !allBoundsInView){
+      let superbound = styleCachedConstraints!.bounds.superbound!
+      warnings.insert(.bounds(superbound))
     } else if(!warnings.isEmpty){
       warnings = warnings.filter({if case .bounds = $0 {return false}; return true})
     }
@@ -308,7 +306,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   func compositeStyleDidChange(to: CompositeStyle, from: CompositeStyle?) {
     mapView.styleURL = to.url
-    styleCachedConstraints = (to.style.zoomLevelsCovered, to.style.boundsCovered)
+    styleCachedConstraints = (to.style.zoomLevelsCovered, to.style.bounds)
 
     updateUIColourScheme(compositeStyle: to)
   
@@ -561,7 +559,7 @@ protocol MapViewStyleDidChangeDelegate {
 
 enum WarningReason: Equatable, Hashable {
   case minZoom(Double)
-  case bounds([MGLCoordinateBounds])
+  case bounds(MGLCoordinateBounds)
   
   case emptyStyle([Layer]?)
   case multipleOpaque(Layer)
