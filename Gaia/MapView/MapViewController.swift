@@ -14,6 +14,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   let multicastMapViewStyleDidChangeDelegate = MulticastDelegate<(MapViewStyleDidChangeDelegate)>()
 
   var firstTimeLocating = true
+  
+  var styleCachedConstraints: (zoomLevelsCovered: (Double, Double), boundsCovered: [MGLCoordinateBounds])?
 
   lazy var mapView: MGLMapView = {
     let mapView = MGLMapView(frame: view.bounds)
@@ -240,7 +242,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   func checkZoomLevel(){
-    let (minimumZoom, _) = LayerManager.shared.compositeStyle.style.zoomLevelsCovered
+    let (minimumZoom, _) = styleCachedConstraints!.zoomLevelsCovered
     if(mapView.zoomLevel < minimumZoom - 2.5){
       warnings.insert(.minZoom(minimumZoom))
     } else if(!warnings.isEmpty){
@@ -288,6 +290,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   func compositeStyleDidChange(to: CompositeStyle, from: CompositeStyle?) {
     mapView.styleURL = to.url
+    styleCachedConstraints = (to.style.zoomLevelsCovered, to.style.boundsCovered)
+
     updateUIColourScheme(compositeStyle: to)
   
     if(to.isEmpty){
