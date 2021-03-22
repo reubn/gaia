@@ -12,6 +12,12 @@ extension MGLMapView {
     
     let fitCamera = cameraThatFitsCoordinateBounds(bounds)
     
+    if let coordinate = userLocation?.location?.coordinate, bounds.contains(coordinate: coordinate) {
+      fitCamera.centerCoordinate = coordinate // if user is in the bounds, center on them not the bounds center
+    } else {
+      userTrackingMode = .none // fixes snapping back to user location
+    }
+    
     let fitCameraZoom = zoom(altitude: fitCamera.altitude, center: fitCamera.centerCoordinate)
     
     if(fitCameraZoom >= zoomLevel){
