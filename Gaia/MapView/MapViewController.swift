@@ -244,27 +244,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapViewRegionIsChanging(mapView)
   }
   
-  func checkZoomLevel(){
-    let (minimumZoom, _) = styleCachedConstraints!.zoomLevelsCovered
-    if(mapView.zoomLevel < minimumZoom - 2.5){
-      warnings.insert(.minZoom(minimumZoom))
-    } else if(!warnings.isEmpty){
-      warnings = warnings.filter({if case .minZoom = $0 {return false}; return true})
-    }
-  }
-  
-  func checkBounds(){
-    let allBounds = styleCachedConstraints!.bounds.individual
-    let showingLayerWithinBounds = allBounds.isEmpty || allBounds.contains(where: {MGLCoordinateBoundsIntersectsCoordinateBounds($0, mapView.visibleCoordinateBounds)})
-
-    if(!showingLayerWithinBounds){
-      let superbound = styleCachedConstraints!.bounds.superbound!
-      warnings.insert(.bounds(superbound))
-    } else if(!warnings.isEmpty){
-      warnings = warnings.filter({if case .bounds = $0 {return false}; return true})
-    }
-  }
-  
   @objc func singleTapped(){
     multicastMapViewTappedDelegate.invoke(invocation: {$0.mapViewTapped()})
   }
@@ -341,6 +320,27 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
   }
   
+  func checkZoomLevel(){
+    let (minimumZoom, _) = styleCachedConstraints!.zoomLevelsCovered
+    if(mapView.zoomLevel < minimumZoom - 2.5){
+      warnings.insert(.minZoom(minimumZoom))
+    } else if(!warnings.isEmpty){
+      warnings = warnings.filter({if case .minZoom = $0 {return false}; return true})
+    }
+  }
+  
+  func checkBounds(){
+    let allBounds = styleCachedConstraints!.bounds.individual
+    let showingLayerWithinBounds = allBounds.isEmpty || allBounds.contains(where: {$0.intersects(with: mapView.visibleCoordinateBounds)})
+
+    if(!showingLayerWithinBounds){
+      let superbound = styleCachedConstraints!.bounds.superbound!
+      warnings.insert(.bounds(superbound))
+    } else if(!warnings.isEmpty){
+      warnings = warnings.filter({if case .bounds = $0 {return false}; return true})
+    }
+  }
+
   func offlineModeDidChange(offline: Bool){
     offlineButton.setImage(offline ? UIImage(systemName: "icloud.slash.fill") : UIImage(systemName: "square.and.arrow.down.on.square"), for: .normal)
   }
