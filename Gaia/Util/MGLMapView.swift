@@ -10,23 +10,24 @@ extension MGLMapView {
       return //  bounds already visible
     }
     
-    let currentSpan = visibleCoordinateBounds.span
-    let boundsSpan = bounds.span
+    let fitCamera = cameraThatFitsCoordinateBounds(bounds)
     
-    if(boundsSpan.latitudeDelta <= currentSpan.latitudeDelta && boundsSpan.longitudeDelta <= currentSpan.longitudeDelta){
-      setCenter(bounds.center, animated: animated) // can fit bounds at current zoom so center bounds
-    } else {
-      let camera = cameraThatFitsCoordinateBounds(bounds) // else fit bounds normally
-      
-      if(minZoom != nil){
-        let zoomIfPurelyFitting = MGLZoomLevelForAltitude(camera.altitude, 0, bounds.center.latitude, self.bounds.size)
-        
-        if(zoomIfPurelyFitting < minZoom! - 2.5){
-          camera.altitude = MGLAltitudeForZoomLevel(minZoom! - 2.4, 0, bounds.center.latitude, self.bounds.size)
-        }
-      }
-      
-      setCamera(camera, animated: animated)
-    }
+    let fitCameraZoom = zoom(altitude: fitCamera.altitude, center: fitCamera.centerCoordinate)
+    
+    if(fitCameraZoom >= zoomLevel){
+      fitCamera.altitude = altitude(zoom: zoomLevel, center: fitCamera.centerCoordinate) // if fit zoom could contian bounds, leave zoom as current
+    } else if minZoom != nil, fitCameraZoom < minZoom! - 2.5 {
+      fitCamera.altitude = altitude(zoom: minZoom! - 2.4, center: fitCamera.centerCoordinate) // if fit zoom is below minimum zoom, set to minZoom
+    } else {} // otherwise stick with the fit zoom
+
+    setCamera(fitCamera, animated: animated)
+  }
+  
+  public func altitude(zoom: Double, center: CLLocationCoordinate2D) -> CLLocationDistance {
+    MGLAltitudeForZoomLevel(zoom, 0, center.latitude, bounds.size)
+  }
+  
+  public func zoom(altitude: CLLocationDistance, center: CLLocationCoordinate2D) -> Double {
+    MGLZoomLevelForAltitude(altitude, 0, center.latitude, bounds.size)
   }
 }
