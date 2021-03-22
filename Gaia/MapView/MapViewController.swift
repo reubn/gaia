@@ -288,19 +288,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     styleCachedConstraints = (to.style.zoomLevelsCovered, to.style.bounds)
 
     updateUIColourScheme(compositeStyle: to)
-  
-    if(to.isEmpty){
-      warnings.insert(.emptyStyle(from?.sortedLayers))
-    } else if(!warnings.isEmpty){
-      warnings = warnings.filter({if case .emptyStyle = $0 {return false}; return true})
-    }
     
-    if(to.hasMultipleOpaque){
-      warnings.insert(.multipleOpaque(to.topNonOverlay!))
-    } else if(!warnings.isEmpty){
-      warnings = warnings.filter({if case .multipleOpaque = $0 {return false}; return true})
-    }
-    
+    checkLayers(to: to, from: from)
     checkZoomLevel()
     checkBounds()
     
@@ -317,6 +306,18 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       mapView.window?.overrideUserInterfaceStyle = dark ? .dark : .light
       mapView.window?.tintColor = dark ? .white : uiColourTint
       mapView.compassView.image = compassImage(dark: dark)
+    }
+  }
+  
+  func checkLayers(to: CompositeStyle, from: CompositeStyle?){
+    if(to.isEmpty){
+      warnings.insert(.emptyStyle(from?.sortedLayers))
+    } else if(!warnings.isEmpty){
+      warnings = warnings.filter({if case .emptyStyle = $0 {return false}; return true})
+    } else if(to.hasMultipleOpaque){
+      warnings.insert(.multipleOpaque(to.topNonOverlay!))
+    } else if(!warnings.isEmpty){
+      warnings = warnings.filter({if case .multipleOpaque = $0 {return false}; return true})
     }
   }
   
