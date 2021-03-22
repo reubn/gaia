@@ -7,10 +7,41 @@ extension HUDMessage {
   
   static let layerCreated = HUDMessage(title: "Layer Created", systemName: "plus.square.fill", tintColour: .systemBlue)
   static let layerSaved = HUDMessage(title: "Layer Saved", systemName: "checkmark.square.fill", tintColour: .systemBlue)
-  static func layersImported(_ count: Int) -> HUDMessage {
-    let (title, systemName) = count == 1
-      ? (title: "Layer Imported", systemName: "square.and.arrow.down.fill")
-      : (title: "\(count) Layers Imported", systemName: "square.and.arrow.down.on.square.fill")
+  static func layersAccepted(_ results: LayerAcceptanceResults) -> HUDMessage {
+    let singleIcon = "square.and.arrow.down.fill"
+    let multipleIcon = "square.and.arrow.down.on.square.fill"
+    
+    let added: String
+    if(results.added == 0){
+      added = ""
+    } else if(results.added == 1){
+      added = "1 Layer Added"
+    } else {
+      added = "\(results.added) Layers Added"
+    }
+    
+    let updated: String
+    if(results.updated == 0){
+      updated = ""
+    } else if(results.updated == 1){
+      updated = "1 Layer Updated"
+    } else {
+      updated = "\(results.updated) Layers Updated"
+    }
+    
+    let title: String
+    let systemName: String
+    switch (added, updated) {
+      case (_, ""):
+        title = added
+        systemName = results.added == 1 ? singleIcon : multipleIcon
+      case ("", _):
+        title = updated
+        systemName = results.updated == 1 ? singleIcon : multipleIcon
+      case (_, _):
+        title = "\(added), \(updated)"
+        systemName = multipleIcon
+    }
     
     return HUDMessage(title: title, systemName: systemName, tintColour: .systemBlue)
   }

@@ -15,22 +15,21 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
   lazy var layerSelectView = LayerSelectView(layerSelectConfig: layerSelectConfig)
   
   func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-    var importsAccepted = 0
+    var results: LayerAcceptanceResults?
     
     if let url = urls.first {
       let data = try? Data(contentsOf: url)
       if(data != nil) {
-        importsAccepted = self.coordinatorView.done(data: data!)
+        results = self.coordinatorView.done(data: data!)
       }
     }
     
-    if(importsAccepted == 0) {
+    if((results?.accepted ?? 0) == 0) {
       UINotificationFeedbackGenerator().notificationOccurred(.error)
       HUDManager.shared.displayMessage(message: .importError)
-    }
-    else {
+    } else {
       UINotificationFeedbackGenerator().notificationOccurred(.success)
-      HUDManager.shared.displayMessage(message: .layersImported(importsAccepted))
+      HUDManager.shared.displayMessage(message: .layersAccepted(results!))
     }
   }
 

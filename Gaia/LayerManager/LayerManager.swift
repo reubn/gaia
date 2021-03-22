@@ -138,7 +138,17 @@ class LayerManager {
   }
   
   func newLayer(_ layerDefinition: LayerDefinition, visible: Bool = false) -> Layer? {
-    if(layers.contains(where: {$0.id == layerDefinition.metadata.id})) {return nil}
+    if let existing = layers.first(where: {$0.id == layerDefinition.metadata.id}) {
+      print("updating definition for", existing.id)
+      
+      existing.update(layerDefinition)
+      
+      if(visible){
+        existing.visible = true
+      }
+      
+      return nil
+    }
     
     let layer = Layer(layerDefinition, context: managedContext, visible: visible)
 

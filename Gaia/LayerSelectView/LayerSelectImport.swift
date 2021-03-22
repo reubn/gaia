@@ -99,12 +99,12 @@ class LayerSelectImport: UIView, CoordinatedView {
     HUDManager.shared.displayMessage(message: .importError)
   }
   
-  func handleSuccess(count: Int){
+  func handleSuccess(results: LayerAcceptanceResults){
     self.urlInput.resignFirstResponder()
     self.urlInput.text = ""
     
     UINotificationFeedbackGenerator().notificationOccurred(.success)
-    HUDManager.shared.displayMessage(message: .layersImported(count))
+    HUDManager.shared.displayMessage(message: .layersAccepted(results))
   }
 
   @objc func urlChanged(){
@@ -135,11 +135,11 @@ class LayerSelectImport: UIView, CoordinatedView {
     }
     
     URLSession.shared.dataTask(with: URL(string: requestURL)!) {data, response, error in
-      let importsAccepted = self.coordinatorView.done(data: data, url: rawURL)
+      let results = self.coordinatorView.done(data: data, url: rawURL)
       
       DispatchQueue.main.async {
-        if(importsAccepted != 0){
-          self.handleSuccess(count: importsAccepted)
+        if(results.accepted != 0){
+          self.handleSuccess(results: results)
         } else {
           self.handleRejection()
         }

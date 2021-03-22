@@ -23,7 +23,7 @@ class LayerSelectCoordinatorView: CoordinatorView {
     super.ready()
   }
   
-  func done(data optionalData: Data? = nil, url: String? = nil) -> Int {
+  func done(data optionalData: Data? = nil, url: String? = nil) -> LayerAcceptanceResults {
     let data = optionalData ?? Data()
     
     var layerDefinitions: [LayerDefinition] = []
@@ -51,24 +51,36 @@ class LayerSelectCoordinatorView: CoordinatorView {
     return done(layerDefinitions: layerDefinitions)
   }
   
-  func done(layerDefinitions: [LayerDefinition]) -> Int {
-    if(layerDefinitions.count > 0) {
-      DispatchQueue.main.async {
-        let single = layerDefinitions.count == 1
-        
-        for layerDefinition in layerDefinitions {
-          _ = LayerManager.shared.newLayer(layerDefinition, visible: single)
-        }
-        
-        LayerManager.shared.saveLayers()
-        super.done()
-      }
+  func done(layerDefinitions: [LayerDefinition]) -> LayerAcceptanceResults {
+    let single = layerDefinitions.count == 1
+    
+    let results = layerDefinitions.map({LayerManager.shared.newLayer($0, visible: single)})
+    let added = results.filter({$0 != nil}).count
+    let updated = layerDefinitions.count - added
+    
+    DispatchQueue.main.async {
+      LayerManager.shared.saveLayers()
+      super.done()
     }
     
-    return layerDefinitions.count
+    return LayerAcceptanceResults(added: added, updated: updated)
   }
   
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+}
+
+struct LayerAcceptanceResults {
+  let added: Int
+  let updated: Int
+  
+  let accepted: Int
+  
+  init(added: Int, updated: Int) {
+    self.added = added
+    self.updated = updated
+    
+    self.accepted = added + updated
   }
 }

@@ -178,12 +178,13 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
       if(_layer != nil) {
         let layerDefinition = try decoder.decode(LayerDefinition.self, from: data)
         
+        // this could be consolidated to use coordinatorView.done
         _layer!.update(layerDefinition)
         LayerManager.shared.saveLayers()
         
         result = true
       } else {
-        result = coordinatorView.done(data: data, url: nil) != 0
+        result = coordinatorView.done(data: data, url: nil).accepted != 0
         newLayer = true
       }
       
