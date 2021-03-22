@@ -255,9 +255,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   func checkBounds(){
     let allBounds = styleCachedConstraints!.bounds.individual
-    let allBoundsInView = allBounds.contains(where: {MGLCoordinateBoundsIntersectsCoordinateBounds($0, mapView.visibleCoordinateBounds)})
+    let oneLayerVisible = !allBounds.isEmpty && allBounds.contains(where: {MGLCoordinateBoundsIntersectsCoordinateBounds($0, mapView.visibleCoordinateBounds)})
     
-    if(!allBounds.isEmpty && !allBoundsInView){
+    if(!oneLayerVisible){
       let superbound = styleCachedConstraints!.bounds.superbound!
       warnings.insert(.bounds(superbound))
     } else if(!warnings.isEmpty){
