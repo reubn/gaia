@@ -51,19 +51,59 @@ struct Style: Codable, Equatable {
     var maxLon: CLLocationDegrees?
     
     for (_, source) in sources {
-      let bounds = source.bounds?.value as? [CLLocationDegrees]
+      let type = source.type?.value as? String
       
-      if(bounds != nil && bounds!.count == 4) {
-        let sw = CLLocationCoordinate2D(latitude: bounds![1], longitude: bounds![0])
-        let ne = CLLocationCoordinate2D(latitude: bounds![3], longitude: bounds![2])
+      if(type == "geojson"){
+        print("geojson")
+        let coords = source.data?.features?[0]?.geometry?.coordinates?.value as? [[CLLocationDegrees]] // support multiple features
         
-        minLat = min(minLat ?? bounds![1], bounds![1])
-        minLon = min(minLon ?? bounds![0], bounds![0])
+        if(coords != nil){
+          print("have coords")
+          var featureMinLat: CLLocationDegrees?
+          var featureMinLon: CLLocationDegrees?
+          
+          var featureMaxLat: CLLocationDegrees?
+          var featureMaxLon: CLLocationDegrees?
+          
+          for latLon in coords! {
+            let lat = latLon[1]
+            let lon = latLon[0]
+            
+            featureMinLat = min(featureMinLat ?? lat, lat)
+            featureMinLon = min(featureMinLon ?? lon, lon)
+            
+            featureMaxLat = max(featureMaxLat ?? lat, lat)
+            featureMaxLon = max(featureMaxLon ?? lon, lon)
+          }
+          
+          if(featureMinLat != nil){
+            minLat = min(minLat ?? featureMinLat!, featureMinLat!)
+            minLon = min(minLon ?? featureMinLon!, featureMinLon!)
+            
+            maxLat = max(maxLat ?? featureMaxLat!, featureMaxLat!)
+            maxLon = max(maxLon ?? featureMaxLon!, featureMaxLon!)
+            
+            let sw = CLLocationCoordinate2D(latitude: featureMinLat!, longitude: featureMinLon!)
+            let ne = CLLocationCoordinate2D(latitude: featureMaxLat!, longitude: featureMaxLon!)
+            
+            allBounds.append(MGLCoordinateBoundsMake(sw, ne))
+          }
+        }
+      } else if(type == "raster" || type == "vector")  {
+        let bounds = source.bounds?.value as? [CLLocationDegrees]
         
-        maxLat = max(maxLat ?? bounds![3], bounds![3])
-        maxLon = max(maxLon ?? bounds![2], bounds![2])
-        
-        allBounds.append(MGLCoordinateBoundsMake(sw, ne))
+        if(bounds != nil && bounds!.count == 4) {
+          let sw = CLLocationCoordinate2D(latitude: bounds![1], longitude: bounds![0])
+          let ne = CLLocationCoordinate2D(latitude: bounds![3], longitude: bounds![2])
+          
+          minLat = min(minLat ?? bounds![1], bounds![1])
+          minLon = min(minLon ?? bounds![0], bounds![0])
+          
+          maxLat = max(maxLat ?? bounds![3], bounds![3])
+          maxLon = max(maxLon ?? bounds![2], bounds![2])
+          
+          allBounds.append(MGLCoordinateBoundsMake(sw, ne))
+        }
       }
     }
     
