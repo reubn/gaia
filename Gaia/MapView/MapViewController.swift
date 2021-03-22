@@ -15,7 +15,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 
   var firstTimeLocating = true
   
-  var styleCachedConstraints: (zoomLevelsCovered: (Double, Double), bounds: Style.BoundInfo)?
+  var styleCachedConstraints: (zoomLevelsCovered: (Double, Double), bounds: Style.BoundsInfo)?
 
   lazy var mapView: MGLMapView = {
     let mapView = MGLMapView(frame: view.bounds)

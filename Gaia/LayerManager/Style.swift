@@ -13,7 +13,7 @@ struct Style: Codable, Equatable {
   typealias Source = AnyCodable
   typealias Layer = AnyCodable
   
-  struct BoundInfo {
+  struct BoundsInfo {
     let individual: [MGLCoordinateBounds]
     let superbound: MGLCoordinateBounds?
   }
@@ -41,7 +41,7 @@ struct Style: Codable, Equatable {
     )
   }
   
-  var bounds: BoundInfo {
+  var bounds: BoundsInfo {
     var allBounds: [MGLCoordinateBounds] = []
     
     var minLat: CLLocationDegrees?
@@ -105,7 +105,7 @@ struct Style: Codable, Equatable {
           allBounds.append(MGLCoordinateBoundsMake(sw, ne))
         } else {
           // if a raster, vector layer has no bounds, then assume its worldwide - therefore short circuit, discarding bounds
-          return BoundInfo(individual: [], superbound: nil)
+          return BoundsInfo(individual: [], superbound: nil)
         }
       }
     }
@@ -119,7 +119,7 @@ struct Style: Codable, Equatable {
       superbound = MGLCoordinateBoundsMake(sw, ne)
     }
 
-    return BoundInfo(individual: allBounds, superbound: superbound)
+    return BoundsInfo(individual: allBounds, superbound: superbound)
   }
   
   var url: URL? {
