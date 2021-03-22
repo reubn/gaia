@@ -6,6 +6,10 @@ extension MGLMapView {
       return setVisibleCoordinateBounds(bounds, animated: animated)
     }
     
+    if(visibleCoordinateBounds.intersects(with: bounds)){
+      return //  bounds already visible
+    }
+    
     let currentSpan = visibleCoordinateBounds.span
     let boundsSpan = bounds.span
     
