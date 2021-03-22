@@ -203,7 +203,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
         LayerManager.shared.enableLayer(layer: top, mutuallyExclusive: true)
         HUDManager.shared.displayMessage(message: .multipleOpaqueWarningFixed)
       case .bounds(let superbound):
-        mapView.setVisibleCoordinateBounds(superbound, sensible: true, animated: true)
+        mapView.setVisibleCoordinateBounds(superbound, sensible: true, minZoom: styleCachedConstraints?.zoomLevelsCovered.0, animated: true)
         HUDManager.shared.displayMessage(message: .boundsWarningFixed)
     }
   }
@@ -318,7 +318,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       if insertions.count == 1,
          case .insert(_, let layer, _) = insertions.first!,
          layer.style.bounds.superbound != nil {
-          mapView.setVisibleCoordinateBounds(layer.style.bounds.superbound!, sensible: true, animated: true)
+        mapView.setVisibleCoordinateBounds(layer.style.bounds.superbound!, sensible: true, minZoom: styleCachedConstraints?.zoomLevelsCovered.0, animated: true)
       }
     }
   }
