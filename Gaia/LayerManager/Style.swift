@@ -103,6 +103,9 @@ struct Style: Codable, Equatable {
           maxLon = max(maxLon ?? bounds![2], bounds![2])
           
           allBounds.append(MGLCoordinateBoundsMake(sw, ne))
+        } else {
+          // if a raster, vector layer has no bounds, then assume its worldwide - therefore short circuit, discarding bounds
+          return BoundInfo(individual: [], superbound: nil)
         }
       }
     }
