@@ -288,6 +288,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     styleCachedConstraints = (to.style.zoomLevelsCovered, to.style.bounds)
 
     updateUIColourScheme(compositeStyle: to)
+    reactToLayerChanges(to: to, from: from)
     
     checkLayers(to: to, from: from)
     checkZoomLevel()
@@ -309,6 +310,19 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
   }
   
+  func reactToLayerChanges(to: CompositeStyle, from: CompositeStyle?){
+    if(from != nil){
+      let difference = to.sortedLayers.difference(from: from!.sortedLayers)
+      let insertions = difference.insertions
+      
+      if insertions.count == 1,
+         case .insert(_, let layer, _) = insertions.first!,
+         layer.style.bounds.superbound != nil {
+          mapView.setVisibleCoordinateBounds(layer.style.bounds.superbound!, sensible: true, animated: true)
+      }
+    }
+  }
+
   func checkLayers(to: CompositeStyle, from: CompositeStyle?){
     if(to.isEmpty){
       warnings.insert(.emptyStyle(from?.sortedLayers))
