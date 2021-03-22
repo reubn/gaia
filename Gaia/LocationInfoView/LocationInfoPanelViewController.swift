@@ -153,7 +153,7 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
         
         removePointsFromMap()
       case .map(let coordinate):
-        if case .map(let coordinate) = location, !MGLCoordinateInCoordinateBounds(coordinate, MapViewController.shared.mapView.visibleCoordinateBounds) {
+        if case .map(let coordinate) = location, !MapViewController.shared.mapView.visibleCoordinateBounds.contains(coordinate: coordinate) {
           MapViewController.shared.mapView.setCenter(coordinate, animated: true)
         }
         

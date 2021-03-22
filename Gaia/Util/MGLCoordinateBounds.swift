@@ -26,4 +26,12 @@ extension MGLCoordinateBounds: Equatable, Hashable {
   public var center: CLLocationCoordinate2D {
     sw.midpoint(between: ne)
   }
+  
+  public func contains(coordinate: CLLocationCoordinate2D) -> Bool {
+    MGLCoordinateInCoordinateBounds(coordinate, self)
+  }
+  
+  public func intersects(with: Self) -> Bool {
+    MGLCoordinateBoundsIntersectsCoordinateBounds(self, with)
+  }
 }
