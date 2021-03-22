@@ -210,8 +210,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   var warnings: Set<WarningReason> = [] {
     didSet {
-      print(warnings)
       if(oldValue != warnings) {
+        print(warnings)
         CATransaction.begin()
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(controlPoints: 0.33, 1.18, 0.23, 0.93))
         
