@@ -17,7 +17,7 @@ extension HUDMessage {
     } else if(results.added.count == 1){
       added = "1 Layer Added"
     } else {
-      added = "\(results.added) Layers Added"
+      added = "\(results.added.count) Layers Added"
     }
     
     let updated: String
@@ -26,7 +26,7 @@ extension HUDMessage {
     } else if(results.updated.count == 1){
       updated = "1 Layer Updated"
     } else {
-      updated = "\(results.updated) Layers Updated"
+      updated = "\(results.updated.count) Layers Updated"
     }
     
     let title: String
