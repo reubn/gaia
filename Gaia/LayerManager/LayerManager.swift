@@ -161,7 +161,7 @@ class LayerManager {
     saveLayers()
   }
 
-  @discardableResult func enableLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
+  @discardableResult func showLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
     if(!layer.isOpaque || !mutuallyExclusive) {
       layer.visible = true
     } else {
@@ -177,7 +177,7 @@ class LayerManager {
     return true
   }
 
-  @discardableResult func disableLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
+  @discardableResult func hideLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
     if(!layer.isOpaque || !mutuallyExclusive || visibleLayers.filter({$0.isOpaque}).count > 1) {
       layer.visible = false
       saveLayers()
@@ -208,7 +208,7 @@ class LayerManager {
 
       // and hide them
       visibleOverlayLayers.forEach({
-        disableLayer(layer: $0, mutuallyExclusive: false)
+        hideLayer(layer: $0, mutuallyExclusive: false)
       })
       
       return (count: visibleOverlayLayers.count, restore: false)
@@ -217,7 +217,7 @@ class LayerManager {
       let layersToRestore: [Layer?] = magicLayers ?? [layers.sorted(by: layerSortingFunction).last(where: {!$0.isOpaque})]
       layersToRestore.forEach({
         if($0 != nil){
-          enableLayer(layer: $0!, mutuallyExclusive: false)
+          showLayer(layer: $0!, mutuallyExclusive: false)
         }
       })
 
@@ -236,9 +236,9 @@ class LayerManager {
     let topVisiblePinnedLayer = visiblePinnedLayers.first
     
     switch visiblePinnedLayers.count {
-    case 0: // enable the first pinned
+    case 0: // show the first pinned
       let nextLayer = interestedLayers.first!
-      enableLayer(layer: nextLayer, mutuallyExclusive: true)
+      showLayer(layer: nextLayer, mutuallyExclusive: true)
       
       return nextLayer
     case 1: // move to next pinned, or wrap around
@@ -248,7 +248,7 @@ class LayerManager {
         : interestedLayers.index(before: currentIndex, wrap: true)
       
       let nextLayer = interestedLayers[nextIndex]
-      enableLayer(layer: nextLayer, mutuallyExclusive: true)
+      showLayer(layer: nextLayer, mutuallyExclusive: true)
       
       return nextLayer
     default: // handle more than one pinned visible

@@ -162,10 +162,10 @@ class Section: UIStackView {
     var result: Bool
     
     if(layer.visible) {
-      result = LayerManager.shared.disableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
+      result = LayerManager.shared.hideLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
     }
     else {
-      result = LayerManager.shared.enableLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
+      result = LayerManager.shared.showLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
     }
     
     if(result) {
