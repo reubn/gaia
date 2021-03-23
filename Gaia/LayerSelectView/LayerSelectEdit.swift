@@ -207,7 +207,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   }
   
   func textViewDidChange(_ textView: UITextView){
-    acceptButton?.isEnabled = true
+    acceptButton?.isEnabled = textView.text != initialText
     parseTextForColours()
   }
   
