@@ -248,10 +248,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
           title = "Restore \(layers?.first?.name ?? "Layers")"
           systemName = "square.stack.3d.up.fill"
         case .bounds:
-          title = "Pan to Supported Area"
+          title = "Pan to Layer Area"
           systemName = "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"
         case .minZoom:
-          title = "Zoom to Supported Level"
+          title = "Zoom In"
           systemName = "arrow.up.left.and.down.right.magnifyingglass"
         case .multipleOpaque:
           title = "Hide Invisible Layers"
