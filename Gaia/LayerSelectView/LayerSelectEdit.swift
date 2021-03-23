@@ -152,13 +152,10 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     
     do {
       if(jsonText == initialText){
-        if case .new = request {
-          acceptButton?.isEnabled = false
-          throw "Not Modified"
-        } else {
-          coordinatorView.goTo(0)
-          return
-        }
+        handleError(message: .layerNotModified)
+        coordinatorView.goTo(0)
+        
+        return
       }
       
       let decoder = JSONDecoder()
@@ -204,7 +201,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   }
   
   func textViewDidChange(_ textView: UITextView){
-    acceptButton?.isEnabled = textView.text != initialText
+    acceptButton?.isEnabled = true
     parseTextForColours()
   }
   

@@ -5,6 +5,8 @@ extension HUDMessage {
     HUDMessage(title: layerName + " Deleted", systemName: "trash.fill", tintColour: .systemRed)
   }
   
+  static let layerNotModified = HUDMessage(title: "Layer Not Modified", systemName: "slash.circle.fill", tintColour: .systemYellow)
+  
   static let layerCreated = HUDMessage(title: "Layer Created", systemName: "plus.square.fill", tintColour: .systemBlue)
   static let layerSaved = HUDMessage(title: "Layer Saved", systemName: "checkmark.square.fill", tintColour: .systemBlue)
   static func layersAccepted(_ results: LayerAcceptanceResults, importing: Bool = false) -> HUDMessage {
