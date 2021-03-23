@@ -20,6 +20,10 @@ public class Layer: NSManagedObject {
     return group == "aerial" || group == "overlay"
   }
   
+  var isOpaque: Bool {
+    return group != "overlay"
+  }
+  
   private var _style: Style?
   
   var style: Style {
