@@ -358,5 +358,6 @@ struct LayerAcceptanceResults {
 enum LayerAcceptanceError {
   case layerExistsWithId(String)
   case noLayerExistsWithId(String)
+  case syntaxError
   case unexplained
 }

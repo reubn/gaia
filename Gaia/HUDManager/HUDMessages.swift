@@ -45,6 +45,22 @@ extension HUDMessage {
     
     return HUDMessage(title: title, systemName: systemName, tintColour: .systemBlue)
   }
+  static func layerRejected(_ error: LayerAcceptanceError) -> HUDMessage {
+    let title: String
+    
+    switch error {
+      case .layerExistsWithId(let id):
+        title = "Layer `\(id)` Already Exists"
+      case .noLayerExistsWithId(let id):
+        title = "Layer `\(id)` Does Not Exists"
+      case .syntaxError:
+        title = "Layer Syntax Error"
+      case .unexplained:
+        title = "Unexplained Error"
+    }
+    
+    return HUDMessage(title: title, systemName: "xmark.octagon.fill", tintColour: .systemRed)
+  }
   
   static func magic(_ tuple: (count: Int, restore: Bool)) -> HUDMessage {
     let (count, restore) = tuple
