@@ -92,6 +92,8 @@
 		1BD6A3BC2600E2E1001E503D /* BearingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */; };
 		1BD6A3BE2600E34B001E503D /* CoordinatePair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3BD2600E34B001E503D /* CoordinatePair.swift */; };
 		1BD6A3C02600FD49001E503D /* CLLocationDegrees.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3BF2600FD49001E503D /* CLLocationDegrees.swift */; };
+		1BDACA63260A4B8700248962 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDACA62260A4B8700248962 /* String.swift */; };
+		1BDACA65260A4BA700248962 /* NSRegularExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDACA64260A4BA700248962 /* NSRegularExpression.swift */; };
 		1BEE8D5B25C58FF5004260C1 /* MetricDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5A25C58FF5004260C1 /* MetricDisplay.swift */; };
 		1BEE8D5E25C599B3004260C1 /* HeadingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */; };
 		1BEE8D6025C59A4D004260C1 /* ElevationDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */; };
@@ -195,6 +197,8 @@
 		1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BearingDisplay.swift; sourceTree = "<group>"; };
 		1BD6A3BD2600E34B001E503D /* CoordinatePair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatePair.swift; sourceTree = "<group>"; };
 		1BD6A3BF2600FD49001E503D /* CLLocationDegrees.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationDegrees.swift; sourceTree = "<group>"; };
+		1BDACA62260A4B8700248962 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		1BDACA64260A4BA700248962 /* NSRegularExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRegularExpression.swift; sourceTree = "<group>"; };
 		1BEE8D5A25C58FF5004260C1 /* MetricDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricDisplay.swift; sourceTree = "<group>"; };
 		1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingDisplay.swift; sourceTree = "<group>"; };
 		1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplay.swift; sourceTree = "<group>"; };
@@ -306,6 +310,8 @@
 				1BD6A3BF2600FD49001E503D /* CLLocationDegrees.swift */,
 				1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */,
 				1B6033C025D1DC4A00211150 /* randomString.swift */,
+				1BDACA62260A4B8700248962 /* String.swift */,
+				1BDACA64260A4BA700248962 /* NSRegularExpression.swift */,
 				1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate2D.swift */,
 				1BA03E3525DE8BE300EE273C /* UIImage.swift */,
 				1B9DDAFB25F2AC1E00B3407F /* ReversedCollection.swift */,
@@ -552,6 +558,7 @@
 				1B6638AC25B10B530071F03D /* MapViewController.swift in Sources */,
 				1BEE8D5E25C599B3004260C1 /* HeadingDisplay.swift in Sources */,
 				1B62CE8F25D0288400D06E55 /* AboutPanelViewController.swift in Sources */,
+				1BDACA65260A4BA700248962 /* NSRegularExpression.swift in Sources */,
 				1B96528A25D5BC550017A43E /* LayerSelectEdit.swift in Sources */,
 				1BA9BD2425C212A900AC97C7 /* LayerSelectHome.swift in Sources */,
 				1B8AE3892605384900CF3D8E /* MGLMapView.swift in Sources */,
@@ -593,6 +600,7 @@
 				1B3401D025B474260091FA3B /* SectionTableView.swift in Sources */,
 				1B7644BF25CAD61900572A70 /* Layer+CoreData.swift in Sources */,
 				1B6033BF25D1DBEE00211150 /* randomSystemColor.swift in Sources */,
+				1BDACA63260A4B8700248962 /* String.swift in Sources */,
 				1B0D09CA25EE956000ED5345 /* AnyDecodable.swift in Sources */,
 				1B96529225D7E5F20017A43E /* LayerSelectViewEmpty.swift in Sources */,
 				1B8C078E25C48245008C08B2 /* LocationInfoPanelLayout.swift in Sources */,
