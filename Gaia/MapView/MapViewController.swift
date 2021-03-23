@@ -328,7 +328,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       warnings.insert(.emptyStyle(from?.sortedLayers))
     } else if(!warnings.isEmpty){
       warnings = warnings.filter({if case .emptyStyle = $0 {return false}; return true})
-    } else if(to.hasMultipleOpaque){
+    }
+    
+    if(to.hasMultipleOpaque){
       warnings.insert(.multipleOpaque(to.topNonOverlay!))
     } else if(!warnings.isEmpty){
       warnings = warnings.filter({if case .multipleOpaque = $0 {return false}; return true})
