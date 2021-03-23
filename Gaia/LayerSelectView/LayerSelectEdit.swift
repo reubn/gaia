@@ -66,7 +66,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     print("enter LSE")
     
     var duplicateFromLayer: Layer?
-    (_layer, duplicateFromLayer) = data as! (Layer?, Layer?)
+    (_layer, duplicateFromLayer) = data as? (Layer?, Layer?) ?? (nil, nil)
     
     let layerDefinition = (_layer ?? duplicateFromLayer) != nil
       ? LayerDefinition(layer: (_layer ?? duplicateFromLayer)!)
