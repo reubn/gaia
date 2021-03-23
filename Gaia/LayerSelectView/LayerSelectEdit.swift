@@ -177,26 +177,30 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
       
       let results = coordinatorView.done(layerDefinitions: [layerDefinition], methods: [method])
       
-      if(results.rejected.isEmpty) {
+      if(results == nil){
+         return self.handleError(message: .syntaxError)
+       }
+      
+      if(results!.rejected.isEmpty) {
         UINotificationFeedbackGenerator().notificationOccurred(.success)
-        HUDManager.shared.displayMessage(message: .layersAccepted(results))
+        HUDManager.shared.displayMessage(message: .layersAccepted(results!))
 
         coordinatorView.goTo(0)
       } else {
-        return handleError(error: results.rejected.first!.error!)
+        return handleError(message: .layerRejected(results!))
       }
     } catch {
       print(error)
-      handleError(error: .syntaxError)
+      handleError(message: .syntaxError)
     }
   }
   
-  func handleError(error: LayerAcceptanceError){
+  func handleError(message: HUDMessage){
     acceptButton?.isEnabled = false
     
     UINotificationFeedbackGenerator().notificationOccurred(.error)
     
-    HUDManager.shared.displayMessage(message: .layerRejected(error))
+    HUDManager.shared.displayMessage(message: message)
   }
   
   func textViewDidChange(_ textView: UITextView){

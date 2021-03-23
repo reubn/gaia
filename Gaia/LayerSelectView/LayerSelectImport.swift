@@ -91,7 +91,7 @@ class LayerSelectImport: UIView, CoordinatedView {
     return .notValid
   }
   
-  func handleRejection(_ message: HUDMessage){
+  func handleError(message: HUDMessage){
     let acceptButton = self.coordinatorView.panelViewController.getPanelButton(.accept)
     acceptButton.isEnabled = false
     
@@ -133,17 +133,19 @@ class LayerSelectImport: UIView, CoordinatedView {
       case .validAsIs: ()
       case .validIfEncoded(let encoded):
         requestURL = encoded
-      case .notValid: return handleRejection(.urlInvalid)
+      case .notValid: return handleError(message: .urlInvalid)
     }
     
     URLSession.shared.dataTask(with: URL(string: requestURL)!) {data, response, error in
       let results = self.coordinatorView.done(data: data, url: rawURL)
-      
+  
       DispatchQueue.main.async {
-        if(results.rejected.isEmpty){
-          self.handleSuccess(results: results)
+        if(results == nil){
+          self.handleError(message: .syntaxError)
+        } else if(results!.rejected.isEmpty){
+          self.handleSuccess(results: results!)
         } else {
-          self.handleRejection(.layerRejected(results.rejected.first!.error!, importing: true))
+          self.handleError(message: .layerRejected(results!, importing: true))
         }
       }
     }.resume()

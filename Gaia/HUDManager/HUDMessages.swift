@@ -1,4 +1,5 @@
 extension HUDMessage {
+  static let syntaxError = HUDMessage(title: "Syntax Error", systemName: "xmark.octagon.fill", tintColour: .systemRed)
   static let urlInvalid = HUDMessage(title: "URL Invalid", systemName: "link", tintColour: .systemRed)
   static func layerDeleted(_ layerName: String) -> HUDMessage {
     HUDMessage(title: layerName + " Deleted", systemName: "trash.fill", tintColour: .systemRed)
@@ -45,7 +46,9 @@ extension HUDMessage {
     
     return HUDMessage(title: title, systemName: systemName, tintColour: .systemBlue)
   }
-  static func layerRejected(_ error: LayerAcceptanceError = .unexplained, importing: Bool = false) -> HUDMessage {
+  static func layerRejected(_ results: LayerAcceptanceResults, importing: Bool = false) -> HUDMessage {
+    let error = results.rejected.first!.error!
+    
     let title: String
     
     switch error {
@@ -53,8 +56,6 @@ extension HUDMessage {
         title = "Layer `\(id)` Already Exists"
       case .noLayerExistsWithId(let id):
         title = "Layer `\(id)` Does Not Exists"
-      case .syntaxError:
-        title = "Syntax Error"
       case .unexplained:
         title = importing ? "Couldn't Import Layer" : "Couldn't Add Layer"
     }

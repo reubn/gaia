@@ -29,7 +29,11 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
       HUDManager.shared.displayMessage(message: .layersAccepted(results!))
     } else {
       UINotificationFeedbackGenerator().notificationOccurred(.error)
-      HUDManager.shared.displayMessage(message: .layerRejected(results!.rejected.first!.error!, importing: true))
+      HUDManager.shared.displayMessage(
+        message: results != nil
+          ? .layerRejected(results!, importing: true)
+          : .syntaxError
+      )
     }
   }
 
