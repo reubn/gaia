@@ -189,7 +189,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     // this could be better
     let biggestResolver = warnings.first(where: {if case .multipleOpaque = $0 {return true}; return false}) ?? warnings.randomElement()!
     
-    switch biggestResolver {
+    resolve(warning: biggestResolver)
+  }
+  
+  func resolve(warning: WarningReason){
+    switch warning {
       case .emptyStyle(let layers):
         if(layers != nil) {
           LayerManager.shared.filterLayers({layers!.contains($0)})
@@ -224,8 +228,38 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
         }
         
         CATransaction.commit()
+        
+        if(!warnings.isEmpty) {
+          self.warningButton.menu = createMenu(warnings: warnings)
+        }
       }
     }
+  }
+  
+  func createMenu(warnings: Set<WarningReason>) -> UIMenu {
+    UIMenu(options: .displayInline, children: warnings.map({
+      let warning = $0
+      
+      let title: String
+      let systemName: String
+      
+      switch warning {
+        case .emptyStyle(let layers):
+          title = "Restore \(layers?.first?.name ?? "Layers")"
+          systemName = "square.stack.3d.up.fill"
+        case .bounds:
+          title = "Pan to Supported Area"
+          systemName = "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"
+        case .minZoom:
+          title = "Zoom to Supported Level"
+          systemName = "arrow.up.left.and.down.right.magnifyingglass"
+        case .multipleOpaque:
+          title = "Hide Invisible Layers"
+          systemName = "square.3.stack.3d.top.fill"
+      }
+      
+      return UIAction(title: title, image: UIImage(systemName: systemName)) {(_) in self.resolve(warning: warning)}
+    }))
   }
 
   override func viewDidLoad() {
