@@ -201,11 +201,8 @@ class LayerManager {
   }
 
   public func magic() -> (count: Int, restore: Bool) {
-    let overlayGroup = layerGroups.first(where: {$0.id == "overlay"})!
-    let overlayLayers = getLayers(layerGroup: overlayGroup)
-
-    let visibleOverlayLayers = overlayLayers.filter({$0.visible})
-    if(visibleOverlayLayers.count > 0) {
+    let visibleOverlayLayers = layers.filter({$0.visible && !$0.isOpaque})
+    if(!visibleOverlayLayers.isEmpty) {
       // visible overlays, capture
       magicLayers = visibleOverlayLayers
 
@@ -216,10 +213,12 @@ class LayerManager {
       
       return (count: visibleOverlayLayers.count, restore: false)
     } else {
-      // no visible overlays, restore
-      let layersToRestore = magicLayers ?? overlayLayers.filter({$0.enabled})
+      // no visible overlays, restore. Either captured layers, or topmost overlay layer
+      let layersToRestore: [Layer?] = magicLayers ?? [layers.sorted(by: layerSortingFunction).last(where: {!$0.isOpaque})]
       layersToRestore.forEach({
-        enableLayer(layer: $0, mutuallyExclusive: false)
+        if($0 != nil){
+          enableLayer(layer: $0!, mutuallyExclusive: false)
+        }
       })
 
       magicLayers = nil
