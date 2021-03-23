@@ -375,7 +375,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
     
     if(to.hasMultipleOpaque){
-      warnings.insert(.multipleOpaque(to.topNonOverlay!))
+      warnings.insert(.multipleOpaque(to.topOpaque!))
     } else if(!warnings.isEmpty){
       warnings = warnings.filter({if case .multipleOpaque = $0 {return false}; return true})
     }

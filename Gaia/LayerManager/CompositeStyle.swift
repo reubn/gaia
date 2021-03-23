@@ -7,12 +7,12 @@ struct CompositeStyle: Equatable, Hashable {
   
   let sortedLayers: [Layer]
   
-  var topNonOverlay: Layer? {
+  var topOpaque: Layer? {
     sortedLayers.reversed().first(where: {$0.isOpaque})
   }
   
   var needsDarkUI: Bool {
-    topNonOverlay?.needsDarkUI ?? true
+    topOpaque?.needsDarkUI ?? true
   }
   
   var isEmpty: Bool {
