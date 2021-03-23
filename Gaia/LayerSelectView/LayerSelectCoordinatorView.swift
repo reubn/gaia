@@ -52,6 +52,10 @@ class LayerSelectCoordinatorView: CoordinatorView {
   }
   
   func done(layerDefinitions: [LayerDefinition], methods: [LayerAcceptanceMethod]? = nil) -> LayerAcceptanceResults {
+    if(layerDefinitions.isEmpty){
+      return LayerAcceptanceResults(submitted: [.error(.syntaxError)])
+    }
+    
     let single = layerDefinitions.count == 1
     
     let results = LayerAcceptanceResults(submitted: layerDefinitions.map({LayerManager.shared.acceptLayer($0, methods: methods)}))
