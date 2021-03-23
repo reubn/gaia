@@ -162,11 +162,11 @@ class LayerManager {
   }
 
   @discardableResult func enableLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
-    if(layer.group == "overlay" || !mutuallyExclusive) {
+    if(!layer.isOpaque || !mutuallyExclusive) {
       layer.visible = true
     } else {
       for _layer in layers {
-        if(_layer.group != "overlay") {
+        if(_layer.isOpaque) {
           _layer.visible = _layer == layer
         }
       }
@@ -178,7 +178,7 @@ class LayerManager {
   }
 
   @discardableResult func disableLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
-    if(layer.group == "overlay" || !mutuallyExclusive || visibleLayers.filter({$0.group != "overlay"}).count > 1) {
+    if(!layer.isOpaque || !mutuallyExclusive || visibleLayers.filter({$0.isOpaque}).count > 1) {
       layer.visible = false
       saveLayers()
       
@@ -229,7 +229,7 @@ class LayerManager {
   }
   
   public func magicPinned(forward: Bool) -> Layer? {
-    let interestedLayers = pinnedLayers.filter({$0.group != "overlay"}).sorted(by: layerSortingFunction).reversed()
+    let interestedLayers = pinnedLayers.filter({$0.isOpaque}).sorted(by: layerSortingFunction).reversed()
     
     if(interestedLayers.isEmpty) {return nil}
     

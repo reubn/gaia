@@ -8,7 +8,7 @@ struct CompositeStyle: Equatable, Hashable {
   let sortedLayers: [Layer]
   
   var topNonOverlay: Layer? {
-    sortedLayers.reversed().first(where: {$0.group != "overlay"})
+    sortedLayers.reversed().first(where: {$0.isOpaque})
   }
   
   var needsDarkUI: Bool {
@@ -20,7 +20,7 @@ struct CompositeStyle: Equatable, Hashable {
   }
   
   var hasMultipleOpaque: Bool {
-    sortedLayers.filter({$0.group != "overlay"}).count > 1
+    sortedLayers.filter({$0.isOpaque}).count > 1
   }
   
   var url: URL? {
