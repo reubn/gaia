@@ -358,7 +358,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
 
   func checkLayers(to: CompositeStyle, from: CompositeStyle?){
-    if(to.isEmpty){
+    if(to.isEmpty && !LayerManager.shared.layers.isEmpty){
       warnings.insert(.emptyStyle(from?.sortedLayers))
     } else if(!warnings.isEmpty){
       warnings = warnings.filter({if case .emptyStyle = $0 {return false}; return true})
