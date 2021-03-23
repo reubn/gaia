@@ -1,16 +1,12 @@
 extension HUDMessage {
-  static let syntaxError = HUDMessage(title: "Syntax Error", systemName: "xmark.octagon.fill", tintColour: .systemRed)
-  static let importError = HUDMessage(title: "Import Error", systemName: "xmark.octagon.fill", tintColour: .systemRed)
+  static let urlInvalid = HUDMessage(title: "URL Invalid", systemName: "link", tintColour: .systemRed)
   static func layerDeleted(_ layerName: String) -> HUDMessage {
     HUDMessage(title: layerName + " Deleted", systemName: "trash.fill", tintColour: .systemRed)
   }
   
   static let layerCreated = HUDMessage(title: "Layer Created", systemName: "plus.square.fill", tintColour: .systemBlue)
   static let layerSaved = HUDMessage(title: "Layer Saved", systemName: "checkmark.square.fill", tintColour: .systemBlue)
-  static func layersAccepted(_ results: LayerAcceptanceResults) -> HUDMessage {
-    let singleIcon = "square.and.arrow.down.fill"
-    let multipleIcon = "square.and.arrow.down.on.square.fill"
-    
+  static func layersAccepted(_ results: LayerAcceptanceResults, importing: Bool = false) -> HUDMessage {
     let added: String
     if(results.added.isEmpty){
       added = ""
@@ -34,18 +30,22 @@ extension HUDMessage {
     switch (added, updated) {
       case (_, ""):
         title = added
-        systemName = results.added.count == 1 ? singleIcon : multipleIcon
+        systemName = importing
+          ? (results.updated.count == 1 ? "square.and.arrow.down.fill" : "square.and.arrow.down.on.square.fill")
+          : (results.added.count == 1 ? "plus.square.fill" : "plus.square.fill.on.square.fill")
       case ("", _):
         title = updated
-        systemName = results.updated.count == 1 ? singleIcon : multipleIcon
+        systemName = importing
+          ? (results.updated.count == 1 ? "square.and.arrow.down.fill" : "square.and.arrow.down.on.square.fill")
+          : (results.updated.count == 1 ? "checkmark.square.fill" : "square.fill.on.square")
       case (_, _):
         title = "\(added), \(updated)"
-        systemName = multipleIcon
+        systemName = importing ? "square.and.arrow.down.on.square.fill" : "plus.square.fill.on.square.fill"
     }
     
     return HUDMessage(title: title, systemName: systemName, tintColour: .systemBlue)
   }
-  static func layerRejected(_ error: LayerAcceptanceError) -> HUDMessage {
+  static func layerRejected(_ error: LayerAcceptanceError = .unexplained, importing: Bool = false) -> HUDMessage {
     let title: String
     
     switch error {
@@ -54,9 +54,9 @@ extension HUDMessage {
       case .noLayerExistsWithId(let id):
         title = "Layer `\(id)` Does Not Exists"
       case .syntaxError:
-        title = "Layer Syntax Error"
+        title = "Syntax Error"
       case .unexplained:
-        title = "Unexplained Error"
+        title = importing ? "Couldn't Import Layer" : "Couldn't Add Layer"
     }
     
     return HUDMessage(title: title, systemName: "xmark.octagon.fill", tintColour: .systemRed)

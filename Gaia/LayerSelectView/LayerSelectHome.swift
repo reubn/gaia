@@ -27,10 +27,9 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     if(results?.rejected.isEmpty ?? false) {
       UINotificationFeedbackGenerator().notificationOccurred(.success)
       HUDManager.shared.displayMessage(message: .layersAccepted(results!))
-      
     } else {
       UINotificationFeedbackGenerator().notificationOccurred(.error)
-      HUDManager.shared.displayMessage(message: .importError)
+      HUDManager.shared.displayMessage(message: .layerRejected(results!.rejected.first!.error!, importing: true))
     }
   }
 
