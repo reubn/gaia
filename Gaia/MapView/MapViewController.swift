@@ -259,13 +259,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
           systemName = "square.stack.3d.up.fill"
         case .bounds:
           title = "Pan to Layer Area"
-          systemName = "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"
+          systemName = "arrow.up.and.down.and.arrow.left.and.right"
         case .minZoom:
           title = "Zoom In"
-          systemName = "arrow.up.left.and.down.right.magnifyingglass"
+          systemName = "plus.magnifyingglass"
         case .multipleOpaque:
           title = "Hide Invisible Layers"
-          systemName = "square.3.stack.3d.top.fill"
+          systemName = "square.stack.3d.up.slash.fill"
       }
       
       return UIAction(title: title, image: UIImage(systemName: systemName)) {(_) in self.resolve(warning: warning)}
