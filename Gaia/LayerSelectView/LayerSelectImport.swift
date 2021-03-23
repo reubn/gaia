@@ -140,7 +140,7 @@ class LayerSelectImport: UIView, CoordinatedView {
       let results = self.coordinatorView.done(data: data, url: rawURL)
       
       DispatchQueue.main.async {
-        if(results.accepted != 0){
+        if(results.rejected.isEmpty){
           self.handleSuccess(results: results)
         } else {
           self.handleRejection()

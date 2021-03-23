@@ -140,7 +140,7 @@ class LayerManager {
   func acceptLayer(_ layerDefinition: LayerDefinition, methods: [LayerAcceptanceMethod]? = nil) -> LayerAcceptanceResult {
     let acceptanceMethods = (methods?.isEmpty ?? false ? nil : methods) ?? [.update(), .add]
     
-    print(acceptanceMethods)
+    var error: LayerAcceptanceResult = .error(.unexplained)
  
     for method in acceptanceMethods {
       switch method {
@@ -151,21 +151,25 @@ class LayerManager {
           
           let existingWithEditedId = layers.first(where: {$0.id == layerDefinition.metadata.id})
           
-          if(required != nil),
-            let existing = layers.first(where: {$0.id == required!.id}),
-            existingWithEditedId == nil || existingWithEditedId == existing {
-            existing.update(layerDefinition)
-            print("yes we are updating required", existing)
+          if(required != nil){
+            if let existing = layers.first(where: {$0.id == required!.id}),
+              existingWithEditedId == nil || existingWithEditedId == existing {
+              existing.update(layerDefinition)
+              print("yes we are updating required", existing)
+              
+              return .accepted(method)
+            }
             
-            return .init(method: .update(), layer: existing)
-          } else
-          
-          if(required == nil),
-            let existing = existingWithEditedId {
-            existing.update(layerDefinition)
-            print("yes we are updating edited", existing)
+            error = .error(.layerExistsWithId(layerDefinition.metadata.id))
+          } else {
+            if let existing = existingWithEditedId {
+              existing.update(layerDefinition)
+              print("yes we are updating edited", existing)
+              
+              return .accepted(method)
+            }
             
-            return .init(method: .update(), layer: existing)
+            error = .error(.noLayerExistsWithId(layerDefinition.metadata.id))
           }
         case .add:
           let existing = layers.first(where: {$0.id == layerDefinition.metadata.id})
@@ -173,12 +177,15 @@ class LayerManager {
           if(existing == nil) {
             print("yes we are adding")
             let layer = Layer(layerDefinition, context: managedContext)
-            return .init(method: .add, layer: layer)
+            return .accepted(method)
           }
+          
+          error = .error(.layerExistsWithId(layerDefinition.metadata.id))
       }
     }
     print("fuck nothing happened")
-    return .init(method: nil, layer: nil)
+    
+    return error
   }
   
   func removeLayer(layer: Layer){
@@ -313,27 +320,43 @@ enum LayerAcceptanceMethod {
 
 struct LayerAcceptanceResult {
   let method: LayerAcceptanceMethod?
-  let layer: Layer?
+  let error: LayerAcceptanceError?
   
   var accepted: Bool {
-    method != nil && layer != nil
+    error == nil
+  }
+  
+  static func accepted(_ method: LayerAcceptanceMethod) -> Self {
+    self.init(method: method, error: nil)
+  }
+  
+  static func error(_ error: LayerAcceptanceError) -> Self {
+    self.init(method: nil, error: error)
   }
 }
 
 struct LayerAcceptanceResults {
-  let added: Int
-  let updated: Int
+  let submitted: [LayerAcceptanceResult]
   
-  let accepted: Int
-  let submitted: Int
-  
-  init(results: [LayerAcceptanceResult]) {
-    let acceptedResults = results.filter({$0.accepted})
-    
-    self.submitted = results.count
-    self.accepted = acceptedResults.count
-    
-    self.added = acceptedResults.filter({if case .add = $0.method {return true} else {return false}}).count
-    self.updated = self.accepted - added
+  var accepted: [LayerAcceptanceResult] {
+    submitted.filter({$0.accepted})
   }
+  
+  var rejected: [LayerAcceptanceResult] {
+    submitted.filter({!$0.accepted})
+  }
+  
+  var added: [LayerAcceptanceResult] {
+    accepted.filter({if case .add = $0.method {return true} else {return false}})
+  }
+  
+  var updated: [LayerAcceptanceResult] {
+    accepted.filter({if case .update = $0.method {return true} else {return false}})
+  }
+}
+
+enum LayerAcceptanceError {
+  case layerExistsWithId(String)
+  case noLayerExistsWithId(String)
+  case unexplained
 }

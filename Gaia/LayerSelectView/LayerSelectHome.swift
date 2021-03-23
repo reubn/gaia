@@ -24,12 +24,13 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
       }
     }
     
-    if((results?.accepted ?? 0) == 0) {
-      UINotificationFeedbackGenerator().notificationOccurred(.error)
-      HUDManager.shared.displayMessage(message: .importError)
-    } else {
+    if(results?.rejected.isEmpty ?? false) {
       UINotificationFeedbackGenerator().notificationOccurred(.success)
       HUDManager.shared.displayMessage(message: .layersAccepted(results!))
+      
+    } else {
+      UINotificationFeedbackGenerator().notificationOccurred(.error)
+      HUDManager.shared.displayMessage(message: .importError)
     }
   }
 

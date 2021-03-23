@@ -12,18 +12,18 @@ extension HUDMessage {
     let multipleIcon = "square.and.arrow.down.on.square.fill"
     
     let added: String
-    if(results.added == 0){
+    if(results.added.isEmpty){
       added = ""
-    } else if(results.added == 1){
+    } else if(results.added.count == 1){
       added = "1 Layer Added"
     } else {
       added = "\(results.added) Layers Added"
     }
     
     let updated: String
-    if(results.updated == 0){
+    if(results.updated.isEmpty){
       updated = ""
-    } else if(results.updated == 1){
+    } else if(results.updated.count == 1){
       updated = "1 Layer Updated"
     } else {
       updated = "\(results.updated) Layers Updated"
@@ -34,10 +34,10 @@ extension HUDMessage {
     switch (added, updated) {
       case (_, ""):
         title = added
-        systemName = results.added == 1 ? singleIcon : multipleIcon
+        systemName = results.added.count == 1 ? singleIcon : multipleIcon
       case ("", _):
         title = updated
-        systemName = results.updated == 1 ? singleIcon : multipleIcon
+        systemName = results.updated.count == 1 ? singleIcon : multipleIcon
       case (_, _):
         title = "\(added), \(updated)"
         systemName = multipleIcon

@@ -54,9 +54,9 @@ class LayerSelectCoordinatorView: CoordinatorView {
   func done(layerDefinitions: [LayerDefinition], methods: [LayerAcceptanceMethod]? = nil) -> LayerAcceptanceResults {
     let single = layerDefinitions.count == 1
     
-    let results = LayerAcceptanceResults(results: layerDefinitions.map({LayerManager.shared.acceptLayer($0, methods: methods)}))
+    let results = LayerAcceptanceResults(submitted: layerDefinitions.map({LayerManager.shared.acceptLayer($0, methods: methods)}))
     //handle making single layers visible here
-    if(results.accepted > 0) {
+    if(!results.accepted.isEmpty) {
       DispatchQueue.main.async {
         LayerManager.shared.saveLayers()
       }
