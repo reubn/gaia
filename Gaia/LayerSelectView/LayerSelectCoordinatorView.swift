@@ -54,16 +54,16 @@ class LayerSelectCoordinatorView: CoordinatorView {
   func done(layerDefinitions: [LayerDefinition]) -> LayerAcceptanceResults {
     let single = layerDefinitions.count == 1
     
-    let results = layerDefinitions.map({LayerManager.shared.newLayer($0, visible: single)})
-    let added = results.filter({$0 != nil}).count
-    let updated = layerDefinitions.count - added
+    let results = LayerAcceptanceResults(results: layerDefinitions.map({LayerManager.shared.newLayer($0, visible: single)}))
     
-    DispatchQueue.main.async {
-      LayerManager.shared.saveLayers()
-      super.done()
+    if(results.accepted > 0) {
+      DispatchQueue.main.async {
+        LayerManager.shared.saveLayers()
+        super.done()
+      }
     }
     
-    return LayerAcceptanceResults(added: added, updated: updated)
+    return results
   }
   
   required init(coder: NSCoder) {
@@ -77,10 +77,10 @@ struct LayerAcceptanceResults {
   
   let accepted: Int
   
-  init(added: Int, updated: Int) {
-    self.added = added
-    self.updated = updated
+  init(results: [Layer?]) {
+    self.accepted = results.count
     
-    self.accepted = added + updated
+    self.added = results.filter({$0 != nil}).count
+    self.updated = self.accepted - added
   }
 }
