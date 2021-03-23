@@ -94,6 +94,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
       jsonEditor.text = editorText
       
       initialText = editorText
+      acceptButton?.isEnabled = false
       
     } catch {
       print(error)
@@ -128,7 +129,9 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
 """
     }
     
-
+    initialText = jsonEditor.text
+    acceptButton?.isEnabled = false
+    
     jsonEditor.translatesAutoresizingMaskIntoConstraints = false
     jsonEditor.topAnchor.constraint(equalTo: topAnchor).isActive = true
     jsonEditor.bottomAnchor.constraint(equalTo: keyboardLayoutGuideNoSafeArea.topAnchor, constant: -10).isActive = true
