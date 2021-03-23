@@ -17,6 +17,5 @@ struct LayerSelectConfig {
 }
 
 protocol LayerEditDelegate: class {
-  func layerEditWasRequested(layer: Layer) -> ()
-  func layerEditWasRequested(duplicateFromLayer: Layer) -> ()
+  func requestLayerEdit(_ request: LayerEditRequest) -> ()
 }

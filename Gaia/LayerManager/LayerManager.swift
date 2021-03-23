@@ -137,22 +137,48 @@ class LayerManager {
     }
   }
   
-  func newLayer(_ layerDefinition: LayerDefinition, visible: Bool = false) -> Layer? {
-    if let existing = layers.first(where: {$0.id == layerDefinition.metadata.id}) {
-      print("updating definition for", existing.id)
-      
-      existing.update(layerDefinition)
-      
-      if(visible){
-        existing.visible = true
-      }
-      
-      return nil
-    }
+  func acceptLayer(_ layerDefinition: LayerDefinition, methods: [LayerAcceptanceMethod]? = nil) -> LayerAcceptanceResult {
+    let acceptanceMethods = (methods?.isEmpty ?? false ? nil : methods) ?? [.update(), .add]
     
-    let layer = Layer(layerDefinition, context: managedContext, visible: visible)
-
-    return layer
+    print(acceptanceMethods)
+ 
+    for method in acceptanceMethods {
+      switch method {
+        case .update(let required):
+         
+          // updating specified layer: required != nil && existingWithRequiredId != nil && layerDefinition.metadata.id == required!.id
+          // importing and override: ||
+          
+          let existingWithEditedId = layers.first(where: {$0.id == layerDefinition.metadata.id})
+          
+          if(required != nil),
+            let existing = layers.first(where: {$0.id == required!.id}),
+            existingWithEditedId == nil || existingWithEditedId == existing {
+            existing.update(layerDefinition)
+            print("yes we are updating required", existing)
+            
+            return .init(method: .update(), layer: existing)
+          } else
+          
+          if(required == nil),
+            let existing = existingWithEditedId {
+            existing.update(layerDefinition)
+            print("yes we are updating edited", existing)
+            
+            return .init(method: .update(), layer: existing)
+          }
+        case .add:
+          let existing = layers.first(where: {$0.id == layerDefinition.metadata.id})
+          
+          if(existing == nil) {
+            print("yes we are adding")
+            let layer = Layer(layerDefinition, context: managedContext)
+            return .init(method: .add, layer: layer)
+          }
+      }
+    }
+    print("fuck nothing happened")
+    return .init(method: nil, layer: nil)
   }
   
   func removeLayer(layer: Layer){
@@ -277,4 +303,37 @@ struct LayerGroup {
 
 protocol LayerManagerDelegate {
   func compositeStyleDidChange(to: CompositeStyle, from: CompositeStyle?)
+}
+
+
+enum LayerAcceptanceMethod {
+  case add
+  case update(Layer? = nil)
+}
+
+struct LayerAcceptanceResult {
+  let method: LayerAcceptanceMethod?
+  let layer: Layer?
+  
+  var accepted: Bool {
+    method != nil && layer != nil
+  }
+}
+
+struct LayerAcceptanceResults {
+  let added: Int
+  let updated: Int
+  
+  let accepted: Int
+  let submitted: Int
+  
+  init(results: [LayerAcceptanceResult]) {
+    let acceptedResults = results.filter({$0.accepted})
+    
+    self.submitted = results.count
+    self.accepted = acceptedResults.count
+    
+    self.added = acceptedResults.filter({if case .add = $0.method {return true} else {return false}}).count
+    self.updated = self.accepted - added
+  }
 }

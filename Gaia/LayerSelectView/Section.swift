@@ -277,7 +277,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       topChildren.append(UIAction(
         title: "Edit",
         image: UIImage(systemName: "slider.horizontal.3")) { _ in
-          self.layerSelectConfig.layerEditDelegate?.layerEditWasRequested(layer: layer)
+          self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.edit(layer))
       })
       
       // More Submenu
@@ -292,7 +292,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       moreChildren.append(UIAction(
         title: "Duplicate",
         image: UIImage(systemName: "plus.square.fill.on.square.fill")) { _ in
-        self.layerSelectConfig.layerEditDelegate?.layerEditWasRequested(duplicateFromLayer: layer)
+          self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.duplicate(layer))
       })
 
       moreChildren.append(UIAction(

@@ -114,7 +114,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
         _ = self.coordinatorView.done(layerDefinitions: [layerDefinition])
       }),
       UIAction(title: "New", image: UIImage(systemName: "plus"), handler: {_ in
-        self.coordinatorView.goTo(2)
+        self.requestLayerEdit(.new)
       })
     ])
     newButton.adjustsImageWhenHighlighted = false
@@ -141,12 +141,8 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     }
   }
   
-  func layerEditWasRequested(layer: Layer) {
-    coordinatorView.goTo(2, data: (layer, nil as Layer?))
-  }
-  
-  func layerEditWasRequested(duplicateFromLayer: Layer) {
-    coordinatorView.goTo(2, data: (nil as Layer?, duplicateFromLayer))
+  func requestLayerEdit(_ request: LayerEditRequest) {
+    coordinatorView.goTo(2, data: request)
   }
   
   func panelDidMove() {

@@ -10,9 +10,9 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     
   let colourRegex = try! NSRegularExpression(pattern: "(?<=#)([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})")
   
-  var _layer: Layer? = nil
-  var acceptButton: PanelActionButton? = nil
-  var colourEditingRange: NSRange? = nil
+  var request: LayerEditRequest?
+  var acceptButton: PanelActionButton?
+  var colourEditingRange: NSRange?
   
   var initialText: String = ""
   
@@ -65,73 +65,14 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   func viewWillEnter(data: Any?){
     print("enter LSE")
     
-    var duplicateFromLayer: Layer?
-    (_layer, duplicateFromLayer) = data as? (Layer?, Layer?) ?? (nil, nil)
-    
-    let layerDefinition = (_layer ?? duplicateFromLayer) != nil
-      ? LayerDefinition(layer: (_layer ?? duplicateFromLayer)!)
-      : nil
-    
     if(MapViewController.shared.lsfpc.viewIfLoaded?.window != nil) {
       MapViewController.shared.lsfpc.move(to: .full, animated: true)
     }
     
-    coordinatorView.panelViewController.title = _layer != nil ? "Edit Layer" : "New Layer"
     coordinatorView.panelViewController.panelButtons = [.previous, .accept, .help]
     
     acceptButton = coordinatorView.panelViewController.getPanelButton(.accept)
 
-    do {
-      if(layerDefinition == nil) {throw "No Layer"}
-      
-      let encoder = JSONEncoder()
-      encoder.outputFormatting = [.sortedKeys, .prettyPrinted, .withoutEscapingSlashes]
-
-      let jsonData = try encoder.encode(layerDefinition)
-      let jsonString = String(data: jsonData, encoding: .utf8)!
-      
-      let editorText = jsonString.replacingOccurrences(of: "\" : ", with: "\": ")
-      jsonEditor.text = editorText
-      
-      initialText = editorText
-      acceptButton?.isEnabled = false
-      
-    } catch {
-      print(error)
-      
-      let randomId = randomString(length: 6)
-      let randomName = NAME_LIST.randomElement()!
-      
-      jsonEditor.text = """
-{
-  "metadata": {
-    "id": "\(randomId)",
-    "name": "\(randomName)"
-    "group": "",
-    "groupIndex": 0,
-  },
-  "style": {
-    "sources": {
-      "\(randomId)": {
-        ...
-      }
-    },
-    "layers": [
-      {
-        "id": "\(randomId)",
-        "source": "\(randomId)",
-        ...
-      }
-    ],
-    "version": 8
-  }
-}
-"""
-    }
-    
-    initialText = jsonEditor.text
-    acceptButton?.isEnabled = false
-    
     jsonEditor.translatesAutoresizingMaskIntoConstraints = false
     jsonEditor.topAnchor.constraint(equalTo: topAnchor).isActive = true
     jsonEditor.bottomAnchor.constraint(equalTo: keyboardLayoutGuideNoSafeArea.topAnchor, constant: -10).isActive = true
@@ -141,11 +82,55 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     jsonEditor.becomeFirstResponder()
     jsonEditor.selectedRange = NSRange(location: 0, length: 0)
     
-    parseTextForColours()
-    
     colorWell.addTarget(self, action: #selector(colourChanged), for: .valueChanged)
     
     MapViewController.shared.lsfpc.track(scrollView: jsonEditor)
+    
+    handleRequest(request: data as? LayerEditRequest ?? .new)
+  }
+  
+  func handleRequest(request: LayerEditRequest){
+    self.request = request
+    
+    let layerDefinition: LayerDefinition? = {
+      switch request {
+        case .new:
+          return nil
+        case .edit(let layer), .duplicate(let layer):
+          return LayerDefinition(layer: layer)
+      }
+    }()
+    
+    do {
+      if(layerDefinition == nil) {throw "No Layer"}
+
+      let encoder = JSONEncoder()
+      encoder.outputFormatting = [.sortedKeys, .prettyPrinted, .withoutEscapingSlashes]
+
+      let jsonData = try encoder.encode(layerDefinition)
+      let jsonString = String(data: jsonData, encoding: .utf8)!
+
+      let editorText = jsonString.replacingOccurrences(of: "\" : ", with: "\": ")
+      jsonEditor.text = editorText
+    } catch {
+      print(error)
+
+      jsonEditor.text = generateNewLayerDefinitionString()
+    }
+    
+    initialText = jsonEditor.text
+    acceptButton?.isEnabled = true // be optimistic
+    
+    coordinatorView.panelViewController.title = {
+      switch request {
+        case .new, .duplicate:
+          return "New Layer"
+        case .edit:
+          return "Edit Layer"
+      }
+    }()
+    
+    parseTextForColours()
   }
   
   func viewWillExit(){
@@ -163,43 +148,45 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   }
   
   func process(){
-    let string = jsonEditor.text!
-    
-    if(string == initialText){
-      coordinatorView.goTo(0)
-      
-      return
-    }
+    let jsonText = jsonEditor.text!
     
     do {
-      var result: Bool
-      var newLayer = false
+      if(jsonText == initialText){
+        if case .new = request {
+          acceptButton?.isEnabled = false
+          throw "Not Modified"
+        } else {
+          coordinatorView.goTo(0)
+          return
+        }
+      }
+      
       let decoder = JSONDecoder()
       
-      let data = string.data(using: .utf8)!
+      let data = jsonText.data(using: .utf8)!
+      let layerDefinition = try decoder.decode(LayerDefinition.self, from: data)
+      
+      let method: LayerAcceptanceMethod = {
+        switch request! {
+          case .new, .duplicate:
+            return .add
+        case .edit(let layer):
+            return .update(layer)
+        }
+      }()
+      
+      let results = coordinatorView.done(layerDefinitions: [layerDefinition], methods: [method])
+      
+      if(results.accepted == 1) {
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        HUDManager.shared.displayMessage(message: .layersAccepted(results))
 
-      if(_layer != nil) {
-        let layerDefinition = try decoder.decode(LayerDefinition.self, from: data)
-        
-        // this could be consolidated to use coordinatorView.done
-        _layer!.update(layerDefinition)
-        LayerManager.shared.saveLayers()
-        
-        result = true
+        coordinatorView.goTo(0)
       } else {
-        result = coordinatorView.done(data: data, url: nil).accepted != 0
-        newLayer = true
+        throw "Layer Not Accepted"
       }
-      
-      if(!result) {
-        throw "Could Not Save Edit"
-      }
-      
-      UINotificationFeedbackGenerator().notificationOccurred(.success)
-      HUDManager.shared.displayMessage(message: newLayer ? .layerCreated : .layerSaved)
-      
-      coordinatorView.goTo(0)
     } catch {
+      print(error)
       acceptButton?.isEnabled = false
       UINotificationFeedbackGenerator().notificationOccurred(.error)
       HUDManager.shared.displayMessage(message: .syntaxError)
@@ -232,6 +219,37 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     }
   }
   
+  func generateNewLayerDefinitionString() -> String {
+    let randomId = randomString(length: 6)
+    let randomName = NAME_LIST.randomElement()!
+    
+    return """
+{
+"metadata": {
+  "id": "\(randomId)",
+  "name": "\(randomName)"
+  "group": "",
+  "groupIndex": 0,
+},
+"style": {
+  "sources": {
+    "\(randomId)": {
+      ...
+    }
+  },
+  "layers": [
+    {
+      "id": "\(randomId)",
+      "source": "\(randomId)",
+      ...
+    }
+  ],
+  "version": 8
+}
+}
+"""
+  }
+  
   @objc func colourChanged(){
     let selectedColour = colorWell.selectedColor!
     
@@ -247,4 +265,10 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+}
+
+enum LayerEditRequest {
+  case new
+  case edit(Layer)
+  case duplicate(Layer)
 }

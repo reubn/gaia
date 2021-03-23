@@ -51,15 +51,14 @@ class LayerSelectCoordinatorView: CoordinatorView {
     return done(layerDefinitions: layerDefinitions)
   }
   
-  func done(layerDefinitions: [LayerDefinition]) -> LayerAcceptanceResults {
+  func done(layerDefinitions: [LayerDefinition], methods: [LayerAcceptanceMethod]? = nil) -> LayerAcceptanceResults {
     let single = layerDefinitions.count == 1
     
-    let results = LayerAcceptanceResults(results: layerDefinitions.map({LayerManager.shared.newLayer($0, visible: single)}))
-    
+    let results = LayerAcceptanceResults(results: layerDefinitions.map({LayerManager.shared.acceptLayer($0, methods: methods)}))
+    //handle making single layers visible here
     if(results.accepted > 0) {
       DispatchQueue.main.async {
         LayerManager.shared.saveLayers()
-        super.done()
       }
     }
     
@@ -68,19 +67,5 @@ class LayerSelectCoordinatorView: CoordinatorView {
   
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-}
-
-struct LayerAcceptanceResults {
-  let added: Int
-  let updated: Int
-  
-  let accepted: Int
-  
-  init(results: [Layer?]) {
-    self.accepted = results.count
-    
-    self.added = results.filter({$0 != nil}).count
-    self.updated = self.accepted - added
   }
 }

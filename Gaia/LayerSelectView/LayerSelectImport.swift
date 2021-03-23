@@ -105,6 +105,8 @@ class LayerSelectImport: UIView, CoordinatedView {
     
     UINotificationFeedbackGenerator().notificationOccurred(.success)
     HUDManager.shared.displayMessage(message: .layersAccepted(results))
+    
+    coordinatorView.goTo(0)
   }
 
   @objc func urlChanged(){
