@@ -172,7 +172,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
         }
       }()
       
-      let results = coordinatorView.done(layerDefinitions: [layerDefinition], methods: [method])
+      let results = coordinatorView.acceptLayerDefinitions(from: [layerDefinition], methods: [method])
       
       if(results == nil){
          return self.handleError(message: .syntaxError)

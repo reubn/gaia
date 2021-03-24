@@ -23,7 +23,7 @@ class LayerSelectCoordinatorView: CoordinatorView {
     super.ready()
   }
   
-  func done(data optionalData: Data? = nil, url: String? = nil) -> LayerAcceptanceResults? {
+  func acceptLayerDefinitions(from optionalData: Data? = nil, url: String? = nil) -> LayerAcceptanceResults? {
     let data = optionalData ?? Data()
     
     var layerDefinitions: [LayerDefinition] = []
@@ -48,10 +48,10 @@ class LayerSelectCoordinatorView: CoordinatorView {
       }
     }
     
-    return done(layerDefinitions: layerDefinitions)
+    return acceptLayerDefinitions(from: layerDefinitions)
   }
   
-  func done(layerDefinitions: [LayerDefinition], methods: [LayerAcceptanceMethod]? = nil) -> LayerAcceptanceResults? {
+  func acceptLayerDefinitions(from layerDefinitions: [LayerDefinition], methods: [LayerAcceptanceMethod]? = nil) -> LayerAcceptanceResults? {
     if(layerDefinitions.isEmpty){
       return nil
     }

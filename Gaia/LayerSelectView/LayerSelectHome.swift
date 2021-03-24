@@ -20,7 +20,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     if let url = urls.first {
       let data = try? Data(contentsOf: url)
       if(data != nil) {
-        results = self.coordinatorView.done(data: data!)
+        results = self.coordinatorView.acceptLayerDefinitions(from: data!)
       }
     }
     
@@ -115,7 +115,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
           style: LayerManager.shared.compositeStyle.style
         )
         
-        _ = self.coordinatorView.done(layerDefinitions: [layerDefinition])
+        _ = self.coordinatorView.acceptLayerDefinitions(from: [layerDefinition])
       }),
       UIAction(title: "New", image: UIImage(systemName: "plus"), handler: {_ in
         self.requestLayerEdit(.new)
