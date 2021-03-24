@@ -56,11 +56,13 @@ class LayerSelectCoordinatorView: CoordinatorView {
       return nil
     }
     
-    let single = layerDefinitions.count == 1
-    
     let results = LayerAcceptanceResults(submitted: layerDefinitions.map({LayerManager.shared.acceptLayer($0, methods: methods)}))
-    //handle making single layers visible here
     if(!results.accepted.isEmpty) {
+      if results.submitted.count == 1,
+         let addedLayer = results.added.first?.layer {
+        addedLayer.visible = true // if adding a single layer, make it visible
+      }
+      
       DispatchQueue.main.async {
         LayerManager.shared.saveLayers()
       }

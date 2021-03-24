@@ -177,7 +177,7 @@ class LayerManager {
           if(existing == nil) {
             print("yes we are adding")
             let layer = Layer(layerDefinition, context: managedContext)
-            return .accepted(method)
+            return .accepted(method, layer: layer)
           }
           
           error = .error(.layerExistsWithId(layerDefinition.metadata.id))
@@ -322,16 +322,18 @@ struct LayerAcceptanceResult {
   let method: LayerAcceptanceMethod?
   let error: LayerAcceptanceError?
   
+  let layer: Layer?
+  
   var accepted: Bool {
     error == nil
   }
   
-  static func accepted(_ method: LayerAcceptanceMethod) -> Self {
-    self.init(method: method, error: nil)
+  static func accepted(_ method: LayerAcceptanceMethod, layer: Layer? = nil) -> Self {
+    self.init(method: method, error: nil, layer: layer)
   }
   
   static func error(_ error: LayerAcceptanceError) -> Self {
-    self.init(method: nil, error: error)
+    self.init(method: nil, error: error, layer: nil)
   }
 }
 
