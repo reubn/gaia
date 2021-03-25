@@ -7,6 +7,7 @@ struct LayerSelectConfig {
   
   var showPinned: Bool = true
   var showDisabled: [ShowDisabledStyle] = [.section]
+  var showUngrouped: Bool = true
   
   unowned var layerEditDelegate: LayerEditDelegate? = nil
   

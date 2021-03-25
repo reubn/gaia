@@ -44,6 +44,24 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     
     emptyState.update()
     
+    if(layerSelectConfig.showUngrouped) {
+      var ungroupedLayerSelectConfig = layerSelectConfig
+      ungroupedLayerSelectConfig.reorderLayers = false
+      
+      let ungroupedSection = Section(
+        group: LayerGroup(id: "ungrouped", name: "Ungrouped", colour: .systemRed, selectionFunction: {
+          LayerManager.shared.ungroupedLayers.sorted(by: LayerManager.shared.layerSortingFunction)
+        }),
+        layerSelectConfig: ungroupedLayerSelectConfig,
+        scrollView: self
+      )
+      
+      stack.addArrangedSubview(ungroupedSection)
+
+      ungroupedSection.translatesAutoresizingMaskIntoConstraints = false
+      ungroupedSection.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
+    }
+    
     if(layerSelectConfig.showPinned) {
       var pinnedLayerSelectConfig = layerSelectConfig
       pinnedLayerSelectConfig.reorderLayers = false

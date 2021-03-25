@@ -43,7 +43,7 @@ extension LayerDefinition {
       metadata: LayerDefinition.Metadata(
         id: id,
         name: "XYZ Import",
-        group: "uncategorised",
+        group: "",
         groupIndex: 0
       ),
       style: Style(

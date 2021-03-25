@@ -11,12 +11,13 @@ class LayerManager {
   let multicastCompositeStyleDidChangeDelegate = MulticastDelegate<(LayerManagerDelegate)>()
 
   lazy var groups = [
-    LayerGroup(id: "uncategorised", name: "Uncategorised", colour: .systemPurple),
     LayerGroup(id: "overlay", name: "Overlays", colour: .systemPink),
     LayerGroup(id: "aerial", name: "Aerial Imagery", colour: .systemGreen),
     LayerGroup(id: "base", name: "Base Maps", colour: .systemBlue),
     LayerGroup(id: "historic", name: "Historic", colour: .brown)
   ]
+  
+  lazy var groupIds = groups.map({$0.id})
   
   var layers: [Layer] = []
 
@@ -35,6 +36,12 @@ class LayerManager {
   var disabledLayers: [Layer]{
     get {
       layers.filter({!$0.enabled})
+    }
+  }
+  
+  var ungroupedLayers: [Layer]{
+    get {
+      layers.filter({!groupIds.contains($0.group)})
     }
   }
 

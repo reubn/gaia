@@ -109,7 +109,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
           metadata: LayerDefinition.Metadata(
             id: "composite_\(randomId)",
             name: "Composite Layer",
-            group: "uncategorised",
+            group: "",
             groupIndex: 0
           ),
           style: LayerManager.shared.compositeStyle.style
