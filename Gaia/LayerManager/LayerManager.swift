@@ -68,7 +68,7 @@ class LayerManager {
 
   func layerSortingFunction(a: Layer, b: Layer) -> Bool {
     if(a.group == b.group && a.enabled != b.enabled) {
-      return b.enabled // sort disabled layers below within same group
+      return a.enabled // sort disabled layers below within same group
     }
     
     return layerSortingFunction(a: LayerDefinition.Metadata(layer: a), b: LayerDefinition.Metadata(layer: b))
@@ -76,12 +76,12 @@ class LayerManager {
   
   func layerSortingFunction(a: LayerDefinition.Metadata, b: LayerDefinition.Metadata) -> Bool {
     if(a.group != b.group) {
-      return groups.firstIndex(where: {layerGroup in a.group == layerGroup.id}) ?? 0 > groups.firstIndex(where: {layerGroup in b.group == layerGroup.id}) ?? 0
+      return groups.firstIndex(where: {layerGroup in a.group == layerGroup.id}) ?? 0 < groups.firstIndex(where: {layerGroup in b.group == layerGroup.id}) ?? 0
     }
     
-    if(a.groupIndex != b.groupIndex) {return a.groupIndex > b.groupIndex}
+    if(a.groupIndex != b.groupIndex) {return a.groupIndex < b.groupIndex}
     
-    return a.name > b.name
+    return a.name < b.name
   }
   
   func clearData(){
@@ -227,7 +227,7 @@ class LayerManager {
       return (count: visibleOverlayLayers.count, restore: false)
     } else {
       // no visible overlays, restore. Either captured layers, or topmost overlay layer
-      let layersToRestore: [Layer?] = magicLayers ?? [layers.sorted(by: layerSortingFunction).last(where: {!$0.isOpaque})]
+      let layersToRestore: [Layer?] = magicLayers ?? [layers.sorted(by: layerSortingFunction).first(where: {!$0.isOpaque})]
       layersToRestore.forEach({
         if($0 != nil){
           showLayer(layer: $0!, mutuallyExclusive: false)
@@ -241,7 +241,7 @@ class LayerManager {
   }
   
   public func magicPinned(forward: Bool) -> Layer? {
-    let interestedLayers = pinnedLayers.filter({$0.isOpaque}).sorted(by: layerSortingFunction).reversed()
+    let interestedLayers = pinnedLayers.filter({$0.isOpaque}).sorted(by: layerSortingFunction)
     
     if(interestedLayers.isEmpty) {return nil}
     

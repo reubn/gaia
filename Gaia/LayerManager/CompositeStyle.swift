@@ -8,7 +8,7 @@ struct CompositeStyle: Equatable, Hashable {
   let sortedLayers: [Layer]
   
   var topOpaque: Layer? {
-    sortedLayers.reversed().first(where: {$0.isOpaque})
+    sortedLayers.first(where: {$0.isOpaque})
   }
   
   var needsDarkUI: Bool {
@@ -31,7 +31,7 @@ struct CompositeStyle: Equatable, Hashable {
     var sources: [String: Style.Source] = [:]
     var layers: [Style.Layer] = []
     
-    for layer in sortedLayers {
+    for layer in sortedLayers.reversed() {
       let style = layer.style
       
       sources.merge(style.sources) {(_, new) in new}

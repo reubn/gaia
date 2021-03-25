@@ -62,7 +62,7 @@
 		1B96528D25D5C3DA0017A43E /* KeyboardLayoutGuide in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */; };
 		1B96529225D7E5F20017A43E /* LayerSelectViewEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96529125D7E5F20017A43E /* LayerSelectViewEmpty.swift */; };
 		1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */; };
-		1B9DDAFC25F2AC1E00B3407F /* ReversedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DDAFB25F2AC1E00B3407F /* ReversedCollection.swift */; };
+		1B9DDAFC25F2AC1E00B3407F /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DDAFB25F2AC1E00B3407F /* Collection.swift */; };
 		1BA03E3425DDAEEE00EE273C /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate2D.swift */; };
 		1BA03E3625DE8BE300EE273C /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA03E3525DE8BE300EE273C /* UIImage.swift */; };
 		1BA03E3A25DEB9BE00EE273C /* DistanceDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA03E3925DEB9BE00EE273C /* DistanceDisplay.swift */; };
@@ -169,7 +169,7 @@
 		1B96528925D5BC550017A43E /* LayerSelectEdit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayerSelectEdit.swift; sourceTree = "<group>"; };
 		1B96529125D7E5F20017A43E /* LayerSelectViewEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectViewEmpty.swift; sourceTree = "<group>"; };
 		1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectHomeEmpty.swift; sourceTree = "<group>"; };
-		1B9DDAFB25F2AC1E00B3407F /* ReversedCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReversedCollection.swift; sourceTree = "<group>"; };
+		1B9DDAFB25F2AC1E00B3407F /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
 		1BA03E3525DE8BE300EE273C /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		1BA03E3925DEB9BE00EE273C /* DistanceDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceDisplay.swift; sourceTree = "<group>"; };
@@ -314,7 +314,7 @@
 				1BDACA64260A4BA700248962 /* NSRegularExpression.swift */,
 				1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate2D.swift */,
 				1BA03E3525DE8BE300EE273C /* UIImage.swift */,
-				1B9DDAFB25F2AC1E00B3407F /* ReversedCollection.swift */,
+				1B9DDAFB25F2AC1E00B3407F /* Collection.swift */,
 				1B47B96C25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift */,
 				1BD6A3BD2600E34B001E503D /* CoordinatePair.swift */,
 				1B8AE386260501B700CF3D8E /* MGLCoordinateBounds.swift */,
@@ -539,7 +539,7 @@
 			files = (
 				1BD6A3B825FF4CAA001E503D /* CanvasView.swift in Sources */,
 				1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */,
-				1B9DDAFC25F2AC1E00B3407F /* ReversedCollection.swift in Sources */,
+				1B9DDAFC25F2AC1E00B3407F /* Collection.swift in Sources */,
 				1B7644C325CAFA7300572A70 /* Style.swift in Sources */,
 				1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */,
 				1B6033BD25D1DBD300211150 /* UIColor-hex.swift in Sources */,

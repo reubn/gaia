@@ -1,9 +1,9 @@
 import Foundation
 
-extension ReversedCollection {
+extension Collection {
   var lastIndex: Index {
     get {
-      self.index(before: self.endIndex)
+      self.index(self.endIndex, offsetBy: -1)
     }
   }
   
@@ -17,7 +17,7 @@ extension ReversedCollection {
   
   func index(before: Index, wrap: Bool) -> Index {
     if(!wrap) {
-      return self.index(before: before)
+      return self.index(before, offsetBy: -1)
     }
     
     return self.index(before, offsetBy: -1, limitedBy: self.startIndex) ?? self.lastIndex

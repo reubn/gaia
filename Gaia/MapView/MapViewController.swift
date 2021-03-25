@@ -198,7 +198,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
         let layersToEnable = layers != nil && !layers!.isEmpty
           ? layers!
           : [
-              LayerManager.shared.pinnedLayers.sorted(by: LayerManager.shared.layerSortingFunction).last(where: {$0.isOpaque})
+              LayerManager.shared.pinnedLayers.sorted(by: LayerManager.shared.layerSortingFunction).first(where: {$0.isOpaque})
                 ?? LayerManager.shared.layers.first(where: {$0.isOpaque})
             ].filter({$0 != nil})
         

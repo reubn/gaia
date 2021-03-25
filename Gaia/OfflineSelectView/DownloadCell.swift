@@ -182,8 +182,8 @@ class DownloadCell: UITableViewCell {
       first = false
       
       let layersMetadata = context!.layerMetadata
-      let orderedLayersMetadata = layersMetadata.sorted(by: LayerManager.shared.layerSortingFunction).reversed()
-      layersString = orderedLayersMetadata.map({$0.name}).joined(separator: ", ")
+      let sortedLayersMetadata = layersMetadata.sorted(by: LayerManager.shared.layerSortingFunction)
+      layersString = sortedLayersMetadata.map({$0.name}).joined(separator: ", ")
       
       let bounds = MGLCoordinateBounds(context!.bounds)
       let coordinateSpan = MGLCoordinateBoundsGetCoordinateSpan(bounds)

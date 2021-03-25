@@ -61,7 +61,7 @@ class Section: UIStackView {
     self.scrollView = scrollView
     self.normallyCollapsed = normallyCollapsed
     
-    self.layers = group.getLayers().reversed()
+    self.layers = group.getLayers()
     
     super.init(frame: CGRect())
         
@@ -144,8 +144,8 @@ class Section: UIStackView {
   
   func update() {
     self.layers = layerSelectConfig.showDisabled.contains(.inline)
-      ? group.getLayers().reversed()
-      : group.getLayers().filter({$0.enabled}).reversed()
+      ? group.getLayers()
+      : group.getLayers().filter({$0.enabled})
     
     if(self.layers.count > 0) {
       if(openState == .hidden) {
