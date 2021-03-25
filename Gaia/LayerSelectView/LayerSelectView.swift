@@ -62,7 +62,7 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
       pinnedSection.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
     }
 
-    LayerManager.shared.layerGroups.forEach({
+    LayerManager.shared.groups.forEach({
       let section = Section(
         group: $0,
         layerSelectConfig: layerSelectConfig,

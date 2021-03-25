@@ -6,12 +6,11 @@ import Mapbox
 class LayerManager {
   private let managedContext: NSManagedObjectContext
   
-  var groups: [String: [Layer]]?
   var magicLayers: [Layer]?
 
   let multicastCompositeStyleDidChangeDelegate = MulticastDelegate<(LayerManagerDelegate)>()
 
-  lazy var layerGroups = [
+  lazy var groups = [
     LayerGroup(id: "uncategorised", name: "Uncategorised", colour: .systemPurple),
     LayerGroup(id: "overlay", name: "Overlays", colour: .systemPink),
     LayerGroup(id: "aerial", name: "Aerial Imagery", colour: .systemGreen),
@@ -19,17 +18,7 @@ class LayerManager {
     LayerGroup(id: "historic", name: "Historic", colour: .brown)
   ]
   
-  var layers: [Layer]{
-    get {
-      var layers: [Layer] = []
-
-      for (_, group) in groups! {
-        layers.append(contentsOf: group)
-      }
-
-      return layers
-    }
-  }
+  var layers: [Layer] = []
 
   var visibleLayers: [Layer]{
     get {
@@ -87,7 +76,7 @@ class LayerManager {
   
   func layerSortingFunction(a: LayerDefinition.Metadata, b: LayerDefinition.Metadata) -> Bool {
     if(a.group != b.group) {
-      return layerGroups.firstIndex(where: {layerGroup in a.group == layerGroup.id}) ?? 0 > layerGroups.firstIndex(where: {layerGroup in b.group == layerGroup.id}) ?? 0
+      return groups.firstIndex(where: {layerGroup in a.group == layerGroup.id}) ?? 0 > groups.firstIndex(where: {layerGroup in b.group == layerGroup.id}) ?? 0
     }
     
     if(a.groupIndex != b.groupIndex) {return a.groupIndex > b.groupIndex}
@@ -110,16 +99,7 @@ class LayerManager {
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Layer")
 
     do {
-      let results = try managedContext.fetch(fetchRequest) as! [Layer]
-
-      let unorderedGroups = Dictionary(grouping: results) { (obj) -> String in
-        return obj.group
-      }
-
-      groups = unorderedGroups.mapValues({
-        $0.sorted(by: layerSortingFunction)
-      })
-      
+      layers = try managedContext.fetch(fetchRequest) as! [Layer]
       let previous = _compositeStyle
       
       _compositeStyle = nil // flush cache
@@ -230,7 +210,7 @@ class LayerManager {
   }
 
   public func getLayers(layerGroup: LayerGroup) -> [Layer] {
-    groups![layerGroup.id] ?? []
+    layers.filter({$0.group == layerGroup.id}).sorted(by: layerSortingFunction)
   }
 
   public func magic() -> (count: Int, restore: Bool) {
