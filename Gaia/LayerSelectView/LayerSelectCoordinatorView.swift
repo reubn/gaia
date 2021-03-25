@@ -63,9 +63,9 @@ class LayerSelectCoordinatorView: CoordinatorView {
         DispatchQueue.main.async {
           LayerManager.shared.show(layer: addedLayer, mutuallyExclusive: true) // if adding a single layer, make it visible
         }
+      } else {
+        LayerManager.shared.save()
       }
-      
-      
     }
     
     return results
