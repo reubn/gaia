@@ -53,7 +53,8 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
           LayerManager.shared.ungroupedLayers.sorted(by: LayerManager.shared.layerSortingFunction)
         }),
         layerSelectConfig: ungroupedLayerSelectConfig,
-        scrollView: self
+        scrollView: self,
+        layerCanDrop: {_ in false}
       )
       
       stack.addArrangedSubview(ungroupedSection)
@@ -71,7 +72,10 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
           LayerManager.shared.pinnedLayers.sorted(by: LayerManager.shared.layerSortingFunction)
         }),
         layerSelectConfig: pinnedLayerSelectConfig,
-        scrollView: self
+        scrollView: self,
+        layerCanDrop: {layer in !layer.pinned},
+        layerDidDrag: {layer in layer.pinned = false},
+        layerDidDrop: {layer in layer.pinned = true}
       )
       
       stack.addArrangedSubview(pinnedSection)
@@ -103,7 +107,8 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
         }),
         layerSelectConfig: disabledLayerSelectConfig,
         scrollView: self,
-        normallyCollapsed: true
+        normallyCollapsed: true,
+        layerCanDrop: {_ in false}
       )
       
       stack.addArrangedSubview(disabledSection)

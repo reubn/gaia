@@ -8,6 +8,10 @@ class Section: UIStackView {
   let group: LayerGroup
   let layerSelectConfig: LayerSelectConfig
   
+  let layerCanDrop: ((Layer) -> Bool)?
+  let layerDidDrag: ((Layer) -> ())?
+  let layerDidDrop: ((Layer) -> ())?
+
   let tableView = SectionTableView()
   
   var cellReuseCache: [String: LayerCell] = [:]
@@ -54,7 +58,15 @@ class Section: UIStackView {
     return view
   }()
   
-  init(group: LayerGroup, layerSelectConfig: LayerSelectConfig, scrollView: LayerSelectView, normallyCollapsed: Bool = false){
+  init(
+    group: LayerGroup,
+    layerSelectConfig: LayerSelectConfig,
+    scrollView: LayerSelectView,
+    normallyCollapsed: Bool = false,
+    layerCanDrop: ((Layer) -> Bool)? = nil,
+    layerDidDrag: ((Layer) -> ())? = nil,
+    layerDidDrop: ((Layer) -> ())? = nil
+  ){
     self.group = group
     self.layerSelectConfig = layerSelectConfig
     
@@ -62,6 +74,10 @@ class Section: UIStackView {
     self.normallyCollapsed = normallyCollapsed
     
     self.layers = group.getLayers()
+    
+    self.layerCanDrop = layerCanDrop
+    self.layerDidDrag = layerDidDrag
+    self.layerDidDrop = layerDidDrop
     
     super.init(frame: CGRect())
         
@@ -88,9 +104,9 @@ class Section: UIStackView {
     tableView.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(0.75)
     tableView.dataSource = self
     tableView.delegate = self
-    tableView.dragDelegate = self // empty drag, drop delegate methods needed to enable moveRowAt... bug?
-    tableView.dropDelegate = self // empty drag, drop delegate methods needed to enable moveRowAt... bug?
-    tableView.dragInteractionEnabled = layerSelectConfig.reorderLayers
+    tableView.dragDelegate = self
+    tableView.dropDelegate = self
+    tableView.dragInteractionEnabled = true
     
     tableView.isScrollEnabled = false
     tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
@@ -192,19 +208,51 @@ class Section: UIStackView {
   }
 }
 
-extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDropDelegate, UITableViewDelegate {
+struct DragDropContainer {
+  let layer: Layer
+  let layerDidDrag: ((Layer) -> ())?
+}
+
+extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDropDelegate, UITableViewDelegate {  
   func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-    return [] // empty drag, drop delegate methods needed to enable moveRowAt... bug?
+    let dragItem = UIDragItem(itemProvider: NSItemProvider())
+    dragItem.localObject = DragDropContainer(layer: layers[indexPath.row], layerDidDrag: layerDidDrag)
+    
+    return [dragItem]
   }
   
-  func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {} // empty drag, drop delegate methods needed to enable moveRowAt... bug?
+  func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+    let indexPath = coordinator.destinationIndexPath ?? IndexPath(row: 0, section: 0)
+
+    guard let container = coordinator.session.items.first?.localObject as? DragDropContainer else { return }
+    
+    let layer = container.layer
+    let sourceLayerDidDrag = container.layerDidDrag
+    
+    sourceLayerDidDrag?(layer)
+
+    if(layerDidDrop != nil) {
+      layerDidDrop!(layer)
+
+      LayerManager.shared.save()
+    } else {
+      layer.group = group.id
+      
+      self.layers.insert(layer, at: indexPath.row)
+      self.cementLayerIndicies()
+    }
+  }
   
   func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
-    return false // reject drops between groups
+    if let container = session.items.first?.localObject as? DragDropContainer {
+      return layerCanDrop?(container.layer) ?? true
+    }
+    
+    return false
   }
   
   func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-    return true
+    return layerSelectConfig.reorderLayers
   }
   
   func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
@@ -212,6 +260,10 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
     layers.remove(at: sourceIndexPath.row)
     layers.insert(movedLayer, at: destinationIndexPath.row)
     
+    cementLayerIndicies()
+  }
+  
+  func cementLayerIndicies(){
     for (index, layer) in layers.enumerated() {
       layer.groupIndex = Int16(index) // reset indexes on group layers
     }
