@@ -201,6 +201,22 @@ class LayerManager {
     return false
   }
   
+  func show(layers _layers: [Layer?]) {
+    for layer in _layers {
+      layer?.visible = true
+    }
+    
+    save()
+  }
+  
+  func hide(layers _layers: [Layer?]) {
+    for layer in _layers {
+      layer?.visible = false
+    }
+    
+    save()
+  }
+  
   func filter(_ shouldBeEnabled: (Layer) -> Bool){
     for layer in layers {
       layer.visible = shouldBeEnabled(layer)
@@ -220,19 +236,15 @@ class LayerManager {
       magicLayers = visibleOverlayLayers
 
       // and hide them
-      visibleOverlayLayers.forEach({
-        hide(layer: $0, mutuallyExclusive: false)
-      })
+      hide(layers: visibleOverlayLayers)
       
       return (count: visibleOverlayLayers.count, restore: false)
     } else {
       // no visible overlays, restore. Either captured layers, or topmost overlay layer
       let layersToRestore: [Layer?] = magicLayers ?? [layers.sorted(by: layerSortingFunction).first(where: {!$0.isOpaque})]
-      layersToRestore.forEach({
-        if($0 != nil){
-          show(layer: $0!, mutuallyExclusive: false)
-        }
-      })
+      
+      // and show them
+      show(layers: layersToRestore)
 
       magicLayers = nil
       

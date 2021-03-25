@@ -195,19 +195,15 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   func resolve(warning: WarningReason){
     switch warning {
       case .emptyStyle(let layers):
-        let layersToEnable = layers != nil && !layers!.isEmpty
+        let layersToShow = layers != nil && !layers!.isEmpty
           ? layers!
           : [
               LayerManager.shared.pinnedLayers.sorted(by: LayerManager.shared.layerSortingFunction).first(where: {$0.isOpaque})
                 ?? LayerManager.shared.layers.first(where: {$0.isOpaque})
             ].filter({$0 != nil})
         
-        if(!layersToEnable.isEmpty) {
-          for layer in layersToEnable as! [Layer] {
-            layer.visible = true
-          }
-          
-          LayerManager.shared.save()
+        if(!layersToShow.isEmpty) {
+          LayerManager.shared.show(layers: layersToShow)
           HUDManager.shared.displayMessage(message: .noLayersWarningFixed)
         }
       case .minZoom(let minZoom):

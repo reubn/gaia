@@ -60,12 +60,12 @@ class LayerSelectCoordinatorView: CoordinatorView {
     if(!results.accepted.isEmpty) {
       if results.submitted.count == 1,
          let addedLayer = results.added.first?.layer {
-        addedLayer.visible = true // if adding a single layer, make it visible
+        DispatchQueue.main.async {
+          LayerManager.shared.show(layer: addedLayer, mutuallyExclusive: true) // if adding a single layer, make it visible
+        }
       }
       
-      DispatchQueue.main.async {
-        LayerManager.shared.save()
-      }
+      
     }
     
     return results
