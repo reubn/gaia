@@ -1,13 +1,13 @@
 import Foundation
 
 struct LayerSelectConfig {
-  var mutuallyExclusive: Bool = true
-  var layerContextActions: Bool = true
-  var reorderLayers: Bool = true
+  var mutuallyExclusive = true
+  var layerContextActions = true
+  var reorderLayers = true
   
-  var showPinned: Bool = true
+  var showPinned = true
   var showDisabled: [ShowDisabledStyle] = [.section]
-  var showUngrouped: Bool = true
+  var showUngrouped = true
   
   unowned var layerEditDelegate: LayerEditDelegate? = nil
   
