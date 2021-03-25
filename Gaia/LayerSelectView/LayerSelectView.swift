@@ -49,7 +49,7 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
       ungroupedLayerSelectConfig.reorderLayers = false
       
       let ungroupedSection = Section(
-        group: LayerGroup(id: "ungrouped", name: "Ungrouped", colour: .systemRed, selectionFunction: {
+        group: LayerGroup(id: "", name: "Ungrouped", colour: .systemRed, selectionFunction: {
           LayerManager.shared.ungroupedLayers.sorted(by: LayerManager.shared.layerSortingFunction)
         }),
         layerSelectConfig: ungroupedLayerSelectConfig,
