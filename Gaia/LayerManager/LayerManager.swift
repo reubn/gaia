@@ -107,17 +107,17 @@ class LayerManager {
     } catch {print("Failed")}
   }
   
-  func saveLayers(){
+  func save(){
     do {
-        try managedContext.save()
-      
-        reloadData()
+      try managedContext.save()
+    
+      reloadData()
     } catch {
         print("saving error :", error)
     }
   }
   
-  func acceptLayer(_ layerDefinition: LayerDefinition, methods: [LayerAcceptanceMethod]? = nil) -> LayerAcceptanceResult {
+  func accept(layerDefinition: LayerDefinition, methods: [LayerAcceptanceMethod]? = nil) -> LayerAcceptanceResult {
     let acceptanceMethods = (methods?.isEmpty ?? false ? nil : methods) ?? [.update(), .add]
     
     var error: LayerAcceptanceResult = .error(.unexplained)
@@ -168,13 +168,13 @@ class LayerManager {
     return error
   }
   
-  func removeLayer(layer: Layer){
+  func remove(layer: Layer){
     managedContext.delete(layer)
     
-    saveLayers()
+    save()
   }
 
-  @discardableResult func showLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
+  @discardableResult func show(layer: Layer, mutuallyExclusive: Bool) -> Bool {
     if(!layer.isOpaque || !mutuallyExclusive) {
       layer.visible = true
     } else {
@@ -185,15 +185,15 @@ class LayerManager {
       }
     }
 
-    saveLayers()
+    save()
     
     return true
   }
 
-  @discardableResult func hideLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
+  @discardableResult func hide(layer: Layer, mutuallyExclusive: Bool) -> Bool {
     if(!layer.isOpaque || !mutuallyExclusive || visibleLayers.filter({$0.isOpaque}).count > 1) {
       layer.visible = false
-      saveLayers()
+      save()
       
       return true
     }
@@ -201,12 +201,12 @@ class LayerManager {
     return false
   }
   
-  func filterLayers(_ shouldBeEnabled: (Layer) -> Bool){
+  func filter(_ shouldBeEnabled: (Layer) -> Bool){
     for layer in layers {
       layer.visible = shouldBeEnabled(layer)
     }
     
-    saveLayers()
+    save()
   }
 
   public func getLayers(layerGroup: LayerGroup) -> [Layer] {
@@ -221,7 +221,7 @@ class LayerManager {
 
       // and hide them
       visibleOverlayLayers.forEach({
-        hideLayer(layer: $0, mutuallyExclusive: false)
+        hide(layer: $0, mutuallyExclusive: false)
       })
       
       return (count: visibleOverlayLayers.count, restore: false)
@@ -230,7 +230,7 @@ class LayerManager {
       let layersToRestore: [Layer?] = magicLayers ?? [layers.sorted(by: layerSortingFunction).first(where: {!$0.isOpaque})]
       layersToRestore.forEach({
         if($0 != nil){
-          showLayer(layer: $0!, mutuallyExclusive: false)
+          show(layer: $0!, mutuallyExclusive: false)
         }
       })
 
@@ -251,7 +251,7 @@ class LayerManager {
     switch visiblePinnedLayers.count {
     case 0: // show the first pinned
       let nextLayer = interestedLayers.first!
-      showLayer(layer: nextLayer, mutuallyExclusive: true)
+      show(layer: nextLayer, mutuallyExclusive: true)
       
       return nextLayer
     case 1: // move to next pinned, or wrap around
@@ -261,7 +261,7 @@ class LayerManager {
         : interestedLayers.index(before: currentIndex, wrap: true)
       
       let nextLayer = interestedLayers[nextIndex]
-      showLayer(layer: nextLayer, mutuallyExclusive: true)
+      show(layer: nextLayer, mutuallyExclusive: true)
       
       return nextLayer
     default: // handle more than one pinned visible

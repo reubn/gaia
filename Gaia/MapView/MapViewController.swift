@@ -207,14 +207,14 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
             layer.visible = true
           }
           
-          LayerManager.shared.saveLayers()
+          LayerManager.shared.save()
           HUDManager.shared.displayMessage(message: .noLayersWarningFixed)
         }
       case .minZoom(let minZoom):
         mapView.setZoomLevel(minZoom, animated: true)
         HUDManager.shared.displayMessage(message: .zoomWarningFixed)
       case .multipleOpaque(let top):
-        LayerManager.shared.showLayer(layer: top, mutuallyExclusive: true)
+        LayerManager.shared.show(layer: top, mutuallyExclusive: true)
         HUDManager.shared.displayMessage(message: .multipleOpaqueWarningFixed)
       case .bounds(let superbound):
         mapView.setVisibleCoordinateBounds(superbound, sensible: true, minZoom: styleCachedConstraints?.zoomLevelsCovered.0, animated: true)

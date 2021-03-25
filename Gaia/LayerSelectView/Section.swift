@@ -162,10 +162,10 @@ class Section: UIStackView {
     var result: Bool
     
     if(layer.visible) {
-      result = LayerManager.shared.hideLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
+      result = LayerManager.shared.hide(layer: layer, mutuallyExclusive: mutuallyExclusive)
     }
     else {
-      result = LayerManager.shared.showLayer(layer: layer, mutuallyExclusive: mutuallyExclusive)
+      result = LayerManager.shared.show(layer: layer, mutuallyExclusive: mutuallyExclusive)
     }
     
     if(result) {
@@ -216,7 +216,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       layer.groupIndex = Int16(index) // reset indexes on group layers
     }
     
-    LayerManager.shared.saveLayers()
+    LayerManager.shared.save()
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -270,7 +270,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
           image: UIImage(systemName: layer.pinned ? "pin.slash.fill" : "pin.fill")) { _ in
           layer.pinned = !layer.pinned
           
-          LayerManager.shared.saveLayers()
+          LayerManager.shared.save()
         })
       }
       
@@ -284,7 +284,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       moreChildren.append(UIAction(
         title: "Isolate",
         image: UIImage(systemName: "square.3.stack.3d.middle.fill")) { _ in
-          LayerManager.shared.filterLayers {
+          LayerManager.shared.filter {
             $0 == layer
           }
       })
@@ -328,7 +328,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
             layer.visible = false
           }
 
-          LayerManager.shared.saveLayers()
+          LayerManager.shared.save()
       }, at: layer.enabled ? moreChildren.endIndex : moreChildren.startIndex)
       
       topChildren.append(UIMenu(
@@ -343,7 +343,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
         attributes: .destructive) { _ in
           let layerName = layer.name
           self.layers.remove(at: indexPath.row)
-          LayerManager.shared.removeLayer(layer: layer)
+          LayerManager.shared.remove(layer: layer)
         
           UINotificationFeedbackGenerator().notificationOccurred(.success)
           HUDManager.shared.displayMessage(message: .layerDeleted(layerName))

@@ -56,7 +56,7 @@ class LayerSelectCoordinatorView: CoordinatorView {
       return nil
     }
     
-    let results = LayerAcceptanceResults(submitted: layerDefinitions.map({LayerManager.shared.acceptLayer($0, methods: methods)}))
+    let results = LayerAcceptanceResults(submitted: layerDefinitions.map({LayerManager.shared.accept(layerDefinition: $0, methods: methods)}))
     if(!results.accepted.isEmpty) {
       if results.submitted.count == 1,
          let addedLayer = results.added.first?.layer {
@@ -64,7 +64,7 @@ class LayerSelectCoordinatorView: CoordinatorView {
       }
       
       DispatchQueue.main.async {
-        LayerManager.shared.saveLayers()
+        LayerManager.shared.save()
       }
     }
     
