@@ -78,6 +78,8 @@
 		1BA9BD2025C2100F00AC97C7 /* LayerSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD1F25C2100F00AC97C7 /* LayerSelectView.swift */; };
 		1BA9BD2425C212A900AC97C7 /* LayerSelectHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD2325C212A900AC97C7 /* LayerSelectHome.swift */; };
 		1BA9BD2625C21D7C00AC97C7 /* LayerSelectImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD2525C21D7C00AC97C7 /* LayerSelectImport.swift */; };
+		1BB94BD6260CAA8F002C0D67 /* LayerAcceptance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB94BD5260CAA8F002C0D67 /* LayerAcceptance.swift */; };
+		1BB94BD8260CAAAB002C0D67 /* LayerGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB94BD7260CAAAB002C0D67 /* LayerGroup.swift */; };
 		1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; };
 		1BBD3FEF25B63B10007B8BC7 /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */; };
@@ -185,6 +187,8 @@
 		1BA9BD1F25C2100F00AC97C7 /* LayerSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectView.swift; sourceTree = "<group>"; };
 		1BA9BD2325C212A900AC97C7 /* LayerSelectHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectHome.swift; sourceTree = "<group>"; };
 		1BA9BD2525C21D7C00AC97C7 /* LayerSelectImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectImport.swift; sourceTree = "<group>"; };
+		1BB94BD5260CAA8F002C0D67 /* LayerAcceptance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerAcceptance.swift; sourceTree = "<group>"; };
+		1BB94BD7260CAAAB002C0D67 /* LayerGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerGroup.swift; sourceTree = "<group>"; };
 		1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelLayout.swift; sourceTree = "<group>"; };
 		1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewPanelViewController.swift; sourceTree = "<group>"; };
 		1BBD3FF425B70C06007B8BC7 /* OfflineSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectPanelLayout.swift; sourceTree = "<group>"; };
@@ -292,6 +296,8 @@
 			isa = PBXGroup;
 			children = (
 				1B3401D425B4A1570091FA3B /* LayerManager.swift */,
+				1BB94BD7260CAAAB002C0D67 /* LayerGroup.swift */,
+				1BB94BD5260CAA8F002C0D67 /* LayerAcceptance.swift */,
 				1BBD3FFE25B8B0B5007B8BC7 /* CompositeStyle.swift */,
 				1B7644C225CAFA7300572A70 /* Style.swift */,
 				1B7644C025CAFA2F00572A70 /* LayerDefinition.swift */,
@@ -597,6 +603,7 @@
 				1BBD3FF525B70C06007B8BC7 /* OfflineSelectPanelLayout.swift in Sources */,
 				1B6638AA25B10B530071F03D /* SceneDelegate.swift in Sources */,
 				1B8C078F25C48245008C08B2 /* LocationInfoPanelViewController.swift in Sources */,
+				1BB94BD6260CAA8F002C0D67 /* LayerAcceptance.swift in Sources */,
 				1B3401D025B474260091FA3B /* SectionTableView.swift in Sources */,
 				1B7644BF25CAD61900572A70 /* Layer+CoreData.swift in Sources */,
 				1B6033BF25D1DBEE00211150 /* randomSystemColor.swift in Sources */,
@@ -618,6 +625,7 @@
 				1BBD3FFF25B8B0B5007B8BC7 /* CompositeStyle.swift in Sources */,
 				1BA9BD0C25BA266700AC97C7 /* CoordinatedView.swift in Sources */,
 				1BD6A3BA2600DF25001E503D /* LocationInfoPanelShare.swift in Sources */,
+				1BB94BD8260CAAAB002C0D67 /* LayerGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
