@@ -13,7 +13,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   var displayedStyle: Style?
   var needsUpdating = false
   
-  var minimumZoomLevel: Double = 0
+  var styleCachedConstraints: (zoomLevelsCovered: (Double, Double), bounds: Style.BoundsInfo)?
   
   var disabledCount: Int? {
     didSet {
@@ -46,19 +46,26 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     
     return label
   }()
-  
-  var previewIsBlurred = false {
+
+  var previewBlurReasons: [PreviewBlurReason] = [] {
     didSet {
-      if(oldValue != previewIsBlurred) {
+      if(oldValue != previewBlurReasons) {
         CATransaction.begin()
         CATransaction.setAnimationTimingFunction(
-          self.previewIsBlurred
+          !self.previewBlurReasons.isEmpty
             ? CAMediaTimingFunction(controlPoints: 0.83, 0.20, 0, 1.15)
             : CAMediaTimingFunction(controlPoints: 0.29, 0.93, 0, 0.92)
         )
         
-        UIView.animate(withDuration: self.previewIsBlurred ? 0.5 : 0.4) {
-          self.previewBlur.layer.opacity = self.previewIsBlurred ? 1 : 0
+        UIView.animate(withDuration: !self.previewBlurReasons.isEmpty ? 0.5 : 0.4) {
+          self.previewBlur.layer.opacity = !self.previewBlurReasons.isEmpty ? 1 : 0
+          self.previewBlurIcon.image = {
+            switch self.previewBlurReasons.first {
+              case .bounds: return UIImage(systemName: "arrow.up.and.down.and.arrow.left.and.right")
+              case .minZoom: return UIImage(systemName: "plus.magnifyingglass")
+              case .none: return nil
+            }
+          }()
         }
         
         CATransaction.commit()
@@ -67,6 +74,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   }
   
   var previewBlurHack: UIViewPropertyAnimator?
+  
+  lazy var previewBlurIcon: UIImageView = UIImageView(image: nil)
   
   lazy var previewBlur: UIVisualEffectView = {
     let blurEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
@@ -83,16 +92,15 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
 
     preview.addSubview(visualEffectView)
     
-    let icon = UIImageView(image: UIImage(systemName: "plus.magnifyingglass"))
-    icon.contentMode = .scaleAspectFit
+    previewBlurIcon.contentMode = .scaleAspectFit
     
-    visualEffectView.contentView.addSubview(icon)
+    visualEffectView.contentView.addSubview(previewBlurIcon)
     
-    icon.translatesAutoresizingMaskIntoConstraints = false
-    icon.widthAnchor.constraint(equalTo: visualEffectView.widthAnchor, multiplier: 0.4).isActive = true
-    icon.heightAnchor.constraint(equalTo: icon.widthAnchor).isActive = true
-    icon.centerXAnchor.constraint(equalTo: visualEffectView.centerXAnchor).isActive = true
-    icon.centerYAnchor.constraint(equalTo: visualEffectView.centerYAnchor).isActive = true
+    previewBlurIcon.translatesAutoresizingMaskIntoConstraints = false
+    previewBlurIcon.widthAnchor.constraint(equalTo: visualEffectView.widthAnchor, multiplier: 0.4).isActive = true
+    previewBlurIcon.heightAnchor.constraint(equalTo: previewBlurIcon.widthAnchor).isActive = true
+    previewBlurIcon.centerXAnchor.constraint(equalTo: visualEffectView.centerXAnchor).isActive = true
+    previewBlurIcon.centerYAnchor.constraint(equalTo: visualEffectView.centerYAnchor).isActive = true
     
     visualEffectView.translatesAutoresizingMaskIntoConstraints = false
     visualEffectView.widthAnchor.constraint(equalTo: preview.widthAnchor).isActive = true
@@ -176,17 +184,28 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
       canvasView.overrideUserInterfaceStyle = _layer!.needsDarkUI ? .dark : .light
       canvasView.setNeedsDisplay()
       
-      (minimumZoomLevel, _) = displayedStyle!.zoomLevelsCovered
+      previewBlurIcon.tintColor = _layer!.needsDarkUI ? .white : .systemBlue
+      
+      styleCachedConstraints = (displayedStyle!.zoomLevelsCovered, displayedStyle!.bounds)
     }
     
     let zoomLevel = MapViewController.shared.mapView.zoomLevel
+    let visibleBounds = MapViewController.shared.mapView.visibleCoordinateBounds
     
-    if(zoomLevel < minimumZoomLevel - 2){
-      previewIsBlurred = true
+    if(zoomLevel < styleCachedConstraints!.zoomLevelsCovered.0 - 2){
+      previewBlurReasons.append(.minZoom)
 
       return
-    } else {
-      previewIsBlurred = false
+    } else if(!previewBlurReasons.isEmpty) {
+      previewBlurReasons = previewBlurReasons.filter({$0 != .minZoom})
+    }
+    
+    if(styleCachedConstraints!.bounds.superbound != nil && !visibleBounds.intersects(with: styleCachedConstraints!.bounds.superbound!)){
+      previewBlurReasons.append(.bounds)
+      
+      return
+    } else if(!previewBlurReasons.isEmpty) {
+      previewBlurReasons = previewBlurReasons.filter({$0 != .bounds})
     }
     
     let parent = MapViewController.shared.mapView.bounds
@@ -269,4 +288,9 @@ extension UIView {
 
     return viewFrame.intersects(inView.bounds) ? isVisible(view: view, inView: inView.superview) : false
   }
+}
+
+enum PreviewBlurReason {
+  case minZoom
+  case bounds
 }
