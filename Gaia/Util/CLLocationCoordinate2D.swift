@@ -71,9 +71,7 @@ extension CLLocationCoordinate2D: Equatable, Hashable {
   init?(_ string: String) {
     let coords = string
       .split(separator: ",")
-      .map({Double($0.trimmingCharacters(in: .whitespacesAndNewlines))})
-      .filter({$0 != nil})
-      as! [Double]
+      .compactMap({Double($0.trimmingCharacters(in: .whitespacesAndNewlines))})
 
     if(coords.count == 2) {
       self.init()
