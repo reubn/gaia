@@ -9,46 +9,46 @@ extension URLInterface {
     case invalid
   }
   
-  func toString(command: Command) -> String {
+  func toQueryItem(command: Command) -> URLQueryItem? {
     switch command {
       case .go(let coordinate):
         return go(coordinate)
       case .layer(let url):
         return layer(url)
       case .invalid:
-        return ""
+        return nil
     }
   }
   
-  func toCommand(command: String, parameters: String) -> Command {
-    switch command {
+  func toCommand(_ queryItem: URLQueryItem) -> Command {
+    switch queryItem.name {
       case "go":
-        return go(parameters)
+        return go(queryItem)
       case "layer":
-        return layer(parameters)
+        return layer(queryItem)
       default:
         return .invalid
     }
   }
   
-  func go(_ coordinate: CLLocationCoordinate2D) -> String {
-    "go\(separator)\(coordinate.latitude),\(coordinate.longitude)"
+  func go(_ coordinate: CLLocationCoordinate2D) -> URLQueryItem {
+    URLQueryItem(name: "go", value: "\(coordinate.latitude),\(coordinate.longitude)")
   }
 
-  func go(_ parameters: String) -> Command {
-    let coordinate = CLLocationCoordinate2D(parameters)
+  func go(_ queryItem: URLQueryItem) -> Command {
+    let coordinate = queryItem.value != nil ? CLLocationCoordinate2D(queryItem.value!) : nil
     
     return coordinate != nil
       ? .go(coordinate!)
       : .invalid
   }
   
-  func layer(_ url: URL) -> String {
-    "layer\(separator)\(url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+  func layer(_ url: URL) -> URLQueryItem {
+    URLQueryItem(name: "layer", value: url.absoluteString)
   }
   
-  func layer(_ parameters: String) -> Command {
-    let url = URL(string: parameters.trimmingCharacters(in: .whitespacesAndNewlines).removingPercentEncoding ?? "")
+  func layer(_ queryItem: URLQueryItem) -> Command {
+    let url = URL(string: queryItem.value?.addingPercentEncoding(withAllowedCharacters: .urlAllowedCharacters) ?? "")
 
     if(url != nil) {
       return .layer(url!)

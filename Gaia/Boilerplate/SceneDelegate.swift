@@ -55,7 +55,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
   
   func handleURL(url: URL) {
-    let command = URLInterface.shared.decode(url: url)
+    let command = URLInterface.shared.decode(url: url).first ?? .invalid
     
     switch command {
       case .go(let coordinate):

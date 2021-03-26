@@ -80,6 +80,7 @@
 		1BA9BD2625C21D7C00AC97C7 /* LayerSelectImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD2525C21D7C00AC97C7 /* LayerSelectImport.swift */; };
 		1BB94BD6260CAA8F002C0D67 /* LayerAcceptance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB94BD5260CAA8F002C0D67 /* LayerAcceptance.swift */; };
 		1BB94BD8260CAAAB002C0D67 /* LayerGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB94BD7260CAAAB002C0D67 /* LayerGroup.swift */; };
+		1BB94BF6260E2B89002C0D67 /* CharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB94BF5260E2B89002C0D67 /* CharacterSet.swift */; };
 		1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; };
 		1BBD3FEF25B63B10007B8BC7 /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */; };
@@ -189,6 +190,7 @@
 		1BA9BD2525C21D7C00AC97C7 /* LayerSelectImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectImport.swift; sourceTree = "<group>"; };
 		1BB94BD5260CAA8F002C0D67 /* LayerAcceptance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerAcceptance.swift; sourceTree = "<group>"; };
 		1BB94BD7260CAAAB002C0D67 /* LayerGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerGroup.swift; sourceTree = "<group>"; };
+		1BB94BF5260E2B89002C0D67 /* CharacterSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSet.swift; sourceTree = "<group>"; };
 		1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelLayout.swift; sourceTree = "<group>"; };
 		1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewPanelViewController.swift; sourceTree = "<group>"; };
 		1BBD3FF425B70C06007B8BC7 /* OfflineSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectPanelLayout.swift; sourceTree = "<group>"; };
@@ -310,6 +312,7 @@
 			children = (
 				1B3401EB25B4F1AF0091FA3B /* MulticastDelegate.swift */,
 				1B7644B425CA169D00572A70 /* MemoryConsciousFloatingPanelController.swift */,
+				1BB94BF5260E2B89002C0D67 /* CharacterSet.swift */,
 				1B8C079225C493E5008C08B2 /* SelectableLabel.swift */,
 				1B04BF6E25D077FC00FCD5D4 /* AppIcon.swift */,
 				1B6033BC25D1DBD300211150 /* UIColor-hex.swift */,
@@ -617,6 +620,7 @@
 				1B47B96B25FA497900504761 /* Commands.swift in Sources */,
 				1B6638B225B10B530071F03D /* Gaia.xcdatamodeld in Sources */,
 				1B0D09CC25EE956000ED5345 /* AnyEncodable.swift in Sources */,
+				1BB94BF6260E2B89002C0D67 /* CharacterSet.swift in Sources */,
 				1B6638CA25B19FFF0071F03D /* UserLocationButton.swift in Sources */,
 				1BA03E3625DE8BE300EE273C /* UIImage.swift in Sources */,
 				1B47B96D25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift in Sources */,

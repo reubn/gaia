@@ -1,24 +1,19 @@
 import Foundation
 
 class URLInterface {
-  let identifier = "gaia://"
-  let separator: Character = "?"
+  let baseURL = URL(string: "gaia://")!
 
-  func encode(command: Command) -> URL {
-    let string = toString(command: command)
+  func encode(commands: [Command]) -> URL? {
+    var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)!
+    components.queryItems = commands.compactMap({toQueryItem(command: $0)})
     
-    return URL(string: "\(identifier)\(string)") ?? URL(string: identifier)!
+    return components.url
   }
   
-  func decode(url: URL) -> Command {
-    let decoded = url.absoluteString
-      .replacingOccurrences(of: identifier, with: "")
-      .split(separator: separator, maxSplits: 1, omittingEmptySubsequences: true)
-    
-    let command = String(decoded[0])
-    let parameters = String(decoded[1])
-    
-    return toCommand(command: command, parameters: parameters)
+  func decode(url: URL) -> [Command] {
+    let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: true)?.queryItems ?? []
+
+    return queryItems.map(toCommand)
   }
 
   static var shared = URLInterface()
