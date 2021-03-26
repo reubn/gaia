@@ -1,6 +1,5 @@
 import Foundation
 
-import AnyCodable
 import Mapbox
 
 let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)

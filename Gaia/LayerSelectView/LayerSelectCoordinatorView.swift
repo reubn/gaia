@@ -1,7 +1,6 @@
 import Foundation
 import UIKit
 
-import AnyCodable
 import Mapbox
 import CoreGPX
 
