@@ -355,7 +355,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
           
           return UIAction(
             title: group.name,
-            image: UIImage(systemName: "\(group.name.first!.lowercased()).square.fill")) { _ in
+            image: UIImage(systemName: group.icon ?? "\(group.name.first!.lowercased()).square.fill")) { _ in
               layer.group = group.id
               LayerManager.shared.save()
           }

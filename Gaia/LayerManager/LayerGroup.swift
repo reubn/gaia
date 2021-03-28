@@ -5,6 +5,7 @@ struct LayerGroup {
   let id: String
   let name: String
   let colour: UIColor
+  var icon: String? = nil
   
   var selectionFunction: (() -> [Layer])? = nil
   
