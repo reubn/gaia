@@ -346,6 +346,21 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
         image: UIImage(systemName: "plus.square.fill.on.square.fill")) { _ in
           self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.duplicate(layer))
       })
+      
+      moreChildren.append(UIMenu(
+        title: "Change Group",
+        image: UIImage(systemName: "arrow.up.arrow.down.square.fill"),
+        children: LayerManager.shared.groupIds.filter({$0 != layer.group}).map({id in
+          let group = LayerManager.shared.groups.first(where: {$0.id == id})!
+          
+          return UIAction(
+            title: group.name,
+            image: UIImage(systemName: "\(group.name.first!.lowercased()).square.fill")) { _ in
+              layer.group = group.id
+              LayerManager.shared.save()
+          }
+        })
+      ))
 
       moreChildren.append(UIAction(
         title: "Share",
@@ -368,21 +383,6 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
             print(error)
         }
       })
-      
-      moreChildren.append(UIMenu(
-        title: "Change Group",
-        image: UIImage(systemName: "arrow.up.arrow.down.square.fill"),
-        children: LayerManager.shared.groupIds.filter({$0 != layer.group}).map({id in
-          let group = LayerManager.shared.groups.first(where: {$0.id == id})!
-          
-          return UIAction(
-            title: group.name,
-            image: UIImage(systemName: "\(group.name.first!.lowercased()).square.fill")) { _ in
-              layer.group = group.id
-              LayerManager.shared.save()
-          }
-        })
-      ))
       
       moreChildren.insert(UIAction(
         title: layer.enabled ? "Disable" : "Enable",
