@@ -348,7 +348,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       })
       
       moreChildren.append(UIMenu(
-        title: "Change Group",
+        title: "Move to Group",
         image: UIImage(systemName: "arrow.up.arrow.down.square.fill"),
         children: LayerManager.shared.groupIds.filter({$0 != layer.group}).map({id in
           let group = LayerManager.shared.groups.first(where: {$0.id == id})!
