@@ -13,8 +13,8 @@ class LayerManager {
   lazy var groups = [
     LayerGroup(id: "gpx", name: "GPX", colour: .systemTeal, icon: "point.fill.topleft.down.curvedto.point.fill.bottomright.up"),
     LayerGroup(id: "overlay", name: "Overlays", colour: .systemPink, icon: "highlighter"),
-    LayerGroup(id: "aerial", name: "Aerial Imagery", colour: .systemGreen, icon: "airplane"),
-    LayerGroup(id: "base", name: "Base Maps", colour: .systemBlue, icon: "map"),
+    LayerGroup(id: "aerial", name: "Aerial", colour: .systemGreen, icon: "airplane"),
+    LayerGroup(id: "base", name: "Base", colour: .systemBlue, icon: "map"),
     LayerGroup(id: "historic", name: "Historic", colour: .brown, icon: "clock.arrow.circlepath"),
   ]
   
