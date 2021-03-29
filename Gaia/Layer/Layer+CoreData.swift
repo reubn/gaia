@@ -21,7 +21,7 @@ public class Layer: NSManagedObject {
   }
   
   var isOpaque: Bool {
-    return group != "overlay"
+    return group != "gpx" && group != "overlay"
   }
   
   private var _style: Style?

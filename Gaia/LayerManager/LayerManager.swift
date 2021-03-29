@@ -11,6 +11,7 @@ class LayerManager {
   let multicastCompositeStyleDidChangeDelegate = MulticastDelegate<(LayerManagerDelegate)>()
 
   lazy var groups = [
+    LayerGroup(id: "gpx", name: "GPX", colour: .systemTeal, icon: "point.fill.topleft.down.curvedto.point.fill.bottomright.up"),
     LayerGroup(id: "overlay", name: "Overlays", colour: .systemPink, icon: "highlighter"),
     LayerGroup(id: "aerial", name: "Aerial Imagery", colour: .systemGreen, icon: "airplane"),
     LayerGroup(id: "base", name: "Base Maps", colour: .systemBlue, icon: "map"),

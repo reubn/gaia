@@ -91,7 +91,7 @@ extension LayerDefinition {
       metadata: LayerDefinition.Metadata(
         id: id,
         name: "GPX Import",
-        group: "overlay",
+        group: "gpx",
         groupIndex: 0
       ),
       style: Style(
