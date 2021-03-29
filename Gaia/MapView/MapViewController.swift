@@ -452,6 +452,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     let locationInfoPanelViewController = LocationInfoPanelViewController(location: location)
     
     lifpc.layout = locationInfoPanelLayout
+    lifpc.behavior = DefaultPanelBehaviour()
     lifpc.delegate = locationInfoPanelViewController
     lifpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
     lifpc.isRemovalInteractionEnabled = true
@@ -490,6 +491,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     let layerSelectPanelViewController = LayerSelectPanelViewController()
     
     lsfpc.layout = layerSelectPanelLayout
+    lsfpc.behavior = DefaultPanelBehaviour()
     lsfpc.delegate = layerSelectPanelViewController
     lsfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
     lsfpc.isRemovalInteractionEnabled = true
@@ -526,6 +528,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     let offlineSelectPanelViewController = OfflineSelectPanelViewController()
    
     osfpc.layout = offlineSelectPanelLayout
+    osfpc.behavior = DefaultPanelBehaviour()
     osfpc.delegate = offlineSelectPanelViewController
     osfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
     osfpc.isRemovalInteractionEnabled = true
@@ -561,6 +564,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     let aboutPanelViewController = AboutPanelViewController()
     
     abfpc.layout = aboutPanelLayout
+    abfpc.behavior = DefaultPanelBehaviour()
     abfpc.delegate = aboutPanelViewController
     abfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
     abfpc.isRemovalInteractionEnabled = true
