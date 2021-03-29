@@ -151,7 +151,6 @@ class MapViewPanelViewController: UIViewController, FloatingPanelControllerDeleg
   }
   
   func floatingPanelDidEndDragging(_ fpc: FloatingPanelController, willAttract attract: Bool){
-    
     if(!attract) {
       uiImpactFeedbackGenerator.impactOccurred()
     }
