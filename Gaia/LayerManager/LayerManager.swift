@@ -45,12 +45,6 @@ class LayerManager {
     }
   }
 
-  var sortedLayers: [Layer]{
-    get {
-      visibleLayers.sorted(by: layerSortingFunction)
-    }
-  }
-  
   private var _compositeStyle: CompositeStyle?
   
   var compositeStyle: CompositeStyle {
@@ -59,7 +53,7 @@ class LayerManager {
         return _compositeStyle!
       }
       
-      _compositeStyle = CompositeStyle(sortedLayers: sortedLayers)
+      _compositeStyle = CompositeStyle(sortedLayers: visibleLayers.sorted(by: layerSortingFunction))
       
       return _compositeStyle!
     }
