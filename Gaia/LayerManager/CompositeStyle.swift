@@ -27,6 +27,10 @@ struct CompositeStyle: Equatable, Hashable {
     style.url
   }
   
+  var revealedLayers: [Layer] {
+    sortedLayers.filter({!$0.isOpaque || $0 == topOpaque})
+  }
+  
   var style: Style {
     var sources: [String: Style.Source] = [:]
     var layers: [Style.Layer] = []

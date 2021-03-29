@@ -30,6 +30,9 @@ class OfflineSelectCoordinatorView: CoordinatorView {
   override func done(){
     OfflineManager.shared.downloadPack(layers: selectedLayers!, bounds: selectedArea!, fromZoomLevel: selectedZoom! - 2, toZoomLevel: selectedZoom!)
     
+    let revealedLayers = LayerManager.shared.compositeStyle.revealedLayers
+    LayerManager.shared.filter({revealedLayers.contains($0)})
+    
     super.done()
   }
 
