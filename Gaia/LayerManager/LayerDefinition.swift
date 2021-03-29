@@ -65,7 +65,10 @@ extension LayerDefinition {
   }
   
   init(gpx: GPXRoot){
-    let id = "gpx_" + randomString(length: 6)
+    let random = randomString(length: 3)
+    
+    let name = gpx.metadata?.name ?? "GPX Import \(random)"
+    let id = "gpx_" + random
     
     let features: [String: Any] = [
       "type": "FeatureCollection",
@@ -90,7 +93,7 @@ extension LayerDefinition {
     self.init(
       metadata: LayerDefinition.Metadata(
         id: id,
-        name: "GPX Import",
+        name: name,
         group: "gpx",
         groupIndex: 0
       ),
