@@ -224,9 +224,9 @@ class LayerManager {
     save()
   }
   
-  func filter(_ shouldBeEnabled: (Layer) -> Bool){
+  func filter(_ shouldBeVisible: (Layer) -> Bool){
     for layer in layers {
-      layer.visible = shouldBeEnabled(layer)
+      layer.visible = shouldBeVisible(layer)
     }
     
     save()
