@@ -227,7 +227,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
  
     queuedStyle = _layer.style
     
-    height.constant = _layer.enabled ? 100 : 80
+    height.constant = _layer.enabled ? 95 : 70
     contentView.layer.opacity = _layer.enabled ? 1 : 0.5
     
     let mutuallyExclusive = layerSelectConfig.mutuallyExclusive
