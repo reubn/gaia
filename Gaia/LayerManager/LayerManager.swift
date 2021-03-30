@@ -69,12 +69,12 @@ class LayerManager {
   }
 
   func layerSortingFunction(a: Layer, b: Layer) -> Bool {
-    if(a.group == b.group && a.enabled != b.enabled) {
-      return a.enabled // sort disabled layers below within same group
-    }
-    
     if(a.group != b.group) {
       return groups.firstIndex(where: {layerGroup in a.group == layerGroup.id}) ?? 0 < groups.firstIndex(where: {layerGroup in b.group == layerGroup.id}) ?? 0
+    }
+    
+    if(a.enabled != b.enabled) {
+      return a.enabled // sort disabled layers below within same group
     }
     
     if(a.groupIndex != b.groupIndex) {return a.groupIndex < b.groupIndex}
