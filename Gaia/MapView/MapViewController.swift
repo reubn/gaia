@@ -510,7 +510,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   @objc func layersButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
     if gestureReconizer.state == UIGestureRecognizer.State.began {
-      let change = LayerManager.shared.magic()
+      let change = LayerManager.shared.magic(bounds: mapView.visibleCoordinateBounds)
       
       HUDManager.shared.displayMessage(message: .magic(change))
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()

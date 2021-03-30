@@ -227,8 +227,16 @@ class LayerManager {
     layers.filter({$0.group == layerGroup.id}).sorted(by: layerSortingFunction)
   }
 
-  public func magic() -> (count: Int, restore: Bool) {
-    let visibleOverlayLayers = layers.filter({$0.visible && !$0.isOpaque})
+  public func magic(bounds: MGLCoordinateBounds) -> (count: Int, restore: Bool) {
+    let visibleOverlayLayers = layers.filter({
+      $0.visible
+      && !$0.isOpaque
+      && (
+        $0.style.bounds.superbound == nil
+        || bounds.intersects(with: $0.style.bounds.superbound!)
+      )
+    })
+    
     if(!visibleOverlayLayers.isEmpty) {
       // visible overlays, capture
       magicLayers = visibleOverlayLayers
@@ -238,8 +246,24 @@ class LayerManager {
       
       return (count: visibleOverlayLayers.count, restore: false)
     } else {
-      // no visible overlays, restore. Either captured layers, or topmost overlay layer
-      let layersToRestore: [Layer?] = magicLayers ?? [layers.sorted(by: layerSortingFunction).first(where: {!$0.isOpaque})]
+      //  no visible overlays
+      let visibleMagicLayers = magicLayers?.filter({$0.style.bounds.superbound == nil || bounds.intersects(with: $0.style.bounds.superbound!)}) ?? []
+    
+      let layersToRestore: [Layer?] = {
+        if(!visibleMagicLayers.isEmpty) {
+          // restore captured layers in bounds
+          return visibleMagicLayers
+        }
+        
+        let transparent = layers.filter({!$0.isOpaque}).sorted(by: layerSortingFunction)
+        
+        return [
+          // or top most overlay with and in bounds
+          transparent.first(where: {$0.style.bounds.superbound != nil && bounds.intersects(with: $0.style.bounds.superbound!)})
+          ?? transparent.first(where: {$0.style.bounds.superbound == nil}) // or top most global overlay
+        ]
+      }()
+        
       
       // and show them
       show(layers: layersToRestore)
