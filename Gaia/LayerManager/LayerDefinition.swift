@@ -5,6 +5,7 @@ import CoreGPX
 
 struct LayerDefinition: Codable {
   let metadata: Metadata
+  var user: User? = User()
   
   let style: Style
   
@@ -12,7 +13,13 @@ struct LayerDefinition: Codable {
     let id: String
     let name: String
     let group: String
-    let groupIndex: Int
+  }
+  
+  struct User: Codable {
+    var groupIndex: Int = 0
+    
+    var pinned = false
+    var enabled = true
   }
 }
 
@@ -21,8 +28,18 @@ extension LayerDefinition.Metadata {
     self.init(
       id: layer.id,
       name: layer.name,
-      group: layer.group,
-      groupIndex: Int(layer.groupIndex)
+      group: layer.group
+    )
+  }
+}
+
+extension LayerDefinition.User {
+  init(layer: Layer){
+    self.init(
+      groupIndex: Int(layer.groupIndex),
+      
+      pinned: layer.pinned,
+      enabled: layer.enabled
     )
   }
 }
@@ -31,6 +48,7 @@ extension LayerDefinition {
   init(layer: Layer){
     self.init(
       metadata: Metadata(layer: layer),
+      user: User(layer: layer),
       style: layer.style
     )
   }
@@ -42,8 +60,7 @@ extension LayerDefinition {
       metadata: Metadata(
         id: id,
         name: "XYZ Import",
-        group: "",
-        groupIndex: 0
+        group: ""
       ),
       style: Style(
         sources: [
@@ -93,8 +110,7 @@ extension LayerDefinition {
       metadata: Metadata(
         id: id,
         name: name,
-        group: "gpx",
-        groupIndex: 0
+        group: "gpx"
       ),
       style: Style(
         sources: [
@@ -128,4 +144,3 @@ extension LayerDefinition {
     )
   }
 }
-

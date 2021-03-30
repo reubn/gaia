@@ -52,12 +52,8 @@ public class Layer: NSManagedObject {
 
 // Layer from LayerDefinition
 extension Layer {
-  convenience init(_ layerDefinition: LayerDefinition, context: NSManagedObjectContext, visible: Bool = false, pinned: Bool = false, enabled: Bool = true){
+  convenience init(_ layerDefinition: LayerDefinition, context: NSManagedObjectContext){
     self.init(context: context)
-    
-    self.visible = visible
-    self.pinned = pinned
-    self.enabled = enabled
     
     self.update(layerDefinition)
   }
@@ -66,7 +62,13 @@ extension Layer {
     self.id = layerDefinition.metadata.id
     self.name = layerDefinition.metadata.name
     self.group = layerDefinition.metadata.group
-    self.groupIndex = Int16(layerDefinition.metadata.groupIndex)
+    
+    if let user = layerDefinition.user {
+      self.groupIndex = Int16(user.groupIndex)
+      
+      self.pinned = user.pinned
+      self.enabled = user.enabled
+    }
     
     self.style = layerDefinition.style
   }

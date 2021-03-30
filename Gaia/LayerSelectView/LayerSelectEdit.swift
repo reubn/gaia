@@ -236,7 +236,6 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   "id": "\(randomId)",
   "name": "\(randomName)"
   "group": "",
-  "groupIndex": 0,
 },
 "style": {
   "sources": {

@@ -377,7 +377,10 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
           do {
             let encoder = JSONEncoder()
 
-            let json = try encoder.encode([LayerDefinition(layer: layer)])
+            var layerDefinition = LayerDefinition(layer: layer)
+            layerDefinition.user = nil
+
+            let json = try encoder.encode([layerDefinition])
 
             let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
             let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(layer.id).appendingPathExtension("json")
