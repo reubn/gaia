@@ -66,7 +66,7 @@ class CoordinateActivityItemProvider: UIActivityItemProvider {
   let image: UIImage?
   
   override var item: Any {
-    get {URLInterface.shared.encode(commands: [.go(coordinate)])}
+    get {URLInterface.shared.encode(commands: [.go(coordinate)]) as Any}
   }
   
   init(coordinate: CLLocationCoordinate2D, image: UIImage?) {
