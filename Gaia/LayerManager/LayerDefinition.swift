@@ -16,7 +16,6 @@ struct LayerDefinition: Codable {
   }
 }
 
-
 extension LayerDefinition.Metadata {
   init(layer: Layer){
     self.init(
@@ -40,7 +39,7 @@ extension LayerDefinition {
     let id = "xyz_" + randomString(length: 6)
     
     self.init(
-      metadata: LayerDefinition.Metadata(
+      metadata: Metadata(
         id: id,
         name: "XYZ Import",
         group: "",
@@ -91,7 +90,7 @@ extension LayerDefinition {
     ]
 
     self.init(
-      metadata: LayerDefinition.Metadata(
+      metadata: Metadata(
         id: id,
         name: name,
         group: "gpx",
