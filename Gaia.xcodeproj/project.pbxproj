@@ -48,7 +48,7 @@
 		1B6638CC25B1E9BD0071F03D /* MapButtonGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6638CB25B1E9BD0071F03D /* MapButtonGroup.swift */; };
 		1B6638CE25B1EA5F0071F03D /* MapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6638CD25B1EA5F0071F03D /* MapButton.swift */; };
 		1B7644B525CA169D00572A70 /* MemoryConsciousFloatingPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644B425CA169D00572A70 /* MemoryConsciousFloatingPanelController.swift */; };
-		1B7644BF25CAD61900572A70 /* Layer+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644BD25CAD61900572A70 /* Layer+CoreData.swift */; };
+		1B7644BF25CAD61900572A70 /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644BD25CAD61900572A70 /* Layer.swift */; };
 		1B7644C125CAFA2F00572A70 /* LayerDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C025CAFA2F00572A70 /* LayerDefinition.swift */; };
 		1B7644C325CAFA7300572A70 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C225CAFA7300572A70 /* Style.swift */; };
 		1B7644C825CC3E9000572A70 /* PanelActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C725CC3E9000572A70 /* PanelActionButton.swift */; };
@@ -160,7 +160,7 @@
 		1B6638CB25B1E9BD0071F03D /* MapButtonGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapButtonGroup.swift; sourceTree = "<group>"; };
 		1B6638CD25B1EA5F0071F03D /* MapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapButton.swift; sourceTree = "<group>"; };
 		1B7644B425CA169D00572A70 /* MemoryConsciousFloatingPanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryConsciousFloatingPanelController.swift; sourceTree = "<group>"; };
-		1B7644BD25CAD61900572A70 /* Layer+CoreData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Layer+CoreData.swift"; sourceTree = "<group>"; };
+		1B7644BD25CAD61900572A70 /* Layer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layer.swift; sourceTree = "<group>"; };
 		1B7644C025CAFA2F00572A70 /* LayerDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerDefinition.swift; sourceTree = "<group>"; };
 		1B7644C225CAFA7300572A70 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		1B7644C725CC3E9000572A70 /* PanelActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelActionButton.swift; sourceTree = "<group>"; };
@@ -299,6 +299,7 @@
 		1B3401D325B4A1370091FA3B /* LayerManager */ = {
 			isa = PBXGroup;
 			children = (
+				1B7644BD25CAD61900572A70 /* Layer.swift */,
 				1B3401D425B4A1570091FA3B /* LayerManager.swift */,
 				1BB94BD7260CAAAB002C0D67 /* LayerGroup.swift */,
 				1BB94BD5260CAA8F002C0D67 /* LayerAcceptance.swift */,
@@ -377,7 +378,6 @@
 				1B47B96725FA16BF00504761 /* URLInterface */,
 				1B0D09B525E6B08400ED5345 /* HUDManager */,
 				1B62CE8B25D0283300D06E55 /* AboutView */,
-				1B7644BB25CAD61900572A70 /* Layer */,
 				1BA9BD1C25C0860300AC97C7 /* CoordinatorView */,
 				1B3401CA25B463970091FA3B /* Boilerplate */,
 				1B3401EA25B4F1A30091FA3B /* Util */,
@@ -402,14 +402,6 @@
 				1B6638C025B10B610071F03D /* Mapbox.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		1B7644BB25CAD61900572A70 /* Layer */ = {
-			isa = PBXGroup;
-			children = (
-				1B7644BD25CAD61900572A70 /* Layer+CoreData.swift */,
-			);
-			path = Layer;
 			sourceTree = "<group>";
 		};
 		1B8C078B25C481DA008C08B2 /* LocationInfoView */ = {
@@ -612,7 +604,7 @@
 				1B8C078F25C48245008C08B2 /* LocationInfoPanelViewController.swift in Sources */,
 				1BB94BD6260CAA8F002C0D67 /* LayerAcceptance.swift in Sources */,
 				1B3401D025B474260091FA3B /* SectionTableView.swift in Sources */,
-				1B7644BF25CAD61900572A70 /* Layer+CoreData.swift in Sources */,
+				1B7644BF25CAD61900572A70 /* Layer.swift in Sources */,
 				1B6033BF25D1DBEE00211150 /* randomSystemColor.swift in Sources */,
 				1BDACA63260A4B8700248962 /* String.swift in Sources */,
 				1B0D09CA25EE956000ED5345 /* AnyDecodable.swift in Sources */,
