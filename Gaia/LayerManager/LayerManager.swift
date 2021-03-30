@@ -77,7 +77,9 @@ class LayerManager {
       return a.enabled // sort disabled layers below within same group
     }
     
-    if(a.groupIndex != b.groupIndex) {return a.groupIndex < b.groupIndex}
+    if(a.groupIndex != b.groupIndex) {
+      return a.groupIndex < b.groupIndex
+    }
     
     return a.name < b.name
   }
