@@ -197,6 +197,15 @@ class Section: UIStackView {
     LayerManager.shared.save()
   }
   
+  func remove(layer: Layer, indexPath: IndexPath){
+    let layerName = layer.name
+    self.layers.remove(at: indexPath.row)
+    LayerManager.shared.remove(layer: layer)
+  
+    UINotificationFeedbackGenerator().notificationOccurred(.success)
+    HUDManager.shared.displayMessage(message: .layerDeleted(layerName))
+  }
+  
   @objc func tableViewLabelClick(sender : UITapGestureRecognizer){
     let tapLocation = sender.location(in: tableView)
     let indexPath = self.tableView.indexPathForRow(at: tapLocation)
@@ -408,17 +417,22 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
         title: "Delete",
         image: UIImage(systemName: "trash"),
         attributes: .destructive) { _ in
-          let layerName = layer.name
-          self.layers.remove(at: indexPath.row)
-          LayerManager.shared.remove(layer: layer)
-        
-          UINotificationFeedbackGenerator().notificationOccurred(.success)
-          HUDManager.shared.displayMessage(message: .layerDeleted(layerName))
+          self.remove(layer: layer, indexPath: indexPath)
       }
       
       topChildren.append(delete)
       
       return UIMenu(title: "", children: topChildren)
+    }
+  }
+  
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    if(!layerSelectConfig.layerContextActions) {return}
+    
+    let layer = self.layers[indexPath.row]
+    
+    if editingStyle == .delete {
+      self.remove(layer: layer, indexPath: indexPath)
     }
   }
 }
