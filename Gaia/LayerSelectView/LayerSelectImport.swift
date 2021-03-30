@@ -137,9 +137,8 @@ class LayerSelectImport: UIView, CoordinatedView {
     }
     
     URLSession.shared.dataTask(with: URL(string: requestURL)!) {data, response, error in
-      let results = self.coordinatorView.acceptLayerDefinitions(from: data, url: rawURL)
-  
       DispatchQueue.main.async {
+        let results = self.coordinatorView.acceptLayerDefinitions(from: data, url: rawURL)
         if(results == nil){
           self.handleError(message: .syntaxError)
         } else if(results!.rejected.isEmpty){
