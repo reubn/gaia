@@ -73,10 +73,6 @@ class LayerManager {
       return a.enabled // sort disabled layers below within same group
     }
     
-    return layerSortingFunction(a: LayerDefinition.Metadata(layer: a), b: LayerDefinition.Metadata(layer: b))
-  }
-  
-  func layerSortingFunction(a: LayerDefinition.Metadata, b: LayerDefinition.Metadata) -> Bool {
     if(a.group != b.group) {
       return groups.firstIndex(where: {layerGroup in a.group == layerGroup.id}) ?? 0 < groups.firstIndex(where: {layerGroup in b.group == layerGroup.id}) ?? 0
     }
