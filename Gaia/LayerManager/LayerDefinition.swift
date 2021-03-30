@@ -109,9 +109,19 @@ extension LayerDefinition {
             "id": id,
             "source": id,
             "type": "line",
+            "layout": [
+              "line-cap": "round",
+              "line-join": "round"
+            ],
             "paint": [
               "line-color": ["get", "colour"],
-              "line-width": 5
+              "line-width": [
+                "interpolate",
+                ["linear"], ["zoom"],
+                5, 1,
+                10, 3,
+                16, 5
+              ]
             ]
           ]
         ]
