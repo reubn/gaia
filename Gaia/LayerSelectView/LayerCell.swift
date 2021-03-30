@@ -243,7 +243,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
       ? .white
       : .label
     
-    preview.tintColor = .white
+    preview.tintColor = _layer.needsDarkUI ? .white : .systemBlue
 
     if(first) {
       self.first = false
