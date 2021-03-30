@@ -189,6 +189,14 @@ class Section: UIStackView {
     }
   }
   
+  func cementLayerIndicies(){
+    for (index, layer) in layers.enumerated() {
+      layer.groupIndex = Int16(index) // reset indexes on group layers
+    }
+    
+    LayerManager.shared.save()
+  }
+  
   @objc func tableViewLabelClick(sender : UITapGestureRecognizer){
     let tapLocation = sender.location(in: tableView)
     let indexPath = self.tableView.indexPathForRow(at: tapLocation)
@@ -261,14 +269,6 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
     layers.insert(movedLayer, at: destinationIndexPath.row)
     
     cementLayerIndicies()
-  }
-  
-  func cementLayerIndicies(){
-    for (index, layer) in layers.enumerated() {
-      layer.groupIndex = Int16(index) // reset indexes on group layers
-    }
-    
-    LayerManager.shared.save()
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
