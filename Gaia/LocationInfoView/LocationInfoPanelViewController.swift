@@ -113,7 +113,7 @@ class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationD
     super.init(title: "")
     self.popoverTitle.pasteDelegate = self
     
-    self.panelButtons = [.share, .star, .dismiss]
+    self.panelButtons = [.share, /*.star,*/ .dismiss]
     
     view.addSubview(mainView)
     
