@@ -357,14 +357,15 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       })
       
       moreChildren.append(UIMenu(
-        title: "Move to Group",
-        image: UIImage(systemName: "arrow.up.arrow.down.square.fill"),
-        children: LayerManager.shared.groupIds.filter({$0 != layer.group}).map({id in
+        title: "Move to...",
+        image: UIImage(systemName: "folder"),
+        children: LayerManager.shared.groupIds.map({id in
           let group = LayerManager.shared.groups.first(where: {$0.id == id})!
           
           return UIAction(
             title: group.name,
-            image: UIImage(systemName: group.icon ?? "\(group.name.first!.lowercased()).square.fill")) { _ in
+            image: UIImage(systemName: group.icon ?? "\(group.name.first!.lowercased()).square.fill"),
+            state: layer.group == group.id ? .on : .off) { _ in
               layer.group = group.id
               LayerManager.shared.save()
           }
