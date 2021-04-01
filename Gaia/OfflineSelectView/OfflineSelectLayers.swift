@@ -11,7 +11,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
     layerContextActions: false,
     reorderLayers: false,
     showPinned: true,
-    showDisabled: []
+    showDisabled: false
   )
 
   lazy var layerSelectView = LayerSelectView(layerSelectConfig: layerSelectConfig)

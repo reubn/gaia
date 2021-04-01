@@ -159,7 +159,7 @@ class Section: UIStackView {
   }
   
   func update() {
-    self.layers = layerSelectConfig.showDisabled.contains(.inline)
+    self.layers = layerSelectConfig.showDisabled
       ? group.getLayers()
       : group.getLayers().filter({$0.enabled})
     

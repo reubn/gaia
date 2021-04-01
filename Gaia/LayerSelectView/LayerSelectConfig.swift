@@ -6,15 +6,10 @@ struct LayerSelectConfig {
   var reorderLayers = true
   
   var showPinned = true
-  var showDisabled: [ShowDisabledStyle] = [.section]
+  var showDisabled = true
   var showUngrouped = true
   
   unowned var layerEditDelegate: LayerEditDelegate? = nil
-  
-  enum ShowDisabledStyle {
-    case inline
-    case section
-  }
 }
 
 protocol LayerEditDelegate: class {

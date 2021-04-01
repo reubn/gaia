@@ -96,26 +96,6 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
       section.translatesAutoresizingMaskIntoConstraints = false
       section.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
     })
-    
-    if(layerSelectConfig.showDisabled.contains(.section)) {
-      var disabledLayerSelectConfig = layerSelectConfig
-      disabledLayerSelectConfig.reorderLayers = false
-      
-      let disabledSection = Section(
-        group: LayerGroup(id: "disabled", name: "Disabled", colour: .systemGray, selectionFunction: {
-          LayerManager.shared.disabledLayers.sorted(by: LayerManager.shared.layerSortingFunction)
-        }),
-        layerSelectConfig: disabledLayerSelectConfig,
-        scrollView: self,
-        normallyCollapsed: true,
-        layerCanDrop: {_ in false}
-      )
-      
-      stack.addArrangedSubview(disabledSection)
-
-      disabledSection.translatesAutoresizingMaskIntoConstraints = false
-      disabledSection.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
-    }
   }
   
   func compositeStyleDidChange(to _: CompositeStyle, from _: CompositeStyle?) {

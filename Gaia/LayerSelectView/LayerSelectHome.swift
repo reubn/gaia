@@ -8,7 +8,6 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
   unowned let coordinatorView: LayerSelectCoordinatorView
     
   lazy var layerSelectConfig = LayerSelectConfig(
-    showDisabled: [.inline, .section],
     layerEditDelegate: self
   )
   
