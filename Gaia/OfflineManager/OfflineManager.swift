@@ -1,16 +1,23 @@
 import Foundation
+import Network
 
 import Mapbox
 
 class OfflineManager {
   private let offlineStorage = MGLOfflineStorage.shared
   private let networkConfiguration = MGLNetworkConfiguration()
+  private let monitor = NWPathMonitor()
+  private let monitorQueue = DispatchQueue(label: "NWPathMonitorQueue")
+  
+  var isOfflineSetManually = false
   
   var offlineMode = false {
     didSet {
       print("offlinemode set to \(offlineMode)")
       networkConfiguration.connected = !offlineMode
       self.multicastOfflineModeDidChangeDelegate.invoke(invocation: {$0.offlineModeDidChange(offline: offlineMode)})
+      
+      isOfflineSetManually = true
     }
   }
   
@@ -24,14 +31,29 @@ class OfflineManager {
   init() {
     NotificationCenter.default.addObserver(self, selector: #selector(offlinePackProgressDidChange), name: NSNotification.Name.MGLOfflinePackProgressChanged, object: nil)
     
+    monitor.pathUpdateHandler = pathDidUpdate
+    monitor.start(queue: monitorQueue)
+    
     DispatchQueue.main.async {
       self.refreshDownloads()
       self.offlineMode = !self.networkConfiguration.connected
+      self.isOfflineSetManually = false
     }
   }
   
   deinit {
     NotificationCenter.default.removeObserver(self, name: NSNotification.Name.MGLOfflinePackProgressChanged, object: nil)
+  }
+  
+  func pathDidUpdate(_ path: NWPath){
+    DispatchQueue.main.async {
+      if(!self.isOfflineSetManually && (path.isConstrained || path.isExpensive)){
+        self.offlineMode = true
+        self.isOfflineSetManually = false
+      }
+      
+      print("path update", path)
+    }
   }
   
   func downloadPack(layers: [Layer], bounds: MGLCoordinateBounds, fromZoomLevel: Double, toZoomLevel: Double) {
