@@ -105,23 +105,18 @@ class HUDView: UIView {
     
     let showDuration = 0.45
 
-    CATransaction.begin()
-    CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(controlPoints: 0.83, 0.2, 0, 1.15))
-
-    UIView.animate(withDuration: showDuration, delay: 0, options: [.preferredFramesPerSecond60], animations: {
+    UIView.animate(withDuration: showDuration, withCubicBezier: [0.83, 0.2, 0, 1.15]){
       self.transform = CGAffineTransform(translationX: 0, y: self.visible)
-    })
-    
-    CATransaction.commit()
-      
-    UIView.animate(withDuration: showDuration, delay: showDuration - 0.15, options: [.curveEaseOut, .preferredFramesPerSecond60], animations: {
+    }
+
+    UIView.animate(withDuration: showDuration, delay: showDuration - 0.15, options: .curveEaseOut){
       self.icon.tintColor = self.message.tintColour ?? self.defaultIconColour
       self.icon.layoutIfNeeded()
-    })
+    }
   }
   
   func hide(){
-    UIView.animate(withDuration: 0.25, delay: 0, options: [.curveEaseIn, .preferredFramesPerSecond60], animations: {
+    UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
       self.transform = CGAffineTransform(translationX: 0, y: 0)
       self.layer.opacity = 0
     }) {_ in

@@ -50,14 +50,10 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   var previewBlurReasons: [PreviewBlurReason] = [] {
     didSet {
       if(oldValue != previewBlurReasons) {
-        CATransaction.begin()
-        CATransaction.setAnimationTimingFunction(
-          !self.previewBlurReasons.isEmpty
-            ? CAMediaTimingFunction(controlPoints: 0.83, 0.20, 0, 1.15)
-            : CAMediaTimingFunction(controlPoints: 0.29, 0.93, 0, 0.92)
-        )
+        let duration = !self.previewBlurReasons.isEmpty ? 0.5 : 0.4
+        let cubicBezier: [Float] = !self.previewBlurReasons.isEmpty ? [0.83, 0.20, 0, 1.15] : [0.29, 0.93, 0, 0.92]
         
-        UIView.animate(withDuration: !self.previewBlurReasons.isEmpty ? 0.5 : 0.4) {
+        UIView.animate(withDuration: duration, withCubicBezier: cubicBezier) {
           self.previewBlur.layer.opacity = !self.previewBlurReasons.isEmpty ? 1 : 0
           self.previewBlurIcon.image = {
             switch self.previewBlurReasons.first {
@@ -67,8 +63,6 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
             }
           }()
         }
-        
-        CATransaction.commit()
       }
     }
   }

@@ -222,19 +222,15 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     didSet {
       if(oldValue != warnings) {
         print(warnings)
-        CATransaction.begin()
-        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(controlPoints: 0.33, 1.18, 0.23, 0.93))
         
-        UIView.animate(withDuration: 0.5){
+        UIView.animate(withDuration: 0.5, withCubicBezier: [0.33, 1.18, 0.23, 0.93]){
           self.warningButtonGroup.layer.opacity = self.warnings.isEmpty ? 0 : 1
           if(oldValue.count != self.warnings.count) {
             let foreground = UIImage(systemName: "\(self.warnings.count).circle.fill")!.withTintColor(.systemRed)
             self.warningIconCount.image = foreground.draw(inFrontOf: self.warningIconCountBackground)
           }
         }
-        
-        CATransaction.commit()
-        
+
         if(!warnings.isEmpty) {
           self.warningButton.menu = createMenu(warnings: warnings)
         }

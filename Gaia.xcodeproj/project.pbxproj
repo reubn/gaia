@@ -101,6 +101,7 @@
 		1BEE8D5B25C58FF5004260C1 /* MetricDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5A25C58FF5004260C1 /* MetricDisplay.swift */; };
 		1BEE8D5E25C599B3004260C1 /* HeadingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */; };
 		1BEE8D6025C59A4D004260C1 /* ElevationDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */; };
+		1BF4B7FA261700C200D87E35 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF4B7F9261700C200D87E35 /* UIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -210,6 +211,7 @@
 		1BEE8D5A25C58FF5004260C1 /* MetricDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricDisplay.swift; sourceTree = "<group>"; };
 		1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingDisplay.swift; sourceTree = "<group>"; };
 		1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplay.swift; sourceTree = "<group>"; };
+		1BF4B7F9261700C200D87E35 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -332,6 +334,7 @@
 				1BD6A3BD2600E34B001E503D /* CoordinatePair.swift */,
 				1B8AE386260501B700CF3D8E /* MGLCoordinateBounds.swift */,
 				1B8AE3882605384900CF3D8E /* MGLMapView.swift */,
+				1BF4B7F9261700C200D87E35 /* UIView.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -545,6 +548,7 @@
 				1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */,
 				1B9DDAFC25F2AC1E00B3407F /* Collection.swift in Sources */,
 				1B7644C325CAFA7300572A70 /* Style.swift in Sources */,
+				1BF4B7FA261700C200D87E35 /* UIView.swift in Sources */,
 				1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */,
 				1B6033BD25D1DBD300211150 /* UIColor-hex.swift in Sources */,
 				1B8C079325C493E5008C08B2 /* SelectableLabel.swift in Sources */,
