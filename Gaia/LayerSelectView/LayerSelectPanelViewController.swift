@@ -3,7 +3,7 @@ import UIKit
 
 import FloatingPanel
 
-class LayerSelectPanelViewController: MapViewPanelViewController {
+class LayerSelectPanelViewController: PanelViewController {
   lazy var coordinatorView = LayerSelectCoordinatorView(panelViewController: self)
   
   init(){

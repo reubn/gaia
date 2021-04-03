@@ -3,7 +3,7 @@ import UIKit
 
 import FloatingPanel
 
-let offlineSelectPanelLayout = MapViewPanelLayout(
+let offlineSelectPanelLayout = PanelLayout(
   position: .bottom,
   initialState: .half,
   anchors: [

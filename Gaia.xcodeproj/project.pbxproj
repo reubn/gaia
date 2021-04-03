@@ -54,7 +54,7 @@
 		1B7644C825CC3E9000572A70 /* PanelActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C725CC3E9000572A70 /* PanelActionButton.swift */; };
 		1B8AE387260501B700CF3D8E /* MGLCoordinateBounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8AE386260501B700CF3D8E /* MGLCoordinateBounds.swift */; };
 		1B8AE3892605384900CF3D8E /* MGLMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8AE3882605384900CF3D8E /* MGLMapView.swift */; };
-		1B8C078A25C43C58008C08B2 /* MapViewPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078925C43C58008C08B2 /* MapViewPanelLayout.swift */; };
+		1B8C078A25C43C58008C08B2 /* PanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078925C43C58008C08B2 /* PanelLayout.swift */; };
 		1B8C078E25C48245008C08B2 /* LocationInfoPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */; };
 		1B8C078F25C48245008C08B2 /* LocationInfoPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */; };
 		1B8C079325C493E5008C08B2 /* SelectableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C079225C493E5008C08B2 /* SelectableLabel.swift */; };
@@ -85,7 +85,7 @@
 		1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; };
 		1BBD3FEF25B63B10007B8BC7 /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */; };
-		1BBD3FF325B708A6007B8BC7 /* MapViewPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */; };
+		1BBD3FF325B708A6007B8BC7 /* PanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF225B708A6007B8BC7 /* PanelViewController.swift */; };
 		1BBD3FF525B70C06007B8BC7 /* OfflineSelectPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF425B70C06007B8BC7 /* OfflineSelectPanelLayout.swift */; };
 		1BBD3FF825B88F56007B8BC7 /* OfflineSelectPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF725B88F56007B8BC7 /* OfflineSelectPanelViewController.swift */; };
 		1BBD3FFA25B89181007B8BC7 /* OfflineSelectCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF925B89181007B8BC7 /* OfflineSelectCoordinatorView.swift */; };
@@ -167,7 +167,7 @@
 		1B7644C725CC3E9000572A70 /* PanelActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelActionButton.swift; sourceTree = "<group>"; };
 		1B8AE386260501B700CF3D8E /* MGLCoordinateBounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGLCoordinateBounds.swift; sourceTree = "<group>"; };
 		1B8AE3882605384900CF3D8E /* MGLMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGLMapView.swift; sourceTree = "<group>"; };
-		1B8C078925C43C58008C08B2 /* MapViewPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewPanelLayout.swift; sourceTree = "<group>"; };
+		1B8C078925C43C58008C08B2 /* PanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelLayout.swift; sourceTree = "<group>"; };
 		1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelLayout.swift; sourceTree = "<group>"; };
 		1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelViewController.swift; sourceTree = "<group>"; };
 		1B8C079225C493E5008C08B2 /* SelectableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableLabel.swift; sourceTree = "<group>"; };
@@ -195,7 +195,7 @@
 		1BB94BD7260CAAAB002C0D67 /* LayerGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerGroup.swift; sourceTree = "<group>"; };
 		1BB94BF5260E2B89002C0D67 /* CharacterSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSet.swift; sourceTree = "<group>"; };
 		1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelLayout.swift; sourceTree = "<group>"; };
-		1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewPanelViewController.swift; sourceTree = "<group>"; };
+		1BBD3FF225B708A6007B8BC7 /* PanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelViewController.swift; sourceTree = "<group>"; };
 		1BBD3FF425B70C06007B8BC7 /* OfflineSelectPanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectPanelLayout.swift; sourceTree = "<group>"; };
 		1BBD3FF725B88F56007B8BC7 /* OfflineSelectPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectPanelViewController.swift; sourceTree = "<group>"; };
 		1BBD3FF925B89181007B8BC7 /* OfflineSelectCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectCoordinatorView.swift; sourceTree = "<group>"; };
@@ -273,15 +273,9 @@
 		1B3401C925B4637A0091FA3B /* MapView */ = {
 			isa = PBXGroup;
 			children = (
-				1B6638C925B19FFF0071F03D /* UserLocationButton.swift */,
-				1B6638CD25B1EA5F0071F03D /* MapButton.swift */,
-				1B6638CB25B1E9BD0071F03D /* MapButtonGroup.swift */,
+				1BF4B7FB261857C000D87E35 /* MapButtons */,
 				1B6638AB25B10B530071F03D /* MapViewController.swift */,
-				1B62CE8925D023EF00D06E55 /* AppIconButton.swift */,
 				1BA9BD1825BF208600AC97C7 /* customCompass.swift */,
-				1BBD3FF225B708A6007B8BC7 /* MapViewPanelViewController.swift */,
-				1B8C078925C43C58008C08B2 /* MapViewPanelLayout.swift */,
-				1B7644C725CC3E9000572A70 /* PanelActionButton.swift */,
 				1BD6A3B725FF4CAA001E503D /* CanvasView.swift */,
 			);
 			path = MapView;
@@ -316,8 +310,6 @@
 			isa = PBXGroup;
 			children = (
 				1B3401EB25B4F1AF0091FA3B /* MulticastDelegate.swift */,
-				1B7644B425CA169D00572A70 /* MemoryConsciousFloatingPanelController.swift */,
-				1B04AA0F261272A30080BECE /* DefaultPanelBehaviour.swift */,
 				1BB94BF5260E2B89002C0D67 /* CharacterSet.swift */,
 				1B8C079225C493E5008C08B2 /* SelectableLabel.swift */,
 				1B04BF6E25D077FC00FCD5D4 /* AppIcon.swift */,
@@ -378,6 +370,7 @@
 		1B6638A625B10B530071F03D /* Gaia */ = {
 			isa = PBXGroup;
 			children = (
+				1BF4B7FC2618581D00D87E35 /* PanelView */,
 				1B47B96725FA16BF00504761 /* URLInterface */,
 				1B0D09B525E6B08400ED5345 /* HUDManager */,
 				1B62CE8B25D0283300D06E55 /* AboutView */,
@@ -462,6 +455,29 @@
 				1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */,
 			);
 			path = MetricDisplay;
+			sourceTree = "<group>";
+		};
+		1BF4B7FB261857C000D87E35 /* MapButtons */ = {
+			isa = PBXGroup;
+			children = (
+				1B62CE8925D023EF00D06E55 /* AppIconButton.swift */,
+				1B6638C925B19FFF0071F03D /* UserLocationButton.swift */,
+				1B6638CD25B1EA5F0071F03D /* MapButton.swift */,
+				1B6638CB25B1E9BD0071F03D /* MapButtonGroup.swift */,
+			);
+			path = MapButtons;
+			sourceTree = "<group>";
+		};
+		1BF4B7FC2618581D00D87E35 /* PanelView */ = {
+			isa = PBXGroup;
+			children = (
+				1BBD3FF225B708A6007B8BC7 /* PanelViewController.swift */,
+				1B8C078925C43C58008C08B2 /* PanelLayout.swift */,
+				1B7644C725CC3E9000572A70 /* PanelActionButton.swift */,
+				1B7644B425CA169D00572A70 /* MemoryConsciousFloatingPanelController.swift */,
+				1B04AA0F261272A30080BECE /* DefaultPanelBehaviour.swift */,
+			);
+			path = PanelView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -580,14 +596,14 @@
 				1BD6A3C02600FD49001E503D /* CLLocationDegrees.swift in Sources */,
 				1B3401CE25B473FB0091FA3B /* SectionLabel.swift in Sources */,
 				1BA9BD1425BE248600AC97C7 /* OfflineSelectZoom.swift in Sources */,
-				1B8C078A25C43C58008C08B2 /* MapViewPanelLayout.swift in Sources */,
+				1B8C078A25C43C58008C08B2 /* PanelLayout.swift in Sources */,
 				1BEE8D5B25C58FF5004260C1 /* MetricDisplay.swift in Sources */,
 				1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */,
 				1B04AA10261272A30080BECE /* DefaultPanelBehaviour.swift in Sources */,
 				1BBD3FFA25B89181007B8BC7 /* OfflineSelectCoordinatorView.swift in Sources */,
 				1BA9BD0E25BA281800AC97C7 /* OfflineSelectArea.swift in Sources */,
 				1B6033C125D1DC4A00211150 /* randomString.swift in Sources */,
-				1BBD3FF325B708A6007B8BC7 /* MapViewPanelViewController.swift in Sources */,
+				1BBD3FF325B708A6007B8BC7 /* PanelViewController.swift in Sources */,
 				1B7644C125CAFA2F00572A70 /* LayerDefinition.swift in Sources */,
 				1B0D09B925E6C1CA00ED5345 /* HUDView.swift in Sources */,
 				1B3401CC25B473E40091FA3B /* LayerCell.swift in Sources */,

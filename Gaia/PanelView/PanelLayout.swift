@@ -3,7 +3,7 @@ import UIKit
 
 import FloatingPanel
 
-class MapViewPanelLayout: FloatingPanelLayout {
+class PanelLayout: FloatingPanelLayout {
   var position: FloatingPanelPosition
   var initialState: FloatingPanelState
   var anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring]

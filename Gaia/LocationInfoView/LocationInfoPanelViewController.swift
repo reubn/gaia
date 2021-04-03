@@ -4,7 +4,7 @@ import UIKit
 import Mapbox
 import FloatingPanel
 
-class LocationInfoPanelViewController: MapViewPanelViewController, UserLocationDidUpdateDelegate, MapViewTappedDelegate, SelectableLabelPasteDelegate, MapViewStyleDidChangeDelegate {
+class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdateDelegate, MapViewTappedDelegate, SelectableLabelPasteDelegate, MapViewStyleDidChangeDelegate {
   func userDidPaste(content: String) {
     let coordinate = CLLocationCoordinate2D(content)
     

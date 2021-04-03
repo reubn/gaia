@@ -168,6 +168,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
 
   func parentMapViewRegionIsChanging() {
     if(displayedStyle != nil && !(_layer?.enabled ?? false)){return}
+    if(displayedStyle != nil && ProcessInfo.processInfo.isLowPowerModeEnabled){return}
     
     visible = self.isVisible()
     if(!visible){return}

@@ -3,7 +3,7 @@ import UIKit
 import Mapbox
 import FloatingPanel
 
-class MapViewPanelViewController: UIViewController, FloatingPanelControllerDelegate {
+class PanelViewController: UIViewController, FloatingPanelControllerDelegate {
   var panelDidMoveDelegate: PanelDidMoveDelegate?
   
   lazy var popoverTitle: SelectableLabel = {

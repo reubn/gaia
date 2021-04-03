@@ -3,7 +3,7 @@ import UIKit
 
 import FloatingPanel
 
-let aboutPanelLayout = MapViewPanelLayout(
+let aboutPanelLayout = PanelLayout(
   position: .bottom,
   initialState: .full,
   anchors: [
