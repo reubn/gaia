@@ -311,7 +311,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     if(mode != .followWithHeading) {
       mapView.resetNorth()
 
-      if(mode != .follow) {
+      if(ProcessInfo.processInfo.isLowPowerModeEnabled && mode != .follow) {
         mapView.showsUserLocation = false
       }
     }
