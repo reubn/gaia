@@ -8,21 +8,18 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
   var emojiTimer: Timer? = nil
   var isFlipped = false
   
-  lazy var appIcon: UIButton = {
-    let imageView = UIButton()
+  lazy var appIcon: AppIcon = {
+    let imageView = AppIcon()
 
     imageView.setImage(UIImage(named: BUNDLE_ID_SUFFIX == ".dev" ? "AppIconHighRes.dev" : "AppIconHighRes")!, for: .normal)
     
-    let size: CGFloat = 200
-    
-    imageView.layer.cornerRadius = size * 0.15
     imageView.layer.cornerCurve = .continuous
     imageView.clipsToBounds = true
     
     addSubview(imageView)
     
     imageView.translatesAutoresizingMaskIntoConstraints = false
-    imageView.widthAnchor.constraint(equalToConstant: size).isActive = true
+    imageView.widthAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
     imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
     imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
     imageView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
@@ -30,16 +27,13 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     return imageView
   }()
   
-  lazy var appIconBack: UIButton = {
-    let view = UIButton()
+  lazy var appIconBack: AppIcon = {
+    let view = AppIcon()
     
     view.setTitle(MSG_EMOJI[MSG_EMOJI_INDEX], for: .normal)
     view.titleLabel!.font = .systemFont(ofSize: 72)
-
-    let size: CGFloat = 200
     
     view.backgroundColor = .tertiarySystemBackground
-    view.layer.cornerRadius = size * 0.15
     view.layer.cornerCurve = .continuous
     view.clipsToBounds = true
     
@@ -50,7 +44,7 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     addSubview(view)
     
     view.translatesAutoresizingMaskIntoConstraints = false
-    view.widthAnchor.constraint(equalToConstant: size).isActive = true
+    view.widthAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
     view.heightAnchor.constraint(equalTo: view.widthAnchor).isActive = true
     view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
     view.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
@@ -69,7 +63,7 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     
     label.translatesAutoresizingMaskIntoConstraints = false
     label.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
-    label.topAnchor.constraint(equalTo: appIcon.bottomAnchor, constant: 30).isActive = true
+    label.topAnchor.constraint(greaterThanOrEqualTo: appIcon.bottomAnchor, constant: 10).isActive = true
 
     return label
   }()
@@ -108,6 +102,7 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     
     label.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
     label.topAnchor.constraint(equalTo: url.bottomAnchor, constant: 15).isActive = true
+    label.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -15).isActive = true
 
     return label
   }()
@@ -201,6 +196,13 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
   
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+}
+
+class AppIcon: UIButton {
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    self.layer.cornerRadius = frame.height * 0.15
   }
 }
 
