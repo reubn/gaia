@@ -58,13 +58,15 @@ class OfflineManager {
   
   func downloadPack(layers: [Layer], bounds: MGLCoordinateBounds, fromZoomLevel: Double, toZoomLevel: Double) {
     let compositeStyle = CompositeStyle(sortedLayers: layers)
-    let region = MGLTilePyramidOfflineRegion(styleURL: compositeStyle.url, bounds: bounds, fromZoomLevel: fromZoomLevel, toZoomLevel: toZoomLevel)
+    let style = compositeStyle.toStyle()
+    
+    let region = MGLTilePyramidOfflineRegion(styleURL: style.url, bounds: bounds, fromZoomLevel: fromZoomLevel, toZoomLevel: toZoomLevel)
     
     let layerMetadata = layers.map {LayerDefinition.Metadata(layer: $0)}
       
     let packContext = PackContext(
       layerMetadata: layerMetadata,
-      style: compositeStyle.style,
+      style: style,
       bounds: PackContext.Bounds(bounds),
       name: DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .medium, timeStyle: .short),
       toZoomLevel: Int(toZoomLevel),

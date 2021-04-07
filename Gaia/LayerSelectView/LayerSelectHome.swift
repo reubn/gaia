@@ -110,7 +110,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
             name: "Composite Layer",
             group: ""
           ),
-          style: LayerManager.shared.compositeStyle.style
+          style: LayerManager.shared.compositeStyle.toStyle()
         )
         
         _ = self.coordinatorView.acceptLayerDefinitions(from: [layerDefinition])

@@ -324,8 +324,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   func compositeStyleDidChange(to: CompositeStyle, from: CompositeStyle?) {
-    mapView.styleURL = to.url
-    styleCachedConstraints = (to.style.zoomLevelsCovered, to.style.bounds)
+    let style = to.toStyle()
+    
+    mapView.styleURL = style.url
+    styleCachedConstraints = (style.zoomLevelsCovered, style.bounds)
 
     updateUIColourScheme(compositeStyle: to)
     reactToLayerChanges(to: to, from: from)
