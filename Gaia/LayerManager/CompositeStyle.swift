@@ -35,16 +35,28 @@ struct CompositeStyle: Equatable, Hashable {
     var sources: [String: Style.Source] = [:]
     var layers: [Style.Layer] = []
     
+    var sprite: Style.Sprite? = nil
+    var glyphs: Style.Glyphs? = nil
+    var terrain: Style.Terrain? = nil
+    
     for layer in sortedLayers.reversed() {
       let style = layer.style
       
       sources.merge(style.sources) {(_, new) in new}
       layers += style.layers
+      
+      sprite = sprite ?? style.sprite
+      glyphs = glyphs ?? style.glyphs
+      terrain = terrain ?? style.terrain
     }
 
     return Style(
       sources: sources,
-      layers: layers
+      layers: layers,
+      
+      sprite: sprite,
+      glyphs: glyphs,
+      terrain: terrain
     )
   }
   

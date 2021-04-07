@@ -6,12 +6,21 @@ let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirec
 
 struct Style: Codable, Equatable {
   var version = 8
-  let sources: [String: Source]
-  let layers: [Layer]
   
   typealias Source = AnyCodable
   typealias Layer = AnyCodable
   
+  let sources: [String: Source]
+  let layers: [Layer]
+  
+  typealias Sprite = String
+  typealias Glyphs = String
+  typealias Terrain = AnyCodable
+  
+  var sprite: Sprite? = nil
+  var glyphs: Glyphs? = nil
+  var terrain: Terrain? = nil
+ 
   struct BoundsInfo {
     let individual: [MGLCoordinateBounds]
     let superbound: MGLCoordinateBounds?
@@ -88,7 +97,7 @@ struct Style: Codable, Equatable {
             allBounds.append(MGLCoordinateBoundsMake(sw, ne))
           }
         }
-      } else if(type == "raster" || type == "vector")  {
+      } else if(type == "raster" || type == "raster-dem" || type == "vector")  {
         let bounds = source.bounds?.value as? [CLLocationDegrees]
         
         if(bounds != nil && bounds!.count == 4) {
