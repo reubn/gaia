@@ -27,7 +27,7 @@ struct CompositeStyle: Equatable, Hashable {
     sortedLayers.filter({!$0.isOpaque || $0 == topOpaque})
   }
   
-  func style() -> Style {
+  func toStyle() -> Style {
     var sources: [String: Style.Source] = [:]
     var layers: [Style.Layer] = []
     
