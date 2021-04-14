@@ -473,10 +473,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
 
   @objc func layersButtonTapped(sender: MapButton) {
-    openLayerSelectPanel()
+    toggleLayerSelectPanel()
   }
   
-  func openLayerSelectPanel(keepOpen: Bool = false) {
+  func toggleLayerSelectPanel(keepOpen: Bool = false) {
     if presentedViewController != nil {
       let isMe = presentedViewController == lsfpc
       
