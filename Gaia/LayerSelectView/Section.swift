@@ -297,7 +297,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       return newCell
     }()
     
-    let disabledCount = !showAllDisabled && !_layer.enabled && numberDisabledHidden > 0
+    let disabledCount = !showAllDisabled && !_layer.enabled && !_layer.visible && numberDisabledHidden > 0
       ? numberDisabledHidden
       : nil
 
