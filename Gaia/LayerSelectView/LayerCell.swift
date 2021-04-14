@@ -15,11 +15,24 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   
   var styleCachedConstraints: (zoomLevelsCovered: (Double, Double), bounds: Style.BoundsInfo)?
   
-  var disabledCount: Int? {
+  var accessory: LayerCellAccessory? {
     didSet {
-      if(oldValue != disabledCount) {
-        disabledCountDisplay.isHidden = disabledCount == nil
-        disabledCountDisplay.text = "+" + String(disabledCount ?? 0)
+      if(oldValue != accessory) {
+        switch accessory {
+        case .normal, .none:
+          disabledCountDisplay.isHidden = true
+          disabledCountDisplay.text = ""
+        case .plus(let count):
+          disabledCountDisplay.isHidden = false
+          disabledCountDisplay.text = "+" + String(count)
+        case .collapse:
+          disabledCountDisplay.isHidden = false
+          
+          let imageAttachment = NSTextAttachment()
+          imageAttachment.image = UIImage(systemName: "chevron.up", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .semibold))?.withTintColor(.label)
+          
+          disabledCountDisplay.attributedText = NSAttributedString(attachment: imageAttachment)
+        }
       }
     }
   }
@@ -216,9 +229,9 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     needsUpdating = false
   }
 
-  func update(_layer: Layer, layerSelectConfig: LayerSelectConfig, scrollView: LayerSelectView, disabledCount: Int?) {
+  func update(_layer: Layer, layerSelectConfig: LayerSelectConfig, scrollView: LayerSelectView, accessory: LayerCellAccessory) {
     self._layer = _layer
-    self.disabledCount = disabledCount
+    self.accessory = accessory
  
     queuedStyle = _layer.style
     
@@ -288,4 +301,10 @@ extension UIView {
 enum PreviewBlurReason {
   case minZoom
   case bounds
+}
+
+enum LayerCellAccessory: Equatable {
+  case plus(Int)
+  case collapse
+  case normal
 }

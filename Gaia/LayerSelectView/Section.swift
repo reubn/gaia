@@ -213,10 +213,10 @@ class Section: UIStackView {
   
     let layer = layers[position]
     
-    if(layer.enabled || layer.visible) {
-      toggleLayer(layer: layer, mutuallyExclusive: layerSelectConfig.mutuallyExclusive)
-    } else {
+    if(indexPath?.row == layers.count - numberDisabled && !layer.visible) {
       showAllDisabled = !showAllDisabled
+    } else {
+      toggleLayer(layer: layer, mutuallyExclusive: layerSelectConfig.mutuallyExclusive)
     }
   }
   
@@ -297,11 +297,17 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       return newCell
     }()
     
-    let disabledCount = !showAllDisabled && !_layer.enabled && !_layer.visible && numberDisabledHidden > 0
-      ? numberDisabledHidden
-      : nil
+    var accessory: LayerCellAccessory
 
-    cell.update(_layer: _layer, layerSelectConfig: layerSelectConfig, scrollView: scrollView, disabledCount: disabledCount)
+    if(_layer.enabled || _layer.visible || numberDisabledHidden == 0){
+      accessory = .normal
+    } else if(indexPath.row == layers.count - numberDisabled) {
+      accessory = showAllDisabled ? .collapse : .plus(numberDisabledHidden)
+    } else {
+      accessory = .normal
+    }
+
+    cell.update(_layer: _layer, layerSelectConfig: layerSelectConfig, scrollView: scrollView, accessory: accessory)
     
     let cellGR = UITapGestureRecognizer(target: self, action: #selector(self.tableViewLabelClick))
     cell.isUserInteractionEnabled = true
