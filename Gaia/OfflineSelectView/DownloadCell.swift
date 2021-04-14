@@ -171,21 +171,16 @@ class DownloadCell: UITableViewCell {
     
     if(context == nil) {return}
 
-    let byteString = ByteCountFormatter.string(fromByteCount: Int64(pack.progress.countOfBytesCompleted), countStyle: .memory)
-    
-    title.text = context!.name
-    subtitle.text = String(format: "%@ - %@ @ %d-%d", byteString, layersString, context!.fromZoomLevel!, context!.toZoomLevel!)
-    
-    status = pack.state
-    
     if(first) {
       first = false
       
-      let layersMetadata = context!.layerMetadata
-      layersString = layersMetadata.map({$0.name}).joined(separator: ", ")
+      let layers = LayerManager.shared.layers.filter({
+        context!.layers.contains($0.id)
+      }).sorted(by: LayerManager.shared.layerSortingFunction)
+
+      layersString = layers.map({$0.name}).joined(separator: ", ")
       
-      let bounds = MGLCoordinateBounds(context!.bounds)
-      let coordinateSpan = MGLCoordinateBoundsGetCoordinateSpan(bounds)
+      let coordinateSpan = context!.bounds.span
       
       let height = coordinateSpan.latitudeDelta
       let width = coordinateSpan.longitudeDelta
@@ -198,9 +193,21 @@ class DownloadCell: UITableViewCell {
         preview.heightAnchor.constraint(equalTo: preview.widthAnchor, multiplier: CGFloat(height / width)).isActive = true
       }
       
-      preview.styleURL = context!.style.url
-      preview.setVisibleCoordinateBounds(bounds, animated: false)
+      
+      
+      let compositeStyle = CompositeStyle(sortedLayers: layers)
+      let style = compositeStyle.toStyle()
+      
+      preview.styleURL = style.url
+      preview.setVisibleCoordinateBounds(context!.bounds, animated: false)
     }
+    
+    let byteString = ByteCountFormatter.string(fromByteCount: Int64(pack.progress.countOfBytesCompleted), countStyle: .memory)
+    
+    title.text = context!.name
+    subtitle.text = String(format: "%@ - %@ @ %g-%g", byteString, layersString, context!.zoom.from, context!.zoom.to)
+    
+    status = pack.state
   }
 
   required init?(coder: NSCoder) {

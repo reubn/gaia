@@ -188,16 +188,12 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   func previewPack(pack: MGLOfflinePack){
     let context = OfflineManager.shared.decodePackContext(pack: pack)!
 
-    let bounds = MGLCoordinateBounds(context.bounds)
-    
-    LayerManager.shared.filter({layer in
-      context.layerMetadata.contains(where: {layerMetadata in
-        layerMetadata.id == layer.id
-      })
+    LayerManager.shared.filter({
+      context.layers.contains($0.id)
     })
     
     MapViewController.shared.mapView.setDirection(0, animated: false)
-    MapViewController.shared.mapView.setVisibleCoordinateBounds(bounds, animated: true)
+    MapViewController.shared.mapView.setVisibleCoordinateBounds(context.bounds, animated: true)
     MapViewController.shared.osfpc.dismiss(animated: true, completion: nil)
   }
   

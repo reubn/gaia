@@ -42,7 +42,9 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
   
   func panelButtonTapped(button: PanelButton){
     if(button == .accept){
-      coordinatorView.selectedZoom = MapViewController.shared.mapView.zoomLevel.rounded(.up)
+      let to = MapViewController.shared.mapView.zoomLevel.rounded(.up)
+      coordinatorView.selectedZoom = .init(from: to - 2, to: to)
+      
       coordinatorView.forward()
     } else if(button == .previous){
       coordinatorView.back()

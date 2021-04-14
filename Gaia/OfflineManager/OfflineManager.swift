@@ -56,32 +56,29 @@ class OfflineManager {
     }
   }
   
-  func downloadPack(layers: [Layer], bounds: MGLCoordinateBounds, fromZoomLevel: Double, toZoomLevel: Double) {
+  func downloadPack(context: PackContext) {
+    let layers = LayerManager.shared.layers.filter({
+      context.layers.contains($0.id)
+    }).sorted(by: LayerManager.shared.layerSortingFunction)
+    
+    downloadPack(layers: layers, context: context)
+  }
+  
+  func downloadPack(layers: [Layer], context: PackContext) {
     let compositeStyle = CompositeStyle(sortedLayers: layers)
     let style = compositeStyle.toStyle()
     
-    let region = MGLTilePyramidOfflineRegion(styleURL: style.url, bounds: bounds, fromZoomLevel: fromZoomLevel, toZoomLevel: toZoomLevel)
+    let region = MGLTilePyramidOfflineRegion(styleURL: style.url, bounds: context.bounds, fromZoomLevel: context.zoom.from, toZoomLevel: context.zoom.to)
     
-    let layerMetadata = layers.map {LayerDefinition.Metadata(layer: $0)}
-      
-    let packContext = PackContext(
-      layerMetadata: layerMetadata,
-      style: style,
-      bounds: PackContext.Bounds(bounds),
-      name: DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .medium, timeStyle: .short),
-      toZoomLevel: Int(toZoomLevel),
-      fromZoomLevel: Int(fromZoomLevel)
-    )
-    
-    var context: Data
+    var contextData: Data
     
     do {
       let encoder = JSONEncoder()
       
-      context = try encoder.encode(packContext)
+      contextData = try encoder.encode(context)
     } catch {return}
     
-    MGLOfflineStorage.shared.addPack(for: region, withContext: context) { (pack, error) in
+    MGLOfflineStorage.shared.addPack(for: region, withContext: contextData) { (pack, error) in
       if(error != nil) {
         print("Error: \(error?.localizedDescription ?? "unknown error")")
         return
@@ -141,43 +138,13 @@ protocol OfflineModeDelegate {
 }
 
 struct PackContext: Codable {
-  let layerMetadata: [LayerDefinition.Metadata]
-  let style: Style
-  let bounds: Bounds
+  let layers: [String]
+  let bounds: MGLCoordinateBounds
   let name: String
-  let toZoomLevel: Int?
-  let fromZoomLevel: Int?
-  
-  struct Bounds: Codable {
-    let ne, sw: Coordinate
-    
-    struct Coordinate: Codable {
-      let latitude, longitude: Double
-    }
-  }
-}
+  let zoom: ZoomBounds
 
-extension CLLocationCoordinate2D {
-  init(_ coordinate: PackContext.Bounds.Coordinate) {
-    self = .init(latitude: coordinate.latitude, longitude: coordinate.longitude)
-  }
-}
-
-extension MGLCoordinateBounds {
-  init(_ bounds: PackContext.Bounds) {
-    self = .init(sw: CLLocationCoordinate2D(bounds.sw), ne: CLLocationCoordinate2D(bounds.ne))
-  }
-}
-
-extension PackContext.Bounds {
-  init(_ bounds: MGLCoordinateBounds) {
-    ne = PackContext.Bounds.Coordinate(bounds.ne)
-    sw = PackContext.Bounds.Coordinate(bounds.sw)
-  }
-}
-
-extension PackContext.Bounds.Coordinate {
-  init(_ coordinate: CLLocationCoordinate2D) {
-    self = .init(latitude: coordinate.latitude, longitude: coordinate.longitude)
+  struct ZoomBounds: Codable {
+    let from: Double
+    let to: Double
   }
 }

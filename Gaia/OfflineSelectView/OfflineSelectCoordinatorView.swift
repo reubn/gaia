@@ -7,10 +7,8 @@ class OfflineSelectCoordinatorView: CoordinatorView {
   unowned let panelViewController: OfflineSelectPanelViewController
   
   var selectedArea: MGLCoordinateBounds?
-  var selectedZoom: Double?
   var selectedLayers: [Layer]?
-  var selectedZoomFrom: Double?
-  var selectedZoomTo: Double?
+  var selectedZoom: PackContext.ZoomBounds?
 
   init(panelViewController: OfflineSelectPanelViewController){
     self.panelViewController = panelViewController
@@ -29,7 +27,15 @@ class OfflineSelectCoordinatorView: CoordinatorView {
   
   override func done(){
     let layers = selectedLayers!.sorted(by: LayerManager.shared.layerSortingFunction)
-    OfflineManager.shared.downloadPack(layers: layers, bounds: selectedArea!, fromZoomLevel: selectedZoom! - 2, toZoomLevel: selectedZoom!)
+    
+    let context = PackContext(
+      layers: layers.map({$0.id}),
+      bounds: selectedArea!,
+      name: DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .medium, timeStyle: .short),
+      zoom: selectedZoom!
+    )
+    
+    OfflineManager.shared.downloadPack(layers: layers, context: context)
     
     let revealedLayers = LayerManager.shared.compositeStyle.revealedLayers
     LayerManager.shared.filter({revealedLayers.contains($0)})
