@@ -196,10 +196,14 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   
   func previewPack(pack: MGLOfflinePack){
     let context = OfflineManager.shared.decodePackContext(pack: pack)!
-
-    LayerManager.shared.filter({
+    
+    let layers = LayerManager.shared.layers.filter({
       context.layers.contains($0.id)
-    })
+    }).sorted(by: LayerManager.shared.layerSortingFunction)
+    let compositeStyle = CompositeStyle(sortedLayers: layers)
+    let revealedLayers = compositeStyle.revealedLayers
+    
+    LayerManager.shared.filter({revealedLayers.contains($0)})
     
     MapViewController.shared.mapView.setDirection(0, animated: false)
     MapViewController.shared.mapView.setVisibleCoordinateBounds(context.bounds, animated: true)
