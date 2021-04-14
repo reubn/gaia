@@ -213,7 +213,7 @@ class Section: UIStackView {
   
     let layer = layers[position]
     
-    if(layer.enabled) {
+    if(layer.enabled || layer.visible) {
       toggleLayer(layer: layer, mutuallyExclusive: layerSelectConfig.mutuallyExclusive)
     } else {
       showAllDisabled = !showAllDisabled
