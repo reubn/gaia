@@ -521,28 +521,39 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   @objc func offlineButtonTapped(sender: MapButton) {
+    toggleOfflineSelectPanel()
+  }
+  
+  func toggleOfflineSelectPanel(keepOpen: Bool = false) {
     if presentedViewController != nil {
       let isMe = presentedViewController == osfpc
-      presentedViewController!.dismiss(animated: isMe, completion: nil)
       
-      if(isMe) {return}
+      if(isMe){
+        if(!keepOpen) {
+          presentedViewController!.dismiss(animated: true, completion: nil)
+        }
+        
+        return
+      } else {
+        presentedViewController!.dismiss(animated: false, completion: nil)
+      }
     }
-    
+
     let offlineSelectPanelViewController = OfflineSelectPanelViewController()
-   
+    
     osfpc.layout = offlineSelectPanelLayout
     osfpc.behavior = DefaultPanelBehaviour()
     osfpc.delegate = offlineSelectPanelViewController
     osfpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
     osfpc.isRemovalInteractionEnabled = true
     osfpc.contentMode = .fitToBounds
-   
+    
     let appearance = SurfaceAppearance()
-//     appearance.cornerCurve = CALayerCornerCurve.continuous
+//    appearance.cornerCurve = CALayerCornerCurve.continuous
     appearance.cornerRadius = 16
     appearance.backgroundColor = .clear
     osfpc.surfaceView.appearance = appearance
-   
+    
     osfpc.set(contentViewController: offlineSelectPanelViewController)
 
     self.present(osfpc, animated: true, completion: nil)
