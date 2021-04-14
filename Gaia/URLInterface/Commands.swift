@@ -4,7 +4,7 @@ import CoreLocation
 extension URLInterface {
   enum Command {
     case go(CLLocationCoordinate2D)
-    case layer(URL)
+    case `import`(URL)
     case download(PackContext)
     
     case invalid
@@ -14,8 +14,8 @@ extension URLInterface {
     switch command {
       case .go(let coordinate):
         return go(coordinate)
-      case .layer(let url):
-        return layer(url)
+      case .import(let url):
+        return `import`(url)
       case .download(let context):
         return download(context)
       case .invalid:
@@ -27,8 +27,8 @@ extension URLInterface {
     switch queryItem.name {
       case "go":
         return go(queryItem)
-      case "layer":
-        return layer(queryItem)
+      case "import":
+        return `import`(queryItem)
       case "download":
         return download(queryItem)
       default:
@@ -48,15 +48,15 @@ extension URLInterface {
       : .invalid
   }
   
-  func layer(_ url: URL) -> URLQueryItem {
-    URLQueryItem(name: "layer", value: url.absoluteString)
+  func `import`(_ url: URL) -> URLQueryItem {
+    URLQueryItem(name: "import", value: url.absoluteString)
   }
   
-  func layer(_ queryItem: URLQueryItem) -> Command {
+  func `import`(_ queryItem: URLQueryItem) -> Command {
     let url = URL(string: queryItem.value?.addingPercentEncoding(withAllowedCharacters: .urlAllowedCharacters) ?? "")
 
     if(url != nil) {
-      return .layer(url!)
+      return .import(url!)
     }
     
     return .invalid

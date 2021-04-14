@@ -60,7 +60,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     switch command {
       case .go(let coordinate):
         MapViewController.shared.openLocationInfoPanel(location: .map(coordinate))
-      case .layer(let url):
+      case .import(let url):
         MapViewController.shared.toggleLayerSelectPanel(keepOpen: true)
         (MapViewController.shared.lsfpc.contentViewController! as! LayerSelectPanelViewController).coordinatorView.goTo(1, data: url)
     case .download(let context):
