@@ -151,9 +151,18 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
           image: UIImage(systemName: "square.and.arrow.down")) { _ in
             OfflineManager.shared.redownloadPack(pack: pack)
         })
-      }
-      
-      if(pack.state == .active) {
+        
+        children.append(UIAction(
+          title: "Share",
+          image: UIImage(systemName: "square.and.arrow.up")) { _ in
+            let context = OfflineManager.shared.decodePackContext(pack: pack)
+            let url = URLInterface.shared.encode(commands: [.download(context!)])
+          
+            let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = tableView
+            MapViewController.shared.osfpc.present(activityViewController, animated: true, completion: nil)
+        })
+      } else if(pack.state == .active) {
         let action = UIAction(
           title: "Stop Download",
           image: UIImage(systemName: "xmark.circle.fill"),

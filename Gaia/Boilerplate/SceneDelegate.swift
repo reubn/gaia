@@ -63,6 +63,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       case .layer(let url):
         MapViewController.shared.toggleLayerSelectPanel(keepOpen: true)
         (MapViewController.shared.lsfpc.contentViewController! as! LayerSelectPanelViewController).coordinatorView.goTo(1, data: url)
+    case .download(let context):
+        MapViewController.shared.toggleOfflineSelectPanel(keepOpen: true)
+        OfflineManager.shared.downloadPack(context: context)
       case .invalid:
         HUDManager.shared.displayMessage(message: .urlCommandInvalid)
     }
