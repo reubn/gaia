@@ -312,12 +312,18 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
 
   func mapView(_ mapView: MGLMapView, didChange mode: MGLUserTrackingMode, animated: Bool) {
-    if(mode != .followWithHeading) {
-      mapView.resetNorth()
-
-      if(ProcessInfo.processInfo.isLowPowerModeEnabled && mode != .follow) {
-        mapView.showsUserLocation = false
-      }
+    switch mode {
+      case .followWithHeading, .followWithCourse:
+        mapView.locationManager.startUpdatingHeading()
+        mapView.locationManager.startUpdatingLocation()
+      case .follow:
+        mapView.resetNorth()
+        mapView.locationManager.stopUpdatingHeading()
+        mapView.locationManager.startUpdatingLocation()
+      case .none:
+        mapView.resetNorth()
+        mapView.locationManager.stopUpdatingHeading()
+        mapView.locationManager.stopUpdatingLocation()
     }
 
     userLocationButton.updateArrowForTrackingMode(mode: mode)
