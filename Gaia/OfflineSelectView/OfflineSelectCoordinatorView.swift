@@ -26,7 +26,7 @@ class OfflineSelectCoordinatorView: CoordinatorView {
   }
   
   override func done(){
-    let layers = selectedLayers!.sorted(by: LayerManager.shared.layerSortingFunction)
+    let layers = selectedLayers!.filter({$0.group != "gpx"}).sorted(by: LayerManager.shared.layerSortingFunction)
     
     let context = PackContext(
       layers: layers.map({$0.id}),
