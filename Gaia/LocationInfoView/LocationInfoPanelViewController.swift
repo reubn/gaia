@@ -5,15 +5,22 @@ import Mapbox
 import FloatingPanel
 
 class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdateDelegate, MapViewTappedDelegate, SelectableLabelPasteDelegate, MapViewStyleDidChangeDelegate {
-  func userDidPaste(content: String) {
-    let coordinate = CLLocationCoordinate2D(content)
-    
-    if(coordinate != nil){
-      update(location: .map(coordinate!))
+  var location: LocationInfoType
+  var titleCoordinate: CoordinateFormat? {
+    didSet {
+      switch titleCoordinate! {
+        case .decimal(let coordinate):
+          self.popoverTitle.text = coordinate.format(.decimal(.low))
+          self.popoverTitle.selectionText = coordinate.format(.decimal(.high))
+        case .sexagesimal(let coordinate):
+          self.popoverTitle.text = coordinate.format(.sexagesimal(.low))
+          self.popoverTitle.selectionText = coordinate.format(.sexagesimal(.low))
+        case .gridReference(let coordinate):
+          self.popoverTitle.text = coordinate.format(.gridReference(.low))
+          self.popoverTitle.selectionText = coordinate.format(.gridReference(.low))
+      }
     }
   }
-  
-  var location: LocationInfoType
 
   var mapSource: MGLSource {
     get {
@@ -113,6 +120,11 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     super.init(title: "")
     self.popoverTitle.pasteDelegate = self
     
+    
+    let labelTap = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
+    self.popoverTitle.isUserInteractionEnabled = true
+    self.popoverTitle.addGestureRecognizer(labelTap)
+    
     self.panelButtons = [.share, /*.star,*/ .dismiss]
     
     view.addSubview(mainView)
@@ -143,6 +155,14 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
       displayPointOnMap(coordinate: coordinate)
     }
   }
+  
+  func userDidPaste(content: String) {
+    let coordinate = CLLocationCoordinate2D(content)
+    
+    if(coordinate != nil){
+      update(location: .map(coordinate!))
+    }
+  }
 
   func update(location: LocationInfoType){
     self.location = location
@@ -151,13 +171,14 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
       case .user:
         metricDisplays = [headingDisplay, elevationDisplay]
         
+        userLocationDidUpdate()
         removePointsFromMap()
       case .map(let coordinate):
         if case .map(let coordinate) = location, !MapViewController.shared.mapView.visibleCoordinateBounds.contains(coordinate: coordinate) {
           MapViewController.shared.mapView.setCenter(coordinate, animated: true)
         }
         
-        setCoordinateTitle(coordinate: coordinate)
+        updateTitleCoordinate(coordinate)
         displayPointOnMap(coordinate: coordinate)
         
         metricDisplays = [bearingDisplay, distanceDisplay]
@@ -186,11 +207,6 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     MapViewController.shared.mapView.style?.removeSource(mapSource)
     MapViewController.shared.mapView.style?.removeLayer(mapLayer)
   }
-
-  func setCoordinateTitle(coordinate: CLLocationCoordinate2D){
-    self.popoverTitle.text = coordinate.format(toAccuracy: .low)
-    self.popoverTitle.selectionText = coordinate.format(toAccuracy: .high)
-  }
   
   func userLocationDidUpdate() {
     if(MapViewController.shared.mapView.userLocation == nil) {return}
@@ -200,7 +216,7 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     let location = MapViewController.shared.mapView.userLocation!.location
     
     if case .user = self.location {
-      setCoordinateTitle(coordinate: coordinate)
+      updateTitleCoordinate(coordinate)
     } else {
       var distanceValue = (distanceDisplay.value as! CoordinatePair)
       distanceValue.b = coordinate
@@ -231,6 +247,24 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     }
   }
   
+  func updateTitleCoordinate(_ coordinate: CLLocationCoordinate2D){
+    switch titleCoordinate {
+      case .decimal(_): titleCoordinate = .decimal(coordinate)
+      case .sexagesimal(_): titleCoordinate = .sexagesimal(coordinate)
+      case .gridReference(_): titleCoordinate = .gridReference(coordinate)
+        
+      case nil: titleCoordinate = .decimal(coordinate)
+    }
+  }
+  
+  @objc func labelTapped(){
+    switch titleCoordinate! {
+      case .decimal(let coordinate): titleCoordinate = .sexagesimal(coordinate)
+      case .sexagesimal(let coordinate): titleCoordinate = .gridReference(coordinate)
+      case .gridReference(let coordinate): titleCoordinate = .decimal(coordinate)
+    }
+  }
+  
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -241,4 +275,10 @@ enum LocationInfoType {
   case user
   case map(CLLocationCoordinate2D)
 //  case pinned
+}
+
+enum CoordinateFormat {
+  case decimal(CLLocationCoordinate2D)
+  case sexagesimal(CLLocationCoordinate2D)
+  case gridReference(CLLocationCoordinate2D)
 }

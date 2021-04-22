@@ -92,7 +92,7 @@ class CoordinateActivityItemProvider: UIActivityItemProvider {
     }
 
     linkMetaData.title = "Shared Location"
-    linkMetaData.originalURL = URL(fileURLWithPath: coordinate.format(toAccuracy: .low))
+    linkMetaData.originalURL = URL(fileURLWithPath: coordinate.format(.decimal(.low)))
 
     return linkMetaData
 }
@@ -101,21 +101,21 @@ class CoordinateActivityItemProvider: UIActivityItemProvider {
     if(activityType != nil) {
       switch activityType! {
         case .message, .postToFacebook, .postToWeibo, .postToVimeo, .postToFlickr, .postToTwitter, .postToTencentWeibo:
-          return "Shared Location from Gaia:\n\n\(coordinate.format(toAccuracy: .low))\n\n\(item)"
+          return "Shared Location from Gaia:\n\n\(coordinate.format(.decimal(.low)))\n\n\(item)"
         case .airDrop:
           return URL(string: "https://maps.apple.com?ll=\(coordinate.latitude),\(coordinate.longitude)")!
         case .copyToPasteboard:
-          return coordinate.format(toAccuracy: .high)
+          return coordinate.format(.decimal(.high))
         default:
-          return coordinate.format(toAccuracy: .low)
+          return coordinate.format(.decimal(.low))
       }
     }
     
-    return coordinate.format(toAccuracy: .low)
+    return coordinate.format(.decimal(.low))
   }
   
   override func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType: UIActivity.ActivityType?) -> String {
-    return "Shared Location from Gaia: \(coordinate.format(toAccuracy: .low))"
+    return "Shared Location from Gaia: \(coordinate.format(.decimal(.low)))"
   }
 }
 
