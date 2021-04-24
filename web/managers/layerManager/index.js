@@ -63,6 +63,36 @@ class LayerManager extends ET {
       return a.name < b.name
     })() ? 1 : -1
   }
+
+  show(layer, mutuallyExclusive) {
+    console.log(layer)
+   if(!layer.isOpaque || !mutuallyExclusive) {
+     layer.visible = true
+   } else {
+     for(let _layer of this.layers) {
+       if(_layer.isOpaque) _layer.visible = _layer == layer
+     }
+   }
+
+   this.save()
+
+   return true
+ }
+
+ hide(layer, mutuallyExclusive) {
+   if(!layer.isOpaque || !mutuallyExclusive || this.visibleLayers.filter(layer => layer.isOpaque).count > 1) {
+     layer.visible = false
+     this.save()
+
+     return true
+   }
+
+   return false
+ }
+
+ get visibleLayers(){
+   return this.layers.filter(({visible}) => visible)
+ }
 }
 
 const layerManager = typeof window !== 'undefined' ? new LayerManager() : undefined

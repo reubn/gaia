@@ -12,8 +12,8 @@ const LayerSelect = () => {
   const layers = layerManager.useLayers()
 
   const onClick = layer => {
-    layer.visible = !layer.visible
-    layerManager.save()
+    if(layer.visible) layerManager.hide(layer, true)
+    else layerManager.show(layer, true)
   }
 
   const layerCells = layers.sort(layerManager.layerSortingFunction).reverse().map(layer => <LayerCell layer={layer} onClick={onClick} />)

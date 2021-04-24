@@ -43,6 +43,10 @@ export default class Layer {
     return new Layer(layer)
   }
 
+  get isOpaque(){
+    return this.group != "gpx" && this.group != "overlay"
+  }
+
   get layerDefinition(){
     return {
       metadata: {
