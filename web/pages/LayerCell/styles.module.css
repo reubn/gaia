@@ -1,0 +1,8 @@
+.layerCell {
+  margin-left: 1rem;
+  color: var(--colours-mid-2);
+}
+
+.visible {
+  color: var(--colours-blue);
+}

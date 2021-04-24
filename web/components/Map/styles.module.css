@@ -1,0 +1,8 @@
+.map {
+  width: 100vw;
+  height: 100vh;
+}
+
+.map :global(.mapboxgl-ctrl-logo){
+  display: none!important
+}

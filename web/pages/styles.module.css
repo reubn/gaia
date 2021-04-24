@@ -1,0 +1,9 @@
+.layerSelect {
+  height: 100vh;
+  width: 20vw;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: var(--colours-light);
+  overflow-y: scroll;
+}
