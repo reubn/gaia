@@ -1,5 +1,6 @@
 import {useState, useEffect, useRef} from 'react'
 import Layer from './Layer'
+import CompositeStyle from './CompositeStyle'
 
 const ET = typeof window !== 'undefined' ? EventTarget : Object
 
@@ -15,7 +16,7 @@ const groups = [
 ]
 
 class LayerManager extends ET {
-  groups
+  groups = groups
 
   constructor(){
     super()
@@ -32,9 +33,9 @@ class LayerManager extends ET {
     this.dispatchEvent(new Event(layersUpdated))
   }
 
-  useLayers(){
-    const [state, setState] = useState([])
-    const handler = useRef(() => setState([...this.layers]))
+  useLayerManager(){
+    const [state, setState] = useState(0)
+    const handler = useRef(() => setState(Math.random()))
 
     useEffect(() => {
       handler.current()
@@ -92,6 +93,10 @@ class LayerManager extends ET {
 
  get visibleLayers(){
    return this.layers.filter(({visible}) => visible)
+ }
+
+ get compositeStyle(){
+   return new CompositeStyle(this.visibleLayers.sort(this.layerSortingFunction))
  }
 }
 

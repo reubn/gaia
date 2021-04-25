@@ -43,6 +43,10 @@ export default class Layer {
     return new Layer(layer)
   }
 
+  get needsDarkUI(){
+    return this.group == "aerial" || this.group == "overlay"
+  }
+
   get isOpaque(){
     return this.group != "gpx" && this.group != "overlay"
   }

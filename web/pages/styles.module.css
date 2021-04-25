@@ -1,9 +1,19 @@
 .layerSelect {
-  height: 100vh;
   width: 20vw;
   position: absolute;
-  right: 0;
-  top: 0;
-  background: var(--colours-light);
+  right: 1rem;
+  top: 1rem;
   overflow-y: scroll;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.layerSelect.light {
+  color: #232323;
+  background: hsl(0deg 0% 100% / 95%);
+}
+
+.layerSelect.dark {
+  color: #dfdfdf;
+  background: hsl(0deg 0% 10% / 90%);
 }
