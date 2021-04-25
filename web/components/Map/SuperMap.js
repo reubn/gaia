@@ -15,12 +15,12 @@ class SuperMap extends mapboxgl.Map {
 
     global.map = this
 
-    this.addControl(new mapboxgl.GeolocateControl({
-      positionOptions: {
-        enableHighAccuracy: true
-      },
-      trackUserLocation: true
-    }))
+    // this.addControl(new mapboxgl.GeolocateControl({
+    //   positionOptions: {
+    //     enableHighAccuracy: true
+    //   },
+    //   trackUserLocation: true
+    // }))
   }
 }
 

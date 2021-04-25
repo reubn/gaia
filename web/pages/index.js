@@ -3,25 +3,7 @@ import {useState, useEffect} from 'react'
 import layerManager from '@/managers/layerManager'
 
 import Map from '@/components/Map'
-import LayerCell from './LayerCell'
-
-import {layerSelect, light, dark} from './styles'
-
-const LayerSelect = ({darkMode=false}) => {
-  if(typeof window === 'undefined') return null
-  layerManager.useLayerManager()
-
-  const layers = layerManager.layers
-
-  const onClick = layer => {
-    if(layer.visible) layerManager.hide(layer, true)
-    else layerManager.show(layer, true)
-  }
-
-  const layerCells = layers.sort(layerManager.layerSortingFunction).reverse().map(layer => <LayerCell layer={layer} onClick={onClick} />)
-
-  return <section className={`${layerSelect} ${darkMode ? dark : light}`}>{layerCells}</section>
-}
+import LayerSelect from '@/components/LayerSelect'
 
 export default () => {
   const lm = typeof window !== 'undefined' ? layerManager.useLayerManager() : []
