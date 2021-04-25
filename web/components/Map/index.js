@@ -1,9 +1,9 @@
 import {useState, useEffect, useRef} from 'react'
 import SuperMap from './SuperMap'
 
-import {map as mapStyle} from './styles'
+import {map as mapStyle, light, dark} from './styles'
 
-const Map = ({lat, lng, zoom, style}) => {
+const Map = ({lat, lng, zoom, style, darkMode}) => {
   const mapContainer = useRef()
   const [map, setMap] = useState(null)
 
@@ -19,7 +19,7 @@ const Map = ({lat, lng, zoom, style}) => {
     })
 
     setMap(map)
-    
+
     return () => {map.remove(); delete global.map}
   }, [mapContainer])
 
@@ -36,7 +36,7 @@ const Map = ({lat, lng, zoom, style}) => {
   }, [map, style])
 
   return (
-    <div className={mapStyle} ref={mapContainer} />
+    <div className={`${mapStyle} ${darkMode ? dark : light}`} ref={mapContainer} />
   )
 }
 

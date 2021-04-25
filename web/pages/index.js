@@ -63,7 +63,7 @@ export default () => {
 
   return (
     <section>
-      <Map {...state} />
+      <Map {...state} darkMode={darkMode}  />
       <LayerSelect darkMode={darkMode} />
     </section>
   )
