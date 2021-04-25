@@ -432,7 +432,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       
       topChildren.append(delete)
       
-      return UIMenu(title: "", children: topChildren)
+      return UIMenu(title: layer.attribution ?? "", children: topChildren)
     }
   }
   

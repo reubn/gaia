@@ -14,6 +14,7 @@ public class Layer: NSManagedObject {
   @NSManaged public var groupIndex: Int16
   @NSManaged public var id: String
   @NSManaged public var name: String
+  @NSManaged public var attribution: String?
   @NSManaged private var styleString: String
   
   var needsDarkUI: Bool {
@@ -62,6 +63,7 @@ extension Layer {
     self.id = layerDefinition.metadata.id
     self.name = layerDefinition.metadata.name
     self.group = layerDefinition.metadata.group
+    self.attribution = layerDefinition.metadata.attribution
     
     if let user = layerDefinition.user {
       self.groupIndex = Int16(user.groupIndex)

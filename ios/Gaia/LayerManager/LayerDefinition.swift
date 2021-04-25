@@ -13,6 +13,8 @@ struct LayerDefinition: Codable {
     let id: String
     let name: String
     let group: String
+    
+    var attribution: String? = nil
   }
   
   struct User: Codable {
@@ -28,7 +30,8 @@ extension LayerDefinition.Metadata {
     self.init(
       id: layer.id,
       name: layer.name,
-      group: layer.group
+      group: layer.group,
+      attribution: layer.attribution
     )
   }
 }
