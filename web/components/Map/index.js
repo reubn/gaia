@@ -1,5 +1,6 @@
 import {useState, useEffect, useRef} from 'react'
 import SuperMap from './SuperMap'
+import KeyCombo from '@/components/KeyCombo'
 
 import {map as mapStyle, light, dark} from './styles'
 
@@ -36,7 +37,11 @@ const Map = ({lat, lng, zoom, style, darkMode}) => {
   }, [map, style])
 
   return (
-    <div className={`${mapStyle} ${darkMode ? dark : light}`} ref={mapContainer} />
+    <>
+      <div className={`${mapStyle} ${darkMode ? dark : light}`} ref={mapContainer} />
+      <KeyCombo combo="`" handler={() => map.resetNorthPitch()} />
+    </>
+
   )
 }
 

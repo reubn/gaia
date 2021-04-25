@@ -1,11 +1,12 @@
 .layerSelect {
   width: 20vw;
+  height: calc(100vh - 2rem);
   position: absolute;
   right: 1rem;
   top: 1rem;
   overflow-y: scroll;
   border-radius: 8px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(25px);
 }
 
 .layerSelect.light {
