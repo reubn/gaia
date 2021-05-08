@@ -26,17 +26,13 @@ const LayerSelect = ({darkMode=false}) => {
   const onClick = layer => {
     if(layer.visible) layerManager.hide(layer, true)
     else layerManager.show(layer, true)
-
-    setLocked(true)
   }
 
-  const content = open
-    ? layers.sort(layerManager.layerSortingFunction).reverse().map(layer => <LayerCell layer={layer} onClick={onClick} />)
-    : []
+  const content = layers.sort(layerManager.layerSortingFunction).reverse().map(layer => <LayerCell layer={layer} onClick={onClick} />)
 
   return (
     <section className={`${layerSelect} ${darkMode ? dark : light} ${open ? openStyle : closedStyle}`} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-      <p className={`${handle} ${locked ? lockedStyle : ''}`} onClick={() => setLocked(!locked)}>􀆈</p>
+      <p className={`${handle} ${locked ? lockedStyle : ''}`} onClick={() => setLocked(!locked)}>{locked ? '􀎠' : '􀆈'}</p>
       {content}
     </section>
   )

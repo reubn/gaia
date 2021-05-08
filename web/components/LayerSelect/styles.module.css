@@ -5,7 +5,7 @@
   overflow-y: scroll;
   border-radius: 8px;
   backdrop-filter: blur(25px);
-  transition: width 0.15s ease-in, height 0.15s ease-in;
+  transition: width 0.15s cubic-bezier(0.22, 1, 1, 1), height 0.15s cubic-bezier(0.22, 1, 1, 1);
 }
 
 .layerSelect.light {
@@ -18,12 +18,22 @@
   background: hsl(0deg 0% 10% / 90%);
 }
 
+.layerSelect > *:not(.handle){
+  opacity: 0;
+
+  transition: opacity 0s ease-out 0s;
+}
 
 .open {
   width: 20vw;
   height: calc(100vh - 2rem);
-
 }
+
+.open > *:not(.handle) {
+  opacity: 1;
+  transition: opacity 0.3s ease-out 0.15s;
+}
+
 .closed {
   height: 3rem;
   width: 3rem;
@@ -42,20 +52,22 @@
   text-align: center;
   cursor: pointer;
 
-  transition: transform 0.15s ease-in, height 0.15s ease-in, color 0.15s ease-in;
-  /* background: red; */
+  transition: transform 0.15s ease-out, height 0.15s ease-out, color 0.15s ease-out;
+  background: #2d2d2d;
   overflow: hidden;
   margin: 0;
   height: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  user-select: none;
 }
 
 .handle:before {
   content: "Layers";
   opacity: 0;
-  transition: opacity 0.15s ease-in;
+  transition: opacity 0.15s ease-out;
   white-space: nowrap;
   width: calc(100% - 3rem);
   display: block;

@@ -47,6 +47,13 @@ class LayerManager extends ET {
     return state
   }
 
+  accept(layerDefinition){
+    const layer = Layer.fromLayerDefinition(layerDefinition)
+    console.log(layer)
+    this.layers.push(layer)
+    this.save()
+  }
+
   layerSortingFunction(a, b) {
     return (() => {
       if(a.group != b.group) {
