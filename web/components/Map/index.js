@@ -16,7 +16,11 @@ const Map = ({lat, lng, zoom, style, darkMode}) => {
       zoom: zoom,
 
       attributionControl: false,
-      renderWorldCopies: false
+      renderWorldCopies: false,
+
+      workerCount: 4,
+      maxParallelImageRequests: 32,
+      diff: true
     })
 
     setMap(map)

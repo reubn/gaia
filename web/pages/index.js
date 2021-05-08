@@ -4,9 +4,14 @@ import layerManager from '@/managers/layerManager'
 
 import Map from '@/components/Map'
 import LayerSelect from '@/components/LayerSelect'
+import MaxTileZoomSelect from '@/components/MaxTileZoomSelect'
+
+import KeyCombo from '@/components/KeyCombo'
 
 export default () => {
   const lm = typeof window !== 'undefined' ? layerManager.useLayerManager() : []
+  const [maxTileZoom, setMaxTileZoom] = useState(17)
+  global.setMaxTileZoom = setMaxTileZoom
 
   const [state, setState] = useState({
     lat: 52.7577,
@@ -18,7 +23,7 @@ export default () => {
 
   useEffect(() => {
     const compositeStyle = layerManager.compositeStyle
-    let style = compositeStyle.toStyle()
+    let style = compositeStyle.toStyle({maxTileZoom})
 
     console.log(compositeStyle.needsDarkUI)
     setDarkMode(compositeStyle.needsDarkUI)
@@ -41,12 +46,16 @@ export default () => {
         }
       }
     })
-  }, [lm])
+  }, [lm, maxTileZoom])
 
   return (
     <section>
       <Map {...state} darkMode={darkMode}  />
       <LayerSelect darkMode={darkMode} />
+      <MaxTileZoomSelect value={maxTileZoom} onChange={e => setMaxTileZoom(e.target.value)} />
+
+      <KeyCombo combo="ctrl+=" handler={() => setMaxTileZoom(maxTileZoom + 1)} />
+      <KeyCombo combo="ctrl+-" handler={() => setMaxTileZoom(maxTileZoom - 1)} />
     </section>
   )
 }

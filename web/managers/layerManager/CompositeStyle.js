@@ -10,11 +10,11 @@ export default class CompositeStyle {
   }
 
   get needsDarkUI(){
-    return this.topOpaque.needsDarkUI
+    return this.topOpaque?.needsDarkUI || true
   }
 
 
-  toStyle() {
+  toStyle({maxTileZoom=null}={}) {
     let sources = {}
     let layers = []
 
@@ -25,7 +25,15 @@ export default class CompositeStyle {
     for(let layer of this.sortedLayers) {
       const style = layer.style
 
-      sources = {...sources, ...style.sources}
+      sources = Object.entries(style.sources)
+        .reduce((srcObj, [sourceKey, sourceValue]) => ({
+          ...srcObj,
+          [sourceKey]: Object.entries(sourceValue)
+            .reduce((obj, [key, value]) => ({
+              ...obj,
+              [key]: key === 'maxzoom' && maxTileZoom !== null ? Math.min(maxTileZoom, value) : value
+            }), {})
+        }), sources)
       layers = [...layers, ...style.layers]
 
       sprite = sprite || style.sprite

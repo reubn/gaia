@@ -47,6 +47,13 @@ class LayerManager extends ET {
     return state
   }
 
+  async import(url){
+    const res = await fetch(url)
+    const json = await res.json()
+
+    json.forEach(layerDefinition => this.accept(layerDefinition))
+  }
+
   accept(layerDefinition){
     const layer = Layer.fromLayerDefinition(layerDefinition)
     console.log(layer)

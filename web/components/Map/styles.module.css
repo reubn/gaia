@@ -24,3 +24,7 @@
 .map :global(.mapboxgl-ctrl-logo){
   display: none!important
 }
+
+.map canvas {
+  outline: none!important;
+}
