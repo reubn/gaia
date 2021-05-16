@@ -12,6 +12,6 @@ struct LayerSelectConfig {
   unowned var layerEditDelegate: LayerEditDelegate? = nil
 }
 
-protocol LayerEditDelegate: class {
+protocol LayerEditDelegate: AnyObject {
   func requestLayerEdit(_ request: LayerEditRequest) -> ()
 }
