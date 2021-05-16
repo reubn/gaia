@@ -155,12 +155,12 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
         children.append(UIAction(
           title: "Share",
           image: UIImage(systemName: "square.and.arrow.up")) { _ in
-            let context = OfflineManager.shared.decodePackContext(pack: pack)
-            let url = URLInterface.shared.encode(commands: [.download(context!)])
-          
-            let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = tableView
-            MapViewController.shared.osfpc.present(activityViewController, animated: true, completion: nil)
+            if let context = OfflineManager.shared.decodePackContext(pack: pack),
+               let url = URLInterface.shared.encode(commands: [.download(context)]) {
+              let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+              activityViewController.popoverPresentationController?.sourceView = tableView
+              MapViewController.shared.osfpc.present(activityViewController, animated: true, completion: nil)
+            }
         })
       } else if(pack.state == .active) {
         let action = UIAction(
