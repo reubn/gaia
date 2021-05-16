@@ -321,9 +321,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
         mapView.locationManager.stopUpdatingHeading()
         mapView.locationManager.startUpdatingLocation()
       case .none:
-        mapView.resetNorth()
-        mapView.locationManager.stopUpdatingHeading()
-        mapView.locationManager.stopUpdatingLocation()
+        fallthrough
+    @unknown default:
+      mapView.resetNorth()
+      mapView.locationManager.stopUpdatingHeading()
+      mapView.locationManager.stopUpdatingLocation()
     }
 
     userLocationButton.updateArrowForTrackingMode(mode: mode)
