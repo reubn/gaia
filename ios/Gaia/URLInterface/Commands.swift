@@ -6,6 +6,7 @@ extension URLInterface {
     case go(CLLocationCoordinate2D)
     case `import`(URL)
     case download(PackContext)
+    case clearCache
     
     case invalid
   }
@@ -18,6 +19,8 @@ extension URLInterface {
         return `import`(url)
       case .download(let context):
         return download(context)
+      case .clearCache:
+        return clearCache()
       case .invalid:
         return nil
     }
@@ -31,6 +34,8 @@ extension URLInterface {
         return `import`(queryItem)
       case "download":
         return download(queryItem)
+      case "clearCache":
+        return clearCache(queryItem)
       default:
         return .invalid
     }
@@ -83,5 +88,13 @@ extension URLInterface {
     return context != nil
       ? .download(context!)
       : .invalid
+  }
+  
+  func clearCache() -> URLQueryItem {
+    URLQueryItem(name: "clearCache", value: "")
+  }
+
+  func clearCache(_ queryItem: URLQueryItem) -> Command {
+    return .clearCache
   }
 }

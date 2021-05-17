@@ -66,6 +66,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       case .download(let context):
         MapViewController.shared.toggleOfflineSelectPanel(keepOpen: true)
         OfflineManager.shared.downloadPack(context: context)
+      case .clearCache:
+        OfflineManager.shared.clearCache {err in
+          if(err == nil){
+            HUDManager.shared.displayMessage(message: .cacheCleared)
+          }
+        }
       case .invalid:
         HUDManager.shared.displayMessage(message: .urlCommandInvalid)
     }

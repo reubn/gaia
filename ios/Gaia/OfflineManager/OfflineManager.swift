@@ -126,6 +126,10 @@ class OfflineManager {
     multicastDownloadDidUpdateDelegate.invoke(invocation: {$0.downloadDidUpdate(pack: notification.object as? MGLOfflinePack)})
   }
   
+  func clearCache(completionHandler: @escaping (Error?) -> Void){
+    offlineStorage.clearAmbientCache(completionHandler: completionHandler)
+  }
+  
   static let shared = OfflineManager()
 }
 
