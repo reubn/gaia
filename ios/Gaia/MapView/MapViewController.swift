@@ -316,16 +316,19 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       case .followWithHeading, .followWithCourse:
         mapView.locationManager.startUpdatingHeading()
         mapView.locationManager.startUpdatingLocation()
+        mapView.tintColor = .systemBlue
       case .follow:
         mapView.resetNorth()
         mapView.locationManager.stopUpdatingHeading()
         mapView.locationManager.startUpdatingLocation()
+        mapView.tintColor = .systemBlue
       case .none:
         fallthrough
     @unknown default:
       mapView.resetNorth()
       mapView.locationManager.stopUpdatingHeading()
       mapView.locationManager.stopUpdatingLocation()
+      mapView.tintColor = .systemGray
     }
 
     userLocationButton.updateArrowForTrackingMode(mode: mode)
