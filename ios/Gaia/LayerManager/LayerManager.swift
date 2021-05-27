@@ -69,6 +69,10 @@ class LayerManager {
   }
 
   func layerSortingFunction(a: Layer, b: Layer) -> Bool {
+    if(a.isOpaque != b.isOpaque) {
+      return b.isOpaque
+    }
+    
     if(a.group != b.group) {
       return groups.firstIndex(where: {layerGroup in a.group == layerGroup.id}) ?? 0 < groups.firstIndex(where: {layerGroup in b.group == layerGroup.id}) ?? 0
     }

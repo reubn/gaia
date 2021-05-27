@@ -22,7 +22,7 @@ public class Layer: NSManagedObject {
   }
   
   var isOpaque: Bool {
-    return group != "gpx" && group != "overlay"
+    return group != "gpx" && group != "overlay" && style.opacity == 1
   }
   
   private var _style: Style?
