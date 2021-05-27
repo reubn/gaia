@@ -95,9 +95,6 @@ extension LayerDefinition {
         track.tracksegments.map {trackSegment in
           [
             "type": "Feature",
-            "properties": [
-              "colour": "#" + UIColor.randomSystemColor().toHex()!
-            ],
             "geometry": [
               "type": "LineString",
               "coordinates": trackSegment.trackpoints.map {trackPoint in
@@ -132,7 +129,7 @@ extension LayerDefinition {
               "line-join": "round"
             ],
             "paint": [
-              "line-color": ["get", "colour"],
+              "line-color": "#" + UIColor.randomSystemColor().toHex()!,
               "line-width": [
                 "interpolate",
                 ["linear"], ["zoom"],
