@@ -27,4 +27,16 @@ extension UIImage {
       draw(in: CGRect(origin: .zero, size: size))
     }
   }
+  
+  func with(alpha: CGFloat) -> UIImage? {
+    UIGraphicsBeginImageContextWithOptions(size, false, scale)
+    
+    defer {
+      UIGraphicsEndImageContext()
+    }
+
+    draw(at: .zero, blendMode: .normal, alpha: alpha)
+    
+    return UIGraphicsGetImageFromCurrentImageContext()
+  }
 }

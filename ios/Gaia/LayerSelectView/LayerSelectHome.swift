@@ -147,6 +147,20 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     coordinatorView.goTo(2, data: request)
   }
   
+  var colourPickerPublisher: Any?
+  
+  func requestLayerColourPicker(_ layer: Layer, callback: @escaping (UIColor) -> Void) {
+    let colourPicker = UIColorPickerViewController()
+    colourPicker.supportsAlpha = false
+    colourPicker.selectedColor = layer.style.colour ?? .randomSystemColor()
+  
+    colourPickerPublisher = colourPicker.publisher(for: \.selectedColor)
+    .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
+    .sink(receiveValue: callback)
+    
+    MapViewController.shared.lsfpc.present(colourPicker, animated: true, completion: nil)
+  }
+  
   func panelDidMove() {
     layerSelectView.heightDidChange()
   }

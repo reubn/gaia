@@ -8,27 +8,9 @@ import KeyboardLayoutGuide
 class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   unowned let coordinatorView: LayerSelectCoordinatorView
     
-  let colourRegex = try! NSRegularExpression(pattern: "(?<=#)([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})")
-  
   var request: LayerEditRequest?
   var acceptButton: PanelActionButton?
-  var colourEditingRange: NSRange?
-  
   var initialText: String = ""
-  
-  lazy var colorWell: UIColorWell = {
-    let colorWell = UIColorWell()
-    
-    colorWell.isHidden = true
-
-    addSubview(colorWell)
-    
-    colorWell.translatesAutoresizingMaskIntoConstraints = false
-    colorWell.rightAnchor.constraint(equalTo: jsonEditor.rightAnchor, constant: -10).isActive = true
-    colorWell.bottomAnchor.constraint(equalTo: jsonEditor.bottomAnchor, constant: -10).isActive = true
-    
-    return colorWell
-  }()
   
   lazy var jsonEditor: UITextView = {
     let textView = UITextView()
@@ -82,8 +64,6 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     jsonEditor.becomeFirstResponder()
     jsonEditor.selectedRange = NSRange(location: 0, length: 0)
     
-    colorWell.addTarget(self, action: #selector(colourChanged), for: .valueChanged)
-    
     MapViewController.shared.lsfpc.track(scrollView: jsonEditor)
     
     handleRequest(request: data as? LayerEditRequest ?? .new)
@@ -129,8 +109,6 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
           return "Edit Layer"
       }
     }()
-    
-    parseTextForColours()
   }
   
   func viewWillExit(){
@@ -202,28 +180,6 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   
   func textViewDidChange(_ textView: UITextView){
     acceptButton?.isEnabled = true
-    parseTextForColours()
-  }
-  
-  func parseTextForColours(){
-    let colourMatches = colourRegex.matches(jsonEditor.text)
-
-    if(colourMatches.count == 1) {
-      let match = colourMatches[0]
-      let range = match.range
-      
-      let hex = String(jsonEditor.text[range])
-      let uiColor = UIColor(hex: hex)
-
-      if(uiColor != nil) {
-        self.colorWell.selectedColor = uiColor!
-        self.colorWell.isHidden = false
-        self.colourEditingRange = range
-      }
-    } else {
-      self.colorWell.selectedColor = nil
-      self.colorWell.isHidden = true
-    }
   }
   
   func generateNewLayerDefinitionString() -> String {
@@ -256,18 +212,6 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
 """
   }
   
-  @objc func colourChanged(){
-    let selectedColour = colorWell.selectedColor!
-    
-    let hexString = selectedColour.toHex()!
-
-    let replaced = (jsonEditor.text as NSString).replacingCharacters(in: colourEditingRange!, with: hexString)
-    
-    colourEditingRange = NSRange(location: colourEditingRange!.location, length: hexString.count)
-
-    jsonEditor.text = String(replaced)
-  }
-
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

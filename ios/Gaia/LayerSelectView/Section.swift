@@ -320,6 +320,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
     if(!layerSelectConfig.layerContextActions) {return nil}
     
     let layer = self.layers[indexPath.row]
+    let iconColour: UIColor = self.traitCollection.userInterfaceStyle == .light ? .black : .white
     
     return UIContextMenuConfiguration(identifier: nil, previewProvider: nil){actions -> UIMenu? in
       var topChildren: [UIMenuElement] = []
@@ -341,10 +342,47 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
         })
       }
       
-      topChildren.append(UIAction(
+      let editsSupported = [layer.style.supportsColour, layer.style.supportsOpacity]
+      
+      topChildren.append(editsSupported.contains(true) ? UIMenu(
         title: "Edit",
-        image: UIImage(systemName: "slider.horizontal.3")) { _ in
-          self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.edit(layer))
+        image: UIImage(systemName: "slider.horizontal.3"),
+        children: [
+          layer.style.supportsOpacity ? UIMenu(
+            title: "Set Opacity",
+            image: UIImage(systemName: "checkerboard.rectangle"),
+            children: [100, 75, 50, 25, 10].compactMap({percent in
+              let opacity = Double(percent) / 100
+              let selected = opacity == layer.style.opacity
+
+              return UIAction(
+                title: String(format: "%d%%", percent),
+                image: UIImage(systemName: selected ? "checkmark.square.fill" : "square\(opacity == 0 ? "" : ".fill")")?.withTintColor(iconColour).with(alpha: opacity == 0 ? 1 : CGFloat(opacity)),
+                attributes: selected ? .disabled : []) { _ in
+                layer.style = layer.style.with(opacity: opacity)
+                LayerManager.shared.save()
+              }
+            })
+          ) : nil,
+          layer.style.supportsColour ? UIAction(
+            title: "Set Color",
+            image: UIImage(systemName: "eyedropper.full")){ _ in
+              
+            self.layerSelectConfig.layerEditDelegate?.requestLayerColourPicker(layer){colour in
+              layer.style = layer.style.with(colour: colour)
+              LayerManager.shared.save()
+            }
+          } : nil,
+          UIAction(
+            title: "Edit Full Style",
+            image: UIImage(systemName: "chevron.left.slash.chevron.right")) { _ in
+              self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.edit(layer))
+          }
+        ].compactMap{$0}
+        ) : UIAction(
+              title: "Edit",
+              image: UIImage(systemName: "slider.horizontal.3")){ _ in
+                self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.edit(layer))
       })
       
       // More Submenu

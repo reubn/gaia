@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 struct LayerSelectConfig {
   var mutuallyExclusive = true
@@ -14,4 +15,5 @@ struct LayerSelectConfig {
 
 protocol LayerEditDelegate: AnyObject {
   func requestLayerEdit(_ request: LayerEditRequest) -> ()
+  func requestLayerColourPicker(_ layer: Layer, callback: @escaping (UIColor) -> Void)
 }

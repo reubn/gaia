@@ -4,14 +4,22 @@ import Mapbox
 
 let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
 
+let layerSupportsOpacity = {(layer: Style.Layer) -> Bool in
+  ["line", "raster"].contains(layer.type?.value as? String)
+}
+
+let layerSupportsColour = {(layer: Style.Layer) -> Bool in
+  ["line"].contains(layer.type?.value as? String)
+}
+
 struct Style: Codable, Equatable {
   var version = 8
   
   typealias Source = AnyCodable
   typealias Layer = AnyCodable
   
-  let sources: [String: Source]
-  let layers: [Layer]
+  var sources: [String: Source]
+  var layers: [Layer]
   
   typealias Sprite = String
   typealias Glyphs = String
@@ -146,5 +154,90 @@ struct Style: Codable, Equatable {
     catch {
       return nil
     }
+  }
+  
+  var supportsOpacity: Bool {
+    layers.contains(where: layerSupportsOpacity)
+  }
+  
+  var opacity: Double {
+    layers.compactMap({layer -> Double? in
+      let type = layer.type?.value as? String
+      
+      switch type {
+        case "raster": return layer.paint?[dynamicMember: "raster-opacity"]?.value as? Double
+        case "line": return layer.paint?[dynamicMember: "line-opacity"]?.value as? Double
+        default: return nil
+      }
+    }).max() ?? 1
+  }
+  
+  func with(opacity: Double) -> Self {
+    var copy = self
+    copy.layers = layers.map({
+      var layer = $0
+      
+      let type = layer.type?.value as? String
+      
+      switch type {
+        case "raster":
+          layer.paint = layer.paint ?? AnyCodable([:])
+          layer.paint?[dynamicMember: "raster-opacity"] = AnyCodable(opacity)
+        case "line":
+          layer.paint = layer.paint ?? AnyCodable([:])
+          layer.paint?[dynamicMember: "line-opacity"] = AnyCodable(opacity)
+        default: ()
+      }
+      
+      
+      return layer
+    })
+    
+    return copy
+  }
+  
+  var supportsColour: Bool {
+    layers.contains(where: layerSupportsColour)
+  }
+  
+  var colour: UIColor? {
+    let layer = layers.first(where: layerSupportsColour)
+    
+    let type = layer?.type?.value as? String
+    var string: String?
+    
+    switch type {
+      case "line": string = layer?.paint?[dynamicMember: "line-color"]?.value as? String
+      default: return nil
+    }
+    
+    if(string != nil){
+      return UIColor(hex: string!)
+    }
+    
+    return nil
+  }
+  
+  func with(colour: UIColor) -> Self {
+    var copy = self
+    
+    let layerIndex = copy.layers.firstIndex(where: layerSupportsColour)
+    if(layerIndex == nil) {
+      return self
+    }
+    
+    let type = copy.layers[layerIndex!].type?.value as? String
+    let colourString = colour.toHex()
+    
+    if(colourString == nil) {
+      return self
+    }
+    
+    switch type {
+      case "line": copy.layers[layerIndex!].paint?[dynamicMember: "line-color"]? = AnyCodable("#" + colour.toHex()!)
+      default: ()
+    }
+    
+    return copy
   }
 }
