@@ -368,8 +368,14 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
             title: "Set Color",
             image: UIImage(systemName: "eyedropper.full")){ _ in
               
-            self.layerSelectConfig.layerEditDelegate?.requestLayerColourPicker(layer){colour in
-              layer.style = layer.style.with(colour: colour)
+            self.layerSelectConfig.layerEditDelegate?.requestLayerColourPicker(layer, supportsAlpha: layer.style.supportsOpacity){colour in
+              layer.style = layer.style.with(colour: colour.withAlphaComponent(1))
+              
+              if let alpha = colour.components?.alpha,
+                 alpha != 1 {
+                layer.style = layer.style.with(opacity: Double(alpha).rounded(toDecimalPlaces: 2))
+              }
+              
               LayerManager.shared.save()
             }
           } : nil,

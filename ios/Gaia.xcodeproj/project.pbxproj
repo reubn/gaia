@@ -63,6 +63,7 @@
 		1B96528D25D5C3DA0017A43E /* KeyboardLayoutGuide in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */; };
 		1B96529225D7E5F20017A43E /* LayerSelectViewEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96529125D7E5F20017A43E /* LayerSelectViewEmpty.swift */; };
 		1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */; };
+		1B998756266126CE002595DD /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B998755266126CE002595DD /* Double.swift */; };
 		1B9DDAFC25F2AC1E00B3407F /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DDAFB25F2AC1E00B3407F /* Collection.swift */; };
 		1BA03E3425DDAEEE00EE273C /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate2D.swift */; };
 		1BA03E3625DE8BE300EE273C /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA03E3525DE8BE300EE273C /* UIImage.swift */; };
@@ -175,6 +176,7 @@
 		1B96528925D5BC550017A43E /* LayerSelectEdit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayerSelectEdit.swift; sourceTree = "<group>"; };
 		1B96529125D7E5F20017A43E /* LayerSelectViewEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectViewEmpty.swift; sourceTree = "<group>"; };
 		1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectHomeEmpty.swift; sourceTree = "<group>"; };
+		1B998755266126CE002595DD /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		1B9DDAFB25F2AC1E00B3407F /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
 		1BA03E3525DE8BE300EE273C /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -327,6 +329,7 @@
 				1B8AE386260501B700CF3D8E /* MGLCoordinateBounds.swift */,
 				1B8AE3882605384900CF3D8E /* MGLMapView.swift */,
 				1BF4B7F9261700C200D87E35 /* UIView.swift */,
+				1B998755266126CE002595DD /* Double.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -645,6 +648,7 @@
 				1BBD3FFF25B8B0B5007B8BC7 /* CompositeStyle.swift in Sources */,
 				1BA9BD0C25BA266700AC97C7 /* CoordinatedView.swift in Sources */,
 				1BD6A3BA2600DF25001E503D /* LocationInfoPanelShare.swift in Sources */,
+				1B998756266126CE002595DD /* Double.swift in Sources */,
 				1BB94BD8260CAAAB002C0D67 /* LayerGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -149,10 +149,10 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
   
   var colourPickerPublisher: Any?
   
-  func requestLayerColourPicker(_ layer: Layer, callback: @escaping (UIColor) -> Void) {
+  func requestLayerColourPicker(_ layer: Layer, supportsAlpha: Bool = false, callback: @escaping (UIColor) -> Void) {
     let colourPicker = UIColorPickerViewController()
-    colourPicker.supportsAlpha = false
-    colourPicker.selectedColor = layer.style.colour ?? .randomSystemColor()
+    colourPicker.supportsAlpha = supportsAlpha
+    colourPicker.selectedColor = (layer.style.colour ?? .randomSystemColor()).withAlphaComponent(layer.style.supportsOpacity ? CGFloat(layer.style.opacity) : 1)
   
     colourPickerPublisher = colourPicker.publisher(for: \.selectedColor)
     .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
