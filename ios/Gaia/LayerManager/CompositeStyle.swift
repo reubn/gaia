@@ -12,7 +12,7 @@ struct CompositeStyle: Equatable, Hashable {
   }
   
   var needsDarkUI: Bool {
-    topOpaque?.needsDarkUI ?? true
+    topOpaque?.needsDarkUI ?? sortedLayers.first?.needsDarkUI ?? true
   }
   
   var isEmpty: Bool {
