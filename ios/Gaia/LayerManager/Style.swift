@@ -66,15 +66,14 @@ struct Style: Codable, Equatable {
     var maxLat: CLLocationDegrees?
     var maxLon: CLLocationDegrees?
     
-    for (_, source) in sources {
+    for (id, source) in sources {
       let type = source.type?.value as? String
       
       if(type == "geojson"){
-        print("geojson")
+        print("calculating bounds for geojson source", id)
         let coords = source.data?.features?[0]?.geometry?.coordinates?.value as? [[CLLocationDegrees]] // support multiple features
         
         if(coords != nil){
-          print("have coords")
           var featureMinLat: CLLocationDegrees?
           var featureMinLon: CLLocationDegrees?
           
