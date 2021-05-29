@@ -186,12 +186,16 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     visible = self.isVisible()
     if(!visible){return}
     
+    let newUserInterfaceStyle: UIUserInterfaceStyle = _layer!.needsDarkUI ? .dark : .light
+    
+    if(canvasView.overrideUserInterfaceStyle != newUserInterfaceStyle){
+      canvasView.overrideUserInterfaceStyle = newUserInterfaceStyle
+      canvasView.setNeedsDisplay()
+    }
+   
     if(queuedStyle != displayedStyle) {
       displayedStyle = queuedStyle
       preview.styleURL = displayedStyle!.url
-      canvasView.overrideUserInterfaceStyle = _layer!.needsDarkUI ? .dark : .light
-      canvasView.setNeedsDisplay()
-      
       previewBlurIcon.tintColor = _layer!.style.colour ?? (_layer!.needsDarkUI ? .white : .systemBlue)
       
       styleCachedConstraints = (displayedStyle!.zoomLevelsCovered, displayedStyle!.bounds)

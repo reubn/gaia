@@ -13,6 +13,7 @@ struct LayerDefinition: Codable {
     let id: String
     let name: String
     let group: String
+    var overrideUIMode: String? = nil
     
     var attribution: String? = nil
   }
@@ -31,6 +32,7 @@ extension LayerDefinition.Metadata {
       id: layer.id,
       name: layer.name,
       group: layer.group,
+      overrideUIMode: layer.overrideUIMode,
       attribution: layer.attribution
     )
   }

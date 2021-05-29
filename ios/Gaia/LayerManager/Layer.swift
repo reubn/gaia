@@ -15,10 +15,22 @@ public class Layer: NSManagedObject {
   @NSManaged public var id: String
   @NSManaged public var name: String
   @NSManaged public var attribution: String?
+  @NSManaged public var overrideUIMode: String?
+  
   @NSManaged private var styleString: String
   
   var needsDarkUI: Bool {
-    return group == "aerial" || group == "overlay"
+    get {
+      switch overrideUIMode {
+        case "dark": return true
+        case "light": return false
+        default: return group == "aerial" || group == "overlay"
+      }
+    }
+    
+    set {
+      overrideUIMode = newValue ? "dark" : "light"
+    }
   }
   
   var isOpaque: Bool {
@@ -63,6 +75,7 @@ extension Layer {
     self.id = layerDefinition.metadata.id
     self.name = layerDefinition.metadata.name
     self.group = layerDefinition.metadata.group
+    self.overrideUIMode = layerDefinition.metadata.overrideUIMode
     self.attribution = layerDefinition.metadata.attribution
     
     if let user = layerDefinition.user {
