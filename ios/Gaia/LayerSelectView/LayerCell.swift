@@ -196,7 +196,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     if(queuedStyle != displayedStyle) {
       displayedStyle = queuedStyle
       preview.styleURL = displayedStyle!.url
-      previewBlurIcon.tintColor = _layer!.style.colour ?? (_layer!.needsDarkUI ? .white : .systemBlue)
+      preview.tintColor = _layer!.style.colour ?? (_layer!.needsDarkUI ? .white : .systemBlue)
       
       styleCachedConstraints = (displayedStyle!.zoomLevelsCovered, displayedStyle!.bounds)
     }
