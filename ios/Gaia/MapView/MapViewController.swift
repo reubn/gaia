@@ -334,8 +334,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     @unknown default:
       mapView.resetNorth()
       mapView.locationManager.stopUpdatingHeading()
-      mapView.locationManager.stopUpdatingLocation()
-      mapView.tintColor = .systemGray
+      
+      if(ProcessInfo.processInfo.isLowPowerModeEnabled){
+        mapView.locationManager.stopUpdatingLocation()
+        mapView.tintColor = .systemGray
+      }
     }
 
     userLocationButton.updateArrowForTrackingMode(mode: mode)
