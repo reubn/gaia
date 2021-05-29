@@ -217,6 +217,10 @@ struct Style: Codable, Equatable {
     return nil
   }
   
+  var colourWithAlpha: UIColor? {
+    colour?.withAlphaComponent(CGFloat(opacity))
+  }
+  
   func with(colour: UIColor) -> Self {
     var copy = self
     
