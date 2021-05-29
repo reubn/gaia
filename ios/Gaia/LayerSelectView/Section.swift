@@ -360,7 +360,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
         children: [
           layer.style.supportsOpacity ? UIMenu(
             title: "Set Opacity",
-            image: UIImage(systemName: "checkerboard.rectangle"),
+            image: UIImage(systemName: "slider.horizontal.below.rectangle"),
             children: [100, 75, 50, 25, 10].compactMap({percent in
               let opacity = Double(percent) / 100
               let selected = opacity == layer.style.opacity
