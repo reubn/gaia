@@ -39,15 +39,14 @@ struct Style: Codable, Equatable {
     var maxes: [Double] = []
     
     for (_, source) in sources {
-      let minZoom = source.minzoom?.value
-      let maxZoom = source.maxzoom?.value
-      
-      if(minZoom != nil) {
-        mins.append(minZoom as? Double ?? Double(minZoom as! Int))
+      if let minZoom = source.minzoom?.value,
+         let double = (minZoom as? NSNumber)?.doubleValue {
+        mins.append(double)
       }
       
-      if(maxZoom != nil) {
-        maxes.append(maxZoom as? Double ?? Double(maxZoom as! Int))
+      if let maxZoom = source.maxzoom?.value,
+         let double = (maxZoom as? NSNumber)?.doubleValue {
+        maxes.append(double)
       }
     }
 
@@ -105,7 +104,7 @@ struct Style: Codable, Equatable {
           }
         }
       } else if(type == "raster" || type == "raster-dem" || type == "vector")  {
-        let bounds = source.bounds?.value as? [CLLocationDegrees]
+        let bounds = (source.bounds?.value as? [NSNumber]) as? [CLLocationDegrees]
         
         if(bounds != nil && bounds!.count == 4) {
           let sw = CLLocationCoordinate2D(latitude: bounds![1], longitude: bounds![0])
@@ -164,8 +163,8 @@ struct Style: Codable, Equatable {
       let type = layer.type?.value as? String
       
       switch type {
-        case "raster": return layer.paint?[dynamicMember: "raster-opacity"]?.value as? Double
-        case "line": return layer.paint?[dynamicMember: "line-opacity"]?.value as? Double
+        case "raster": return (layer.paint?[dynamicMember: "raster-opacity"]?.value as? NSNumber)?.doubleValue
+        case "line": return (layer.paint?[dynamicMember: "line-opacity"]?.value as? NSNumber)?.doubleValue
         default: return nil
       }
     }).max() ?? 1
