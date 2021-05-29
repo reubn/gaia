@@ -325,17 +325,27 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
     return UIContextMenuConfiguration(identifier: nil, previewProvider: nil){actions -> UIMenu? in
       var topChildren: [UIMenuElement] = []
       var moreChildren: [UIMenuElement] = []
+      
+      if(!layer.enabled) {
+        topChildren.append(UIAction(
+          title: "Enable",
+          image: UIImage(systemName: "checkmark.square.fill")) { _ in
+            layer.enabled = true
+
+            LayerManager.shared.save()
+        })
+      }
  
       topChildren.append(UIAction(
         title: layer.visible ? "Hide" : "Show",
         image: UIImage(systemName: layer.visible ? "eye.slash" : "eye")) { _ in
           self.toggleLayer(layer: layer, mutuallyExclusive: false)
       })
-      
+            
       if(layer.enabled) {
         topChildren.append(UIAction(
           title: layer.pinned ? "Unpin" : "Pin",
-          image: UIImage(systemName: layer.pinned ? "pin.slash.fill" : "pin.fill")) { _ in
+          image: UIImage(systemName: layer.pinned ? "pin.slash" : "pin")) { _ in
           layer.pinned = !layer.pinned
           
           LayerManager.shared.save()
@@ -366,7 +376,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
           ) : nil,
           layer.style.supportsColour ? UIAction(
             title: "Set Color",
-            image: UIImage(systemName: "eyedropper.full")){ _ in
+            image: UIImage(systemName: "eyedropper")){ _ in
               
             self.layerSelectConfig.layerEditDelegate?.requestLayerColourPicker(layer, supportsAlpha: layer.style.supportsOpacity){colour in
               layer.style = layer.style.with(colour: colour.withAlphaComponent(1))
@@ -381,7 +391,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
           } : nil,
           UIAction(
             title: "Edit Layer",
-            image: UIImage(systemName: "chevron.left.slash.chevron.right")) { _ in
+            image: UIImage(systemName: "slider.horizontal.3")) { _ in
               self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.edit(layer))
           }
         ].compactMap{$0}
@@ -402,17 +412,17 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       
       moreChildren.append(UIAction(
         title: "Duplicate",
-        image: UIImage(systemName: "plus.square.fill.on.square.fill")) { _ in
+        image: UIImage(systemName: "plus.square.on.square")) { _ in
           self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.duplicate(layer))
       })
       
       moreChildren.append(UIMenu(
-        title: "Set Dark Mode",
-        image: UIImage(systemName: "moon.fill"),
+        title: "Dark Mode",
+        image: UIImage(systemName: "moon"),
         children: ["dark", "light"].compactMap({option in
           UIAction(
             title: option == "dark" ? "Dark Mode" : "Light Mode",
-            image: UIImage(systemName: option == "dark" ? "moon.fill" : "sun.max.fill"),
+            image: UIImage(systemName: option == "dark" ? "moon" : "sun.max"),
             state: layer.overrideUIMode == option ? .on : .off) { _ in
             if(layer.overrideUIMode == option){
               layer.overrideUIMode = nil // deselect current selection
@@ -432,7 +442,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
           
           return UIAction(
             title: group.name,
-            image: UIImage(systemName: group.icon ?? "\(group.name.first!.lowercased()).square.fill"),
+            image: UIImage(systemName: group.icon ?? "\(group.name.first!.lowercased()).square"),
             state: layer.group == group.id ? .on : .off) { _ in
               layer.group = group.id
               LayerManager.shared.save()
@@ -465,19 +475,18 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
         }
       })
       
-      moreChildren.insert(UIAction(
-        title: layer.enabled ? "Disable" : "Enable",
-        image: UIImage(systemName: layer.enabled ? "square.slash.fill" : "checkmark.square.fill"),
-        attributes: layer.enabled ? .destructive : []) { _ in
-          layer.enabled = !layer.enabled
-
-          if(!layer.enabled){
+      if(layer.enabled) {
+        moreChildren.append(UIAction(
+          title: "Disable",
+          image: UIImage(systemName: "square.slash.fill"),
+          attributes: .destructive) { _ in
+            layer.enabled = false
             layer.pinned = false
             layer.visible = false
-          }
 
-          LayerManager.shared.save()
-      }, at: layer.enabled ? moreChildren.endIndex : moreChildren.startIndex)
+            LayerManager.shared.save()
+        })
+      }
       
       topChildren.append(UIMenu(
         title: "More",

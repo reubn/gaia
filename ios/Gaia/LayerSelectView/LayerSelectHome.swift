@@ -101,7 +101,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
 
         MapViewController.shared.lsfpc.present(documentPicker, animated: true, completion: nil)
       }),
-      UIAction(title: "New from Map", image: UIImage(systemName: "map"), attributes: LayerManager.shared.compositeStyle.sortedLayers.isEmpty ? [.hidden] : [], handler: {_ in
+      UIAction(title: "New from Visible", image: UIImage(systemName: "map"), attributes: LayerManager.shared.compositeStyle.sortedLayers.isEmpty ? [.hidden] : [], handler: {_ in
         let randomId = randomString(length: 6)
         
         let layerDefinition = LayerDefinition(

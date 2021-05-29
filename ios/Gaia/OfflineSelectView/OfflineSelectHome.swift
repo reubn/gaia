@@ -165,7 +165,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
       } else if(pack.state == .active) {
         let action = UIAction(
           title: "Stop Download",
-          image: UIImage(systemName: "xmark.circle.fill"),
+          image: UIImage(systemName: "xmark.circle"),
           attributes: .destructive) { _ in
             pack.suspend()
         }

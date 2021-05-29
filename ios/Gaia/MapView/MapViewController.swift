@@ -261,7 +261,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
           systemName = "plus.magnifyingglass"
         case .multipleOpaque:
           title = "Hide Invisible Layers"
-          systemName = "square.stack.3d.up.slash.fill"
+          systemName = "square.stack.3d.up.slash"
       }
       
       return UIAction(title: title, image: UIImage(systemName: systemName)) {(_) in self.resolve(warning: warning)}
