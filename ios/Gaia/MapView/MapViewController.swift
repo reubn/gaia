@@ -219,6 +219,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       case .bounds(let superbound):
         mapView.setVisibleCoordinateBounds(superbound, sensible: true, minZoom: styleCachedConstraints?.zoomLevelsCovered.0, animated: true)
         HUDManager.shared.displayMessage(message: .boundsWarningFixed)
+      case .zeroOpacity(let layer):
+        layer.style = layer.style.with(opacity: 1)
+        LayerManager.shared.save()
+        HUDManager.shared.displayMessage(message: .zeroOpacityWarningFixed)
     }
   }
   
@@ -260,8 +264,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
           title = "Zoom In"
           systemName = "plus.magnifyingglass"
         case .multipleOpaque:
-          title = "Hide Invisible Layers"
+          title = "Hide Obscured Layers"
           systemName = "square.stack.3d.up.slash"
+        case .zeroOpacity:
+          title = "Fix Fully Transparent Layer"
+          systemName = "eye"
       }
       
       return UIAction(title: title, image: UIImage(systemName: systemName)) {(_) in self.resolve(warning: warning)}
@@ -382,12 +389,17 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     } else if(!warnings.isEmpty){
       warnings = warnings.filter({if case .emptyStyle = $0 {return false}; return true})
     }
-//    to.sortedLayers.filter({$0.isOpaque && $0 != to.topOpaque})
     
     if(to.hasMultipleOpaque){
       warnings.insert(.multipleOpaque(to.topOpaque!))
     } else if(!warnings.isEmpty){
       warnings = warnings.filter({if case .multipleOpaque = $0 {return false}; return true})
+    }
+    
+    if let layer = to.sortedLayers.first(where: {$0.style.opacity == 0}){
+      warnings.insert(.zeroOpacity(layer))
+    } else if(!warnings.isEmpty){
+      warnings = warnings.filter({if case .zeroOpacity = $0 {return false}; return true})
     }
   }
   
@@ -649,4 +661,5 @@ enum WarningReason: Equatable, Hashable {
   
   case emptyStyle([Layer]?)
   case multipleOpaque(Layer)
+  case zeroOpacity(Layer)
 }

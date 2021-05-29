@@ -89,6 +89,7 @@ extension HUDMessage {
   static let zoomWarningFixed = HUDMessage(title: "Zoom Fixed", systemName: "arrow.up.left.and.down.right.magnifyingglass", tintColour: .systemGreen)
   static let multipleOpaqueWarningFixed = HUDMessage(title: "Layers Removed", systemName: "square.3.stack.3d.top.fill", tintColour: .systemGreen)
   static let boundsWarningFixed = HUDMessage(title: "Bounds Fixed", systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left", tintColour: .systemGreen)
+  static let zeroOpacityWarningFixed = HUDMessage(title: "Opacity Fixed", systemName: "slider.horizontal.below.rectangle", tintColour: .systemGreen)
   
   static let cacheCleared = HUDMessage(title: "Cache Cleared", systemName: "trash", tintColour: .systemRed)
 }
