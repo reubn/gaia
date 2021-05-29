@@ -380,7 +380,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
             }
           } : nil,
           UIAction(
-            title: "Edit Full Style",
+            title: "Edit Layer",
             image: UIImage(systemName: "chevron.left.slash.chevron.right")) { _ in
               self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.edit(layer))
           }
