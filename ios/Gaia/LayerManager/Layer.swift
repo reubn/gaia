@@ -20,16 +20,10 @@ public class Layer: NSManagedObject {
   @NSManaged private var styleString: String
   
   var needsDarkUI: Bool {
-    get {
-      switch overrideUIMode {
-        case "dark": return true
-        case "light": return false
-        default: return group == "aerial" || group == "overlay"
-      }
-    }
-    
-    set {
-      overrideUIMode = newValue ? "dark" : "light"
+    switch overrideUIMode {
+      case "dark": return true
+      case "light": return false
+      default: return group == "aerial" || group == "overlay"
     }
   }
   

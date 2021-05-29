@@ -407,6 +407,24 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       })
       
       moreChildren.append(UIMenu(
+        title: "Set Dark Mode",
+        image: UIImage(systemName: "moon.fill"),
+        children: ["dark", "light"].compactMap({option in
+          UIAction(
+            title: option == "dark" ? "Dark Mode" : "Light Mode",
+            image: UIImage(systemName: option == "dark" ? "moon.fill" : "sun.max.fill"),
+            state: layer.overrideUIMode == option ? .on : .off) { _ in
+            if(layer.overrideUIMode == option){
+              layer.overrideUIMode = nil // deselect current selection
+            } else {
+              layer.overrideUIMode = option
+            }
+            LayerManager.shared.save()
+          }
+        })
+      ))
+
+      moreChildren.append(UIMenu(
         title: "Move to...",
         image: UIImage(systemName: "folder"),
         children: LayerManager.shared.groupIds.map({id in
