@@ -357,8 +357,8 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
 
               return UIAction(
                 title: String(format: "%d%%", percent),
-                image: UIImage(systemName: selected ? "checkmark.square.fill" : "square\(opacity == 0 ? "" : ".fill")")?.withTintColor(iconColour).with(alpha: opacity == 0 ? 1 : CGFloat(opacity)),
-                attributes: selected ? .disabled : []) { _ in
+                image: UIImage(systemName: "square\(opacity == 0 ? "" : ".fill")")?.withTintColor(iconColour).with(alpha: opacity == 0 ? 1 : CGFloat(opacity)),
+                state: selected ? .on : .off) { _ in
                 layer.style = layer.style.with(opacity: opacity)
                 LayerManager.shared.save()
               }
