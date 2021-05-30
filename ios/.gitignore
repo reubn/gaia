@@ -25,7 +25,8 @@ DerivedData/
 ## Gcc Patch
 /*.gcno
 
-*.framework
+*.framework/*
+!*.framework/Assets.car
 *.framework.dSYM
 .DS_Store
 
