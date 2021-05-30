@@ -159,7 +159,7 @@ class Section: UIStackView {
   }
   
   func update() {
-    self.layers = layerSelectConfig.showDisabled
+    self.layers = SettingsManager.shared.showDisabledLayers.value
       ? group.getLayers()
       : group.getLayers().filter({$0.enabled})
     
@@ -217,6 +217,10 @@ class Section: UIStackView {
       showAllDisabled = !showAllDisabled
     } else {
       toggleLayer(layer: layer, mutuallyExclusive: layerSelectConfig.mutuallyExclusive)
+    }
+    
+    if(SettingsManager.shared.quickLayerSelect.value){
+      MapViewController.shared.lsfpc.dismiss(animated: true, completion: nil)
     }
   }
   

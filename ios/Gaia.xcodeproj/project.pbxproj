@@ -63,6 +63,8 @@
 		1B96528D25D5C3DA0017A43E /* KeyboardLayoutGuide in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */; };
 		1B96529225D7E5F20017A43E /* LayerSelectViewEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96529125D7E5F20017A43E /* LayerSelectViewEmpty.swift */; };
 		1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */; };
+		1B96FF342663F6E4002E685D /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96FF332663F6E4002E685D /* SettingsManager.swift */; };
+		1B96FF362663FD75002E685D /* UIAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96FF352663FD75002E685D /* UIAction.swift */; };
 		1B998756266126CE002595DD /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B998755266126CE002595DD /* Double.swift */; };
 		1B9DDAFC25F2AC1E00B3407F /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DDAFB25F2AC1E00B3407F /* Collection.swift */; };
 		1BA03E3425DDAEEE00EE273C /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate2D.swift */; };
@@ -176,6 +178,8 @@
 		1B96528925D5BC550017A43E /* LayerSelectEdit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayerSelectEdit.swift; sourceTree = "<group>"; };
 		1B96529125D7E5F20017A43E /* LayerSelectViewEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectViewEmpty.swift; sourceTree = "<group>"; };
 		1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectHomeEmpty.swift; sourceTree = "<group>"; };
+		1B96FF332663F6E4002E685D /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		1B96FF352663FD75002E685D /* UIAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAction.swift; sourceTree = "<group>"; };
 		1B998755266126CE002595DD /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		1B9DDAFB25F2AC1E00B3407F /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
@@ -316,6 +320,7 @@
 				1B8C079225C493E5008C08B2 /* SelectableLabel.swift */,
 				1B04BF6E25D077FC00FCD5D4 /* AppIcon.swift */,
 				1B6033BC25D1DBD300211150 /* UIColor-hex.swift */,
+				1B96FF352663FD75002E685D /* UIAction.swift */,
 				1BD6A3BF2600FD49001E503D /* CLLocationDegrees.swift */,
 				1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */,
 				1B6033C025D1DC4A00211150 /* randomString.swift */,
@@ -373,6 +378,7 @@
 		1B6638A625B10B530071F03D /* Gaia */ = {
 			isa = PBXGroup;
 			children = (
+				1B96FF322663F6D3002E685D /* SettingsManager */,
 				1BF4B7FC2618581D00D87E35 /* PanelView */,
 				1B47B96725FA16BF00504761 /* URLInterface */,
 				1B0D09B525E6B08400ED5345 /* HUDManager */,
@@ -412,6 +418,14 @@
 				1BEE8D5C25C599A0004260C1 /* MetricDisplay */,
 			);
 			path = LocationInfoView;
+			sourceTree = "<group>";
+		};
+		1B96FF322663F6D3002E685D /* SettingsManager */ = {
+			isa = PBXGroup;
+			children = (
+				1B96FF332663F6E4002E685D /* SettingsManager.swift */,
+			);
+			path = SettingsManager;
 			sourceTree = "<group>";
 		};
 		1BA9BD1C25C0860300AC97C7 /* CoordinatorView */ = {
@@ -583,7 +597,9 @@
 				1BA9BD1E25C0861400AC97C7 /* CoordinatorView.swift in Sources */,
 				1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */,
 				1B6638AC25B10B530071F03D /* MapViewController.swift in Sources */,
+				1B96FF342663F6E4002E685D /* SettingsManager.swift in Sources */,
 				1BEE8D5E25C599B3004260C1 /* HeadingDisplay.swift in Sources */,
+				1B96FF362663FD75002E685D /* UIAction.swift in Sources */,
 				1B62CE8F25D0288400D06E55 /* AboutPanelViewController.swift in Sources */,
 				1BDACA65260A4BA700248962 /* NSRegularExpression.swift in Sources */,
 				1B96528A25D5BC550017A43E /* LayerSelectEdit.swift in Sources */,

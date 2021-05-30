@@ -50,6 +50,7 @@ class PanelViewController: UIViewController, FloatingPanelControllerDelegate {
   private lazy var buttonsMap: [PanelButtonType: PanelButton] = [
     .dismiss: PanelSmallButton("xmark", weight: .bold, colour: .systemGray, backgroundColour: .tertiarySystemBackground),
     .help: PanelSmallButton("questionmark", colour: .white, backgroundColour: .systemIndigo),
+    .settings: PanelButton("gear", inset: 6, colour: .white, backgroundColour: .systemGray),
     .accept: PanelButton("checkmark", colour: .systemGreen),
     .reject: PanelButton("xmark", colour: .systemRed),
     .next: PanelButton("arrow.right"),
@@ -171,6 +172,7 @@ enum PanelButtonType {
   case star
   case share
   case help
+  case settings
 }
 
 protocol PanelDidMoveDelegate {
