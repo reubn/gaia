@@ -2,16 +2,18 @@ import Foundation
 import UIKit
 
 class PanelButton: UIButton {
-  private let colour: UIColor
-  private let backgroundColour: UIColor?
-  private let deemphasise: Bool
+  fileprivate let inset: CGFloat?
+  fileprivate let colour: UIColor
+  fileprivate let backgroundColour: UIColor?
+  fileprivate let deemphasise: Bool
   
   func getDefaultWeight() -> UIImage.SymbolWeight{.semibold}
   
-  init(_ systemName: String, weight: UIImage.SymbolWeight? = nil, colour: UIColor = .systemBlue, backgroundColour: UIColor? = nil, deemphasise: Bool = false){
+  init(_ systemName: String, weight: UIImage.SymbolWeight? = nil, inset: CGFloat? = nil, colour: UIColor = .systemBlue, backgroundColour: UIColor? = nil, deemphasise: Bool = false){
     self.colour = colour
     self.backgroundColour = backgroundColour
     self.deemphasise = deemphasise
+    self.inset = inset
     
     super.init(frame: CGRect())
   
@@ -28,7 +30,9 @@ class PanelButton: UIButton {
   }
   
   func setSize(){
-    imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
+    let inset = self.inset ?? 7
+    imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+    
     layer.cornerRadius = 15
     layer.cornerCurve = .circular
     
@@ -62,10 +66,11 @@ class PanelSmallButton: PanelButton {
   override func getDefaultWeight() -> UIImage.SymbolWeight{.semibold}
 
   override func setSize(){
-    imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
+    let inset = self.inset ?? 7
+    imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+    
     layer.cornerRadius = 15
     layer.cornerCurve = .circular
-    
     
     translatesAutoresizingMaskIntoConstraints = false
     widthAnchor.constraint(equalToConstant: 30).isActive = true
