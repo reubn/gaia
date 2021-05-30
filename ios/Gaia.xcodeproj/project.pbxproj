@@ -51,7 +51,7 @@
 		1B7644BF25CAD61900572A70 /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644BD25CAD61900572A70 /* Layer.swift */; };
 		1B7644C125CAFA2F00572A70 /* LayerDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C025CAFA2F00572A70 /* LayerDefinition.swift */; };
 		1B7644C325CAFA7300572A70 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C225CAFA7300572A70 /* Style.swift */; };
-		1B7644C825CC3E9000572A70 /* PanelActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C725CC3E9000572A70 /* PanelActionButton.swift */; };
+		1B7644C825CC3E9000572A70 /* PanelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C725CC3E9000572A70 /* PanelButton.swift */; };
 		1B8AE387260501B700CF3D8E /* MGLCoordinateBounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8AE386260501B700CF3D8E /* MGLCoordinateBounds.swift */; };
 		1B8AE3892605384900CF3D8E /* MGLMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8AE3882605384900CF3D8E /* MGLMapView.swift */; };
 		1B8C078A25C43C58008C08B2 /* PanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078925C43C58008C08B2 /* PanelLayout.swift */; };
@@ -165,7 +165,7 @@
 		1B7644BD25CAD61900572A70 /* Layer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layer.swift; sourceTree = "<group>"; };
 		1B7644C025CAFA2F00572A70 /* LayerDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerDefinition.swift; sourceTree = "<group>"; };
 		1B7644C225CAFA7300572A70 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
-		1B7644C725CC3E9000572A70 /* PanelActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelActionButton.swift; sourceTree = "<group>"; };
+		1B7644C725CC3E9000572A70 /* PanelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelButton.swift; sourceTree = "<group>"; };
 		1B8AE386260501B700CF3D8E /* MGLCoordinateBounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGLCoordinateBounds.swift; sourceTree = "<group>"; };
 		1B8AE3882605384900CF3D8E /* MGLMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGLMapView.swift; sourceTree = "<group>"; };
 		1B8C078925C43C58008C08B2 /* PanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelLayout.swift; sourceTree = "<group>"; };
@@ -476,7 +476,7 @@
 			children = (
 				1BBD3FF225B708A6007B8BC7 /* PanelViewController.swift */,
 				1B8C078925C43C58008C08B2 /* PanelLayout.swift */,
-				1B7644C725CC3E9000572A70 /* PanelActionButton.swift */,
+				1B7644C725CC3E9000572A70 /* PanelButton.swift */,
 				1B7644B425CA169D00572A70 /* MemoryConsciousFloatingPanelController.swift */,
 				1B04AA0F261272A30080BECE /* DefaultPanelBehaviour.swift */,
 			);
@@ -635,7 +635,7 @@
 				1B8C078E25C48245008C08B2 /* LocationInfoPanelLayout.swift in Sources */,
 				1B3401D525B4A1570091FA3B /* LayerManager.swift in Sources */,
 				1B62CE9025D0288400D06E55 /* AboutView.swift in Sources */,
-				1B7644C825CC3E9000572A70 /* PanelActionButton.swift in Sources */,
+				1B7644C825CC3E9000572A70 /* PanelButton.swift in Sources */,
 				1B47B96B25FA497900504761 /* Commands.swift in Sources */,
 				1B6638B225B10B530071F03D /* Gaia.xcdatamodeld in Sources */,
 				1B0D09CC25EE956000ED5345 /* AnyEncodable.swift in Sources */,

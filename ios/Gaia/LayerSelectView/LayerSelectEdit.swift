@@ -9,7 +9,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   unowned let coordinatorView: LayerSelectCoordinatorView
     
   var request: LayerEditRequest?
-  var acceptButton: PanelActionButton?
+  var acceptButton: PanelButton?
   var initialText: String = ""
   
   lazy var jsonEditor: UITextView = {
@@ -115,7 +115,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     print("exit LSE")
   }
   
-  func panelButtonTapped(button: PanelButton){
+  func panelButtonTapped(button: PanelButtonType){
     if(button == .accept) {process()}
     else if(button == .previous) {coordinatorView.goTo(0)}
     else if(button == .help) {

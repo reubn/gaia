@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class PanelActionButton: UIButton {
+class PanelButton: UIButton {
   private let colour: UIColor
   private let backgroundColour: UIColor?
   private let deemphasise: Bool
@@ -58,7 +58,7 @@ class PanelActionButton: UIButton {
   }
 }
 
-class PanelSmallActionButton: PanelActionButton {
+class PanelSmallButton: PanelButton {
   override func getDefaultWeight() -> UIImage.SymbolWeight{.semibold}
 
   override func setSize(){

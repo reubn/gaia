@@ -28,7 +28,7 @@ extension LocationInfoPanelViewController {
     }
   }
   
-  func showShareSheet(_ sender: PanelActionButton) {
+  func showShareSheet(_ sender: PanelButton) {
     let coordinate: CLLocationCoordinate2D
     
     switch location {

@@ -70,7 +70,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
     }
   }
   
-  func panelButtonTapped(button: PanelButton){
+  func panelButtonTapped(button: PanelButtonType){
     if(button == .next){
       coordinatorView.selectedLayers = LayerManager.shared.compositeStyle.sortedLayers
       coordinatorView.forward()

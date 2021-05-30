@@ -69,7 +69,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     print("exit OSH")
   }
   
-  func panelButtonTapped(button: PanelButton){
+  func panelButtonTapped(button: PanelButtonType){
     if(button == .dismiss) {coordinatorView.panelViewController.dismiss(animated: true, completion: nil)}
     else if(button == .new) {coordinatorView.forward()}
   }

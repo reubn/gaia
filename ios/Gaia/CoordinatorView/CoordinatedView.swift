@@ -5,5 +5,5 @@ protocol CoordinatedView: UIView {
   func viewWillEnter(data: Any?)
   func viewWillExit()
 
-  func panelButtonTapped(button: PanelButton)
+  func panelButtonTapped(button: PanelButtonType)
 }

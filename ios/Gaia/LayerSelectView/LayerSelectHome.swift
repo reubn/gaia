@@ -55,7 +55,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     layerSelectView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
   }
   
-  func showShareSheet(_ sender: PanelActionButton, layers: [Layer]) {
+  func showShareSheet(_ sender: PanelButton, layers: [Layer]) {
     let layerDefinitions = layers.map {LayerDefinition(layer: $0)}
     
     do {
@@ -135,7 +135,7 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     newButton.showsMenuAsPrimaryAction = false
   }
   
-  func panelButtonTapped(button: PanelButton){
+  func panelButtonTapped(button: PanelButtonType){
     let panelButton = coordinatorView.panelViewController.getPanelButton(button)
     
     if(button == .share) {

@@ -47,19 +47,19 @@ class PanelViewController: UIViewController, FloatingPanelControllerDelegate {
   
   let uiImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
   
-  private lazy var buttonsMap: [PanelButton: PanelActionButton] = [
-    .dismiss: PanelSmallActionButton("xmark", weight: .bold, colour: .systemGray, backgroundColour: .tertiarySystemBackground),
-    .help: PanelSmallActionButton("questionmark", colour: .white, backgroundColour: .systemIndigo),
-    .accept: PanelActionButton("checkmark", colour: .systemGreen),
-    .reject: PanelActionButton("xmark", colour: .systemRed),
-    .next: PanelActionButton("arrow.right"),
-    .previous: PanelActionButton("arrow.left", deemphasise: true),
-    .new: PanelActionButton("plus"),
-    .star: PanelActionButton("star.fill", colour: .systemOrange),
-    .share: PanelActionButton("square.and.arrow.up", deemphasise: true)
+  private lazy var buttonsMap: [PanelButtonType: PanelButton] = [
+    .dismiss: PanelSmallButton("xmark", weight: .bold, colour: .systemGray, backgroundColour: .tertiarySystemBackground),
+    .help: PanelSmallButton("questionmark", colour: .white, backgroundColour: .systemIndigo),
+    .accept: PanelButton("checkmark", colour: .systemGreen),
+    .reject: PanelButton("xmark", colour: .systemRed),
+    .next: PanelButton("arrow.right"),
+    .previous: PanelButton("arrow.left", deemphasise: true),
+    .new: PanelButton("plus"),
+    .star: PanelButton("star.fill", colour: .systemOrange),
+    .share: PanelButton("square.and.arrow.up", deemphasise: true)
   ]
   
-  var panelButtons: [PanelButton] = [] {
+  var panelButtons: [PanelButtonType] = [] {
     didSet {
       for subView in self.buttonsView.arrangedSubviews {
         self.buttonsView.removeArrangedSubview(subView)
@@ -78,15 +78,15 @@ class PanelViewController: UIViewController, FloatingPanelControllerDelegate {
     }
   }
   
-  @objc private func _panelButtonTapped(_ sender: PanelActionButton){
+  @objc private func _panelButtonTapped(_ sender: PanelButton){
     panelButtonTapped(button: buttonsMap.key(forValue: sender)!)
   }
   
-  func getPanelButton(_ button: PanelButton) -> PanelActionButton {
+  func getPanelButton(_ button: PanelButtonType) -> PanelButton {
     return buttonsMap[button]!
   }
   
-  func panelButtonTapped(button: PanelButton){
+  func panelButtonTapped(button: PanelButtonType){
     if(button == .dismiss) {
       dismiss(animated: true, completion: nil)
       
@@ -161,7 +161,7 @@ class PanelViewController: UIViewController, FloatingPanelControllerDelegate {
   }
 }
 
-enum PanelButton {
+enum PanelButtonType {
   case accept
   case dismiss
   case reject

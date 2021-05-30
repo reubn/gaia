@@ -231,7 +231,7 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     self.elevationDisplay.value = location
   }
   
-  override func panelButtonTapped(button: PanelButton) {
+  override func panelButtonTapped(button: PanelButtonType) {
     super.panelButtonTapped(button: button)
     
     let panelButton = getPanelButton(button)

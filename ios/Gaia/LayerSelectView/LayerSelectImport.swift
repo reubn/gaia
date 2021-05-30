@@ -70,7 +70,7 @@ class LayerSelectImport: UIView, CoordinatedView {
     print("exit LSI")
   }
   
-  func panelButtonTapped(button: PanelButton){
+  func panelButtonTapped(button: PanelButtonType){
     if(button == .accept) {process()}
     else if(button == .previous) {coordinatorView.back()}
   }

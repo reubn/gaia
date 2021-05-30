@@ -22,7 +22,7 @@ class OfflineSelectPanelViewController: PanelViewController {
     coordinatorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
   }
   
-  override func panelButtonTapped(button: PanelButton) {
+  override func panelButtonTapped(button: PanelButtonType) {
     super.panelButtonTapped(button: button)
     
     coordinatorView.panelButtonTapped(button: button)
