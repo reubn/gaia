@@ -112,8 +112,6 @@ extension AnyCodable {
         return anyCodable[dynamicMember: member]
       case let dictionary as [String: Any?] where dictionary[member] != nil:
         return AnyCodable(dictionary[member]!)
-      case let array as [Any] where Int(member) != nil:
-        return AnyCodable(array[Int(member)!])
       default:
         return nil
       }
@@ -130,6 +128,31 @@ extension AnyCodable {
           dictionary.removeValue(forKey: member)
         }
         self.value = dictionary
+      default:
+        break
+      }
+    }
+  }
+  
+  subscript(dynamicMember member: Int) -> AnyCodable? {
+    get {
+      switch self.value {
+      case let anyCodable as AnyCodable:
+        return anyCodable[dynamicMember: member]
+      case let array as [Any] where member >= 0 && member < array.count:
+        return AnyCodable(array[member])
+      default:
+        return nil
+      }
+    }
+    set {
+      switch self.value {
+      case var anyCodable as AnyCodable:
+        anyCodable[dynamicMember: member] = newValue
+        self.value = anyCodable
+      case var array as [Any] where member >= 0 && member < array.count:
+        array[member] = newValue as Any
+        self.value = array
       default:
         break
       }
@@ -163,6 +186,30 @@ extension AnyCodable {
         break
       }
     }
+  }
+}
+
+public struct AnyCodableIterator: IteratorProtocol {
+  private let anyCodable: AnyCodable
+  private var index = 0
+
+  init(_ anyCodable: AnyCodable) {
+    self.anyCodable = anyCodable
+  }
+
+  mutating public func next() -> AnyCodable? {
+    let value = anyCodable[dynamicMember: index]
+    index += 1
+    
+    return value
+  }
+}
+
+extension AnyCodable: Sequence {
+  public typealias Element = AnyCodable
+  
+  public func makeIterator() -> AnyCodableIterator {
+    AnyCodableIterator(self)
   }
 }
 
