@@ -1,15 +1,14 @@
 import Foundation
-
 import Mapbox
 
 let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
 
 let layerSupportsOpacity = {(layer: Style.Layer) -> Bool in
-  ["line", "raster"].contains(layer.type?.value as? String)
+  ["fill", "circle", "line", "raster"].contains(layer.type?.value as? String)
 }
 
 let layerSupportsColour = {(layer: Style.Layer) -> Bool in
-  ["line"].contains(layer.type?.value as? String)
+  ["fill", "circle", "line"].contains(layer.type?.value as? String)
 }
 
 struct Style: Codable, Equatable {
@@ -165,6 +164,8 @@ struct Style: Codable, Equatable {
       switch type {
         case "raster": return (layer.paint?[dynamicMember: "raster-opacity"]?.value as? NSNumber)?.doubleValue
         case "line": return (layer.paint?[dynamicMember: "line-opacity"]?.value as? NSNumber)?.doubleValue
+        case "circle": return (layer.paint?[dynamicMember: "circle-opacity"]?.value as? NSNumber)?.doubleValue
+        case "fill": return (layer.paint?[dynamicMember: "fill-opacity"]?.value as? NSNumber)?.doubleValue
         default: return nil
       }
     }).max() ?? 1
@@ -184,6 +185,12 @@ struct Style: Codable, Equatable {
         case "line":
           layer.paint = layer.paint ?? AnyCodable([:])
           layer.paint?[dynamicMember: "line-opacity"] = AnyCodable(opacity)
+        case "circle":
+          layer.paint = layer.paint ?? AnyCodable([:])
+          layer.paint?[dynamicMember: "circle-opacity"] = AnyCodable(opacity)
+        case "fill":
+          layer.paint = layer.paint ?? AnyCodable([:])
+          layer.paint?[dynamicMember: "fill-opacity"] = AnyCodable(opacity)
         default: ()
       }
       
@@ -206,6 +213,8 @@ struct Style: Codable, Equatable {
     
     switch type {
       case "line": string = layer?.paint?[dynamicMember: "line-color"]?.value as? String
+      case "circle": string = layer?.paint?[dynamicMember: "circle-color"]?.value as? String
+      case "fill": string = layer?.paint?[dynamicMember: "fill-color"]?.value as? String
       default: return nil
     }
     
@@ -237,6 +246,8 @@ struct Style: Codable, Equatable {
     
     switch type {
       case "line": copy.layers[layerIndex!].paint?[dynamicMember: "line-color"]? = AnyCodable("#" + colour.toHex()!)
+      case "circle": copy.layers[layerIndex!].paint?[dynamicMember: "circle-color"]? = AnyCodable("#" + colour.toHex()!)
+      case "fill": copy.layers[layerIndex!].paint?[dynamicMember: "fill-color"]? = AnyCodable("#" + colour.toHex()!)
       default: ()
     }
     
