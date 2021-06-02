@@ -56,80 +56,37 @@ struct Style: Codable, Equatable {
   }
   
   var bounds: BoundsInfo {
+    var superbound: MGLCoordinateBounds?
     var allBounds: [MGLCoordinateBounds] = []
-    
-    var minLat: CLLocationDegrees?
-    var minLon: CLLocationDegrees?
-    
-    var maxLat: CLLocationDegrees?
-    var maxLon: CLLocationDegrees?
     
     for (id, source) in sources {
       let type = source.type?.value as? String
       
-      if(type == "geojson"){
-        print("calculating bounds for geojson source", id)
-        let coords = source.data?.features?[0]?.geometry?.coordinates?.value as? [[CLLocationDegrees]] // support multiple features
-        
-        if(coords != nil){
-          var featureMinLat: CLLocationDegrees?
-          var featureMinLon: CLLocationDegrees?
-          
-          var featureMaxLat: CLLocationDegrees?
-          var featureMaxLon: CLLocationDegrees?
-          
-          for latLon in coords! {
-            let lat = latLon[1]
-            let lon = latLon[0]
-            
-            featureMinLat = min(featureMinLat ?? lat, lat)
-            featureMinLon = min(featureMinLon ?? lon, lon)
-            
-            featureMaxLat = max(featureMaxLat ?? lat, lat)
-            featureMaxLon = max(featureMaxLon ?? lon, lon)
+      switch type {
+        case "geojson":
+          print("calculating bounds for geojson source", id)
+          if let geoJSON = source.data,
+             let bounds = getGeoJSONBounds(geoJSON){
+            superbound = superbound?.extend(with: bounds) ?? bounds
+            allBounds.append(bounds)
           }
+        case "raster", "raster-dem", "vector":
+          let bounds = (source.bounds?.value as? [NSNumber]) as? [CLLocationDegrees]
           
-          if(featureMinLat != nil){
-            minLat = min(minLat ?? featureMinLat!, featureMinLat!)
-            minLon = min(minLon ?? featureMinLon!, featureMinLon!)
+          if(bounds != nil && bounds!.count == 4) {
+            let sw = CLLocationCoordinate2D(latitude: bounds![1], longitude: bounds![0])
+            let ne = CLLocationCoordinate2D(latitude: bounds![3], longitude: bounds![2])
             
-            maxLat = max(maxLat ?? featureMaxLat!, featureMaxLat!)
-            maxLon = max(maxLon ?? featureMaxLon!, featureMaxLon!)
+            let newBounds = MGLCoordinateBounds(sw: sw, ne: ne)
             
-            let sw = CLLocationCoordinate2D(latitude: featureMinLat!, longitude: featureMinLon!)
-            let ne = CLLocationCoordinate2D(latitude: featureMaxLat!, longitude: featureMaxLon!)
-            
-            allBounds.append(MGLCoordinateBoundsMake(sw, ne))
+            superbound = superbound?.extend(with: newBounds) ?? newBounds
+            allBounds.append(newBounds)
+          } else {
+            // if a raster, vector layer has no bounds, then assume its worldwide - therefore short circuit, discarding bounds
+            return BoundsInfo(individual: [], superbound: nil)
           }
-        }
-      } else if(type == "raster" || type == "raster-dem" || type == "vector")  {
-        let bounds = (source.bounds?.value as? [NSNumber]) as? [CLLocationDegrees]
-        
-        if(bounds != nil && bounds!.count == 4) {
-          let sw = CLLocationCoordinate2D(latitude: bounds![1], longitude: bounds![0])
-          let ne = CLLocationCoordinate2D(latitude: bounds![3], longitude: bounds![2])
-          
-          minLat = min(minLat ?? bounds![1], bounds![1])
-          minLon = min(minLon ?? bounds![0], bounds![0])
-          
-          maxLat = max(maxLat ?? bounds![3], bounds![3])
-          maxLon = max(maxLon ?? bounds![2], bounds![2])
-          
-          allBounds.append(MGLCoordinateBoundsMake(sw, ne))
-        } else {
-          // if a raster, vector layer has no bounds, then assume its worldwide - therefore short circuit, discarding bounds
-          return BoundsInfo(individual: [], superbound: nil)
-        }
+        default: ()
       }
-    }
-    
-    var superbound: MGLCoordinateBounds?
-    
-    if(minLat != nil) {
-      let sw = CLLocationCoordinate2D(latitude: minLat!, longitude: minLon!)
-      let ne = CLLocationCoordinate2D(latitude: maxLat!, longitude: maxLon!)
-      
-      superbound = MGLCoordinateBoundsMake(sw, ne)
     }
 
     return BoundsInfo(individual: allBounds, superbound: superbound)
