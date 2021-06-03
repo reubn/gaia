@@ -358,6 +358,56 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       
       let editsSupported = [layer.style.supportsColour, layer.style.supportsOpacity]
       
+      let colourableLayers = layer.style.layerOptions.filter({$0.capabilities.contains(.colour)})
+      
+      let singleColourMenu = UIAction( // single colour in style
+        title: "Set Colour",
+        image: UIImage(systemName: "eyedropper")){ _ in
+          let colourableLayer = colourableLayers.first!
+          let colour = colourableLayer.colour ?? .randomSystemColor().withAlphaComponent(CGFloat(colourableLayer.opacity ?? 1))
+          self.layerSelectConfig.layerEditDelegate?.requestLayerColourPicker(colour, supportsAlpha: colourableLayer.capabilities.contains(.opacity)){newColour in
+            let options = colourableLayers.map({$0.setting(.colour, to: newColour).setting(.opacity, to: nil)})
+            layer.style = layer.style.with(options)
+            LayerManager.shared.save()
+          }
+      }
+            
+      let manyColoursMenu = UIMenu( // many colours in style
+        title: "Set Colour",
+        image: UIImage(systemName: "eyedropper"),
+        children: {
+          var children: [UIMenuElement] = colourableLayers.map({colourableLayer in
+          let colour = colourableLayer.colour ?? .randomSystemColor().withAlphaComponent(CGFloat(colourableLayer.opacity ?? 1))
+            return UIAction(
+              title: colourableLayer.id,
+              image: UIImage(systemName: "circle.fill")?.withTintColor(colour).withRenderingMode(.alwaysOriginal)) { _ in
+                self.layerSelectConfig.layerEditDelegate?.requestLayerColourPicker(colour, supportsAlpha: colourableLayer.capabilities.contains(.opacity)){newColour in
+                  layer.style = layer.style.with([colourableLayer.setting(.colour, to: newColour).setting(.opacity, to: nil)])
+                  LayerManager.shared.save()
+                }
+            }
+          })
+          
+          let allMenu = UIAction(
+            title: "All",
+            image: UIImage(systemName: "circles.hexagongrid.fill")){ _ in
+              let colourableLayer = colourableLayers.first!
+              let colour = colourableLayer.colour ?? .randomSystemColor().withAlphaComponent(CGFloat(colourableLayer.opacity ?? 1))
+              self.layerSelectConfig.layerEditDelegate?.requestLayerColourPicker(colour, supportsAlpha: colourableLayer.capabilities.contains(.opacity)){newColour in
+                let options = colourableLayers.map({$0.setting(.colour, to: newColour).setting(.opacity, to: nil)})
+                layer.style = layer.style.with(options)
+                LayerManager.shared.save()
+              }
+          }
+          
+          children.append(allMenu)
+          
+          return children
+        }()
+      )
+      
+      let setColourMenu = (colourableLayers.count == 1 || colourableLayers.allSatisfy({$0.colour == colourableLayers.first?.colour})) ? singleColourMenu : manyColoursMenu
+      
       topChildren.append(editsSupported.contains(true) ? UIMenu(
         title: "Edit",
         image: UIImage(systemName: "slider.horizontal.3"),
@@ -373,25 +423,12 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
                 title: String(format: "%d%%", percent),
                 image: UIImage(systemName: "square\(opacity == 0 ? "" : ".fill")")?.withTintColor(iconColour).with(alpha: opacity == 0 ? 1 : CGFloat(opacity)),
                 state: selected ? .on : .off) { _ in
-                  layer.style = layer.style.with(layer.style.layerOptions.compactMap({$0.setting(.opacity, to: opacity)}))
+                  layer.style = layer.style.with(layer.style.layerOptions.map({$0.setting(.opacity, to: opacity)}))
                   LayerManager.shared.save()
               }
             })
           ) : nil,
-          layer.style.supportsColour ? UIAction(
-            title: "Set Color",
-            image: UIImage(systemName: "eyedropper")){ _ in
-              guard let _layer = layer.style.layerOptions.first(where: {$0.capabilities.contains(.colour)}) else {
-                return
-              }
-            
-              let colour = _layer.colour ?? .randomSystemColor().withAlphaComponent(CGFloat(_layer.opacity ?? 1))
-            
-              self.layerSelectConfig.layerEditDelegate?.requestLayerColourPicker(colour, supportsAlpha: layer.style.supportsOpacity){newColour in
-                layer.style = layer.style.with([_layer.setting(.colour, to: newColour).setting(.opacity, to: nil)])
-                LayerManager.shared.save()
-              }
-          } : nil,
+          layer.style.supportsColour ? setColourMenu : nil,
           UIAction(
             title: "Edit Layer",
             image: UIImage(systemName: "slider.horizontal.3")) { _ in
