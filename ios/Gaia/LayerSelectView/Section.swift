@@ -359,6 +359,7 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       let editsSupported = [layer.style.supportsColour, layer.style.supportsOpacity]
       
       let colourableLayers = layer.style.layerOptions.filter({$0.capabilities.contains(.colour)})
+      let opacitySupportingLayers = layer.style.layerOptions.filter({$0.capabilities.contains(.opacity)})
       
       let singleColourMenu = UIAction( // single colour in style
         title: "Set Colour",
@@ -408,29 +409,62 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       
       let setColourMenu = (colourableLayers.count == 1 || colourableLayers.allSatisfy({$0.colour == colourableLayers.first?.colour})) ? singleColourMenu : manyColoursMenu
       
+      let generateOpacityMenu = {(layerOptions: [Style.LayerOptions]) -> ([UIMenuElement]) in
+        [100, 75, 50, 25, 10].compactMap({percent in
+          let opacity = Double(percent) / 100
+          let selected = (layerOptions.count == 1 || layerOptions.allSatisfy({$0.opacity == layerOptions.first?.opacity})) && (opacity == layerOptions.first?.opacity )
+
+          return UIAction(
+            title: String(format: "%d%%", percent),
+            image: UIImage(systemName: "square\(opacity == 0 ? "" : ".fill")")?.withTintColor(iconColour.withAlphaComponent(opacity == 0 ? 1 : CGFloat(opacity))).withRenderingMode(.alwaysOriginal),
+            state: selected ? .on : .off) { _ in
+              layer.style = layer.style.with(layerOptions.map({$0.setting(.opacity, to: opacity)}))
+              LayerManager.shared.save()
+          }
+        })
+      }
+      
+      let singleOpacityMenu = UIMenu( // single opacity in style
+        title: "Set Opacity",
+        image: UIImage(systemName: "slider.horizontal.below.rectangle"),
+        children: generateOpacityMenu(opacitySupportingLayers)
+      )
+      
+      let manyOpacitiesMenu = UIMenu( // many opacities in style
+        title: "Set Opacity",
+        image: UIImage(systemName: "slider.horizontal.below.rectangle"),
+        children: {
+          var children: [UIMenuElement] = opacitySupportingLayers.map({opacitySupportingLayer in
+            let colour = opacitySupportingLayer.colour ?? iconColour.withAlphaComponent(CGFloat(opacitySupportingLayer.opacity ?? 1))
+            return UIMenu(
+              title: opacitySupportingLayer.id,
+              image: UIImage(systemName: "square.fill")?.withTintColor(colour).withRenderingMode(.alwaysOriginal),
+              children: generateOpacityMenu([opacitySupportingLayer])
+            )
+          })
+          
+          let allMenu = UIMenu(
+            title: "All",
+            image: UIImage(systemName: "square.grid.3x3.fill"),
+            children: generateOpacityMenu(opacitySupportingLayers)
+          )
+          
+          children.append(allMenu)
+          
+          return children
+        }()
+      )
+      
+      let setOpacityMenu = (opacitySupportingLayers.count == 1 || opacitySupportingLayers.allSatisfy({$0.opacity == opacitySupportingLayers.first?.opacity})) ? singleOpacityMenu : manyOpacitiesMenu
+      
       topChildren.append(editsSupported.contains(true) ? UIMenu(
         title: "Edit",
         image: UIImage(systemName: "slider.horizontal.3"),
         children: [
-          layer.style.supportsOpacity ? UIMenu(
-            title: "Set Opacity",
-            image: UIImage(systemName: "slider.horizontal.below.rectangle"),
-            children: [100, 75, 50, 25, 10].compactMap({percent in
-              let opacity = Double(percent) / 100
-              let selected = opacity == layer.style.opacity
-
-              return UIAction(
-                title: String(format: "%d%%", percent),
-                image: UIImage(systemName: "square\(opacity == 0 ? "" : ".fill")")?.withTintColor(iconColour).with(alpha: opacity == 0 ? 1 : CGFloat(opacity)),
-                state: selected ? .on : .off) { _ in
-                  layer.style = layer.style.with(layer.style.layerOptions.map({$0.setting(.opacity, to: opacity)}))
-                  LayerManager.shared.save()
-              }
-            })
-          ) : nil,
+          layer.style.supportsOpacity ? setOpacityMenu : nil,
           layer.style.supportsColour ? setColourMenu : nil,
           UIAction(
-            title: "Edit Layer",
+            title: "Full Edit",
             image: UIImage(systemName: "slider.horizontal.3")) { _ in
               self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.edit(layer))
           }
