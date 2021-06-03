@@ -25,7 +25,7 @@ struct Style: Codable, Equatable {
     let superbound: MGLCoordinateBounds?
   }
   
-  struct LayerOptions {
+  struct InterfacedLayer {
     let id: String
     
     let capabilities: Set<Capability>
@@ -129,7 +129,7 @@ struct Style: Codable, Equatable {
     }
   }
   
-  var layerOptions: [LayerOptions] {
+  var interfacedLayers: [InterfacedLayer] {
     layers.compactMap({layer in
       guard let type = layer.type?.value as? String,
             let id = layer.id?.value as? String else {
@@ -138,7 +138,7 @@ struct Style: Codable, Equatable {
       
       var hex: String?
       var rawOpacity: NSNumber?
-      var capabilities: Set<LayerOptions.Capability>
+      var capabilities: Set<InterfacedLayer.Capability>
       
       switch type {
         case "line":
@@ -162,11 +162,11 @@ struct Style: Codable, Equatable {
       let opacity = rawOpacity?.doubleValue
       let colour = hex != nil ? UIColor(hex: hex!)?.withAlphaComponent(CGFloat(opacity ?? 1)) : nil
       
-      return LayerOptions(id: id, capabilities: capabilities, colour: colour, opacity: opacity)
+      return InterfacedLayer(id: id, capabilities: capabilities, colour: colour, opacity: opacity)
     })
   }
   
-  func with(_ layerOptions: [LayerOptions]) -> Self {
+  func with(_ layerOptions: [InterfacedLayer]) -> Self {
     var copy = self
     
     for desc in layerOptions {
@@ -203,16 +203,16 @@ struct Style: Codable, Equatable {
   }
   
   var supportsOpacity: Bool {
-    layerOptions.contains(where: {$0.capabilities.contains(.opacity)})
+    interfacedLayers.contains(where: {$0.capabilities.contains(.opacity)})
   }
   var opacity: Double {
-    layerOptions.compactMap({$0.opacity}).max() ?? 1
+    interfacedLayers.compactMap({$0.opacity}).max() ?? 1
   }
   
   var supportsColour: Bool {
-    layerOptions.contains(where: {$0.capabilities.contains(.colour)})
+    interfacedLayers.contains(where: {$0.capabilities.contains(.colour)})
   }
   var colour: UIColor? {
-    layerOptions.first(where: {$0.colour != nil})?.colour
+    interfacedLayers.first(where: {$0.colour != nil})?.colour
   }
 }

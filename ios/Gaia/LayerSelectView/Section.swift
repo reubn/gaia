@@ -358,8 +358,8 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       
       let editsSupported = [layer.style.supportsColour, layer.style.supportsOpacity]
       
-      let colourableLayers = layer.style.layerOptions.filter({$0.capabilities.contains(.colour)})
-      let opacitySupportingLayers = layer.style.layerOptions.filter({$0.capabilities.contains(.opacity)})
+      let colourableLayers = layer.style.interfacedLayers.filter({$0.capabilities.contains(.colour)})
+      let opacitySupportingLayers = layer.style.interfacedLayers.filter({$0.capabilities.contains(.opacity)})
       
       let singleColourMenu = UIAction( // single colour in style
         title: "Set Colour",
@@ -409,16 +409,16 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       
       let setColourMenu = (colourableLayers.count == 1 || colourableLayers.allSatisfy({$0.colour == colourableLayers.first?.colour})) ? singleColourMenu : manyColoursMenu
       
-      let generateOpacityMenu = {(layerOptions: [Style.LayerOptions]) -> ([UIMenuElement]) in
+      let generateOpacityMenu = {(opacitySupportingLayers: [Style.InterfacedLayer]) -> ([UIMenuElement]) in
         [100, 75, 50, 25, 10].compactMap({percent in
           let opacity = Double(percent) / 100
-          let selected = (layerOptions.count == 1 || layerOptions.allSatisfy({$0.opacity == layerOptions.first?.opacity})) && (opacity == layerOptions.first?.opacity )
+          let selected = (opacitySupportingLayers.count == 1 || opacitySupportingLayers.allSatisfy({$0.opacity == opacitySupportingLayers.first?.opacity})) && (opacity == opacitySupportingLayers.first?.opacity )
 
           return UIAction(
             title: String(format: "%d%%", percent),
             image: UIImage(systemName: "square\(opacity == 0 ? "" : ".fill")")?.withTintColor(iconColour.withAlphaComponent(opacity == 0 ? 1 : CGFloat(opacity))).withRenderingMode(.alwaysOriginal),
             state: selected ? .on : .off) { _ in
-              layer.style = layer.style.with(layerOptions.map({$0.setting(.opacity, to: opacity)}))
+              layer.style = layer.style.with(opacitySupportingLayers.map({$0.setting(.opacity, to: opacity)}))
               LayerManager.shared.save()
           }
         })
