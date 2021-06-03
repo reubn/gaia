@@ -220,7 +220,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
         mapView.setVisibleCoordinateBounds(superbound, sensible: true, minZoom: styleCachedConstraints?.zoomLevelsCovered.0, animated: true)
         HUDManager.shared.displayMessage(message: .boundsWarningFixed)
       case .zeroOpacity(let layer):
-        layer.style = layer.style.with(opacity: 1)
+        layer.style = layer.style.with(layer.style.layerOptions.compactMap({$0.opacity == 0 ? $0.setting(.opacity, to: 1.0) : nil}))
         LayerManager.shared.save()
         HUDManager.shared.displayMessage(message: .zeroOpacityWarningFixed)
     }

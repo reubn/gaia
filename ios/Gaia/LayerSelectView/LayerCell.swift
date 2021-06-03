@@ -196,7 +196,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     if(queuedStyle != displayedStyle) {
       displayedStyle = queuedStyle
       preview.styleURL = displayedStyle!.url
-      preview.tintColor = _layer!.style.colourWithAlpha ?? (_layer!.needsDarkUI ? .white : .systemBlue)
+      preview.tintColor = _layer!.style.colour ?? (_layer!.needsDarkUI ? .white : .systemBlue)
       
       styleCachedConstraints = (displayedStyle!.zoomLevelsCovered, displayedStyle!.bounds)
     }
@@ -255,7 +255,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
       ? .white
       : .label
     
-    preview.tintColor = _layer.style.colourWithAlpha ?? (_layer.needsDarkUI ? .white : .systemBlue)
+    preview.tintColor = _layer.style.colour ?? (_layer.needsDarkUI ? .white : .systemBlue)
 
     if(first) {
       self.first = false

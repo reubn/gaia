@@ -3,14 +3,6 @@ import Mapbox
 
 let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
 
-let layerSupportsOpacity = {(layer: Style.Layer) -> Bool in
-  ["fill", "circle", "line", "raster"].contains(layer.type?.value as? String)
-}
-
-let layerSupportsColour = {(layer: Style.Layer) -> Bool in
-  ["fill", "circle", "line"].contains(layer.type?.value as? String)
-}
-
 struct Style: Codable, Equatable {
   var version = 8
   
@@ -33,6 +25,33 @@ struct Style: Codable, Equatable {
     let superbound: MGLCoordinateBounds?
   }
   
+  struct LayerOptions {
+    let id: String
+    
+    let capabilities: Set<Capability>
+    
+    var colour: UIColor?
+    var opacity: Double?
+    
+    func setting(_ capability: Capability, to: Any?) -> Self{
+      var copy = self
+      
+      if capabilities.contains(capability) {
+        switch capability {
+          case .colour: copy.colour = to as! UIColor?
+          case .opacity: copy.opacity = to as! Double?
+        }
+      }
+      
+      return copy
+    }
+    
+    enum Capability {
+      case colour
+      case opacity
+    }
+  }
+
   var zoomLevelsCovered: (min: Double, max: Double) {
     var mins: [Double] = []
     var maxes: [Double] = []
@@ -110,104 +129,90 @@ struct Style: Codable, Equatable {
     }
   }
   
-  var supportsOpacity: Bool {
-    layers.contains(where: layerSupportsOpacity)
-  }
-  
-  var opacity: Double {
-    layers.compactMap({layer -> Double? in
-      let type = layer.type?.value as? String
-      
-      switch type {
-        case "raster": return (layer.paint?[dynamicMember: "raster-opacity"]?.value as? NSNumber)?.doubleValue
-        case "line": return (layer.paint?[dynamicMember: "line-opacity"]?.value as? NSNumber)?.doubleValue
-        case "circle": return (layer.paint?[dynamicMember: "circle-opacity"]?.value as? NSNumber)?.doubleValue
-        case "fill": return (layer.paint?[dynamicMember: "fill-opacity"]?.value as? NSNumber)?.doubleValue
-        default: return nil
+  var layerOptions: [LayerOptions] {
+    layers.compactMap({layer in
+      guard let type = layer.type?.value as? String,
+            let id = layer.id?.value as? String else {
+        return nil
       }
-    }).max() ?? 1
-  }
-  
-  func with(opacity: Double) -> Self {
-    var copy = self
-    copy.layers = layers.map({
-      var layer = $0
       
-      let type = layer.type?.value as? String
+      var hex: String?
+      var rawOpacity: NSNumber?
+      var capabilities: Set<LayerOptions.Capability>
       
       switch type {
-        case "raster":
-          layer.paint = layer.paint ?? AnyCodable([:])
-          layer.paint?[dynamicMember: "raster-opacity"] = AnyCodable(opacity)
         case "line":
-          layer.paint = layer.paint ?? AnyCodable([:])
-          layer.paint?[dynamicMember: "line-opacity"] = AnyCodable(opacity)
+          hex = layer.paint?[dynamicMember: "line-color"]?.value as? String
+          rawOpacity = layer.paint?[dynamicMember: "line-opacity"]?.value as? NSNumber
+          capabilities = [.colour, .opacity]
         case "circle":
-          layer.paint = layer.paint ?? AnyCodable([:])
-          layer.paint?[dynamicMember: "circle-opacity"] = AnyCodable(opacity)
+          hex = layer.paint?[dynamicMember: "circle-color"]?.value as? String
+          rawOpacity = layer.paint?[dynamicMember: "circle-opacity"]?.value as? NSNumber
+          capabilities = [.colour, .opacity]
         case "fill":
-          layer.paint = layer.paint ?? AnyCodable([:])
-          layer.paint?[dynamicMember: "fill-opacity"] = AnyCodable(opacity)
-        default: ()
+          hex = layer.paint?[dynamicMember: "fill-color"]?.value as? String
+          rawOpacity = layer.paint?[dynamicMember: "fill-opacity"]?.value as? NSNumber
+          capabilities = [.colour, .opacity]
+        case "raster":
+          rawOpacity = layer.paint?[dynamicMember: "raster-opacity"]?.value as? NSNumber
+          capabilities = [.opacity]
+        default: capabilities = []
       }
       
+      let opacity = rawOpacity?.doubleValue
+      let colour = hex != nil ? UIColor(hex: hex!)?.withAlphaComponent(CGFloat(opacity ?? 1)) : nil
       
-      return layer
+      return LayerOptions(id: id, capabilities: capabilities, colour: colour, opacity: opacity)
     })
+  }
+  
+  func with(_ layerOptions: [LayerOptions]) -> Self {
+    var copy = self
+    
+    for desc in layerOptions {
+      if let index = layers.firstIndex(where: {$0.id?.value as? String == desc.id}),
+         let type = copy.layers[index].type?.value as? String {
+        
+        copy.layers[index].paint = copy.layers[index].paint ?? AnyCodable([:])
+        
+        if let colour = desc.colour,
+           let hex = colour.toHex() {
+          let colourString = AnyCodable("#" + hex)
+          switch type {
+            case "line": copy.layers[index].paint?[dynamicMember: "line-color"] = colourString
+            case "circle": copy.layers[index].paint?[dynamicMember: "circle-color"] = colourString
+            case "fill": copy.layers[index].paint?[dynamicMember: "fill-color"] = colourString
+            default: ()
+          }
+        }
+        
+        if let opacity = desc.opacity ?? {let o = desc.colour?.components?.alpha; return o != nil ? Double(o!) : nil}() {
+          switch type {
+            case "raster": copy.layers[index].paint?[dynamicMember: "raster-opacity"] = AnyCodable(opacity)
+            case "line": copy.layers[index].paint?[dynamicMember: "line-opacity"] = AnyCodable(opacity)
+            case "circle": copy.layers[index].paint?[dynamicMember: "circle-opacity"] = AnyCodable(opacity)
+            case "fill": copy.layers[index].paint?[dynamicMember: "fill-opacity"] = AnyCodable(opacity)
+            default: ()
+          }
+        }
+ 
+      }
+    }
     
     return copy
+  }
+  
+  var supportsOpacity: Bool {
+    layerOptions.contains(where: {$0.capabilities.contains(.opacity)})
+  }
+  var opacity: Double {
+    layerOptions.compactMap({$0.opacity}).max() ?? 1
   }
   
   var supportsColour: Bool {
-    layers.contains(where: layerSupportsColour)
+    layerOptions.contains(where: {$0.capabilities.contains(.colour)})
   }
-  
   var colour: UIColor? {
-    let layer = layers.first(where: layerSupportsColour)
-    
-    let type = layer?.type?.value as? String
-    var string: String?
-    
-    switch type {
-      case "line": string = layer?.paint?[dynamicMember: "line-color"]?.value as? String
-      case "circle": string = layer?.paint?[dynamicMember: "circle-color"]?.value as? String
-      case "fill": string = layer?.paint?[dynamicMember: "fill-color"]?.value as? String
-      default: return nil
-    }
-    
-    if(string != nil){
-      return UIColor(hex: string!)
-    }
-    
-    return nil
-  }
-  
-  var colourWithAlpha: UIColor? {
-    colour?.withAlphaComponent(CGFloat(opacity))
-  }
-  
-  func with(colour: UIColor) -> Self {
-    var copy = self
-    
-    let layerIndex = copy.layers.firstIndex(where: layerSupportsColour)
-    if(layerIndex == nil) {
-      return self
-    }
-    
-    let type = copy.layers[layerIndex!].type?.value as? String
-    let colourString = colour.toHex()
-    
-    if(colourString == nil) {
-      return self
-    }
-    
-    switch type {
-      case "line": copy.layers[layerIndex!].paint?[dynamicMember: "line-color"]? = AnyCodable("#" + colour.toHex()!)
-      case "circle": copy.layers[layerIndex!].paint?[dynamicMember: "circle-color"]? = AnyCodable("#" + colour.toHex()!)
-      case "fill": copy.layers[layerIndex!].paint?[dynamicMember: "fill-color"]? = AnyCodable("#" + colour.toHex()!)
-      default: ()
-    }
-    
-    return copy
+    layerOptions.first(where: {$0.colour != nil})?.colour
   }
 }

@@ -373,25 +373,24 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
                 title: String(format: "%d%%", percent),
                 image: UIImage(systemName: "square\(opacity == 0 ? "" : ".fill")")?.withTintColor(iconColour).with(alpha: opacity == 0 ? 1 : CGFloat(opacity)),
                 state: selected ? .on : .off) { _ in
-                layer.style = layer.style.with(opacity: opacity)
-                LayerManager.shared.save()
+                  layer.style = layer.style.with(layer.style.layerOptions.compactMap({$0.setting(.opacity, to: opacity)}))
+                  LayerManager.shared.save()
               }
             })
           ) : nil,
           layer.style.supportsColour ? UIAction(
             title: "Set Color",
             image: UIImage(systemName: "eyedropper")){ _ in
-              
-            self.layerSelectConfig.layerEditDelegate?.requestLayerColourPicker(layer, supportsAlpha: layer.style.supportsOpacity){colour in
-              layer.style = layer.style.with(colour: colour.withAlphaComponent(1))
-              
-              if let alpha = colour.components?.alpha,
-                 alpha != 1 {
-                layer.style = layer.style.with(opacity: Double(alpha).rounded(toDecimalPlaces: 2))
+              guard let _layer = layer.style.layerOptions.first(where: {$0.capabilities.contains(.colour)}) else {
+                return
               }
-              
-              LayerManager.shared.save()
-            }
+            
+              let colour = _layer.colour ?? .randomSystemColor().withAlphaComponent(CGFloat(_layer.opacity ?? 1))
+            
+              self.layerSelectConfig.layerEditDelegate?.requestLayerColourPicker(colour, supportsAlpha: layer.style.supportsOpacity){newColour in
+                layer.style = layer.style.with([_layer.setting(.colour, to: newColour).setting(.opacity, to: nil)])
+                LayerManager.shared.save()
+              }
           } : nil,
           UIAction(
             title: "Edit Layer",

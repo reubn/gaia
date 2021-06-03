@@ -14,5 +14,5 @@ struct LayerSelectConfig {
 
 protocol LayerEditDelegate: AnyObject {
   func requestLayerEdit(_ request: LayerEditRequest) -> ()
-  func requestLayerColourPicker(_ layer: Layer, supportsAlpha: Bool, callback: @escaping (UIColor) -> Void)
+  func requestLayerColourPicker(_ colour: UIColor, supportsAlpha: Bool, callback: @escaping (UIColor) -> Void)
 }
