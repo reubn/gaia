@@ -202,9 +202,9 @@ extension LayerDefinition {
           "circle-radius": [
             "interpolate",
             ["linear"], ["zoom"],
-            5, 5,
-            10, 8,
-            16, 10
+            5, 3,
+            10, 5,
+            16, 8
           ]
         ]
       ])
