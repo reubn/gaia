@@ -14,26 +14,14 @@
  - SeeAlso: `AnyEncodable`
  - SeeAlso: `AnyDecodable`
  */
-#if swift(>=5.1)
-@frozen
-@dynamicMemberLookup
-public struct AnyCodable: Codable {
+
+@dynamicMemberLookup @frozen public struct AnyCodable: Codable {
     public var value: Any
 
     public init<T>(_ value: T?) {
         self.value = value ?? ()
     }
 }
-#else
-@dynamicMemberLookup
-public struct AnyCodable: Codable {
-    public var value: Any
-
-    public init<T>(_ value: T?) {
-        self.value = value ?? ()
-    }
-}
-#endif
 
 extension AnyCodable: _AnyEncodable, _AnyDecodable {}
 
