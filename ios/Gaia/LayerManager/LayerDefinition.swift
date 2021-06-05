@@ -91,66 +91,45 @@ extension LayerDefinition {
     let name = gpx.metadata?.name ?? "GPX Import \(random)"
     let id = "gpx_" + random
     
-    let features: [String: Any] = [
-      "type": "FeatureCollection",
-      "features": gpx.tracks.flatMap {track in
-        track.tracksegments.map {trackSegment in
-          [
-            "type": "Feature",
-            "geometry": [
-              "type": "LineString",
-              "coordinates": trackSegment.trackpoints.map {trackPoint in
-                [trackPoint.longitude!, trackPoint.latitude!]
-              }
-            ]
-          ]
-        }
-      }
-    ]
-
-    self.init(
-      metadata: Metadata(
-        id: id,
-        name: name,
-        group: "gpx"
-      ),
-      style: Style(
-        sources: [
-          id: [
-            "type": "geojson",
-            "data": features
-          ]
-        ],
-        layers: [
-          [
-            "id": id,
-            "source": id,
-            "type": "line",
-            "layout": [
-              "line-cap": "round",
-              "line-join": "round"
-            ],
-            "paint": [
-              "line-color": "#" + UIColor.randomSystemColor().toHex()!,
-              "line-width": [
-                "interpolate",
-                ["linear"], ["zoom"],
-                5, 1,
-                10, 3,
-                16, 5
-              ]
-            ]
+    let tracks = gpx.tracks.flatMap {track in
+      track.tracksegments.map {trackSegment in
+        [
+          "type": "Feature",
+          "geometry": [
+            "type": "LineString",
+            "coordinates": trackSegment.trackpoints.map {trackPoint in
+              [trackPoint.longitude!, trackPoint.latitude!]
+            }
           ]
         ]
-      )
-    )
+      }
+    }
+    
+    let waypoints = gpx.waypoints.map {waypoint in
+      [
+        "type": "Feature",
+        "geometry": [
+          "type": "Point",
+          "coordinates": [waypoint.longitude!, waypoint.latitude!]
+        ]
+      ]
+    }
+    
+    let metadata = Metadata(id: id, name: name, group: "gpx")
+    
+    let features: AnyCodable = [
+      "type": "FeatureCollection",
+      "features": tracks + waypoints
+    ]
+
+    self.init(geoJSON: features, metadata: metadata)
   }
   
-  init(geoJSON geojson: AnyCodable){
+  init(geoJSON geojson: AnyCodable, metadata: Metadata?=nil){
     let random = randomString(length: 3)
     
-    let name = "GeoJSON Import \(random)"
-    let id = "geojson_" + random
+    let name = metadata?.name ?? "GeoJSON Import \(random)"
+    let id = metadata?.id ?? "geojson_" + random
     
     let features = geoJSON(flatten: geojson)
     
@@ -250,7 +229,7 @@ extension LayerDefinition {
     }
     
     self.init(
-      metadata: Metadata(
+      metadata: metadata ?? Metadata(
         id: id,
         name: name,
         group: "gpx"

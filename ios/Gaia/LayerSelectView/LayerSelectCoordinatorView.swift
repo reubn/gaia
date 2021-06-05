@@ -54,7 +54,7 @@ class LayerSelectCoordinatorView: CoordinatorView {
     let gpxSingleAttempt = geoJSONSingleAttempt ?? {() -> [LayerDefinition]? in
       print("gpxSingleAttempt")
       guard let decodeAttempt = GPXParser(withData: data).parsedData(),
-            decodeAttempt.tracks.count != 0 else { // check for waymarkers too!!!
+            decodeAttempt.tracks.count + decodeAttempt.waypoints.count != 0 else {
         return nil
       }
       
