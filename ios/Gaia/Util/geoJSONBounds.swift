@@ -1,8 +1,8 @@
 import Foundation
 import Mapbox
 
-func getGeoJSONBounds(_ root: AnyCodable) -> MGLCoordinateBounds? {
-  let coords = processFeature(root)
+public func geoJSON(bounds root: AnyCodable) -> MGLCoordinateBounds? {
+  let coords = geoJSON(flatten: root).flatMap(featureToCoords)
 
   var minLat: CLLocationDegrees?
   var minLon: CLLocationDegrees?
@@ -31,29 +31,33 @@ func getGeoJSONBounds(_ root: AnyCodable) -> MGLCoordinateBounds? {
   return MGLCoordinateBounds(sw: sw, ne: ne)
 }
 
-fileprivate func processFeature(_ feature: AnyCodable) -> [GeoJSONCoord?]{
-  let type = feature.type?.value as? String
+public func geoJSON(flatten object: AnyCodable) -> [AnyCodable?]{
+  let type = object.type?.value as? String
   
   switch type {
-    case "FeatureCollection": return feature.features?.flatMap({processFeature($0)}) ?? []
-    case "Feature":
-      guard let geometry = feature.geometry,
-            let geometryType = geometry.type?.value as? String,
-            let coords = geometry.coordinates
-      else {
-        print("Error Parsing geoJSON")
-        return []
-      }
-
-      switch geometryType {
-        case "Point": return [castCoord(coords)]
-        case "LineString", "MultiPoint": return coords.map({castCoord($0)})
-        case "Polygon": return coords[0]?.map({castCoord($0)}) ?? []
-        case "MultiLineString": return coords.flatMap({$0.map({castCoord($0)})})
-        case "MultiPolygon": return coords.flatMap({$0[0]?.map({castCoord($0)}) ?? []})
-        default: print("Unhandled Geometry"); return []
-      }
+    case "FeatureCollection": return object.features?.flatMap({geoJSON(flatten: $0)}) ?? []
+    case "Feature": return [object]
     default: print("Unhandled Feature"); return []
+  }
+}
+
+fileprivate func featureToCoords(_ optionalFeature: AnyCodable?) -> [GeoJSONCoord?]{
+  guard let feature = optionalFeature,
+        feature.type?.value as? String == "Feature",
+        let geometry = feature.geometry,
+        let geometryType = geometry.type?.value as? String,
+        let coords = geometry.coordinates
+  else {
+    return []
+  }
+
+  switch geometryType {
+    case "Point": return [castCoord(coords)]
+    case "LineString", "MultiPoint": return coords.map({castCoord($0)})
+    case "Polygon": return coords[0]?.map({castCoord($0)}) ?? []
+    case "MultiLineString": return coords.flatMap({$0.map({castCoord($0)})})
+    case "MultiPolygon": return coords.flatMap({$0[0]?.map({castCoord($0)}) ?? []})
+    default: print("Unhandled Geometry"); return []
   }
 }
 

@@ -84,8 +84,8 @@ struct Style: Codable, Equatable {
       switch type {
         case "geojson":
           print("calculating bounds for geojson source", id)
-          if let geoJSON = source.data,
-             let bounds = getGeoJSONBounds(geoJSON){
+          if let data = source.data,
+             let bounds = geoJSON(bounds: data){
             superbound = superbound?.extend(with: bounds) ?? bounds
             allBounds.append(bounds)
           }
