@@ -24,7 +24,8 @@ import Foundation
              "a": "alpha",
              "b": "bravo",
              "c": "charlie"
-         ]
+         ],
+         "null": nil
      ]
 
      let encoder = JSONEncoder()
@@ -132,7 +133,7 @@ extension _AnyEncodable {
             try container.encode(nsnumber.floatValue)
         case .doubleType, .float64Type, .cgFloatType:
             try container.encode(nsnumber.doubleValue)
-        @unknown default:
+        default:
             let context = EncodingError.Context(codingPath: container.codingPath, debugDescription: "NSNumber cannot be encoded because its type is not handled")
             throw EncodingError.invalidValue(nsnumber, context)
         }

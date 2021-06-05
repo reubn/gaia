@@ -25,7 +25,8 @@ import Foundation
              "a": "alpha",
              "b": "bravo",
              "c": "charlie"
-         }
+         },
+         "null": null
      }
      """.data(using: .utf8)!
 
