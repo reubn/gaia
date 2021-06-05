@@ -1,6 +1,14 @@
 import Foundation
 import Mapbox
 
+public func geoJSON(appearsToBe object: AnyCodable) -> Bool {
+  if let type = object.type?.value as? String {
+    return ["FeatureCollection", "Feature", "Point", "LineString", "MultiPoint", "Polygon", "MultiLineString", "MultiPolygon", "GeometryCollection"].contains(type)
+  }
+  
+  return false
+}
+
 public func geoJSON(bounds root: AnyCodable) -> MGLCoordinateBounds? {
   let coords = geoJSON(flatten: root).flatMap(featureToCoords)
 

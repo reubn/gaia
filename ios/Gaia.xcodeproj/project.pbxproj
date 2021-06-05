@@ -29,7 +29,7 @@
 		1B47B96925FA16EE00504761 /* URLInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47B96825FA16EE00504761 /* URLInterface.swift */; };
 		1B47B96B25FA497900504761 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47B96A25FA497900504761 /* Commands.swift */; };
 		1B47B96D25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47B96C25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift */; };
-		1B545D662667DF270024BE67 /* geoJSONBounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B545D652667DF270024BE67 /* geoJSONBounds.swift */; };
+		1B545D662667DF270024BE67 /* geoJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B545D652667DF270024BE67 /* geoJSON.swift */; };
 		1B6033BD25D1DBD300211150 /* UIColor-hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033BC25D1DBD300211150 /* UIColor-hex.swift */; };
 		1B6033BF25D1DBEE00211150 /* randomSystemColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */; };
 		1B6033C125D1DC4A00211150 /* randomString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033C025D1DC4A00211150 /* randomString.swift */; };
@@ -145,7 +145,7 @@
 		1B47B96825FA16EE00504761 /* URLInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLInterface.swift; sourceTree = "<group>"; };
 		1B47B96A25FA497900504761 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		1B47B96C25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BUNDLE_ID_SUFFIX.swift; sourceTree = "<group>"; };
-		1B545D652667DF270024BE67 /* geoJSONBounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = geoJSONBounds.swift; sourceTree = "<group>"; };
+		1B545D652667DF270024BE67 /* geoJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = geoJSON.swift; sourceTree = "<group>"; };
 		1B6033BC25D1DBD300211150 /* UIColor-hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor-hex.swift"; sourceTree = "<group>"; };
 		1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = randomSystemColor.swift; sourceTree = "<group>"; };
 		1B6033C025D1DC4A00211150 /* randomString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = randomString.swift; sourceTree = "<group>"; };
@@ -340,7 +340,7 @@
 				1B8AE3882605384900CF3D8E /* MGLMapView.swift */,
 				1BF4B7F9261700C200D87E35 /* UIView.swift */,
 				1B998755266126CE002595DD /* Double.swift */,
-				1B545D652667DF270024BE67 /* geoJSONBounds.swift */,
+				1B545D652667DF270024BE67 /* geoJSON.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -667,7 +667,7 @@
 				1B47B96D25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift in Sources */,
 				1B0D09B725E6B0B900ED5345 /* HUDManager.swift in Sources */,
 				1B47B96925FA16EE00504761 /* URLInterface.swift in Sources */,
-				1B545D662667DF270024BE67 /* geoJSONBounds.swift in Sources */,
+				1B545D662667DF270024BE67 /* geoJSON.swift in Sources */,
 				1B99746C266A45BB00420B0F /* LayerCellMenu.swift in Sources */,
 				1BBD3FFF25B8B0B5007B8BC7 /* CompositeStyle.swift in Sources */,
 				1BA9BD0C25BA266700AC97C7 /* CoordinatedView.swift in Sources */,
