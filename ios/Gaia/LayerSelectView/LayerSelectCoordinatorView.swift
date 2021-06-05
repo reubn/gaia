@@ -24,28 +24,46 @@ class LayerSelectCoordinatorView: CoordinatorView {
   
   func acceptLayerDefinitions(from optionalData: Data? = nil, url: String? = nil) -> LayerAcceptanceResults? {
     let data = optionalData ?? Data()
-    
-    var layerDefinitions: [LayerDefinition] = []
- 
+     
     let decoder = JSONDecoder()
-
-    let jsonLayerDefinitions = try? (try? decoder.decode([LayerDefinition].self, from: data)) ?? [decoder.decode(LayerDefinition.self, from: data)]
     
-    if(jsonLayerDefinitions != nil) {
-      layerDefinitions = jsonLayerDefinitions!
-    } else {
-      let validURLScheme = url != nil && ["{x}", "{y}", "{z}"].allSatisfy({url!.contains($0)})
-      
-      if(validURLScheme) {
-        layerDefinitions = [LayerDefinition(xyzURL: url!)]
-      } else {
-        let gpx = GPXParser(withData: data).parsedData()
-        
-        if((gpx?.tracks.count ?? 0) != 0 ) {
-          layerDefinitions = [LayerDefinition(gpx: gpx!)]
-        }
+    let layerDefintionArrayAttempt = try? decoder.decode([LayerDefinition].self, from: data)
+    print("layerDefintionArrayAttempt")
+    
+    let layerDefinitionSingleAttempt = layerDefintionArrayAttempt ?? {() -> [LayerDefinition]? in
+      print("layerDefinitionSingleAttempt")
+      guard let decodeAttempt = try? decoder.decode(LayerDefinition.self, from: data) else {
+        return nil
       }
-    }
+      
+      return [decodeAttempt]
+    }()
+    
+    let gpxSingleAttempt = layerDefinitionSingleAttempt ?? {() -> [LayerDefinition]? in
+      print("gpxSingleAttempt")
+      guard let decodeAttempt = GPXParser(withData: data).parsedData(),
+            decodeAttempt.tracks.count != 0 else { // check for waymarkers too!!!
+        return nil
+      }
+      
+      let layerDefinition = LayerDefinition(gpx: decodeAttempt)
+      
+      return [layerDefinition]
+    }()
+    
+    let xyzSingleAttempt = gpxSingleAttempt ?? {() -> [LayerDefinition]? in
+      print("xyzSingleAttempt")
+      guard let url = url,
+            ["{x}", "{y}", "{z}"].allSatisfy({url.contains($0)}) else {
+        return nil
+      }
+      
+      let layerDefinition = LayerDefinition(xyzURL: url)
+      
+      return [layerDefinition]
+    }()
+    
+    let layerDefinitions = xyzSingleAttempt ?? []
     
     return acceptLayerDefinitions(from: layerDefinitions)
   }
