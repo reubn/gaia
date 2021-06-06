@@ -250,14 +250,17 @@ extension Section {
         children: moreChildren
       ))
       
-      let delete = UIAction(
+      topChildren.append(UIMenu(
         title: "Delete",
         image: UIImage(systemName: "trash"),
-        attributes: .destructive) { _ in
-          self.remove(layer: layer, indexPath: indexPath)
-      }
-      
-      topChildren.append(delete)
+        options: .destructive,
+        children: [UIAction(
+          title: "Confirm",
+          image: UIImage(systemName: "trash"),
+          attributes: .destructive) { _ in
+            self.remove(layer: layer, indexPath: indexPath)
+        }]
+      ))
       
       return UIMenu(title: layer.attribution ?? "", children: topChildren)
     }
