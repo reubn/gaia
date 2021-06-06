@@ -314,8 +314,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   func mapViewRegionIsChanging(_ mapView: MGLMapView) {
     multicastParentMapViewRegionIsChangingDelegate.invoke(invocation: {$0.parentMapViewRegionIsChanging()})
     
-    checkZoomLevel()
-    checkBounds()
+    if(!ProcessInfo.processInfo.isLowPowerModeEnabled){
+      checkZoomLevel()
+      checkBounds()
+    }
   }
 
   func mapView(_ mapView: MGLMapView, didChange mode: MGLUserTrackingMode, animated: Bool) {
@@ -353,9 +355,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     updateUIColourScheme(compositeStyle: to)
     reactToLayerChanges(to: to, from: from)
     
-    checkLayers(to: to, from: from)
-    checkZoomLevel()
-    checkBounds()
+    if(!ProcessInfo.processInfo.isLowPowerModeEnabled){
+      checkLayers(to: to, from: from)
+      checkZoomLevel()
+      checkBounds()
+    }
     
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // needs greater delay than async
       self.multicastMapViewStyleDidChangeDelegate.invoke(invocation: {$0.styleDidChange()})
