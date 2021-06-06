@@ -3,13 +3,13 @@ import UIKit
 
 import CoreGPX
 
-struct LayerDefinition: Codable {
+struct LayerDefinition: Codable, Hashable {
   let metadata: Metadata
   var user: User? = User()
   
   let style: Style
   
-  struct Metadata: Codable {
+  struct Metadata: Codable, Hashable {
     let id: String
     let name: String
     let group: String
@@ -18,7 +18,7 @@ struct LayerDefinition: Codable {
     var attribution: String? = nil
   }
   
-  struct User: Codable {
+  struct User: Codable, Hashable {
     var groupIndex: Int = 0
     
     var pinned = false

@@ -3,7 +3,7 @@ import Mapbox
 
 let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
 
-struct Style: Codable, Equatable {
+struct Style: Codable, Equatable, Hashable {
   var version = 8
   
   typealias Source = AnyCodable

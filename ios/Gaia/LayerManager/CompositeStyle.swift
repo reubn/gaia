@@ -1,10 +1,6 @@
 import Foundation
 
 struct CompositeStyle: Equatable, Hashable {
-  static func == (lhs: CompositeStyle, rhs: CompositeStyle) -> Bool {
-    lhs.sortedLayers == rhs.sortedLayers
-  }
-  
   let sortedLayers: [Layer]
   
   var topOpaque: Layer? {
