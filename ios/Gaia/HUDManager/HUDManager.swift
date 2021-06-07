@@ -4,7 +4,7 @@ import UIKit
 class HUDManager {
   lazy var window = UIApplication.shared.windows.first(where: {$0.isKeyWindow})
   
-  var currentHUDView: HUDView?
+  var currentHUDViews: [HUDView] = []
   
   func displayMessage(message: HUDMessage){
     guard let window = window else {
@@ -14,18 +14,18 @@ class HUDManager {
     let hudView = HUDView(
       window: window,
       message: message,
-      index: 0
+      index: currentHUDViews.count
     )
     
-    if(currentHUDView != nil) {
-      currentHUDView!.hide()
+    if(!currentHUDViews.isEmpty) {
+      currentHUDViews.forEach({$0.hide()})
     }
     
-    currentHUDView = hudView
+    currentHUDViews.append(hudView)
     hudView.show()
     
     DispatchQueue.main.asyncAfter(deadline: .now() + message.duration) {
-      self.currentHUDView = nil
+      self.currentHUDViews.removeAll(where: {$0 == hudView})
       
       hudView.hide()
     }
