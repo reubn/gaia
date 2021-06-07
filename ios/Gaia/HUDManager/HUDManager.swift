@@ -2,11 +2,15 @@ import Foundation
 import UIKit
 
 class HUDManager {
-  lazy var window = UIApplication.shared.windows.first(where: {$0.isKeyWindow})!
+  lazy var window = UIApplication.shared.windows.first(where: {$0.isKeyWindow})
   
   var currentHUDView: HUDView?
   
   func displayMessage(message: HUDMessage){
+    guard let window = window else {
+      return
+    }
+    
     let hudView = HUDView(
       window: window,
       message: message,
