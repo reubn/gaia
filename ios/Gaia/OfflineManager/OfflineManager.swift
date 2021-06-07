@@ -10,6 +10,7 @@ class OfflineManager {
   private let monitorQueue = DispatchQueue(label: "NWPathMonitorQueue")
   
   var isOfflineSetManually = false
+  var firstTime = true
   
   var offlineMode = false {
     didSet {
@@ -17,9 +18,12 @@ class OfflineManager {
       networkConfiguration.connected = !offlineMode
       self.multicastOfflineModeDidChangeDelegate.invoke(invocation: {$0.offlineModeDidChange(offline: offlineMode)})
       
-      HUDManager.shared.displayMessage(message: offlineMode ? .offlineModeEnabled : .offlineModeDisabled)
+      if(!(firstTime && offlineMode == false)){
+        HUDManager.shared.displayMessage(message: offlineMode ? .offlineModeEnabled : .offlineModeDisabled)
+      }
       
       isOfflineSetManually = true
+      firstTime = false
     }
   }
   
