@@ -17,6 +17,8 @@ class OfflineManager {
       networkConfiguration.connected = !offlineMode
       self.multicastOfflineModeDidChangeDelegate.invoke(invocation: {$0.offlineModeDidChange(offline: offlineMode)})
       
+      HUDManager.shared.displayMessage(message: offlineMode ? .offlineModeEnabled : .offlineModeDisabled)
+      
       isOfflineSetManually = true
     }
   }

@@ -92,4 +92,7 @@ extension HUDMessage {
   static let zeroOpacityWarningFixed = HUDMessage(title: "Opacity Fixed", systemName: "slider.horizontal.below.rectangle", tintColour: .systemGreen)
   
   static let cacheCleared = HUDMessage(title: "Cache Cleared", systemName: "trash", tintColour: .systemRed)
+  
+  static let offlineModeEnabled = HUDMessage(title: "Offline Mode Enabled", systemName: "icloud.slash.fill", tintColour: .systemBlue)
+  static let offlineModeDisabled = HUDMessage(title: "Offline Mode Disabled", systemName: "icloud.fill", tintColour: .systemBlue)
 }
