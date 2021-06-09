@@ -39,7 +39,18 @@ class LayerSelectCoordinatorView: CoordinatorView {
       return [decodeAttempt]
     }()
     
-    let geoJSONSingleAttempt = layerDefinitionSingleAttempt ?? {() -> [LayerDefinition]? in
+    let styleSingleAttempt = layerDefinitionSingleAttempt ?? {() -> [LayerDefinition]? in
+      print("styleSingleAttempt")
+      guard let decodeAttempt = try? decoder.decode(Style.self, from: data) else {
+        return nil
+      }
+      
+      let layerDefinition = LayerDefinition(style: decodeAttempt)
+      
+      return [layerDefinition]
+    }()
+    
+    let geoJSONSingleAttempt = styleSingleAttempt ?? {() -> [LayerDefinition]? in
       print("geoJSONSingleAttempt")
       guard let decodeAttempt = try? decoder.decode(AnyCodable.self, from: data),
             geoJSON(appearsToBe: decodeAttempt) else {

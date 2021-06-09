@@ -58,13 +58,28 @@ extension LayerDefinition {
     )
   }
   
-  init(xyzURL: String){
-    let id = "xyz_" + randomString(length: 6)
+  init(style: Style){
+    let random = randomString(length: 3)
+    let id = "style_" + random
     
     self.init(
       metadata: Metadata(
         id: id,
-        name: "XYZ Import",
+        name: "Import " + random,
+        group: ""
+      ),
+      style: style
+    )
+  }
+  
+  init(xyzURL: String){
+    let random = randomString(length: 3)
+    let id = "xyz_" + random
+    
+    self.init(
+      metadata: Metadata(
+        id: id,
+        name: "XYZ Import" + random,
         group: ""
       ),
       style: Style(
