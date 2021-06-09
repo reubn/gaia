@@ -12,6 +12,22 @@ extension Section {
       var topChildren: [UIMenuElement] = []
       var moreChildren: [UIMenuElement] = []
       
+      let moveToMenu = UIMenu(
+        title: "Move to...",
+        image: UIImage(systemName: "folder"),
+        children: LayerManager.shared.groupIds.map({id in
+          let group = LayerManager.shared.groups.first(where: {$0.id == id})!
+          
+          return UIAction(
+            title: group.name,
+            image: UIImage(systemName: group.icon ?? "\(group.name.first!.lowercased()).square"),
+            state: layer.group == group.id ? .on : .off) { _ in
+            layer.group = group.id
+            LayerManager.shared.save()
+          }
+        })
+      )
+      
       if(!layer.enabled) {
         topChildren.append(UIAction(
           title: "Enable",
@@ -36,6 +52,10 @@ extension Section {
           
           LayerManager.shared.save()
         })
+      }
+      
+      if(layer.group == "") {
+        topChildren.append(moveToMenu)
       }
       
       let editsSupported = [layer.style.supportsColour, layer.style.supportsOpacity]
@@ -190,21 +210,7 @@ extension Section {
         })
       ))
 
-      moreChildren.append(UIMenu(
-        title: "Move to...",
-        image: UIImage(systemName: "folder"),
-        children: LayerManager.shared.groupIds.map({id in
-          let group = LayerManager.shared.groups.first(where: {$0.id == id})!
-          
-          return UIAction(
-            title: group.name,
-            image: UIImage(systemName: group.icon ?? "\(group.name.first!.lowercased()).square"),
-            state: layer.group == group.id ? .on : .off) { _ in
-              layer.group = group.id
-              LayerManager.shared.save()
-          }
-        })
-      ))
+      moreChildren.append(moveToMenu)
 
       moreChildren.append(UIAction(
         title: "Share",
