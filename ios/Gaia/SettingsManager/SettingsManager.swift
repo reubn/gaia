@@ -3,8 +3,16 @@ import Foundation
 class SettingsManager {
   private let defaults = UserDefaults.standard
   
+  let multicastSettingManagerDelegate = MulticastDelegate<(SettingsManagerDelegate)>()
+  
   lazy var quickLayerSelect = Setting(defaults, key: "QuickLayerSelect", defaultValue: false)
   lazy var showDisabledLayers = Setting(defaults, key: "ShowDisabledLayers", defaultValue: true)
+  lazy var rightHandedMenu = Setting(defaults, key: "RightHandedMenu", defaultValue: true)
+  
+  func settingsDidChange(){
+    print("sm sdc")
+    self.multicastSettingManagerDelegate.invoke(invocation: {$0.settingsDidChange()})
+  }
   
   struct Setting<T> {
     private let defaults: UserDefaults
@@ -22,6 +30,7 @@ class SettingsManager {
     }
     
     func set(_ newValue: T) {
+      print("set", key, newValue)
       defaults.setValue(newValue, forKey: key)
     }
     
@@ -37,4 +46,8 @@ extension SettingsManager.Setting where T == Bool {
   func toggle() {
     set(!value)
   }
+}
+
+protocol SettingsManagerDelegate {
+  func settingsDidChange()
 }

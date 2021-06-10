@@ -2,7 +2,7 @@ import UIKit
 import Mapbox
 import FloatingPanel
 
-class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDelegate, OfflineModeDelegate {
+class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDelegate, OfflineModeDelegate, SettingsManagerDelegate {
   let lsfpc = MemoryConsciousFloatingPanelController()
   let osfpc = MemoryConsciousFloatingPanelController()
   let lifpc = MemoryConsciousFloatingPanelController()
@@ -26,6 +26,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     mapView.userTrackingMode = .followWithHeading
     mapView.compassView.compassVisibility = .visible
+    mapView.compassViewPosition = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
     mapView.zoomLevel = 11
     
     mapView.tintColor = .systemBlue // user location should always be blue
@@ -108,6 +109,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     return button
   }()
   
+  var mapButtonGroupSideConstraint: NSLayoutConstraint?
+  
   lazy var mapButtonGroup: MapButtonGroup = {
     let buttonGroup = MapButtonGroup(arrangedSubviews: [userLocationButton, layersButton, offlineButton])
     
@@ -115,10 +118,20 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     buttonGroup.translatesAutoresizingMaskIntoConstraints = false
     buttonGroup.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 36 + 20).isActive = true
-    buttonGroup.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -6).isActive = true
+    setMapButtonGroupSide(right: SettingsManager.shared.rightHandedMenu.value, buttonGroup: buttonGroup)
     
     return buttonGroup
   }()
+  
+  func setMapButtonGroupSide(right: Bool, buttonGroup: MapButtonGroup? = nil){
+    let buttonGroup = buttonGroup ?? mapButtonGroup
+    mapButtonGroupSideConstraint?.isActive = false
+    mapButtonGroupSideConstraint = right
+      ? buttonGroup.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -6)
+      : buttonGroup.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 6)
+    
+    mapButtonGroupSideConstraint?.isActive = true
+  }
   
   lazy var appIconButton: AppIconButton = {
     let button = AppIconButton()
@@ -280,6 +293,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 
     LayerManager.shared.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
     OfflineManager.shared.multicastOfflineModeDidChangeDelegate.add(delegate: self)
+    SettingsManager.shared.multicastSettingManagerDelegate.add(delegate: self)
     
     _ = mapView
     _ = canvasView
@@ -641,6 +655,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       HUDManager.shared.displayMessage(message: .layer(layer!))
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
+  }
+  
+  func settingsDidChange() {
+    mapView.compassViewPosition = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
+    setMapButtonGroupSide(right: SettingsManager.shared.rightHandedMenu.value)
   }
   
   static let shared = MapViewController()

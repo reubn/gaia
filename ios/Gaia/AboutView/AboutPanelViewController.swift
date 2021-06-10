@@ -4,7 +4,7 @@ import UIKit
 import Mapbox
 import FloatingPanel
 
-class AboutPanelViewController: PanelViewController {
+class AboutPanelViewController: PanelViewController, SettingsManagerDelegate {
   lazy var mainView = AboutView()
   
   init(){
@@ -21,13 +21,30 @@ class AboutPanelViewController: PanelViewController {
     mainView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -30).isActive = true
     mainView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
     mainView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    
+    SettingsManager.shared.multicastSettingManagerDelegate.add(delegate: self)
+  }
+  
+  func settingsDidChange() {
+    print("abp sdc")
+    generateMenu()
   }
   
   func generateMenu(){
     let newButton = getPanelButton(.settings)
     newButton.menu = UIMenu(title: "Settings", children: [
-      UIAction(title: "Show Disabled Layers", image: UIImage(systemName: "square.slash.fill"), setting: SettingsManager.shared.showDisabledLayers, update: generateMenu),
-      UIAction(title: "Quick Layer Select", image: UIImage(systemName: "cursorarrow.rays"), setting: SettingsManager.shared.quickLayerSelect, update: generateMenu),
+      UIMenu(title: "Menu Position", image: UIImage(systemName: SettingsManager.shared.rightHandedMenu.value ? "dpad.right.fill" : "dpad.left.fill"), children: [
+        UIAction(title: "Top Right", image: UIImage(systemName: "dpad.right.fill"), state: SettingsManager.shared.rightHandedMenu.value){_ in
+          SettingsManager.shared.rightHandedMenu.set(true)
+          SettingsManager.shared.settingsDidChange()
+        },
+        UIAction(title: "Top Left", image: UIImage(systemName: "dpad.left.fill"), state: !SettingsManager.shared.rightHandedMenu.value){_ in
+          SettingsManager.shared.rightHandedMenu.set(false)
+          SettingsManager.shared.settingsDidChange()
+        }
+      ]),
+      UIAction(title: "Show Disabled Layers", image: UIImage(systemName: "square.slash.fill"), setting: SettingsManager.shared.showDisabledLayers, update: SettingsManager.shared.settingsDidChange),
+      UIAction(title: "Quick Layer Select", image: UIImage(systemName: "cursorarrow.rays"), setting: SettingsManager.shared.quickLayerSelect, update: SettingsManager.shared.settingsDidChange),
     ])
     newButton.adjustsImageWhenHighlighted = false
     newButton.showsMenuAsPrimaryAction = true
