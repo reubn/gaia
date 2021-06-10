@@ -6,128 +6,12 @@ let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirec
 struct Style: Codable, Equatable, Hashable {
   var version = 8
   
-  typealias Source = AnyCodable
-  typealias Layer = AnyCodable
-  
   var sources: [String: Source]
   var layers: [Layer]
-  
-  typealias Sprite = String
-  typealias Glyphs = String
-  typealias Terrain = AnyCodable
   
   var sprite: Sprite? = nil
   var glyphs: Glyphs? = nil
   var terrain: Terrain? = nil
- 
-  struct BoundsInfo {
-    let individual: [MGLCoordinateBounds]
-    let superbound: MGLCoordinateBounds?
-  }
-  
-  struct InterfacedLayer {
-    let id: String
-    
-    let capabilities: Set<Capability>
-    
-    var colour: UIColor?
-    var opacity: Double?
-    
-    func setting(_ capability: Capability, to: Any?) -> Self{
-      var copy = self
-      
-      if capabilities.contains(capability) {
-        switch capability {
-          case .colour: copy.colour = to as! UIColor?
-          case .opacity: copy.opacity = to as! Double?
-        }
-      }
-      
-      return copy
-    }
-    
-    enum Capability {
-      case colour
-      case opacity
-    }
-  }
-
-  var zoomLevelsCovered: (min: Double, max: Double) {
-    var mins: [Double] = []
-    var maxes: [Double] = []
-    
-    for (_, source) in sources {
-      if let minZoom = source.minzoom?.value,
-         let double = (minZoom as? NSNumber)?.doubleValue {
-        mins.append(double)
-      }
-      
-      if let maxZoom = source.maxzoom?.value,
-         let double = (maxZoom as? NSNumber)?.doubleValue {
-        maxes.append(double)
-      }
-    }
-
-    return (
-      min: mins.max() ?? 0,
-      max: maxes.min() ?? 22
-    )
-  }
-  
-  var bounds: BoundsInfo {
-    var superbound: MGLCoordinateBounds?
-    var allBounds: [MGLCoordinateBounds] = []
-    
-    for (id, source) in sources {
-      let type = source.type?.value as? String
-      
-      switch type {
-        case "geojson":
-          print("calculating bounds for geojson source", id)
-          if let data = source.data,
-             let bounds = geoJSON(bounds: data){
-            superbound = superbound?.extend(with: bounds) ?? bounds
-            allBounds.append(bounds)
-          }
-        case "raster", "raster-dem", "vector":
-          let bounds = (source.bounds?.value as? [NSNumber]) as? [CLLocationDegrees]
-          
-          if(bounds != nil && bounds!.count == 4) {
-            let sw = CLLocationCoordinate2D(latitude: bounds![1], longitude: bounds![0])
-            let ne = CLLocationCoordinate2D(latitude: bounds![3], longitude: bounds![2])
-            
-            let newBounds = MGLCoordinateBounds(sw: sw, ne: ne)
-            
-            superbound = superbound?.extend(with: newBounds) ?? newBounds
-            allBounds.append(newBounds)
-          } else {
-            // if a raster, vector layer has no bounds, then assume its worldwide - therefore short circuit, discarding bounds
-            return BoundsInfo(individual: [], superbound: nil)
-          }
-        default: ()
-      }
-    }
-
-    return BoundsInfo(individual: allBounds, superbound: superbound)
-  }
-  
-  var url: URL? {
-    do {
-      let encoder = JSONEncoder()
-      
-      let data = try encoder.encode(self)
-      
-      let temporaryFilename = UUID().uuidString
-      let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(temporaryFilename)
-
-      try data.write(to: temporaryFileURL, options: .atomic)
-      
-      return temporaryFileURL
-    }
-    catch {
-      return nil
-    }
-  }
   
   var interfacedLayers: [InterfacedLayer] {
     layers.compactMap({layer in
@@ -202,6 +86,103 @@ struct Style: Codable, Equatable, Hashable {
     return copy
   }
   
+  var interfacedSources: [InterfacedSource] {
+    sources.enumerated().compactMap({element in
+      let source = element.element.value
+      let id = element.element.key
+      
+      guard let type = source.type?.value as? String else {
+        return nil
+      }
+
+      var minZoom: NSNumber?
+      var maxZoom: NSNumber?
+      var bounds: MGLCoordinateBounds?
+      var capabilities: Set<InterfacedSource.Capability>
+      
+      switch type {
+        case "vector", "raster", "raster-dem":
+          minZoom = source.minzoom?.value as? NSNumber
+          maxZoom = source.maxzoom?.value as? NSNumber
+
+          if let _bounds = (source.bounds?.value as? [NSNumber]) as? [CLLocationDegrees],
+             _bounds.count == 4 {
+            let sw = CLLocationCoordinate2D(latitude: _bounds[1], longitude: _bounds[0])
+            let ne = CLLocationCoordinate2D(latitude: _bounds[3], longitude: _bounds[2])
+            
+            bounds = MGLCoordinateBounds(sw: sw, ne: ne)
+          } else {
+            bounds = nil
+          }
+          
+          capabilities = [.minZoom, .maxZoom, .bounds]
+        case "geojson":
+          maxZoom = source.maxzoom?.value as? NSNumber
+          
+          print("calculating bounds for geojson source", id)
+          if let data = source.data {
+            bounds = geoJSON(bounds: data)
+          }
+          
+          capabilities = [.maxZoom, .bounds]
+        default: capabilities = []
+      }
+    
+      
+      return InterfacedSource(
+        id: id,
+        capabilities: capabilities,
+        minZoom: minZoom?.doubleValue,
+        maxZoom: maxZoom?.doubleValue,
+        bounds: bounds
+      )
+    })
+  }
+  
+  var zoomLevelsCovered: (min: Double, max: Double) {
+    print("zoomLevels")
+    return (
+      min: interfacedSources.compactMap({$0.minZoom}).max() ?? 0,
+      max: interfacedSources.compactMap({$0.maxZoom}).min() ?? 22
+    )
+  }
+  
+  var bounds: BoundsInfo {
+    print("bounds")
+    var superbound: MGLCoordinateBounds?
+    var allBounds: [MGLCoordinateBounds] = []
+    
+    for source in interfacedSources {
+      guard let _bounds = source.bounds else {
+        // if a source has no bounds, then assume its worldwide - therefore short circuit, discarding bounds
+        return BoundsInfo(individual: [], superbound: nil)
+      }
+      
+      superbound = superbound?.extend(with: _bounds) ?? _bounds
+      allBounds.append(_bounds)
+    }
+    
+    return BoundsInfo(individual: allBounds, superbound: superbound)
+  }
+  
+  var url: URL? {
+    do {
+      let encoder = JSONEncoder()
+      
+      let data = try encoder.encode(self)
+      
+      let temporaryFilename = UUID().uuidString
+      let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(temporaryFilename)
+      
+      try data.write(to: temporaryFileURL, options: .atomic)
+      
+      return temporaryFileURL
+    }
+    catch {
+      return nil
+    }
+  }
+  
   var supportsOpacity: Bool {
     interfacedLayers.contains(where: {$0.capabilities.contains(.opacity)})
   }
@@ -214,5 +195,77 @@ struct Style: Codable, Equatable, Hashable {
   }
   var colour: UIColor? {
     interfacedLayers.first(where: {$0.colour != nil})?.colour
+  }
+}
+
+
+extension Style {
+  typealias Source = AnyCodable
+  typealias Layer = AnyCodable
+  
+  typealias Sprite = String
+  typealias Glyphs = String
+  typealias Terrain = AnyCodable
+  
+  struct BoundsInfo {
+    let individual: [MGLCoordinateBounds]
+    let superbound: MGLCoordinateBounds?
+  }
+  
+  struct InterfacedLayer {
+    let id: String
+    
+    let capabilities: Set<Capability>
+    
+    var colour: UIColor?
+    var opacity: Double?
+    
+    func setting(_ capability: Capability, to: Any?) -> Self{
+      var copy = self
+      
+      if capabilities.contains(capability) {
+        switch capability {
+          case .colour: copy.colour = to as! UIColor?
+          case .opacity: copy.opacity = to as! Double?
+        }
+      }
+      
+      return copy
+    }
+    
+    enum Capability {
+      case colour
+      case opacity
+    }
+  }
+  
+  struct InterfacedSource {
+    let id: String
+    
+    let capabilities: Set<Capability>
+    
+    var minZoom: Double?
+    var maxZoom: Double?
+    var bounds: MGLCoordinateBounds?
+    
+    func setting(_ capability: Capability, to: Any?) -> Self{
+      var copy = self
+      
+      if capabilities.contains(capability) {
+        switch capability {
+          case .minZoom: copy.minZoom = to as! Double?
+          case .maxZoom: copy.maxZoom = to as! Double?
+          case .bounds: copy.bounds = to as! MGLCoordinateBounds?
+        }
+      }
+      
+      return copy
+    }
+    
+    enum Capability {
+      case minZoom
+      case maxZoom
+      case bounds
+    }
   }
 }
