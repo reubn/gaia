@@ -324,13 +324,17 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     mapView.deselectAnnotation(annotation, animated: false)
   }
+  
+  lazy var mapViewRegionIsChangingCheck = Debounce(time: 0.1){
+    self.checkZoomLevel()
+    self.checkBounds()
+  }
 
   func mapViewRegionIsChanging(_ mapView: MGLMapView) {
     multicastParentMapViewRegionIsChangingDelegate.invoke(invocation: {$0.parentMapViewRegionIsChanging()})
     
     if(!ProcessInfo.processInfo.isLowPowerModeEnabled){
-      checkZoomLevel()
-      checkBounds()
+      mapViewRegionIsChangingCheck.go()
     }
   }
 
