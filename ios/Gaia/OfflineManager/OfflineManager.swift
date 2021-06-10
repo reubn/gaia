@@ -74,7 +74,23 @@ class OfflineManager {
     let compositeStyle = CompositeStyle(sortedLayers: layers)
     let style = compositeStyle.toStyle()
     
-    let region = MGLTilePyramidOfflineRegion(styleURL: style.url, bounds: context.bounds, fromZoomLevel: context.zoom.from, toZoomLevel: context.zoom.to)
+    // Mapbox doesn't respect max + min zoom constraints: force these
+    let options = style.interfacedSources.map({(source) -> Style.InterfacedSource in
+      var source = source
+      
+      if(source.capabilities.contains(.maxZoom)) {
+        source = source.setting(.maxZoom, to: context.zoom.to)
+      }
+      
+      if(source.capabilities.contains(.minZoom)) {
+        source = source.setting(.minZoom, to: context.zoom.from)
+      }
+      
+      return source
+    })
+    let fixedStyle = style.with(options)
+    
+    let region = MGLTilePyramidOfflineRegion(styleURL: fixedStyle.url, bounds: context.bounds, fromZoomLevel: context.zoom.from, toZoomLevel: context.zoom.to)
     
     var contextData: Data
     
