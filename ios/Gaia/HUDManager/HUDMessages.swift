@@ -95,4 +95,5 @@ extension HUDMessage {
   
   static let offlineModeEnabled = HUDMessage(title: "Offline Mode Enabled", systemName: "icloud.slash.fill", tintColour: .systemBlue)
   static let offlineModeDisabled = HUDMessage(title: "Offline Mode Disabled", systemName: "icloud.fill", tintColour: .systemBlue)
+  static let warnDownloadInOfflineMode = HUDMessage(title: "Can't Download in Offline Mode", systemName: "icloud.slash.fill", tintColour: .systemRed)
 }

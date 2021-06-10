@@ -3,7 +3,7 @@ import UIKit
 
 import Mapbox
 
-class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingDelegate {
+class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingDelegate, OfflineModeDelegate {
   unowned let coordinatorView: OfflineSelectCoordinatorView
 
   init(coordinatorView: OfflineSelectCoordinatorView){
@@ -25,6 +25,9 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
     MapViewController.shared.mapView.setVisibleCoordinateBounds(coordinatorView.selectedArea!, animated: true)
     
     MapViewController.shared.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)
+    OfflineManager.shared.multicastOfflineModeDidChangeDelegate.add(delegate: self)
+    
+    offlineModeDidChange(offline: OfflineManager.shared.offlineMode)
     
     coordinatorView.selectedZoom = nil
   }
@@ -53,6 +56,11 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
   
   func parentMapViewRegionIsChanging() {
     coordinatorView.panelViewController.title = "Select Zoom: \(Int(MapViewController.shared.mapView.zoomLevel.rounded(.up)))"
+  }
+  
+  func offlineModeDidChange(offline: Bool) {
+    let acceptButton = coordinatorView.panelViewController.getPanelButton(.accept)
+    acceptButton.isEnabled = !offline
   }
   
   required init(coder: NSCoder) {

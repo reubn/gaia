@@ -3,7 +3,7 @@ import UIKit
 
 import Mapbox
 
-class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableViewDataSource, OfflineManagerDelegate {
+class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableViewDataSource, OfflineManagerDelegate, OfflineModeDelegate {
   unowned let coordinatorView: OfflineSelectCoordinatorView
 
   lazy var emptyState = OfflineSelectHomeEmpty()
@@ -30,6 +30,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     super.init(frame: CGRect())
     
     OfflineManager.shared.multicastDownloadDidUpdateDelegate.add(delegate: self)
+    OfflineManager.shared.multicastOfflineModeDidChangeDelegate.add(delegate: self)
     
     addSubview(emptyState)
     
@@ -57,8 +58,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     coordinatorView.panelViewController.title = "Downloads"
     coordinatorView.panelViewController.panelButtons = [.new, .dismiss]
     
-    let newButton = coordinatorView.panelViewController.getPanelButton(.new)
-    newButton.isEnabled = !LayerManager.shared.compositeStyle.sortedLayers.isEmpty
+    offlineModeDidChange(offline: OfflineManager.shared.offlineMode)
     
     OfflineManager.shared.refreshDownloads()
     
@@ -72,6 +72,11 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   func panelButtonTapped(button: PanelButtonType){
     if(button == .dismiss) {coordinatorView.panelViewController.dismiss(animated: true, completion: nil)}
     else if(button == .new) {coordinatorView.forward()}
+  }
+  
+  func offlineModeDidChange(offline: Bool) {
+    let newButton = coordinatorView.panelViewController.getPanelButton(.new)
+    newButton.isEnabled = !LayerManager.shared.compositeStyle.sortedLayers.isEmpty && !offline
   }
   
   func downloadDidUpdate(pack: MGLOfflinePack?) {

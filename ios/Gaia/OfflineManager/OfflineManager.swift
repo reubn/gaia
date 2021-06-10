@@ -63,6 +63,11 @@ class OfflineManager {
   }
   
   func downloadPack(context: PackContext) {
+    if offlineMode {
+      HUDManager.shared.displayMessage(message: .warnDownloadInOfflineMode)
+      return
+    }
+    
     let layers = LayerManager.shared.layers.filter({
       context.layers.contains($0.id)
     }).sorted(by: LayerManager.shared.layerSortingFunction)
@@ -71,6 +76,11 @@ class OfflineManager {
   }
   
   func downloadPack(layers: [Layer], context: PackContext) {
+    if offlineMode {
+      HUDManager.shared.displayMessage(message: .warnDownloadInOfflineMode)
+      return
+    }
+    
     let compositeStyle = CompositeStyle(sortedLayers: layers)
     let style = compositeStyle.toStyle()
     
