@@ -20,6 +20,8 @@ struct Style: Codable, Equatable, Hashable {
         return nil
       }
       
+      print("InterfacedLayer", id)
+      
       var hex: String?
       var rawOpacity: NSNumber?
       var capabilities: Set<InterfacedLayer.Capability>
@@ -91,6 +93,8 @@ struct Style: Codable, Equatable, Hashable {
       let source = element.element.value
       let id = element.element.key
       
+      print("InterfacedSource", id)
+      
       guard let type = source.type?.value as? String else {
         return nil
       }
@@ -119,7 +123,6 @@ struct Style: Codable, Equatable, Hashable {
         case "geojson":
           maxZoom = source.maxzoom?.value as? NSNumber
           
-          print("calculating bounds for geojson source", id)
           if let data = source.data {
             bounds = geoJSON(bounds: data)
           }
