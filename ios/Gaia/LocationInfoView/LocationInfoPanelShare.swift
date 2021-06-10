@@ -8,7 +8,11 @@ import LinkPresentation
 import Mapbox
 
 extension LocationInfoPanelViewController {
-  func generatePreview(coordinate: CLLocationCoordinate2D, _ callback: @escaping (UIImage) -> ()){
+  func generatePreview(coordinate: CLLocationCoordinate2D, _ callback: @escaping (UIImage?) -> ()){
+    if(OfflineManager.shared.offlineMode) {
+        return callback(nil)
+    }
+    
     let options = MGLMapSnapshotOptions(
       styleURL: MapViewController.shared.mapView.styleURL,
       camera: MGLMapCamera(lookingAtCenter: coordinate, altitude: MapViewController.shared.mapView.camera.altitude, pitch: 0, heading: 0),
@@ -21,6 +25,7 @@ extension LocationInfoPanelViewController {
     let snapshotter = MGLMapSnapshotter(options: options)
     snapshotter.start {(snapshot, error) in
       if error != nil {
+        callback(nil)
         print("Unable to create a map snapshot.")
       } else if let snapshot = snapshot {
         callback(snapshot.image)
@@ -39,13 +44,14 @@ extension LocationInfoPanelViewController {
     }
     
     generatePreview(coordinate: coordinate){image in
-      
-      let front = UIImage(named: "mapPin")!.withTintColor(.systemPink)
-      let back = UIImage(named: "mapPinBack")!
-    
-      let mapPin = front.draw(inFrontOf: back).resized(to: front.size.applying(CGAffineTransform(scaleX: 0.5, y: 0.5)))
-      
-      let composite = mapPin.draw(inFrontOf: image)
+      let composite: UIImage? = image != nil ? {
+        let front = UIImage(named: "mapPin")!.withTintColor(.systemPink)
+        let back = UIImage(named: "mapPinBack")!
+        
+        let mapPin = front.draw(inFrontOf: back).resized(to: front.size.applying(CGAffineTransform(scaleX: 0.5, y: 0.5)))
+        
+        return mapPin.draw(inFrontOf: image!)
+      }() : nil
 
       let activityViewController = UIActivityViewController(
         activityItems: [CoordinateActivityItemProvider(coordinate: coordinate, image: composite), composite],
