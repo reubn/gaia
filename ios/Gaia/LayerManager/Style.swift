@@ -142,6 +142,40 @@ struct Style: Codable, Equatable, Hashable {
     })
   }
   
+  func with(_ sourceOptions: [InterfacedSource]) -> Self {
+    var copy = self
+    
+    for desc in sourceOptions {
+      let id = desc.id
+      if let type = copy.sources[id]?.type?.value as? String {
+
+        if let minZoom = desc.minZoom {
+          switch type {
+            case "vector", "raster", "raster-dem": copy.sources[id]?.minzoom = AnyCodable(minZoom)
+            default: ()
+          }
+        }
+        
+        if let maxZoom = desc.maxZoom {
+          switch type {
+            case "vector", "raster", "raster-dem", "geojson": copy.sources[id]?.maxzoom = AnyCodable(maxZoom)
+            default: ()
+          }
+        }
+        
+        if let bounds = desc.bounds {
+          switch type {
+            case "vector", "raster", "raster-dem": copy.sources[id]?.bounds = bounds.jsonArray
+            default: ()
+          }
+        }
+        
+      }
+    }
+    
+    return copy
+  }
+  
   var zoomLevelsCovered: (min: Double, max: Double) {
     print("zoomLevels")
     return (
