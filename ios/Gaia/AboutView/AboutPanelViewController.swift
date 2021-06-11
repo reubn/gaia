@@ -44,7 +44,6 @@ class AboutPanelViewController: PanelViewController, SettingsManagerDelegate {
         }
       ]),
       UIAction(title: "Show Disabled Layers", image: UIImage(systemName: "square.slash.fill"), setting: SettingsManager.shared.showDisabledLayers, update: SettingsManager.shared.settingsDidChange),
-      UIAction(title: "Quick Layer Select", image: UIImage(systemName: "cursorarrow.rays"), setting: SettingsManager.shared.quickLayerSelect, update: SettingsManager.shared.settingsDidChange),
     ])
     newButton.adjustsImageWhenHighlighted = false
     newButton.showsMenuAsPrimaryAction = true

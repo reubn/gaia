@@ -5,7 +5,6 @@ class SettingsManager {
   
   let multicastSettingManagerDelegate = MulticastDelegate<(SettingsManagerDelegate)>()
   
-  lazy var quickLayerSelect = Setting(defaults, key: "QuickLayerSelect", defaultValue: false)
   lazy var showDisabledLayers = Setting(defaults, key: "ShowDisabledLayers", defaultValue: true)
   lazy var rightHandedMenu = Setting(defaults, key: "RightHandedMenu", defaultValue: true)
   

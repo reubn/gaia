@@ -218,10 +218,6 @@ class Section: UIStackView {
     } else {
       toggleLayer(layer: layer, mutuallyExclusive: layerSelectConfig.mutuallyExclusive)
     }
-    
-    if(SettingsManager.shared.quickLayerSelect.value){
-      MapViewController.shared.lsfpc.dismiss(animated: true, completion: nil)
-    }
   }
   
   required init(coder: NSCoder) {
@@ -328,6 +324,26 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
     if editingStyle == .delete {
       self.remove(layer: layer, indexPath: indexPath)
     }
+  }
+  
+  func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    if(!layerSelectConfig.layerContextActions) {
+      return nil
+    }
+    
+    let layer = self.layers[indexPath.row]
+    
+    let action = UIContextualAction(style: .normal, title: nil) {(action, view, completionHandler) in
+      self.toggleLayer(layer: layer, mutuallyExclusive: self.layerSelectConfig.mutuallyExclusive)
+      MapViewController.shared.lsfpc.dismiss(animated: true, completion: nil)
+      
+      completionHandler(true)
+    }
+    
+    action.image = UIImage(systemName: layer.visible ? "eye.slash" : "eye")
+    action.backgroundColor = layer.visible ? .systemOrange : .systemBlue
+    let configuration = UISwipeActionsConfiguration(actions: [action])
+    return configuration
   }
 }
 
