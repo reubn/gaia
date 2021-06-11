@@ -174,7 +174,7 @@ class Section: UIStackView {
     tableView.reloadData()
   }
   
-  func toggleLayer(layer: Layer, mutuallyExclusive: Bool){
+   @discardableResult func toggleLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
     var result: Bool
     
     if(layer.visible) {
@@ -187,6 +187,8 @@ class Section: UIStackView {
     if(result) {
       UISelectionFeedbackGenerator().selectionChanged()
     }
+    
+    return result
   }
   
   func cementLayerIndicies(){
@@ -334,10 +336,12 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
     let layer = self.layers[indexPath.row]
     
     let action = UIContextualAction(style: .normal, title: nil) {(action, view, completionHandler) in
-      self.toggleLayer(layer: layer, mutuallyExclusive: self.layerSelectConfig.mutuallyExclusive)
-      MapViewController.shared.lsfpc.dismiss(animated: true, completion: nil)
+      let result = self.toggleLayer(layer: layer, mutuallyExclusive: self.layerSelectConfig.mutuallyExclusive)
+      if result {
+        MapViewController.shared.lsfpc.dismiss(animated: true, completion: nil)
+      }
       
-      completionHandler(true)
+      completionHandler(result)
     }
     
     action.image = UIImage(systemName: layer.visible ? "eye.slash" : "eye")
