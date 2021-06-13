@@ -84,7 +84,7 @@ class OfflineManager {
     let compositeStyle = CompositeStyle(sortedLayers: layers)
     let style = compositeStyle.toStyle()
     
-    // Mapbox doesn't respect max + min zoom constraints: force these
+    // Mapbox doesn't respect max zoom constraints: force these
     let options = style.interfacedSources.map({(source) -> Style.InterfacedSource in
       var source = source
       
@@ -92,9 +92,9 @@ class OfflineManager {
         source = source.setting(.maxZoom, to: context.zoom.to)
       }
       
-      if(source.capabilities.contains(.minZoom)) {
-        source = source.setting(.minZoom, to: context.zoom.from)
-      }
+//      if(source.capabilities.contains(.minZoom)) {
+//        source = source.setting(.minZoom, to: context.zoom.from)
+//      }
       
       return source
     })
