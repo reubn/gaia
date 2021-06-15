@@ -317,6 +317,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       mapView.userTrackingMode = .follow
       firstTimeLocating = false
     }
+    
+    if let location = userLocation?.location {
+      let radius = location.horizontalAccuracy
+      
+      mapView.tintColor = radius >= 30 ? .systemPink : .systemBlue
+    }
   }
   
   func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
