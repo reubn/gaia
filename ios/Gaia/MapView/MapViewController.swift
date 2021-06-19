@@ -672,6 +672,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     setMapButtonGroupSide(right: SettingsManager.shared.rightHandedMenu.value)
   }
   
+  override func didReceiveMemoryWarning() {
+    interfacedSourcesCache.removeAll()
+    interfacedLayersCache.removeAll()
+  }
+  
   static let shared = MapViewController()
 }
 

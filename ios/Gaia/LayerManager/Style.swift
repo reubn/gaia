@@ -3,6 +3,9 @@ import Mapbox
 
 let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
 
+var interfacedLayersCache: [Int: [Style.InterfacedLayer]] = [:]
+var interfacedSourcesCache: [Int: [Style.InterfacedSource]] = [:]
+
 struct Style: Codable, Equatable, Hashable {
   var version = 8
   
@@ -14,7 +17,11 @@ struct Style: Codable, Equatable, Hashable {
   var terrain: Terrain? = nil
   
   var interfacedLayers: [InterfacedLayer] {
-    layers.compactMap({layer in
+    if let cached = interfacedLayersCache[hashValue] {
+      return cached
+    }
+    
+    interfacedLayersCache[hashValue] = layers.compactMap({layer in
       guard let type = layer.type?.value as? String,
             let id = layer.id?.value as? String else {
         return nil
@@ -50,9 +57,14 @@ struct Style: Codable, Equatable, Hashable {
       
       return InterfacedLayer(id: id, capabilities: capabilities, colour: colour, opacity: opacity)
     })
+    
+    return interfacedLayersCache[hashValue]!
   }
   
   func with(_ layerOptions: [InterfacedLayer]) -> Self {
+    interfacedSourcesCache.removeValue(forKey: hashValue)
+    interfacedLayersCache.removeValue(forKey: hashValue)
+    
     var copy = self
     
     for desc in layerOptions {
@@ -89,7 +101,11 @@ struct Style: Codable, Equatable, Hashable {
   }
   
   var interfacedSources: [InterfacedSource] {
-    sources.enumerated().compactMap({element in
+    if let cached = interfacedSourcesCache[hashValue] {
+      return cached
+    }
+    
+    interfacedSourcesCache[hashValue] = sources.enumerated().compactMap({element in
       let source = element.element.value
       let id = element.element.key
       
@@ -140,9 +156,14 @@ struct Style: Codable, Equatable, Hashable {
         bounds: bounds
       )
     })
+    
+    return interfacedSourcesCache[hashValue]!
   }
   
   func with(_ sourceOptions: [InterfacedSource]) -> Self {
+    interfacedSourcesCache.removeValue(forKey: hashValue)
+    interfacedLayersCache.removeValue(forKey: hashValue)
+    
     var copy = self
     
     for desc in sourceOptions {

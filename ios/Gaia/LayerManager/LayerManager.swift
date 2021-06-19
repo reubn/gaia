@@ -173,6 +173,9 @@ class LayerManager {
   }
   
   func remove(layer: Layer){
+    interfacedSourcesCache.removeValue(forKey: layer.style.hashValue)
+    interfacedLayersCache.removeValue(forKey: layer.style.hashValue)
+    
     managedContext.delete(layer)
     
     save()
