@@ -40,6 +40,8 @@ class OfflineManager {
     monitor.pathUpdateHandler = pathDidUpdate
     monitor.start(queue: monitorQueue)
     
+    offlineStorage.setMaximumAllowedMapboxTiles(.max)
+    
     DispatchQueue.main.async {
       self.refreshDownloads()
       self.offlineMode = !self.networkConfiguration.connected
