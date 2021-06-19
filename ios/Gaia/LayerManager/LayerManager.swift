@@ -34,12 +34,6 @@ class LayerManager {
     }
   }
   
-  var disabledLayers: [Layer]{
-    get {
-      layers.filter({!$0.enabled})
-    }
-  }
-  
   var ungroupedLayers: [Layer]{
     get {
       layers.filter({!groupIds.contains($0.group)})
