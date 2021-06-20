@@ -18,6 +18,7 @@
 		1B0D09CB25EE956000ED5345 /* AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09C825EE956000ED5345 /* AnyCodable.swift */; };
 		1B0D09CC25EE956000ED5345 /* AnyEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09C925EE956000ED5345 /* AnyEncodable.swift */; };
 		1B2F9088267F442000D275CB /* BrightnessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F9087267F442000D275CB /* BrightnessManager.swift */; };
+		1B2F908C267FB68200D275CB /* Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F908B267FB68200D275CB /* Hashable.swift */; };
 		1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 1B3401C225B33FAD0091FA3B /* FloatingPanel */; };
 		1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */; };
 		1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */; };
@@ -137,6 +138,7 @@
 		1B0D09C825EE956000ED5345 /* AnyCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyCodable.swift; sourceTree = "<group>"; };
 		1B0D09C925EE956000ED5345 /* AnyEncodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyEncodable.swift; sourceTree = "<group>"; };
 		1B2F9087267F442000D275CB /* BrightnessManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrightnessManager.swift; sourceTree = "<group>"; };
+		1B2F908B267FB68200D275CB /* Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hashable.swift; sourceTree = "<group>"; };
 		1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelViewController.swift; sourceTree = "<group>"; };
 		1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectCoordinatorView.swift; sourceTree = "<group>"; };
 		1B3401CB25B473E40091FA3B /* LayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerCell.swift; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 				1B998755266126CE002595DD /* Double.swift */,
 				1B545D652667DF270024BE67 /* geoJSON.swift */,
 				1BA29B2B2672C4F300D5FDBB /* Debounce.swift */,
+				1B2F908B267FB68200D275CB /* Hashable.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -642,6 +645,7 @@
 				1B04AA10261272A30080BECE /* DefaultPanelBehaviour.swift in Sources */,
 				1BBD3FFA25B89181007B8BC7 /* OfflineSelectCoordinatorView.swift in Sources */,
 				1BA9BD0E25BA281800AC97C7 /* OfflineSelectArea.swift in Sources */,
+				1B2F908C267FB68200D275CB /* Hashable.swift in Sources */,
 				1B6033C125D1DC4A00211150 /* randomString.swift in Sources */,
 				1BBD3FF325B708A6007B8BC7 /* PanelViewController.swift in Sources */,
 				1B7644C125CAFA2F00572A70 /* LayerDefinition.swift in Sources */,
