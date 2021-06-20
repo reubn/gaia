@@ -54,7 +54,7 @@ extension LocationInfoPanelViewController {
       }() : nil
 
       let activityViewController = UIActivityViewController(
-        activityItems: [CoordinateActivityItemProvider(coordinate: coordinate, image: composite), composite],
+        activityItems: [CoordinateActivityItemProvider(coordinate: coordinate, image: composite), composite as Any],
         applicationActivities: [
           GoogleMapsActivity(coordinate: coordinate),
           GoogleMapsStreetViewActivity(coordinate: coordinate)
