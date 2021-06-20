@@ -44,6 +44,29 @@ class AboutPanelViewController: PanelViewController, SettingsManagerDelegate {
         }
       ]),
       UIAction(title: "Show Disabled Layers", image: UIImage(systemName: "square.slash.fill"), setting: SettingsManager.shared.showDisabledLayers, update: SettingsManager.shared.settingsDidChange),
+      UIMenu(title: "Screen Brightness", image: UIImage(systemName: "sun.max.fill"), children: [
+        UIAction(title: "\(SettingsManager.shared.autoAdjustment.value ? "Disable" : "Enable") Auto Adjustment", image: UIImage(systemName: SettingsManager.shared.autoAdjustment.value ? "sun.max.fill" : "sun.min")){_ in
+          SettingsManager.shared.autoAdjustment.toggle()
+          
+          if !SettingsManager.shared.autoAdjustment.value {
+            // being disabled
+            SettingsManager.shared.autoAdjustmentLowPoint.reset()
+
+            HUDManager.shared.displayMessage(message: .autoAdjustmentDisabled)
+          } else {
+            // being enabled
+            HUDManager.shared.displayMessage(message: .autoAdjustmentEnabled)
+          }
+    
+          SettingsManager.shared.settingsDidChange()
+        },
+        UIAction(title: "Set Low Brightness", image: UIImage(systemName: "sun.min.fill")){_ in
+          SettingsManager.shared.autoAdjustmentLowPoint.set(UIScreen.main.brightness)
+          SettingsManager.shared.settingsDidChange()
+          
+          HUDManager.shared.displayMessage(message: .autoAdjustmentSetLow)
+        }
+      ].reversed())
     ])
     newButton.adjustsImageWhenHighlighted = false
     newButton.showsMenuAsPrimaryAction = true

@@ -17,6 +17,7 @@
 		1B0D09CA25EE956000ED5345 /* AnyDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09C725EE956000ED5345 /* AnyDecodable.swift */; };
 		1B0D09CB25EE956000ED5345 /* AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09C825EE956000ED5345 /* AnyCodable.swift */; };
 		1B0D09CC25EE956000ED5345 /* AnyEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09C925EE956000ED5345 /* AnyEncodable.swift */; };
+		1B2F9088267F442000D275CB /* BrightnessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F9087267F442000D275CB /* BrightnessManager.swift */; };
 		1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 1B3401C225B33FAD0091FA3B /* FloatingPanel */; };
 		1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */; };
 		1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */; };
@@ -135,6 +136,7 @@
 		1B0D09C725EE956000ED5345 /* AnyDecodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyDecodable.swift; sourceTree = "<group>"; };
 		1B0D09C825EE956000ED5345 /* AnyCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyCodable.swift; sourceTree = "<group>"; };
 		1B0D09C925EE956000ED5345 /* AnyEncodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyEncodable.swift; sourceTree = "<group>"; };
+		1B2F9087267F442000D275CB /* BrightnessManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrightnessManager.swift; sourceTree = "<group>"; };
 		1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelViewController.swift; sourceTree = "<group>"; };
 		1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectCoordinatorView.swift; sourceTree = "<group>"; };
 		1B3401CB25B473E40091FA3B /* LayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerCell.swift; sourceTree = "<group>"; };
@@ -262,6 +264,14 @@
 			path = AnyCodable;
 			sourceTree = SOURCE_ROOT;
 		};
+		1B2F9086267F441000D275CB /* BrightnessManager */ = {
+			isa = PBXGroup;
+			children = (
+				1B2F9087267F442000D275CB /* BrightnessManager.swift */,
+			);
+			path = BrightnessManager;
+			sourceTree = "<group>";
+		};
 		1B3401C825B4635F0091FA3B /* LayerSelectView */ = {
 			isa = PBXGroup;
 			children = (
@@ -387,6 +397,7 @@
 		1B6638A625B10B530071F03D /* Gaia */ = {
 			isa = PBXGroup;
 			children = (
+				1B2F9086267F441000D275CB /* BrightnessManager */,
 				1B96FF322663F6D3002E685D /* SettingsManager */,
 				1BF4B7FC2618581D00D87E35 /* PanelView */,
 				1B47B96725FA16BF00504761 /* URLInterface */,
@@ -605,6 +616,7 @@
 				1B04BF7225D0B63B00FCD5D4 /* private.swift in Sources */,
 				1BA9BD1E25C0861400AC97C7 /* CoordinatorView.swift in Sources */,
 				1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */,
+				1B2F9088267F442000D275CB /* BrightnessManager.swift in Sources */,
 				1B6638AC25B10B530071F03D /* MapViewController.swift in Sources */,
 				1B96FF342663F6E4002E685D /* SettingsManager.swift in Sources */,
 				1BEE8D5E25C599B3004260C1 /* HeadingDisplay.swift in Sources */,

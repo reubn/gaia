@@ -2,7 +2,7 @@ import UIKit
 import Mapbox
 import FloatingPanel
 
-class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDelegate, OfflineModeDelegate, SettingsManagerDelegate {
+class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDelegate, OfflineModeDelegate, SettingsManagerDelegate, UIGestureRecognizerDelegate {
   let lsfpc = MemoryConsciousFloatingPanelController()
   let osfpc = MemoryConsciousFloatingPanelController()
   let lifpc = MemoryConsciousFloatingPanelController()
@@ -55,8 +55,32 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     threeFingerTap.numberOfTouchesRequired = 3
     mapView.addGestureRecognizer(threeFingerTap)
     
+    let fingerUpDown = UILongPressGestureRecognizer(target: self, action: #selector(fingerUpDown))
+    fingerUpDown.minimumPressDuration = 0
+    fingerUpDown.numberOfTouchesRequired = 1
+    fingerUpDown.delegate = self
+    mapView.addGestureRecognizer(fingerUpDown)
+    
     return mapView
   }()
+  
+  // fingerUpDown
+  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    true
+  }
+  
+  var brightnessHold: BrightnessManager.Hold = .infinite(immortal: false)
+  
+  @objc func fingerUpDown(gesture: UILongPressGestureRecognizer) {
+    if ProcessInfo.processInfo.isLowPowerModeEnabled,
+       SettingsManager.shared.autoAdjustment.value {
+      switch gesture.state {
+        case .began: BrightnessManager.shared.place(hold: brightnessHold)
+        case .ended: BrightnessManager.shared.place(hold: .finite()); BrightnessManager.shared.remove(hold: brightnessHold)
+        default: ()
+      }
+    }
+  }
   
   lazy var canvasView: CanvasView = {
     let canvasView = CanvasView(frame: mapView.frame)

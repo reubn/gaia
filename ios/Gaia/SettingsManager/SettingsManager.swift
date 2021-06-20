@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 class SettingsManager {
   private let defaults = UserDefaults.standard
@@ -8,9 +9,14 @@ class SettingsManager {
   lazy var showDisabledLayers = Setting(defaults, key: "ShowDisabledLayers", defaultValue: true)
   lazy var rightHandedMenu = Setting(defaults, key: "RightHandedMenu", defaultValue: true)
   
+  lazy var autoAdjustment = Setting(defaults, key: "AutoAdjustment", defaultValue: false)
+  lazy var autoAdjustmentLowPoint = Setting(defaults, key: "AutoAdjustmentLowPoint", defaultValue: CGFloat(0.1))
+  
   func settingsDidChange(){
     print("sm sdc")
     self.multicastSettingManagerDelegate.invoke(invocation: {$0.settingsDidChange()})
+    
+    UISelectionFeedbackGenerator().selectionChanged()
   }
   
   struct Setting<T> {

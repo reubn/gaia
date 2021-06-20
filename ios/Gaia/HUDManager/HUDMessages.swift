@@ -96,4 +96,8 @@ extension HUDMessage {
   static let offlineModeEnabled = HUDMessage(title: "Offline Mode Enabled", systemName: "icloud.slash.fill", tintColour: .systemBlue)
   static let offlineModeDisabled = HUDMessage(title: "Offline Mode Disabled", systemName: "icloud.fill", tintColour: .systemBlue)
   static let warnDownloadInOfflineMode = HUDMessage(title: "Can't Download in Offline Mode", systemName: "icloud.slash.fill", tintColour: .systemRed)
+  
+  static let autoAdjustmentEnabled = HUDMessage(title: "Auto Adjustment Enabled", systemName: "sun.max.fill", tintColour: .systemBlue)
+  static let autoAdjustmentDisabled = HUDMessage(title: "Auto Adjustment Disabled", systemName: "sun.min.fill", tintColour: .systemBlue)
+  static let autoAdjustmentSetLow = HUDMessage(title: "Low Brightness Set", systemName: "sun.min.fill", tintColour: .systemBlue)
 }
