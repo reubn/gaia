@@ -3,8 +3,8 @@ import Mapbox
 
 let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
 
-var interfacedLayersCache: [Int: [Style.InterfacedLayer]] = [:]
-var interfacedSourcesCache: [Int: [Style.InterfacedSource]] = [:]
+var interfacedLayersCache: [Int: Style.InterfacedLayer] = [:]
+var interfacedSourcesCache: [Int: Style.InterfacedSource] = [:]
 
 struct Style: Codable, Equatable, Hashable {
   var version = 8
@@ -17,11 +17,13 @@ struct Style: Codable, Equatable, Hashable {
   var terrain: Terrain? = nil
   
   var interfacedLayers: [InterfacedLayer] {
-    if let cached = interfacedLayersCache[hashValue] {
-      return cached
-    }
-    
-    interfacedLayersCache[hashValue] = layers.compactMap({layer in
+    layers.compactMap({layer in
+      let hashValue = layer.hashValue
+      
+      if let cached = interfacedLayersCache[hashValue] {
+        return cached
+      }
+      
       guard let type = layer.type?.value as? String,
             let id = layer.id?.value as? String else {
         return nil
@@ -55,21 +57,21 @@ struct Style: Codable, Equatable, Hashable {
       let opacity = rawOpacity?.doubleValue
       let colour = hex != nil ? UIColor(hex: hex!)?.withAlphaComponent(CGFloat(opacity ?? 1)) : nil
       
-      return InterfacedLayer(id: id, capabilities: capabilities, colour: colour, opacity: opacity)
+      let interfacedLayer = InterfacedLayer(id: id, capabilities: capabilities, colour: colour, opacity: opacity)
+      interfacedLayersCache[hashValue] = interfacedLayer
+      
+      return interfacedLayersCache[hashValue]
     })
-    
-    return interfacedLayersCache[hashValue]!
   }
   
   func with(_ layerOptions: [InterfacedLayer]) -> Self {
-    interfacedSourcesCache.removeValue(forKey: hashValue)
-    interfacedLayersCache.removeValue(forKey: hashValue)
-    
     var copy = self
     
     for desc in layerOptions {
-      if let index = layers.firstIndex(where: {$0.id?.value as? String == desc.id}),
+      if let index = copy.layers.firstIndex(where: {$0.id?.value as? String == desc.id}),
          let type = copy.layers[index].type?.value as? String {
+        let hashValue = copy.layers[index].hashValue
+        interfacedLayersCache.removeValue(forKey: hashValue)
         
         copy.layers[index].paint = copy.layers[index].paint ?? AnyCodable([:])
         
@@ -101,13 +103,15 @@ struct Style: Codable, Equatable, Hashable {
   }
   
   var interfacedSources: [InterfacedSource] {
-    if let cached = interfacedSourcesCache[hashValue] {
-      return cached
-    }
-    
-    interfacedSourcesCache[hashValue] = sources.enumerated().compactMap({element in
+    sources.enumerated().compactMap({element in
       let source = element.element.value
       let id = element.element.key
+      
+      let hashValue = source.hashValue(combining: id)
+      
+      if let cached = interfacedSourcesCache[hashValue] {
+        return cached
+      }
       
       print("InterfacedSource", id)
       
@@ -148,27 +152,28 @@ struct Style: Codable, Equatable, Hashable {
       }
     
       
-      return InterfacedSource(
+      let interfacedSource = InterfacedSource(
         id: id,
         capabilities: capabilities,
         minZoom: minZoom?.doubleValue,
         maxZoom: maxZoom?.doubleValue,
         bounds: bounds
       )
+      interfacedSourcesCache[hashValue] = interfacedSource
+      
+      return interfacedSource
     })
-    
-    return interfacedSourcesCache[hashValue]!
   }
   
   func with(_ sourceOptions: [InterfacedSource]) -> Self {
-    interfacedSourcesCache.removeValue(forKey: hashValue)
-    interfacedLayersCache.removeValue(forKey: hashValue)
-    
     var copy = self
     
     for desc in sourceOptions {
       let id = desc.id
-      if let type = copy.sources[id]?.type?.value as? String {
+      if let source = copy.sources[id],
+         let type = source.type?.value as? String {
+        let hashValue = source.hashValue(combining: id)
+        interfacedSourcesCache.removeValue(forKey: hashValue)
 
         if let minZoom = desc.minZoom {
           switch type {
