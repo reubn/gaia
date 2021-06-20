@@ -54,6 +54,20 @@ extension Style {
           hex = layer.paint?[dynamicMember: "fill-color"]?.value as? String
           rawOpacity = layer.paint?[dynamicMember: "fill-opacity"]?.value as? NSNumber
           capabilities = [.colour, .opacity]
+        case "background":
+          hex = layer.paint?[dynamicMember: "background-color"]?.value as? String
+          rawOpacity = layer.paint?[dynamicMember: "background-opacity"]?.value as? NSNumber
+          capabilities = [.colour, .opacity]
+        case "symbol":
+          if layer.layout?[dynamicMember: "text-field"] != nil {
+            hex = layer.paint?[dynamicMember: "text-color"]?.value as? String
+            rawOpacity = layer.paint?[dynamicMember: "text-opacity"]?.value as? NSNumber
+          } else {
+            hex = layer.paint?[dynamicMember: "icon-color"]?.value as? String
+            rawOpacity = layer.paint?[dynamicMember: "icon-opacity"]?.value as? NSNumber
+          }
+          
+          capabilities = [.colour, .opacity]
         case "raster":
           rawOpacity = layer.paint?[dynamicMember: "raster-opacity"]?.value as? NSNumber
           capabilities = [.opacity]
@@ -93,6 +107,10 @@ extension Style {
             case "line": copy.layers[index].paint?[dynamicMember: "line-color"] = colourString
             case "circle": copy.layers[index].paint?[dynamicMember: "circle-color"] = colourString
             case "fill": copy.layers[index].paint?[dynamicMember: "fill-color"] = colourString
+            case "background": copy.layers[index].paint?[dynamicMember: "background-color"] = colourString
+            case "symbol":
+              let property = copy.layers[index].layout?[dynamicMember: "text-field"] != nil ? "text-color" : "icon-color"
+              copy.layers[index].paint?[dynamicMember: property] = colourString
             default: ()
           }
         }
@@ -103,6 +121,10 @@ extension Style {
             case "line": copy.layers[index].paint?[dynamicMember: "line-opacity"] = AnyCodable(opacity)
             case "circle": copy.layers[index].paint?[dynamicMember: "circle-opacity"] = AnyCodable(opacity)
             case "fill": copy.layers[index].paint?[dynamicMember: "fill-opacity"] = AnyCodable(opacity)
+            case "background": copy.layers[index].paint?[dynamicMember: "background-opacity"] = AnyCodable(opacity)
+            case "symbol":
+              let property = copy.layers[index].layout?[dynamicMember: "text-field"] != nil ? "text-opacity" : "icon-opacity"
+              copy.layers[index].paint?[dynamicMember: property] = AnyCodable(opacity)
             default: ()
           }
         }
