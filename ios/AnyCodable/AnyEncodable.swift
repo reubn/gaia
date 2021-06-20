@@ -286,6 +286,14 @@ extension AnyEncodable: Hashable {
             hasher.combine(value)
         case let value as [AnyEncodable]:
             hasher.combine(value)
+        case let value as AnyEncodable:
+          hasher.combine(value)
+        case let value as [String: Any]:
+          let anyEncodable = value.mapValues({AnyEncodable($0)})
+          hasher.combine(anyEncodable)
+        case let value as [Any]:
+          let anyEncodable = value.map({AnyEncodable($0)})
+          hasher.combine(anyEncodable)
         default:
             break
         }

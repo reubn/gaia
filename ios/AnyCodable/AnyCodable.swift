@@ -244,6 +244,14 @@ extension AnyCodable: Hashable {
             hasher.combine(value)
         case let value as [AnyCodable]:
             hasher.combine(value)
+        case let value as AnyCodable:
+            hasher.combine(value)
+        case let value as [String: Any]:
+          let anyCodable = value.mapValues({AnyCodable($0)})
+          hasher.combine(anyCodable)
+        case let value as [Any]:
+          let anyCodable = value.map({AnyCodable($0)})
+          hasher.combine(anyCodable)
         default:
             break
         }

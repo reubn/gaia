@@ -183,6 +183,14 @@ extension AnyDecodable: Hashable {
             hasher.combine(value)
         case let value as [AnyDecodable]:
             hasher.combine(value)
+        case let value as AnyDecodable:
+          hasher.combine(value)
+        case let value as [String: Any]:
+          let anyDecodable = value.mapValues({AnyDecodable($0)})
+          hasher.combine(anyDecodable)
+        case let value as [Any]:
+          let anyDecodable = value.map({AnyDecodable($0)})
+          hasher.combine(anyDecodable)
         default:
             break
         }
