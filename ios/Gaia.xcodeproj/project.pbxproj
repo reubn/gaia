@@ -19,6 +19,8 @@
 		1B0D09CC25EE956000ED5345 /* AnyEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0D09C925EE956000ED5345 /* AnyEncodable.swift */; };
 		1B2F9088267F442000D275CB /* BrightnessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F9087267F442000D275CB /* BrightnessManager.swift */; };
 		1B2F908C267FB68200D275CB /* Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F908B267FB68200D275CB /* Hashable.swift */; };
+		1B2F908F267FCBAC00D275CB /* InterfacedSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F908E267FCBAC00D275CB /* InterfacedSource.swift */; };
+		1B2F9091267FCBDF00D275CB /* InterfacedLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F9090267FCBDF00D275CB /* InterfacedLayer.swift */; };
 		1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 1B3401C225B33FAD0091FA3B /* FloatingPanel */; };
 		1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */; };
 		1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */; };
@@ -139,6 +141,8 @@
 		1B0D09C925EE956000ED5345 /* AnyEncodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyEncodable.swift; sourceTree = "<group>"; };
 		1B2F9087267F442000D275CB /* BrightnessManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrightnessManager.swift; sourceTree = "<group>"; };
 		1B2F908B267FB68200D275CB /* Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hashable.swift; sourceTree = "<group>"; };
+		1B2F908E267FCBAC00D275CB /* InterfacedSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfacedSource.swift; sourceTree = "<group>"; };
+		1B2F9090267FCBDF00D275CB /* InterfacedLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfacedLayer.swift; sourceTree = "<group>"; };
 		1B3401C425B34AD00091FA3B /* LayerSelectPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectPanelViewController.swift; sourceTree = "<group>"; };
 		1B3401C625B387690091FA3B /* LayerSelectCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectCoordinatorView.swift; sourceTree = "<group>"; };
 		1B3401CB25B473E40091FA3B /* LayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerCell.swift; sourceTree = "<group>"; };
@@ -274,6 +278,16 @@
 			path = BrightnessManager;
 			sourceTree = "<group>";
 		};
+		1B2F908D267FCB8800D275CB /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				1B7644C225CAFA7300572A70 /* Style.swift */,
+				1B2F908E267FCBAC00D275CB /* InterfacedSource.swift */,
+				1B2F9090267FCBDF00D275CB /* InterfacedLayer.swift */,
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
 		1B3401C825B4635F0091FA3B /* LayerSelectView */ = {
 			isa = PBXGroup;
 			children = (
@@ -325,7 +339,7 @@
 				1BB94BD7260CAAAB002C0D67 /* LayerGroup.swift */,
 				1BB94BD5260CAA8F002C0D67 /* LayerAcceptance.swift */,
 				1BBD3FFE25B8B0B5007B8BC7 /* CompositeStyle.swift */,
-				1B7644C225CAFA7300572A70 /* Style.swift */,
+				1B2F908D267FCB8800D275CB /* Style */,
 				1B7644C025CAFA2F00572A70 /* LayerDefinition.swift */,
 			);
 			path = LayerManager;
@@ -662,9 +676,11 @@
 				1BA9BD2025C2100F00AC97C7 /* LayerSelectView.swift in Sources */,
 				1B6638A825B10B530071F03D /* AppDelegate.swift in Sources */,
 				1BA03E3A25DEB9BE00EE273C /* DistanceDisplay.swift in Sources */,
+				1B2F908F267FCBAC00D275CB /* InterfacedSource.swift in Sources */,
 				1BD6A3BC2600E2E1001E503D /* BearingDisplay.swift in Sources */,
 				1BBD3FF525B70C06007B8BC7 /* OfflineSelectPanelLayout.swift in Sources */,
 				1B6638AA25B10B530071F03D /* SceneDelegate.swift in Sources */,
+				1B2F9091267FCBDF00D275CB /* InterfacedLayer.swift in Sources */,
 				1B8C078F25C48245008C08B2 /* LocationInfoPanelViewController.swift in Sources */,
 				1BB94BD6260CAA8F002C0D67 /* LayerAcceptance.swift in Sources */,
 				1B3401D025B474260091FA3B /* SectionTableView.swift in Sources */,
