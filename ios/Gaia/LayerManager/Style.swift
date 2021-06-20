@@ -203,15 +203,13 @@ struct Style: Codable, Equatable, Hashable {
   }
   
   var zoomLevelsCovered: (min: Double, max: Double) {
-    print("zoomLevels")
-    return (
+    (
       min: interfacedSources.compactMap({$0.minZoom}).max() ?? 0,
       max: interfacedSources.compactMap({$0.maxZoom}).min() ?? 22
     )
   }
   
   var bounds: BoundsInfo {
-    print("bounds")
     var superbound: MGLCoordinateBounds?
     var allBounds: [MGLCoordinateBounds] = []
     
