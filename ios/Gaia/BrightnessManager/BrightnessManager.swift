@@ -1,8 +1,12 @@
 import Foundation
 import UIKit
 
+fileprivate let timeout: Double = 1.0
+fileprivate let fadeDuration: Double = 0.2
+fileprivate let fadeTicksPerSecond: Double = 120
+fileprivate let fallbackBrightness: CGFloat = 0.75
+
 class BrightnessManager: SettingsManagerDelegate {
-  private let timeout = 0.75
   private let screen = UIScreen.main
   
   private var managementActive: Bool {
@@ -39,7 +43,7 @@ class BrightnessManager: SettingsManagerDelegate {
     if holds.isEmpty {
       enactChange(level: SettingsManager.shared.autoAdjustmentLowPoint.value, instant: false)
     } else {
-      enactChange(level: defaultBrightness ?? 0.75, instant: true)
+      enactChange(level: defaultBrightness ?? fallbackBrightness, instant: true)
     }
   }
   
@@ -64,7 +68,7 @@ class BrightnessManager: SettingsManagerDelegate {
     if(instant) {
       screen.brightness = level
     } else {
-      fade(to: level, duration: 0.2, ticksPerSecond: 120)
+      fade(to: level, duration: fadeDuration, ticksPerSecond: fadeTicksPerSecond)
     }
   }
   
@@ -79,7 +83,7 @@ class BrightnessManager: SettingsManagerDelegate {
     
     for i in 1...totalTicks {
       let workItem = DispatchWorkItem {
-        self.screen.brightness = max(min(startingBrightness + (changePerTick * CGFloat(i)),1),0)
+        self.screen.brightness = max(min(startingBrightness + (changePerTick * CGFloat(i)), 1), 0)
       }
       
       fadeWorkItems.append(workItem)
@@ -148,7 +152,7 @@ class BrightnessManager: SettingsManagerDelegate {
 }
 
 extension BrightnessManager.Hold {
-  static func finite(_ time: Double = 0.5, immortal: Bool = true) -> Self {
+  static func finite(_ time: Double = timeout, immortal: Bool = true) -> Self {
     .init(type: .finite(time), immortal: immortal)
   }
   
