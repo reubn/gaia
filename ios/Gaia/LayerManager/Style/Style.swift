@@ -78,7 +78,12 @@ struct Style: Codable, Equatable, Hashable {
   }
   
   var opacity: Double {
-    interfacedLayers.compactMap({$0.opacity}).max() ?? 1
+    interfacedLayers.compactMap({
+      switch $0.type {
+        case "background", "raster": return $0.opacity
+        default: return nil
+      }
+    }).max() ?? 1
   }
   
   var supportsColour: Bool {
