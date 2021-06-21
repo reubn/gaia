@@ -76,6 +76,7 @@ struct Style: Codable, Equatable, Hashable {
   var supportsOpacity: Bool {
     interfacedLayers.contains(where: {$0.capabilities.contains(.opacity)})
   }
+  
   var opacity: Double {
     interfacedLayers.compactMap({$0.opacity}).max() ?? 1
   }
