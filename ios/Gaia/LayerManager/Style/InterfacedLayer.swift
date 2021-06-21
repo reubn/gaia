@@ -71,7 +71,6 @@ extension Style {
             hex = layer.paint?[dynamicMember: "icon-color"]?.value as? String
             rawOpacity = layer.paint?[dynamicMember: "icon-opacity"]?.value as? NSNumber
           }
-          
           capabilities = [.colour, .opacity]
         case "raster":
           rawOpacity = layer.paint?[dynamicMember: "raster-opacity"]?.value as? NSNumber
