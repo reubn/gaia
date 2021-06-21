@@ -4,6 +4,7 @@ import Mapbox
 extension Style {
   struct InterfacedLayer {
     let id: String
+    let type: String
     
     let capabilities: Set<Capability>
     
@@ -84,7 +85,7 @@ extension Style {
       let opacity = rawOpacity?.doubleValue
       let colour = hex != nil ? UIColor(hex: hex!)?.withAlphaComponent(CGFloat(opacity ?? 1)) : nil
       
-      let interfacedLayer = InterfacedLayer(id: id, capabilities: capabilities, colour: colour, opacity: opacity)
+      let interfacedLayer = InterfacedLayer(id: id, type: type, capabilities: capabilities, colour: colour, opacity: opacity)
       interfacedLayersCache[hashValue] = interfacedLayer
       
       return interfacedLayersCache[hashValue]
