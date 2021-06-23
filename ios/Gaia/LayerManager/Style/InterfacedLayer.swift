@@ -11,6 +11,9 @@ extension Style {
     var colour: UIColor?
     var opacity: Double?
     
+    let colourIsExpression: Bool
+    let opacityIsExpression: Bool
+    
     func setting(_ capability: Capability, to: Any?) -> Self{
       var copy = self
       
@@ -38,53 +41,111 @@ extension Style {
       
       print("InterfacedLayer", id)
       
-      var hex: String?
-      var rawOpacity: NSNumber?
+      var rawColour: AnyCodable?
+      var rawOpacity:  AnyCodable?
       var capabilities: Set<InterfacedLayer.Capability>
       
       switch type {
         case "line":
-          hex = layer.paint?[dynamicMember: "line-color"]?.value as? String
-          rawOpacity = layer.paint?[dynamicMember: "line-opacity"]?.value as? NSNumber
+          rawColour = layer.paint?[dynamicMember: "line-color"]
+          rawOpacity = layer.paint?[dynamicMember: "line-opacity"]
           capabilities = [.colour, .opacity]
         case "circle":
-          hex = layer.paint?[dynamicMember: "circle-color"]?.value as? String
-          rawOpacity = layer.paint?[dynamicMember: "circle-opacity"]?.value as? NSNumber
+          rawColour = layer.paint?[dynamicMember: "circle-color"]
+          rawOpacity = layer.paint?[dynamicMember: "circle-opacity"]
           capabilities = [.colour, .opacity]
         case "fill":
-          hex = layer.paint?[dynamicMember: "fill-color"]?.value as? String
-          rawOpacity = layer.paint?[dynamicMember: "fill-opacity"]?.value as? NSNumber
+          rawColour = layer.paint?[dynamicMember: "fill-color"]
+          rawOpacity = layer.paint?[dynamicMember: "fill-opacity"]
           capabilities = [.colour, .opacity]
         case "fill-extrusion":
-          hex = layer.paint?[dynamicMember: "fill-extrusion-color"]?.value as? String
-          rawOpacity = layer.paint?[dynamicMember: "fill-extrusion-opacity"]?.value as? NSNumber
+          rawColour = layer.paint?[dynamicMember: "fill-extrusion-color"]
+          rawOpacity = layer.paint?[dynamicMember: "fill-extrusion-opacity"]
           capabilities = [.colour, .opacity]
         case "background":
-          hex = layer.paint?[dynamicMember: "background-color"]?.value as? String
-          rawOpacity = layer.paint?[dynamicMember: "background-opacity"]?.value as? NSNumber
+          rawColour = layer.paint?[dynamicMember: "background-color"]
+          rawOpacity = layer.paint?[dynamicMember: "background-opacity"]
           capabilities = [.colour, .opacity]
         case "symbol":
           if layer.layout?[dynamicMember: "text-field"] != nil {
-            hex = layer.paint?[dynamicMember: "text-color"]?.value as? String
-            rawOpacity = layer.paint?[dynamicMember: "text-opacity"]?.value as? NSNumber
+            rawColour = layer.paint?[dynamicMember: "text-color"]
+            rawOpacity = layer.paint?[dynamicMember: "text-opacity"]
           } else {
-            hex = layer.paint?[dynamicMember: "icon-color"]?.value as? String
-            rawOpacity = layer.paint?[dynamicMember: "icon-opacity"]?.value as? NSNumber
+            rawColour = layer.paint?[dynamicMember: "icon-color"]
+            rawOpacity = layer.paint?[dynamicMember: "icon-opacity"]
           }
           capabilities = [.colour, .opacity]
         case "raster":
-          rawOpacity = layer.paint?[dynamicMember: "raster-opacity"]?.value as? NSNumber
+          rawOpacity = layer.paint?[dynamicMember: "raster-opacity"]
           capabilities = [.opacity]
         case "heatmap":
-          rawOpacity = layer.paint?[dynamicMember: "heatmap-opacity"]?.value as? NSNumber
+          rawOpacity = layer.paint?[dynamicMember: "heatmap-opacity"]
           capabilities = [.opacity]
         default: capabilities = []
       }
       
-      let opacity = rawOpacity?.doubleValue
-      let colour = hex != nil ? UIColor(hex: hex!)?.withAlphaComponent(CGFloat(opacity ?? 1)) : nil
+      var opacityIsExpression = false
+      let opacityValue: Double? = {
+        guard let anyCodable = rawOpacity else {
+          return nil
+        }
+        
+        if let number = anyCodable.value as? NSNumber {
+          return number.doubleValue
+        }
+        
+        if anyCodable.value as? [Any] != nil {
+          opacityIsExpression = true
+        }
+        
+        return nil
+      }()
       
-      let interfacedLayer = InterfacedLayer(id: id, type: type, capabilities: capabilities, colour: colour, opacity: opacity)
+      var opacityFromColourValue: Double = 1
+      
+      var colourIsExpression = false
+      let colourBeforeOpacityModification: UIColor? = {
+        guard let anyCodable = rawColour else {
+          return nil
+        }
+        
+        if let css = anyCodable.value as? String {
+          guard let uiColor = UIColor(css: css) else {
+            return nil
+          }
+ 
+          opacityFromColourValue = Double(uiColor.components?.alpha ?? 1)
+          
+          return uiColor
+        }
+        
+        if let expression = anyCodable.value as? [Any] {
+          colourIsExpression = true
+          
+          return expression.firstMap({
+            guard let css = $0 as? String else {
+              return nil
+            }
+            
+            return UIColor(css: css)
+          })
+        }
+        
+        return nil
+      }()
+      
+      let opacity = opacityValue ?? opacityFromColourValue
+      let colour = colourBeforeOpacityModification?.withAlphaComponent(CGFloat(opacity))
+      
+      let interfacedLayer = InterfacedLayer(
+        id: id,
+        type: type,
+        capabilities: capabilities,
+        colour: colour,
+        opacity: opacity,
+        colourIsExpression: colourIsExpression,
+        opacityIsExpression: opacityIsExpression
+      )
       interfacedLayersCache[hashValue] = interfacedLayer
       
       return interfacedLayersCache[hashValue]
