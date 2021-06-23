@@ -34,7 +34,7 @@
 		1B47B96B25FA497900504761 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47B96A25FA497900504761 /* Commands.swift */; };
 		1B47B96D25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47B96C25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift */; };
 		1B545D662667DF270024BE67 /* geoJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B545D652667DF270024BE67 /* geoJSON.swift */; };
-		1B6033BD25D1DBD300211150 /* UIColor-hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033BC25D1DBD300211150 /* UIColor-hex.swift */; };
+		1B6033BD25D1DBD300211150 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033BC25D1DBD300211150 /* UIColor.swift */; };
 		1B6033BF25D1DBEE00211150 /* randomSystemColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */; };
 		1B6033C125D1DC4A00211150 /* randomString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033C025D1DC4A00211150 /* randomString.swift */; };
 		1B62CE8A25D023EF00D06E55 /* AppIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B62CE8925D023EF00D06E55 /* AppIconButton.swift */; };
@@ -155,7 +155,7 @@
 		1B47B96A25FA497900504761 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		1B47B96C25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BUNDLE_ID_SUFFIX.swift; sourceTree = "<group>"; };
 		1B545D652667DF270024BE67 /* geoJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = geoJSON.swift; sourceTree = "<group>"; };
-		1B6033BC25D1DBD300211150 /* UIColor-hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor-hex.swift"; sourceTree = "<group>"; };
+		1B6033BC25D1DBD300211150 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = randomSystemColor.swift; sourceTree = "<group>"; };
 		1B6033C025D1DC4A00211150 /* randomString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = randomString.swift; sourceTree = "<group>"; };
 		1B62CE8925D023EF00D06E55 /* AppIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconButton.swift; sourceTree = "<group>"; };
@@ -352,7 +352,7 @@
 				1BB94BF5260E2B89002C0D67 /* CharacterSet.swift */,
 				1B8C079225C493E5008C08B2 /* SelectableLabel.swift */,
 				1B04BF6E25D077FC00FCD5D4 /* AppIcon.swift */,
-				1B6033BC25D1DBD300211150 /* UIColor-hex.swift */,
+				1B6033BC25D1DBD300211150 /* UIColor.swift */,
 				1B96FF352663FD75002E685D /* UIAction.swift */,
 				1BD6A3BF2600FD49001E503D /* CLLocationDegrees.swift */,
 				1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */,
@@ -620,7 +620,7 @@
 				1B7644C325CAFA7300572A70 /* Style.swift in Sources */,
 				1BF4B7FA261700C200D87E35 /* UIView.swift in Sources */,
 				1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */,
-				1B6033BD25D1DBD300211150 /* UIColor-hex.swift in Sources */,
+				1B6033BD25D1DBD300211150 /* UIColor.swift in Sources */,
 				1B8C079325C493E5008C08B2 /* SelectableLabel.swift in Sources */,
 				1B0D09CB25EE956000ED5345 /* AnyCodable.swift in Sources */,
 				1B6638CE25B1EA5F0071F03D /* MapButton.swift in Sources */,
@@ -852,6 +852,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				BUNDLE_ID_SUFFIX = .dev;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = FRMMHNBMBZ;
@@ -870,6 +871,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.reuben.Gaia${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME) Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
