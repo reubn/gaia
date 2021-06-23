@@ -22,4 +22,14 @@ extension Collection {
     
     return self.index(before, offsetBy: -1, limitedBy: self.startIndex) ?? self.lastIndex
   }
+  
+  func firstMap<T>(_ transform: (Element) -> T?) -> T? {
+    for element in self {
+      if let cast = transform(element) {
+        return cast
+      }
+    }
+    
+    return nil
+  }
 }
