@@ -18,7 +18,6 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
   init(coordinatorView: OfflineSelectCoordinatorView){
     self.coordinatorView = coordinatorView
     
-    
     super.init(frame: CGRect())
     
     LayerManager.shared.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
