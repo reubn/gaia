@@ -116,6 +116,8 @@ class LayerSelectCoordinatorView: CoordinatorView, PanelDelegate {
     if let current = story[storyPosition] as? PanelDelegate {
       current.panelDidDisappear()
     }
+    
+    story[storyPosition].viewWillExit()
   }
   
   func panelDidMove() {
