@@ -36,7 +36,6 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   init(coordinatorView: LayerSelectCoordinatorView){
     self.coordinatorView = coordinatorView
     
-    
     super.init(frame: CGRect())
 
     layer.cornerRadius = 8
