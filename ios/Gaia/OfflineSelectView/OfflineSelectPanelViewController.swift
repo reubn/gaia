@@ -5,7 +5,7 @@ import Mapbox
 import FloatingPanel
 
 class OfflineSelectPanelViewController: PanelViewController {
-    lazy var coordinatorView = OfflineSelectCoordinatorView(panelViewController: self)
+  lazy var coordinatorView = OfflineSelectCoordinatorView(panelViewController: self)
   
   init(){
     
