@@ -51,8 +51,8 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     MapViewController.shared.mapView.style?.layer(withIdentifier: "offlinePreview") ?? {
       let layer = MGLLineStyleLayer(identifier: "offlinePreview", source: mapSource)
       
-      layer.lineColor = NSExpression(forConstantValue: UIColor.red)
-      layer.lineWidth = NSExpression(forConstantValue: 1.0)
+      layer.lineColor = NSExpression(forConstantValue: UIColor.systemRed)
+      layer.lineWidth = NSExpression(forConstantValue: 2.0)
       
       MapViewController.shared.mapView.style?.addLayer(layer)
       
