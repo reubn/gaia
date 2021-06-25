@@ -19,9 +19,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
     self.coordinatorView = coordinatorView
     
     super.init(frame: CGRect())
-    
-    LayerManager.shared.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
-    
+
     addSubview(layerSelectView)
     
     layerSelectView.translatesAutoresizingMaskIntoConstraints = false
@@ -33,6 +31,8 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
   
   func viewWillEnter(data: Any?){
     print("enter OSL")
+    
+    LayerManager.shared.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
 
     MapViewController.shared.osfpc.move(to: .full, animated: true)
     coordinatorView.panelViewController.panelButtons = [.previous, .next]
@@ -44,6 +44,8 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
   
   func viewWillExit(){
     print("exit OSL")
+    
+    LayerManager.shared.multicastCompositeStyleDidChangeDelegate.remove(delegate: self)
   }
   
   func compositeStyleDidChange(to _: CompositeStyle, from _: CompositeStyle?) {
