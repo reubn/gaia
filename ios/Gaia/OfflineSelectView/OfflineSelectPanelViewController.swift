@@ -8,7 +8,6 @@ class OfflineSelectPanelViewController: PanelViewController {
   lazy var coordinatorView = OfflineSelectCoordinatorView(panelViewController: self)
   
   init(){
-    
     super.init(title: "Downloads")
     
     self.panelButtons = [.dismiss]
