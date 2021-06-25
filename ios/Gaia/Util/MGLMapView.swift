@@ -1,16 +1,16 @@
 import Mapbox
 
 extension MGLMapView {
-  public func setVisibleCoordinateBounds(_ bounds: MGLCoordinateBounds, sensible: Bool, minZoom: Double? = nil, animated: Bool){
+  public func setVisibleCoordinateBounds(_ bounds: MGLCoordinateBounds, sensible: Bool, minZoom: Double? = nil, alwaysShowWhole: Bool = false, edgePadding: UIEdgeInsets? = nil, animated: Bool){
     if(!sensible) {
-      return setVisibleCoordinateBounds(bounds, animated: animated)
+      return setVisibleCoordinateBounds(bounds, edgePadding: edgePadding, animated: animated)
     }
     
-    if(visibleCoordinateBounds.intersects(with: bounds)){
+    if(!alwaysShowWhole && visibleCoordinateBounds.intersects(with: bounds)){
       return //  bounds already visible
     }
     
-    let fitCamera = cameraThatFitsCoordinateBounds(bounds)
+    let fitCamera = cameraThatFitsCoordinateBounds(bounds, edgePadding: edgePadding)
     
     if let coordinate = userLocation?.location?.coordinate, bounds.contains(coordinate: coordinate) {
       fitCamera.centerCoordinate = coordinate // if user is in the bounds, center on them not the bounds center
@@ -27,6 +27,22 @@ extension MGLMapView {
     } else {} // otherwise stick with the fit zoom
 
     setCamera(fitCamera, animated: animated)
+  }
+  
+  public func cameraThatFitsCoordinateBounds(_ bounds: MGLCoordinateBounds, edgePadding: UIEdgeInsets? = nil) -> MGLMapCamera {
+    guard let edgePadding = edgePadding else {
+      return cameraThatFitsCoordinateBounds(bounds)
+    }
+    
+    return cameraThatFitsCoordinateBounds(bounds, edgePadding: edgePadding)
+  }
+  
+  public func setVisibleCoordinateBounds(_ bounds: MGLCoordinateBounds, edgePadding: UIEdgeInsets? = nil, animated: Bool){
+    guard let edgePadding = edgePadding else {
+      return setVisibleCoordinateBounds(bounds, animated: animated)
+    }
+    
+    return setVisibleCoordinateBounds(bounds, edgePadding: edgePadding, animated: animated, completionHandler: nil)
   }
   
   public func altitude(zoom: Double, center: CLLocationCoordinate2D) -> CLLocationDistance {
