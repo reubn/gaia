@@ -216,7 +216,7 @@ extension AnyCodable: Hashable {
           let anyCodable = value.map({AnyCodable($0)})
           hasher.combine(anyCodable)
         default:
-            break
+          fatalError("Unknown Type")
         }
     }
 }
