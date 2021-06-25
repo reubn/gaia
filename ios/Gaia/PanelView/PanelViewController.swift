@@ -4,7 +4,7 @@ import Mapbox
 import FloatingPanel
 
 class PanelViewController: UIViewController, FloatingPanelControllerDelegate {
-  var panelDidMoveDelegate: PanelDidMoveDelegate?
+  var panelDelegate: PanelDelegate?
   
   lazy var popoverTitle: SelectableLabel = {
     let label = SelectableLabel()
@@ -132,13 +132,19 @@ class PanelViewController: UIViewController, FloatingPanelControllerDelegate {
   override func viewDidLoad() {
     uiImpactFeedbackGenerator.impactOccurred()
   }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    
+    self.panelDelegate?.panelDidDisappear()
+  }
 
   func floatingPanelWillBeginAttracting(_ fpc: FloatingPanelController, to state: FloatingPanelState) {
     uiImpactFeedbackGenerator.prepare()
   }
   
   func floatingPanelDidMove(_ vc: FloatingPanelController) {
-    self.panelDidMoveDelegate?.panelDidMove()
+    self.panelDelegate?.panelDidMove()
     
     if vc.isAttracting == false {
       let loc = vc.surfaceLocation
@@ -175,7 +181,8 @@ enum PanelButtonType {
   case settings
 }
 
-protocol PanelDidMoveDelegate {
+protocol PanelDelegate {
+  func panelDidDisappear()
   func panelDidMove()
 }
 

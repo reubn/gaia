@@ -3,7 +3,7 @@ import UIKit
 
 import Mapbox
 
-class OfflineSelectCoordinatorView: CoordinatorView {
+class OfflineSelectCoordinatorView: CoordinatorView, PanelDelegate {
   unowned let panelViewController: OfflineSelectPanelViewController
   
   var selectedArea: MGLCoordinateBounds?
@@ -14,6 +14,8 @@ class OfflineSelectCoordinatorView: CoordinatorView {
     self.panelViewController = panelViewController
     
     super.init()
+    
+    self.panelViewController.panelDelegate = self
     
     story = [
       OfflineSelectHome(coordinatorView: self),
@@ -41,6 +43,18 @@ class OfflineSelectCoordinatorView: CoordinatorView {
     LayerManager.shared.filter({revealedLayers.contains($0)})
     
     super.done()
+  }
+  
+  func panelDidDisappear() {
+    if let current = story[storyPosition] as? PanelDelegate {
+      current.panelDidDisappear()
+    }
+  }
+  
+  func panelDidMove() {
+    if let current = story[storyPosition] as? PanelDelegate {
+      current.panelDidMove()
+    }
   }
 
   required init(coder: NSCoder) {

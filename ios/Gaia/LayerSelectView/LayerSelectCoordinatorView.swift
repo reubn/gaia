@@ -5,7 +5,7 @@ import Mapbox
 import CoreGPX
 
 
-class LayerSelectCoordinatorView: CoordinatorView {
+class LayerSelectCoordinatorView: CoordinatorView, PanelDelegate {
   unowned let panelViewController: LayerSelectPanelViewController
   
   init(panelViewController: LayerSelectPanelViewController){
@@ -13,6 +13,8 @@ class LayerSelectCoordinatorView: CoordinatorView {
     
     super.init()
     
+    self.panelViewController.panelDelegate = self
+
     story = [
       LayerSelectHome(coordinatorView: self),
       LayerSelectImport(coordinatorView: self),
@@ -108,6 +110,18 @@ class LayerSelectCoordinatorView: CoordinatorView {
     }
     
     return results
+  }
+  
+  func panelDidDisappear() {
+    if let current = story[storyPosition] as? PanelDelegate {
+      current.panelDidDisappear()
+    }
+  }
+  
+  func panelDidMove() {
+    if let current = story[storyPosition] as? PanelDelegate {
+      current.panelDidMove()
+    }
   }
   
   required init(coder: NSCoder) {
