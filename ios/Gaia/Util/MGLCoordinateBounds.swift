@@ -15,6 +15,14 @@ extension MGLCoordinateBounds: Codable, Equatable, Hashable {
     hasher.combine(ne)
   }
   
+  public var se: CLLocationCoordinate2D {
+    CLLocationCoordinate2D(latitude: sw.latitude, longitude: ne.longitude)
+  }
+  
+  public var nw: CLLocationCoordinate2D {
+    CLLocationCoordinate2D(latitude: ne.latitude, longitude: sw.longitude)
+  }
+  
   public var span: MGLCoordinateSpan {
     MGLCoordinateBoundsGetCoordinateSpan(self)
   }
