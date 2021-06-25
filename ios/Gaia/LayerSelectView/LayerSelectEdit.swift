@@ -60,9 +60,6 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     jsonEditor.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
     jsonEditor.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
     
-    jsonEditor.becomeFirstResponder()
-    jsonEditor.selectedRange = NSRange(location: 0, length: 0)
-    
     MapViewController.shared.lsfpc.track(scrollView: jsonEditor)
     
     handleRequest(request: data as? LayerEditRequest ?? .new)
@@ -98,6 +95,10 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     }
     
     initialText = jsonEditor.text
+    
+    jsonEditor.becomeFirstResponder()
+    jsonEditor.selectedRange = NSRange(location: 0, length: 0)
+    
     acceptButton?.isEnabled = true // be optimistic
     
     coordinatorView.panelViewController.title = {
