@@ -3,7 +3,13 @@ import UIKit
 
 import Mapbox
 
-class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableViewDataSource, OfflineManagerDelegate, OfflineModeDelegate {
+class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableViewDataSource, OfflineManagerDelegate, OfflineModeDelegate, MapViewStyleDidChangeDelegate {
+
+  func styleDidChange() {
+    (mapSource as? MGLShapeSource)?.shape = rectangle
+    _ = mapLayer
+  }
+  
   unowned let coordinatorView: OfflineSelectCoordinatorView
 
   lazy var emptyState = OfflineSelectHomeEmpty()
@@ -24,6 +30,36 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     return tableView
   }()
   
+  var rectangle: MGLPolylineFeature? {
+    didSet {
+      (mapSource as? MGLShapeSource)?.shape = rectangle
+      _ = mapLayer
+    }
+  }
+  
+  var mapSource: MGLSource {
+    MapViewController.shared.mapView.style?.source(withIdentifier: "offlinePreview") ?? {
+      let source = MGLShapeSource(identifier: "offlinePreview", features: [])
+      
+      MapViewController.shared.mapView.style?.addSource(source)
+      
+      return source
+    }()
+  }
+  
+  var mapLayer: MGLStyleLayer {
+    MapViewController.shared.mapView.style?.layer(withIdentifier: "offlinePreview") ?? {
+      let layer = MGLLineStyleLayer(identifier: "offlinePreview", source: mapSource)
+      
+      layer.lineColor = NSExpression(forConstantValue: UIColor.red)
+      layer.lineWidth = NSExpression(forConstantValue: 1.0)
+      
+      MapViewController.shared.mapView.style?.addLayer(layer)
+      
+      return layer
+    }()
+  }
+  
   init(coordinatorView: OfflineSelectCoordinatorView){
     self.coordinatorView = coordinatorView
  
@@ -31,6 +67,8 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     
     OfflineManager.shared.multicastDownloadDidUpdateDelegate.add(delegate: self)
     OfflineManager.shared.multicastOfflineModeDidChangeDelegate.add(delegate: self)
+    
+    MapViewController.shared.multicastMapViewStyleDidChangeDelegate.add(delegate: self)
     
     addSubview(emptyState)
     
@@ -50,7 +88,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   
   func viewWillEnter(data: Any?){
     print("enter OSH")
-    
+
     if(MapViewController.shared.osfpc.viewIfLoaded?.window != nil) {
       MapViewController.shared.osfpc.move(to: .half, animated: true)
     }
@@ -67,6 +105,10 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   
   func viewWillExit(){
     print("exit OSH")
+    rectangle = nil
+    
+    MapViewController.shared.mapView.style?.removeSource(mapSource)
+    MapViewController.shared.mapView.style?.removeLayer(mapLayer)
   }
   
   func panelButtonTapped(button: PanelButtonType){
@@ -201,6 +243,7 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   
   func previewPack(pack: MGLOfflinePack){
     let context = OfflineManager.shared.decodePackContext(pack: pack)!
+    let bounds = context.bounds
     
     let layers = LayerManager.shared.layers.filter({
       context.layers.contains($0.id)
@@ -208,11 +251,13 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     let compositeStyle = CompositeStyle(sortedLayers: layers)
     let revealedLayers = compositeStyle.revealedLayers
     
+    let corners = [bounds.ne, bounds.nw, bounds.sw, bounds.se, bounds.ne]
+    rectangle = MGLPolylineFeature(coordinates: corners, count: UInt(corners.count))
+    
     LayerManager.shared.filter({revealedLayers.contains($0)})
     
     MapViewController.shared.mapView.setDirection(0, animated: false)
-    MapViewController.shared.mapView.setVisibleCoordinateBounds(context.bounds, animated: true)
-    MapViewController.shared.osfpc.dismiss(animated: true, completion: nil)
+    MapViewController.shared.mapView.setVisibleCoordinateBounds(bounds, sensible: true, alwaysShowWhole: true, edgePadding: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20), animated: true)
   }
   
   required init(coder: NSCoder) {
