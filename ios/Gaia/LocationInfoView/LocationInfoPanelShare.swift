@@ -83,11 +83,11 @@ class CoordinateActivityItemProvider: UIActivityItemProvider {
   }
   
   override func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
-    let linkMetaData = LPLinkMetadata()
+    let linkMetadata = LPLinkMetadata()
     
     let itemProvider = NSItemProvider()
-    linkMetaData.iconProvider = itemProvider
-    linkMetaData.imageProvider = itemProvider
+    linkMetadata.iconProvider = itemProvider
+    linkMetadata.imageProvider = itemProvider
 
     if(image != nil) {
       itemProvider.registerDataRepresentation(forTypeIdentifier: kUTTypePNG as String, visibility: .all) {completion in
@@ -97,10 +97,10 @@ class CoordinateActivityItemProvider: UIActivityItemProvider {
       }
     }
 
-    linkMetaData.title = "Shared Location"
-    linkMetaData.originalURL = URL(fileURLWithPath: coordinate.format(.decimal(.low)))
+    linkMetadata.title = "Shared Location"
+    linkMetadata.originalURL = URL(fileURLWithPath: coordinate.format(.decimal(.low)))
 
-    return linkMetaData
+    return linkMetadata
 }
   
   override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
