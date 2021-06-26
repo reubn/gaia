@@ -330,7 +330,7 @@ extension Section {
             let json = try encoder.encode([layerDefinition])
 
             let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-            let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(layer.id).appendingPathExtension("json")
+            let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(layer.name).appendingPathExtension("json")
 
             try json.write(to: temporaryFileURL, options: .atomic)
 
