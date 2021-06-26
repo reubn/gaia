@@ -200,7 +200,6 @@ extension String {
     let HPATH = "\(HSEGMENT)(\\/\(HSEGMENT))*"
     let HTTPURL = "(http[s]?:\\/\\/\(HOSTPORT)(\\/\(HPATH)(\\?\(SEARCH))?)?)"
 
-    
     guard let url = URL(string: self), UIApplication.shared.canOpenURL(url) else { return false }
     
     let predicate = NSPredicate(format:"SELF MATCHES %@", argumentArray: [HTTPURL])
