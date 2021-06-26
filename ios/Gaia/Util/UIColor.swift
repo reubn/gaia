@@ -187,7 +187,7 @@ fileprivate func normaliseNumber(_ string: String, outOf: CGFloat = 255) -> CGFl
     return nil
   }
   
-  return CGFloat(double).truncatingRemainder(dividingBy: outOf) / outOf
+  return CGFloat(double) / outOf
 }
 
 // http://www.w3.org/TR/css3-color/
