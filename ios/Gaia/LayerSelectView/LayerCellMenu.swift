@@ -63,7 +63,7 @@ extension Section {
       let colourableLayers = layer.style.interfacedLayers.filter({$0.capabilities.contains(.colour)})
       let opacitySupportingLayers = layer.style.interfacedLayers.filter({$0.capabilities.contains(.opacity)})
       
-      let singleColourMenu: UIMenuElement = {
+      var singleColourMenu: UIMenuElement {
         let colourableLayer = colourableLayers.first!
         let colour = colourableLayer.colour ?? iconColour.withAlphaComponent(CGFloat(colourableLayer.opacity ?? 1))
 
@@ -98,76 +98,78 @@ extension Section {
             image: UIImage(systemName: "eyedropper"),
             handler: handler
           )
-      }()
+      }
             
-      let manyColoursMenu = UIMenu(
-        title: "Set Colour",
-        image: UIImage(systemName: "eyedropper"),
-        children: {
-          var children: [UIMenuElement] = colourableLayers.map({colourableLayer in
-            let colour = colourableLayer.colour ?? iconColour.withAlphaComponent(CGFloat(colourableLayer.opacity ?? 1))
-            let iconName = colourableLayer.colourIsExpression
-              ? "exclamationmark.circle.fill"
-              : colourableLayer.colour != nil
+      var manyColoursMenu: UIMenu {
+        UIMenu(
+          title: "Set Colour",
+          image: UIImage(systemName: "eyedropper"),
+          children: {
+            var children: [UIMenuElement] = colourableLayers.map({colourableLayer in
+              let colour = colourableLayer.colour ?? iconColour.withAlphaComponent(CGFloat(colourableLayer.opacity ?? 1))
+              let iconName = colourableLayer.colourIsExpression
+                ? "exclamationmark.circle.fill"
+                : colourableLayer.colour != nil
                 ? "circle.fill"
                 : "questionmark.circle.fill"
-            let iconColour = colour.withAlphaComponent(1)
-            let icon = UIImage(systemName: iconName)?.withTintColor(iconColour).withRenderingMode(.alwaysOriginal)
-            
-            let handler: UIActionHandler = {_ in
-              self.layerSelectConfig.layerEditDelegate?.requestLayerColourPicker(colour, supportsAlpha: colourableLayer.capabilities.contains(.opacity)){newColour in
-                layer.style = layer.style.with([colourableLayer.setting(.colour, to: newColour).setting(.opacity, to: nil)])
-                LayerManager.shared.save()
+              let iconColour = colour.withAlphaComponent(1)
+              let icon = UIImage(systemName: iconName)?.withTintColor(iconColour).withRenderingMode(.alwaysOriginal)
+              
+              let handler: UIActionHandler = {_ in
+                self.layerSelectConfig.layerEditDelegate?.requestLayerColourPicker(colour, supportsAlpha: colourableLayer.capabilities.contains(.opacity)){newColour in
+                  layer.style = layer.style.with([colourableLayer.setting(.colour, to: newColour).setting(.opacity, to: nil)])
+                  LayerManager.shared.save()
+                }
               }
-            }
+              
+              return colourableLayer.colourIsExpression
+                ? UIMenu(
+                  title: colourableLayer.id,
+                  image: icon,
+                  children: [
+                    UIAction(
+                      title: "Back",
+                      image: UIImage(systemName: "arrow.uturn.backward"),
+                      handler: {_ in}
+                    ),
+                    UIAction(
+                      title: "Override Expression",
+                      image: UIImage(systemName: "exclamationmark.circle.fill"),
+                      attributes: .destructive,
+                      handler: handler
+                    )
+                  ]
+                )
+                : UIAction(
+                  title: colourableLayer.id,
+                  image: icon,
+                  handler: handler
+                )
+            })
             
-            return colourableLayer.colourIsExpression
-              ? UIMenu(
-                title: colourableLayer.id,
-                image: icon,
-                children: [
-                  UIAction(
-                    title: "Back",
-                    image: UIImage(systemName: "arrow.uturn.backward"),
-                    handler: {_ in}
-                  ),
-                  UIAction(
-                    title: "Override Expression",
-                    image: UIImage(systemName: "exclamationmark.circle.fill"),
-                    attributes: .destructive,
-                    handler: handler
-                  )
-                ]
-              )
-              : UIAction(
-                title: colourableLayer.id,
-                image: icon,
-                handler: handler
-              )
-          })
-          
-          // How do we handle All for Expressions?
-          
-          let allMenu = UIAction(
-            title: "All",
-            image: UIImage(systemName: "circles.hexagongrid.fill")){ _ in
+            // How do we handle All for Expressions?
+            
+            let allMenu = UIAction(
+              title: "All",
+              image: UIImage(systemName: "circles.hexagongrid.fill")){ _ in
               let colourableLayer = colourableLayers.first!
               let colour = colourableLayer.colour ?? iconColour.withAlphaComponent(CGFloat(colourableLayer.opacity ?? 1))
-            
+              
               self.layerSelectConfig.layerEditDelegate?.requestLayerColourPicker(colour, supportsAlpha: colourableLayer.capabilities.contains(.opacity)){newColour in
                 let options = colourableLayers.map({$0.setting(.colour, to: newColour).setting(.opacity, to: nil)})
                 layer.style = layer.style.with(options)
                 LayerManager.shared.save()
               }
-          }
-          
-          children.append(allMenu)
-          
-          return children
-        }()
-      )
+            }
+            
+            children.append(allMenu)
+            
+            return children
+          }()
+        )
+      }
       
-      let setColourMenu = (colourableLayers.count == 1 || colourableLayers.allSatisfy({$0.colour == colourableLayers.first?.colour})) ? singleColourMenu : manyColoursMenu
+      let setColourMenu = (colourableLayers.count == 1 || colourableLayers.allSatisfy(notEmpty: true, {$0.colour == colourableLayers.first?.colour})) ? singleColourMenu : manyColoursMenu
       
       let generateOpacityMenu = {(opacitySupportingLayers: [Style.InterfacedLayer]) -> ([UIMenuElement]) in
         [100, 75, 50, 25, 10].compactMap({percent in
@@ -184,80 +186,84 @@ extension Section {
         })
       }
       
-      let singleOpacityMenu = UIMenu(
-        title: "Set Opacity",
-        image: UIImage(systemName: "slider.horizontal.below.rectangle"),
-        children: (
-          opacitySupportingLayers.first!.opacityIsExpression
-          ? [
-              UIAction(
-                title: "Back",
-                image: UIImage(systemName: "arrow.uturn.backward"),
-                handler: {_ in}
-              ),
-              UIMenu(
-                title: "Override Expression",
-                image: UIImage(systemName: "exclamationmark.circle.fill"),
-                options: .destructive,
-                children: generateOpacityMenu(opacitySupportingLayers)
-              )
-            ]
-          : generateOpacityMenu(opacitySupportingLayers)
-        )
-      )
-      
-      let manyOpacitiesMenu = UIMenu(
-        title: "Set Opacity",
-        image: UIImage(systemName: "slider.horizontal.below.rectangle"),
-        children: {
-          var children: [UIMenuElement] = opacitySupportingLayers.map({opacitySupportingLayer in
-            let iconColour = (opacitySupportingLayer.colour ?? iconColour).withAlphaComponent(CGFloat(opacitySupportingLayer.opacity ?? 1))
-            
-            let iconName = opacitySupportingLayer.opacityIsExpression
-              ? "exclamationmark.square.fill"
-              : opacitySupportingLayer.opacity != nil
-                ? "square.fill"
-                : "questionmark.square.fill"
-            let icon = UIImage(systemName: iconName)?.withTintColor(iconColour).withRenderingMode(.alwaysOriginal)
-            
-            return UIMenu(
-              title: opacitySupportingLayer.id,
-              image: icon,
-              children: (
-                opacitySupportingLayer.opacityIsExpression
-                  ? [
-                    UIAction(
-                      title: "Back",
-                      image: UIImage(systemName: "arrow.uturn.backward"),
-                      handler: {_ in}
-                    ),
-                    UIMenu(
-                      title: "Override Expression",
-                      image: UIImage(systemName: "exclamationmark.circle.fill"),
-                      options: .destructive,
-                      children: generateOpacityMenu([opacitySupportingLayer])
-                    )
-                  ]
-                  : generateOpacityMenu([opacitySupportingLayer])
-              )
-            )
-          })
-          
-          // How do we handle All for Expressions?
-          
-          let allMenu = UIMenu(
-            title: "All",
-            image: UIImage(systemName: "square.grid.3x3.fill"),
-            children: generateOpacityMenu(opacitySupportingLayers)
+      var singleOpacityMenu: UIMenu {
+        UIMenu(
+          title: "Set Opacity",
+          image: UIImage(systemName: "slider.horizontal.below.rectangle"),
+          children: (
+            opacitySupportingLayers.first!.opacityIsExpression
+            ? [
+                UIAction(
+                  title: "Back",
+                  image: UIImage(systemName: "arrow.uturn.backward"),
+                  handler: {_ in}
+                ),
+                UIMenu(
+                  title: "Override Expression",
+                  image: UIImage(systemName: "exclamationmark.circle.fill"),
+                  options: .destructive,
+                  children: generateOpacityMenu(opacitySupportingLayers)
+                )
+              ]
+            : generateOpacityMenu(opacitySupportingLayers)
           )
-          
-          children.append(allMenu)
-          
-          return children
-        }()
-      )
+        )
+      }
       
-      let setOpacityMenu = (opacitySupportingLayers.count == 1 || opacitySupportingLayers.allSatisfy({$0.opacity == opacitySupportingLayers.first?.opacity})) ? singleOpacityMenu : manyOpacitiesMenu
+      var manyOpacitiesMenu: UIMenu {
+        UIMenu(
+          title: "Set Opacity",
+          image: UIImage(systemName: "slider.horizontal.below.rectangle"),
+          children: {
+            var children: [UIMenuElement] = opacitySupportingLayers.map({opacitySupportingLayer in
+              let iconColour = (opacitySupportingLayer.colour ?? iconColour).withAlphaComponent(CGFloat(opacitySupportingLayer.opacity ?? 1))
+              
+              let iconName = opacitySupportingLayer.opacityIsExpression
+                ? "exclamationmark.square.fill"
+                : opacitySupportingLayer.opacity != nil
+                  ? "square.fill"
+                  : "questionmark.square.fill"
+              let icon = UIImage(systemName: iconName)?.withTintColor(iconColour).withRenderingMode(.alwaysOriginal)
+              
+              return UIMenu(
+                title: opacitySupportingLayer.id,
+                image: icon,
+                children: (
+                  opacitySupportingLayer.opacityIsExpression
+                    ? [
+                      UIAction(
+                        title: "Back",
+                        image: UIImage(systemName: "arrow.uturn.backward"),
+                        handler: {_ in}
+                      ),
+                      UIMenu(
+                        title: "Override Expression",
+                        image: UIImage(systemName: "exclamationmark.circle.fill"),
+                        options: .destructive,
+                        children: generateOpacityMenu([opacitySupportingLayer])
+                      )
+                    ]
+                    : generateOpacityMenu([opacitySupportingLayer])
+                )
+              )
+            })
+            
+            // How do we handle All for Expressions?
+            
+            let allMenu = UIMenu(
+              title: "All",
+              image: UIImage(systemName: "square.grid.3x3.fill"),
+              children: generateOpacityMenu(opacitySupportingLayers)
+            )
+            
+            children.append(allMenu)
+            
+            return children
+          }()
+        )
+      }
+      
+      let setOpacityMenu = (opacitySupportingLayers.count == 1 || opacitySupportingLayers.allSatisfy(notEmpty: true, {$0.opacity == opacitySupportingLayers.first?.opacity})) ? singleOpacityMenu : manyOpacitiesMenu
       
       topChildren.append(editsSupported.contains(true) ? UIMenu(
         title: "Edit",
