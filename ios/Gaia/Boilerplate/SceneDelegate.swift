@@ -13,14 +13,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     self.window = window
     
     if let url = connectionOptions.urlContexts.first?.url {
-      handleURL(url: url)
+      url.isFileURL ? handleFileURL(url: url) : handleURL(url: url)
     }
   }
   
   func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
     guard let url = URLContexts.first?.url else {return}
     
-    handleURL(url: url)
+    url.isFileURL ? handleFileURL(url: url) : handleURL(url: url)
   }
   
   func sceneDidDisconnect(_ scene: UIScene) {
@@ -78,6 +78,31 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
       case .invalid:
         HUDManager.shared.displayMessage(message: .urlCommandInvalid)
+    }
+  }
+  
+  func handleFileURL(url: URL){
+    _ = url.startAccessingSecurityScopedResource()
+    defer { url.stopAccessingSecurityScopedResource() }
+    
+    if let data = try? Data(contentsOf: url) {
+      var message: HUDMessage = .syntaxError
+      
+      MapViewController.shared.toggleLayerSelectPanel(keepOpen: true)
+      
+      if let results = (MapViewController.shared.lsfpc.contentViewController as? LayerSelectPanelViewController)?.coordinatorView.acceptLayerDefinitions(from: data) {
+        if(results.rejected.isEmpty){
+          UINotificationFeedbackGenerator().notificationOccurred(.success)
+          HUDManager.shared.displayMessage(message: .layersAccepted(results))
+          
+          return
+        } else {
+          message = .layerRejected(results, importing: true)
+        }
+      }
+      
+      UINotificationFeedbackGenerator().notificationOccurred(.error)
+      HUDManager.shared.displayMessage(message: message)
     }
   }
 }
