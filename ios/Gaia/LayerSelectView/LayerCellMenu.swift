@@ -78,7 +78,7 @@ extension Section {
         return colourableLayer.colourIsExpression
           ? UIMenu(
             title: "Set Colour",
-            image: UIImage(systemName: "eyedropper"),
+            image: UIImage(systemName: "paintpalette"),
             children: [
               UIAction(
                 title: "Back",
@@ -95,7 +95,7 @@ extension Section {
           )
           : UIAction(
             title: "Set Colour",
-            image: UIImage(systemName: "eyedropper"),
+            image: UIImage(systemName: "paintpalette"),
             handler: handler
           )
       }
@@ -103,7 +103,7 @@ extension Section {
       var manyColoursMenu: UIMenu {
         UIMenu(
           title: "Set Colour",
-          image: UIImage(systemName: "eyedropper"),
+          image: UIImage(systemName: "paintpalette"),
           children: {
             var children: [UIMenuElement] = colourableLayers.map({colourableLayer in
               let colour = colourableLayer.colour ?? iconColour.withAlphaComponent(CGFloat(colourableLayer.opacity ?? 1))
@@ -111,7 +111,7 @@ extension Section {
                 ? "exclamationmark.circle.fill"
                 : colourableLayer.colour != nil
                 ? "circle.fill"
-                : "questionmark.circle.fill"
+                : "slash.circle.fill"
               let iconColour = colour.withAlphaComponent(1)
               let icon = UIImage(systemName: iconName)?.withTintColor(iconColour).withRenderingMode(.alwaysOriginal)
               
