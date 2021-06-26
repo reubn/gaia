@@ -34,8 +34,6 @@ extension Style {
         return cached
       }
       
-      print("InterfacedSource", id)
-      
       guard let type = source.type?.value as? String else {
         return nil
       }

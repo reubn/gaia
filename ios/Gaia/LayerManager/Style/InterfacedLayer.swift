@@ -39,8 +39,6 @@ extension Style {
         return nil
       }
       
-      print("InterfacedLayer", id)
-      
       var rawColour: AnyCodable?
       var rawOpacity:  AnyCodable?
       var capabilities: Set<InterfacedLayer.Capability>
