@@ -163,11 +163,17 @@ extension Section {
           }
         }
         
-        let fullEdit = UIAction(
-          title: "Edit JSON",
-          image: UIImage(systemName: "slider.horizontal.3")) { _ in
-          self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.edit(layer))
-        }
+        let fullEdit = UIMenu(
+          title: "",
+          options: .displayInline,
+          children: [
+            UIAction(
+              title: "Edit JSON",
+              image: UIImage(systemName: "slider.horizontal.3")) { _ in
+              self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.edit(layer))
+            }
+          ]
+        )
         
         let editLayersChildren = interfacedLayers.count == 1
           ? [editLayerItems(interfacedLayer: interfacedLayers.first!, single: true), fullEdit]
