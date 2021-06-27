@@ -34,6 +34,7 @@
 		1B47B96B25FA497900504761 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47B96A25FA497900504761 /* Commands.swift */; };
 		1B47B96D25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B47B96C25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift */; };
 		1B545D662667DF270024BE67 /* geoJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B545D652667DF270024BE67 /* geoJSON.swift */; };
+		1B5D8CDD2688A56400FAE4DA /* HomeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5D8CDC2688A56400FAE4DA /* HomeButton.swift */; };
 		1B6033BD25D1DBD300211150 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033BC25D1DBD300211150 /* UIColor.swift */; };
 		1B6033BF25D1DBEE00211150 /* randomSystemColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */; };
 		1B6033C125D1DC4A00211150 /* randomString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6033C025D1DC4A00211150 /* randomString.swift */; };
@@ -155,6 +156,7 @@
 		1B47B96A25FA497900504761 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		1B47B96C25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BUNDLE_ID_SUFFIX.swift; sourceTree = "<group>"; };
 		1B545D652667DF270024BE67 /* geoJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = geoJSON.swift; sourceTree = "<group>"; };
+		1B5D8CDC2688A56400FAE4DA /* HomeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeButton.swift; sourceTree = "<group>"; };
 		1B6033BC25D1DBD300211150 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		1B6033BE25D1DBEE00211150 /* randomSystemColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = randomSystemColor.swift; sourceTree = "<group>"; };
 		1B6033C025D1DC4A00211150 /* randomString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = randomString.swift; sourceTree = "<group>"; };
@@ -371,6 +373,7 @@
 				1B545D652667DF270024BE67 /* geoJSON.swift */,
 				1BA29B2B2672C4F300D5FDBB /* Debounce.swift */,
 				1B2F908B267FB68200D275CB /* Hashable.swift */,
+				1B5D8CDC2688A56400FAE4DA /* HomeButton.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -658,6 +661,7 @@
 				1B3401C725B387690091FA3B /* LayerSelectCoordinatorView.swift in Sources */,
 				1B04AA10261272A30080BECE /* DefaultPanelBehaviour.swift in Sources */,
 				1BBD3FFA25B89181007B8BC7 /* OfflineSelectCoordinatorView.swift in Sources */,
+				1B5D8CDD2688A56400FAE4DA /* HomeButton.swift in Sources */,
 				1BA9BD0E25BA281800AC97C7 /* OfflineSelectArea.swift in Sources */,
 				1B2F908C267FB68200D275CB /* Hashable.swift in Sources */,
 				1B6033C125D1DC4A00211150 /* randomString.swift in Sources */,
