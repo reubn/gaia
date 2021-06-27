@@ -164,7 +164,7 @@ extension Section {
         }
         
         let fullEdit = UIAction(
-          title: "Full Edit",
+          title: "Edit JSON",
           image: UIImage(systemName: "slider.horizontal.3")) { _ in
           self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.edit(layer))
         }
