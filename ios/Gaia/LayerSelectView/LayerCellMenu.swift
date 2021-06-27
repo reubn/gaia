@@ -206,8 +206,8 @@ extension Section {
         let iconName = interfacedLayer.colourIsExpression
           ? "exclamationmark.circle.fill"
           : interfacedLayer.colour != nil
-          ? "circle.fill"
-          : "slash.circle.fill"
+            ? "circle.fill"
+            : "slash.circle.fill"
         let iconColour = colour.withAlphaComponent(1)
         let icon = UIImage(systemName: iconName)?.withTintColor(iconColour).withRenderingMode(.alwaysOriginal)
         let title = title ?? interfacedLayer.id
@@ -251,8 +251,8 @@ extension Section {
         let iconName = interfacedLayer.opacityIsExpression
           ? "exclamationmark.square.fill"
           : interfacedLayer.opacity != nil
-          ? "square.fill"
-          : "square.slash.fill"
+            ? "square.fill"
+            : "square.slash.fill"
         let icon = UIImage(systemName: iconName)?.withTintColor(iconColour).withRenderingMode(.alwaysOriginal)
         let title = title ?? interfacedLayer.id
 
