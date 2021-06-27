@@ -280,7 +280,7 @@ extension Section {
       }
       
       func generateOpacityMenu(_ interfacedLayers: [Style.InterfacedLayer]) -> [UIMenuElement]{
-        [100, 75, 50, 25, 10].compactMap({percent in
+        [100, 75, 50, 25, 10, 0].compactMap({percent in
           let opacity = Double(percent) / 100
           let selected = (interfacedLayers.count == 1 || interfacedLayers.allSatisfy({$0.opacity == interfacedLayers.first?.opacity})) && (opacity == interfacedLayers.first?.opacity )
           
