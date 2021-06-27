@@ -252,7 +252,7 @@ extension Section {
           ? "exclamationmark.square.fill"
           : interfacedLayer.opacity != nil
           ? "square.fill"
-          : "questionmark.square.fill"
+          : "square.slash.fill"
         let icon = UIImage(systemName: iconName)?.withTintColor(iconColour).withRenderingMode(.alwaysOriginal)
         let title = title ?? interfacedLayer.id
 
