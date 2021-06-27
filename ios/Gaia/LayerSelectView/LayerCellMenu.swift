@@ -292,7 +292,7 @@ extension Section {
           
           return UIAction(
             title: String(format: "%d%%", percent),
-            image: UIImage(systemName: "square\(opacity == 0 ? "" : ".fill")")?.withTintColor(iconColour.withAlphaComponent(opacity == 0 ? 1 : CGFloat(opacity))).withRenderingMode(.alwaysOriginal),
+            image: UIImage(systemName: "square.fill")?.withTintColor(iconColour.withAlphaComponent(CGFloat(opacity))).withRenderingMode(.alwaysOriginal),
             state: selected ? .on : .off) { _ in
             layer.style = layer.style.with(interfacedLayers.map({$0.setting(.opacity, to: opacity)}))
             LayerManager.shared.save()
