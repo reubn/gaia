@@ -32,12 +32,4 @@ extension Collection {
     
     return nil
   }
-  
-  func allSatisfy(notEmpty: Bool, _ predicate: (Element) throws -> Bool) rethrows -> Bool {
-    if (notEmpty && isEmpty) {
-      return false
-    }
-    
-    return try allSatisfy(predicate)
-  }
 }

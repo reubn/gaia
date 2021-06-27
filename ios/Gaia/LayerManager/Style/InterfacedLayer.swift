@@ -149,7 +149,7 @@ extension Style {
       return interfacedLayersCache[hashValue]
     }
     
-    enum Capability {
+    enum Capability: CaseIterable {
       case colour
       case opacity
     }
