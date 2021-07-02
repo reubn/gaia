@@ -174,49 +174,32 @@ extension AnyCodable: ExpressibleByDictionaryLiteral {}
 
 extension AnyCodable: Hashable {
     public func hash(into hasher: inout Hasher) {
-        switch value {
-        case let value as Bool:
-            hasher.combine(value)
-        case let value as Int:
-            hasher.combine(value)
-        case let value as Int8:
-            hasher.combine(value)
-        case let value as Int16:
-            hasher.combine(value)
-        case let value as Int32:
-            hasher.combine(value)
-        case let value as Int64:
-            hasher.combine(value)
-        case let value as UInt:
-            hasher.combine(value)
-        case let value as UInt8:
-            hasher.combine(value)
-        case let value as UInt16:
-            hasher.combine(value)
-        case let value as UInt32:
-            hasher.combine(value)
-        case let value as UInt64:
-            hasher.combine(value)
-        case let value as Float:
-            hasher.combine(value)
-        case let value as Double:
-            hasher.combine(value)
-        case let value as String:
-            hasher.combine(value)
-        case let value as [String: AnyCodable]:
-            hasher.combine(value)
-        case let value as [AnyCodable]:
-            hasher.combine(value)
-        case let value as AnyCodable:
-            hasher.combine(value)
-        case let value as [String: Any]:
-          let anyCodable = value.mapValues({AnyCodable($0)})
-          hasher.combine(anyCodable)
-        case let value as [Any]:
-          let anyCodable = value.map({AnyCodable($0)})
-          hasher.combine(anyCodable)
-        default:
-          fatalError("Unknown Type")
-        }
+      hasher.combine(toHashable(value))
     }
+}
+
+func toHashable(_ value: Any) -> AnyHashable {
+  switch value {
+    case let value as AnyHashable:
+      return value
+    case let value as [AnyHashable]:
+      return value
+    case let value as [[AnyHashable]]:
+      return value
+    case let value as [String: AnyHashable]:
+      return value
+    case let value as [Any]:
+      let anyCodable = value.map(tryCastAnyHashable)
+      return anyCodable
+    case let value as [String: Any]:
+      let anyCodable = value.mapValues(tryCastAnyHashable)
+      return anyCodable
+    
+    default:
+      fatalError("Unknown Type")
+  }
+}
+
+func tryCastAnyHashable(_ value: Any) -> AnyHashable {
+  return value as? AnyHashable ?? toHashable(value)
 }
