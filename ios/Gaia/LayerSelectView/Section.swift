@@ -160,8 +160,8 @@ class Section: UIStackView {
   
   func update() {
     self.layers = SettingsManager.shared.showDisabledLayers.value
-      ? group.getLayers()
-      : group.getLayers().filter({$0.enabled})
+      ? group.getLayers().sorted(by: LayerManager.shared.layerSortingFunction)
+      : group.getLayers().filter({$0.enabled}).sorted(by: LayerManager.shared.layerSortingFunction)
     
     if(self.layers.count > 0) {
       if(openState == .hidden) {

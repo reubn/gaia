@@ -232,7 +232,7 @@ class LayerManager {
   }
 
   public func getLayers(layerGroup: LayerGroup) -> [Layer] {
-    layers.filter({$0.group == layerGroup.id}).sorted(by: layerSortingFunction)
+    layers.filter({$0.group == layerGroup.id})
   }
 
   public func magic(bounds: MGLCoordinateBounds) -> (count: Int, restore: Bool) {
