@@ -159,19 +159,23 @@ class Section: UIStackView {
   }
   
   func update() {
-    self.layers = SettingsManager.shared.showDisabledLayers.value
-      ? group.getLayers().sorted(by: LayerManager.shared.layerSortingFunction)
-      : group.getLayers().filter({$0.enabled}).sorted(by: LayerManager.shared.layerSortingFunction)
-    
-    if(self.layers.count > 0) {
-      if(openState == .hidden) {
-        openState =  normallyCollapsed ? .collapsed : .open
+    DispatchQueue.global(qos: .userInteractive).async {[self] in
+      self.layers = SettingsManager.shared.showDisabledLayers.value
+        ? group.getLayers().sorted(by: LayerManager.shared.layerSortingFunction)
+        : group.getLayers().filter({$0.enabled}).sorted(by: LayerManager.shared.layerSortingFunction)
+      
+      DispatchQueue.main.async {
+        if(self.layers.count > 0) {
+          if(openState == .hidden) {
+            openState =  normallyCollapsed ? .collapsed : .open
+          }
+        } else {
+          openState = .hidden
+        }
+        
+        tableView.reloadData()
       }
-    } else {
-      openState = .hidden
     }
-    
-    tableView.reloadData()
   }
   
    @discardableResult func toggleLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {

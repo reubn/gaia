@@ -101,7 +101,14 @@ class LayerManager {
       let previous = _compositeStyle
       
       _compositeStyle = nil // flush cache
-      multicastCompositeStyleDidChangeDelegate.invoke(invocation: {$0.compositeStyleDidChange(to: compositeStyle, from: previous)})
+      
+      DispatchQueue.global(qos: .userInteractive).async {
+        let cStyle = self.compositeStyle
+        
+        DispatchQueue.main.async {
+          self.multicastCompositeStyleDidChangeDelegate.invoke(invocation: {$0.compositeStyleDidChange(to: cStyle, from: previous)})
+        }
+      }
     } catch {print("Failed")}
   }
   
