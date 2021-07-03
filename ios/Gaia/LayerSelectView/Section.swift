@@ -4,6 +4,8 @@ import CoreData
 
 import Mapbox
 
+var cellReuseCache: [String: LayerCell] = [:]
+
 class Section: UIStackView {
   let group: LayerGroup
   let layerSelectConfig: LayerSelectConfig
@@ -14,11 +16,12 @@ class Section: UIStackView {
 
   let tableView = SectionTableView()
   
-  var cellReuseCache: [String: LayerCell] = [:]
-  
   unowned let scrollView: LayerSelectView
 
   var layers: [Layer]
+  var ready = false
+  var updating = false
+  var missedUpdate = false
   
   var normallyCollapsed: Bool
   
@@ -124,11 +127,15 @@ class Section: UIStackView {
     sectionCollapsedConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
     sectionHiddenConstraint = heightAnchor.constraint(equalToConstant: 0)
     
+    scrollView.multicastScrollViewDidScrollDelegate.add(delegate: self)
+    
     if(layers.count == 0){
       updateState()
     }
     
-    update()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
+      self.update()
+    }
   }
   
   @objc func toggleCollapse(){
@@ -157,16 +164,35 @@ class Section: UIStackView {
         sectionHiddenConstraint.isActive = true
     }
     
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // needs more delay
-      self.scrollView.heightDidChange()
+//    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // needs more delay
+//      self.scrollView.heightDidChange()
+//    }
+  }
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    if((!ready || missedUpdate) && !updating) {
+      update(fromScroll: true)
     }
   }
   
-  func update() {
+  func update(fromScroll: Bool = false) {
+    if(!isVisible()) {
+      if(!fromScroll){
+        missedUpdate = true
+      }
+      return
+    }
+    
+    
+    updating = true
+    missedUpdate = false
+
+    
     DispatchQueue.global(qos: .userInteractive).async {[self] in
       self.layers = SettingsManager.shared.showDisabledLayers.value
         ? group.getLayers().sorted(by: LayerManager.shared.layerSortingFunction)
         : group.getLayers().filter({$0.enabled}).sorted(by: LayerManager.shared.layerSortingFunction)
+      self.ready = true
       
       DispatchQueue.main.async {
         if(self.layers.count > 0) {
@@ -178,6 +204,7 @@ class Section: UIStackView {
         }
         
         tableView.reloadData()
+        self.updating = false
       }
     }
   }
@@ -300,12 +327,18 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let _layer = layers[indexPath.row]
-    let cell = cellReuseCache[_layer.id] ?? { // UITableView's dequeue is dumb and won't reuse the same cell for the same layer consistantly
+    let cacheKey = _layer.id + "." + group.id
+
+    let cell = cellReuseCache[cacheKey] ?? { // UITableView's dequeue is dumb and won't reuse the same cell for the same layer consistantly
       let newCell = LayerCell()
-      cellReuseCache[_layer.id] = newCell
+      cellReuseCache[cacheKey] = newCell
       
       return newCell
     }()
+    
+    if(!ready) {
+      return cell
+    }
     
     var accessory: LayerCellAccessory
 
