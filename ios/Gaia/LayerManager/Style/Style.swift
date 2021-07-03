@@ -3,9 +3,6 @@ import Mapbox
 
 let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
 
-var interfacedLayersCache: [Int: Style.InterfacedLayer] = [:]
-var interfacedSourcesCache: [Int: Style.InterfacedSource] = [:]
-
 struct Style: Codable, Equatable, Hashable {
   var version = 8
   

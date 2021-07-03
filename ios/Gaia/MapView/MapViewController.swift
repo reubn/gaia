@@ -697,8 +697,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   override func didReceiveMemoryWarning() {
-    interfacedSourcesCache.removeAll()
-    interfacedLayersCache.removeAll()
+    InterfacedCache.shared.sources.removeAll()
+    InterfacedCache.shared.layers.removeAll()
   }
   
   static let shared = MapViewController()

@@ -30,7 +30,7 @@ extension Style {
       
       let hashValue = source.hashValue(combining: id)
       
-      if let cached = interfacedSourcesCache[hashValue] {
+      if let cached = InterfacedCache.shared.sources[hashValue] {
         return cached
       }
       
@@ -78,7 +78,7 @@ extension Style {
         maxZoom: maxZoom?.doubleValue,
         bounds: bounds
       )
-      interfacedSourcesCache[hashValue] = interfacedSource
+      InterfacedCache.shared.sources[hashValue] = interfacedSource
       
       return interfacedSource
     }
@@ -98,7 +98,7 @@ extension Style {
       if let source = copy.sources[id],
          let type = source.type?.value as? String {
         let hashValue = source.hashValue(combining: id)
-        interfacedSourcesCache.removeValue(forKey: hashValue)
+        InterfacedCache.shared.sources.removeValue(forKey: hashValue)
         
         if let minZoom = desc.minZoom {
           switch type {

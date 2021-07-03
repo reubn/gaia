@@ -168,11 +168,11 @@ class LayerManager {
   
   func remove(layer: Layer){
     for layer in layer.style.layers {
-      interfacedLayersCache.removeValue(forKey: layer.hashValue)
+      InterfacedCache.shared.layers.removeValue(forKey: layer.hashValue)
     }
     
     for (id, source) in layer.style.sources {
-      interfacedSourcesCache.removeValue(forKey: source.hashValue(combining: id))
+      InterfacedCache.shared.sources.removeValue(forKey: source.hashValue(combining: id))
     }
     
     managedContext.delete(layer)

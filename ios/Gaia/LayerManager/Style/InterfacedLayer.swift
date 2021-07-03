@@ -30,7 +30,7 @@ extension Style {
     static func create(_ layer: Layer) -> Self? {
       let hashValue = layer.hashValue
       
-      if let cached = interfacedLayersCache[hashValue] {
+      if let cached = InterfacedCache.shared.layers[hashValue] {
         return cached
       }
       
@@ -144,9 +144,9 @@ extension Style {
         colourIsExpression: colourIsExpression,
         opacityIsExpression: opacityIsExpression
       )
-      interfacedLayersCache[hashValue] = interfacedLayer
+      InterfacedCache.shared.layers[hashValue] = interfacedLayer
       
-      return interfacedLayersCache[hashValue]
+      return interfacedLayer
     }
     
     enum Capability: CaseIterable {
@@ -162,7 +162,7 @@ extension Style {
       if let index = copy.layers.firstIndex(where: {$0.id?.value as? String == desc.id}),
          let type = copy.layers[index].type?.value as? String {
         let hashValue = copy.layers[index].hashValue
-        interfacedLayersCache.removeValue(forKey: hashValue)
+        InterfacedCache.shared.layers.removeValue(forKey: hashValue)
         
         copy.layers[index].paint = copy.layers[index].paint ?? AnyCodable([:])
         
