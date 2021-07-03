@@ -124,6 +124,10 @@ class Section: UIStackView {
     sectionCollapsedConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
     sectionHiddenConstraint = heightAnchor.constraint(equalToConstant: 0)
     
+    if(layers.count == 0){
+      updateState()
+    }
+    
     update()
   }
   
