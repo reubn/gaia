@@ -13,7 +13,7 @@ export default () => {
   const lm = typeof window !== 'undefined' ? layerManager.useLayerManager() : []
   const [maxTileZoom, setMaxTileZoom] = useState(17)
   global.setMaxTileZoom = setMaxTileZoom
-  const [exaggeration, setExaggeration] = useState(2)
+  const [exaggeration, setExaggeration] = useState(0)
   global.setExaggeration = setExaggeration
 
   const [state, setState] = useState({
