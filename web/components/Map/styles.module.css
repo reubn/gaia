@@ -1,0 +1,30 @@
+.map {
+  --checkerboard-size: 25px;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--checkerboard-b);
+  background-image: linear-gradient(45deg, var(--checkerboard-a) 25%, transparent 25%),
+                    linear-gradient(-45deg, var(--checkerboard-a) 25%, transparent 25%),
+                    linear-gradient(45deg, transparent 75%, var(--checkerboard-a) 75%),
+                    linear-gradient(-45deg, transparent 75%, var(--checkerboard-a) 75%);
+  background-size: var(--checkerboard-size) var(--checkerboard-size);
+  background-position: 0 0, 0 calc(var(--checkerboard-size) / 2), calc(var(--checkerboard-size) / 2) calc(var(--checkerboard-size) / -2), calc(var(--checkerboard-size) / -2) 0px;
+}
+
+.map.light {
+  --checkerboard-a: #ececec;
+  --checkerboard-b: #fff;
+}
+
+.map.dark {
+  --checkerboard-a: #232323;
+  --checkerboard-b: #000;
+}
+
+.map :global(.mapboxgl-ctrl-logo){
+  display: none!important
+}
+
+.map canvas {
+  outline: none!important;
+}

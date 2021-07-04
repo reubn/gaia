@@ -1,0 +1,24 @@
+@import './colours';
+@import './fonts';
+
+html,
+body {
+  --colours-accent: var(--colours-blue);
+  padding: 0;
+  margin: 0;
+  background-color: var(--colours-light);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  color: var(--colours-light);
+  background-color: var(--colours-pink);
+}
