@@ -3,6 +3,8 @@ export default class Layer {
   name = ''
   group = ''
   groupIndex = ''
+  attribution = ''
+  overrideUIMode = ''
 
   visible = false
   enabled = false
@@ -11,11 +13,13 @@ export default class Layer {
 
   style = undefined
 
-  constructor({id = '', name = '', group = '', groupIndex = 0, visible = false, enabled = false, pinned = false, style = undefined}){
+  constructor({id = '', name = '', group = '', groupIndex = 0, visible = false, enabled = false, pinned = false, attribution = '', overrideUIMode = '', style = undefined}){
     this.id = id
     this.name = name
     this.group = group
     this.groupIndex = groupIndex
+    this.attribution = attribution
+    this.overrideUIMode = overrideUIMode
 
     this.visible = visible
     this.enabled = enabled
@@ -30,6 +34,8 @@ export default class Layer {
     layer.id = metadata.id
     layer.name = metadata.name
     layer.group = metadata.group
+    layer.overrideUIMode = metadata.overrideUIMode
+    layer.attribution = metadata.attribution
 
     if(user){
       layer.groupIndex = user.groupIndex
@@ -44,6 +50,9 @@ export default class Layer {
   }
 
   get needsDarkUI(){
+    if(this.overrideUIMode == "dark") return true
+    if(this.overrideUIMode == "light") return false
+
     return this.group == "aerial" || this.group == "overlay"
   }
 
