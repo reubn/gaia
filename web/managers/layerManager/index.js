@@ -63,6 +63,10 @@ class LayerManager extends ET {
 
   layerSortingFunction(a, b) {
     return (() => {
+      if(a.isOpaque != b.isOpaque) {
+        return b.isOpaque
+      }
+
       if(a.group != b.group) {
         return (groups.findIndex(layerGroup => a.group == layerGroup.id) || 0) < (groups.findIndex(layerGroup => b.group == layerGroup.id) || 0)
       }
