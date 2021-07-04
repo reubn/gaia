@@ -10,7 +10,6 @@ export default class Layer {
   enabled = false
   pinned = false
 
-
   style = undefined
 
   constructor({id = '', name = '', group = '', groupIndex = 0, visible = false, enabled = false, pinned = false, attribution = '', overrideUIMode = '', style = undefined}){
@@ -25,12 +24,17 @@ export default class Layer {
     this.enabled = enabled
     this.pinned = pinned
 
-
     this.style = style
   }
 
-  static fromLayerDefinition({metadata, user, style}){
-    const layer = {}
+  update(layerDefinition){
+    Layer.fromLayerDefinition(layerDefinition, this)
+  }
+
+  static fromLayerDefinition({metadata, user, style}, layer = undefined){
+    let local = !layer
+    if(local) layer = {}
+
     layer.id = metadata.id
     layer.name = metadata.name
     layer.group = metadata.group
@@ -46,7 +50,7 @@ export default class Layer {
 
     layer.style = style
 
-    return new Layer(layer)
+    return local ? new Layer(layer) : layer
   }
 
   get needsDarkUI(){

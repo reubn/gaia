@@ -54,10 +54,18 @@ class LayerManager extends ET {
     json.forEach(layerDefinition => this.accept(layerDefinition))
   }
 
-  accept(layerDefinition){
-    const layer = Layer.fromLayerDefinition(layerDefinition)
-    console.log(layer)
-    this.layers.push(layer)
+  accept(layerDefinitionx){
+    const layerDefinitions = Array.isArray(layerDefinitionx) ? layerDefinitionx : [layerDefinitionx]
+
+    for(const layerDefinition of layerDefinitions) {
+      const existingWithEditedId = this.layers.find(layer => layer.id == layerDefinition.metadata.id)
+
+      if(existingWithEditedId) existingWithEditedId.update(layerDefinition)
+      else {
+        this.layers.push(Layer.fromLayerDefinition(layerDefinition))
+      }
+    }
+
     this.save()
   }
 
