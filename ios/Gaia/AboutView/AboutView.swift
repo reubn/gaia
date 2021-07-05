@@ -8,13 +8,26 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
   var emojiTimer: Timer? = nil
   var isFlipped = false
   
+  let appIconBackground = UIImage(named: BUNDLE_ID_SUFFIX == ".dev" ? "AppIconHighResBackground.dev" : "AppIconHighResBackground")!
+  let appIconOverlay = UIImage(named: BUNDLE_ID_SUFFIX == ".dev" ? "AppIconHighResOverlay.dev" : "AppIconHighResOverlay")!
+  
+  lazy var overlayView = UIImageView(image: appIconOverlay)
+  
   lazy var appIcon: AppIcon = {
     let imageView = AppIcon()
-
-    imageView.setImage(UIImage(named: BUNDLE_ID_SUFFIX == ".dev" ? "AppIconHighRes.dev" : "AppIconHighRes")!, for: .normal)
+    
+    imageView.setImage(appIconBackground, for: .normal)
     
     imageView.layer.cornerCurve = .continuous
     imageView.clipsToBounds = true
+    
+    imageView.addSubview(overlayView)
+    
+    overlayView.translatesAutoresizingMaskIntoConstraints = false
+    overlayView.leftAnchor.constraint(equalTo: imageView.leftAnchor).isActive = true
+    overlayView.rightAnchor.constraint(equalTo: imageView.rightAnchor).isActive = true
+    overlayView.topAnchor.constraint(equalTo: imageView.topAnchor).isActive = true
+    overlayView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor).isActive = true
     
     addSubview(imageView)
     
@@ -121,11 +134,39 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
   }
   
   func userLocationDidUpdate() {
-    if(MapViewController.shared.mapView.userLocation == nil) {return}
-    let userLocation = MapViewController.shared.mapView.userLocation!.coordinate
+    guard let userLocation = MapViewController.shared.mapView.userLocation else {
+      return
+    }
+    
+    if let heading = userLocation.heading {
+      let newRotation = MapViewController.shared.mapView.userTrackingMode == .followWithHeading
+        ? CGFloat(heading.trueHeading - 45)
+        : 0
+      
+      let transform = CGAffineTransform(rotationAngle: newRotation * .pi / 180)
+      
+      let currentRotation: CGFloat = {
+        let raw = atan2(overlayView.transform.b, overlayView.transform.a)
+        let corrected = raw < 0 ? raw + 2 * .pi : raw
+        
+        return corrected * 180 / .pi
+      }()
+      
+      let r1 = currentRotation < 0 ? currentRotation + 360 : currentRotation
+      let r2 = newRotation < 0 ? newRotation + 360 : newRotation
+      
+      let delta = abs(r1 - r2)
+      
+      let duration = (delta / 360) * 0.5
+      let durationCorrected = duration < 0.05 ? 0 : Double(duration)
+      
+      UIView.animate(withDuration: durationCorrected){
+        self.overlayView.transform = transform
+      }
+    }
     
     for (index, keyLocationPair) in KEY_LOCATIONS.enumerated() {
-      if(!keyLocationPair.seen && keyLocationPair.location.distance(to: userLocation) < KEY_LOCATIONS_NEEDED_LOCATION_METERS) {
+      if(!keyLocationPair.seen && keyLocationPair.location.distance(to: userLocation.coordinate) < KEY_LOCATIONS_NEEDED_LOCATION_METERS) {
         KEY_LOCATIONS[index].seen = true
         KEY_LOCATIONS[index].seenReason = .location
       }
