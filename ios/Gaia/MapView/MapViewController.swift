@@ -45,6 +45,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     longPress.numberOfTouchesRequired = 1
     mapView.addGestureRecognizer(longPress)
     
+    let twoFingerLongPress = UILongPressGestureRecognizer(target: self, action: #selector(magicLongPress))
+    twoFingerLongPress.minimumPressDuration = 0.4
+    twoFingerLongPress.numberOfTouchesRequired = 2
+    mapView.addGestureRecognizer(twoFingerLongPress)
+    
     let twoFingerTap = UITapGestureRecognizer(target: self, action: #selector(twoFingerTapped))
     twoFingerTap.numberOfTapsRequired = 1
     twoFingerTap.numberOfTouchesRequired = 2
@@ -109,7 +114,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     button.addTarget(self, action: #selector(layersButtonTapped), for: .touchUpInside)
     button.accessibilityLabel = "Layers"
     
-    let longPress = UILongPressGestureRecognizer(target: self, action: #selector(layersButtonLongPressed))
+    let longPress = UILongPressGestureRecognizer(target: self, action: #selector(magicLongPress))
     longPress.minimumPressDuration = 0.4
     button.addGestureRecognizer(longPress)
     
@@ -589,7 +594,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     self.present(lsfpc, animated: true, completion: nil)
   }
   
-  @objc func layersButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
+  @objc func magicLongPress(gestureReconizer: UILongPressGestureRecognizer) {
     if gestureReconizer.state == UIGestureRecognizer.State.began {
       let change = LayerManager.shared.magic(bounds: mapView.visibleCoordinateBounds)
       
