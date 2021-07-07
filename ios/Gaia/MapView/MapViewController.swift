@@ -378,12 +378,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       case .followWithHeading, .followWithCourse:
         mapView.locationManager.startUpdatingHeading()
         mapView.locationManager.startUpdatingLocation()
-        mapView.tintColor = .systemBlue
+        mapView.tintColor = .systemPink
       case .follow:
         mapView.resetNorth()
         mapView.locationManager.stopUpdatingHeading()
         mapView.locationManager.startUpdatingLocation()
-        mapView.tintColor = .systemBlue
+        mapView.tintColor = .systemPink
       case .none:
         fallthrough
     @unknown default:
