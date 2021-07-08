@@ -1,6 +1,8 @@
 import Foundation
 import CoreLocation
 
+import ZippyJSON
+
 extension URLInterface {
   enum Command {
     case go(CLLocationCoordinate2D)
@@ -77,7 +79,7 @@ extension URLInterface {
   }
   
   func download(_ queryItem: URLQueryItem) -> Command {
-    let decoder = JSONDecoder()
+    let decoder = ZippyJSONDecoder()
     
     let data = queryItem.value?.data(using: .utf8)!
     

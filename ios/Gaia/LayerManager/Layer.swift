@@ -1,6 +1,8 @@
 import Foundation
 import CoreData
 
+import ZippyJSON
+
 @objc(Layer)
 public class Layer: NSManagedObject {
   @nonobjc public class func fetchRequest() -> NSFetchRequest<Layer> {
@@ -42,7 +44,7 @@ public class Layer: NSManagedObject {
         return _style!
       }
       
-      let decoder = JSONDecoder()
+      let decoder = ZippyJSONDecoder()
       
       let data = styleString.data(using: .utf8)
       

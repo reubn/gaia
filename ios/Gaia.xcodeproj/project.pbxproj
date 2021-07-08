@@ -74,6 +74,7 @@
 		1B96FF362663FD75002E685D /* UIAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96FF352663FD75002E685D /* UIAction.swift */; };
 		1B99746C266A45BB00420B0F /* LayerCellMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B99746B266A45BB00420B0F /* LayerCellMenu.swift */; };
 		1B998756266126CE002595DD /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B998755266126CE002595DD /* Double.swift */; };
+		1B9D5A2C2695F5530034088E /* ZippyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 1B9D5A2B2695F5530034088E /* ZippyJSON */; };
 		1B9DDAFC25F2AC1E00B3407F /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9DDAFB25F2AC1E00B3407F /* Collection.swift */; };
 		1BA03E3425DDAEEE00EE273C /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate2D.swift */; };
 		1BA03E3625DE8BE300EE273C /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA03E3525DE8BE300EE273C /* UIImage.swift */; };
@@ -248,6 +249,7 @@
 				1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */,
 				1B96528D25D5C3DA0017A43E /* KeyboardLayoutGuide in Frameworks */,
 				1B6638C125B10B610071F03D /* Mapbox.framework in Frameworks */,
+				1B9D5A2C2695F5530034088E /* ZippyJSON in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -561,6 +563,7 @@
 				1B3401C225B33FAD0091FA3B /* FloatingPanel */,
 				1B04BF7425D1CB5F00FCD5D4 /* CoreGPX */,
 				1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */,
+				1B9D5A2B2695F5530034088E /* ZippyJSON */,
 			);
 			productName = Gaia;
 			productReference = 1B6638A425B10B530071F03D /* Gaia Dev.app */;
@@ -593,6 +596,7 @@
 				1B3401C125B33FAD0091FA3B /* XCRemoteSwiftPackageReference "FloatingPanel" */,
 				1B04BF7325D1CB5F00FCD5D4 /* XCRemoteSwiftPackageReference "CoreGPX" */,
 				1B96528B25D5C3DA0017A43E /* XCRemoteSwiftPackageReference "KeyboardLayoutGuide" */,
+				1B9D5A2A2695F5530034088E /* XCRemoteSwiftPackageReference "ZippyJSON" */,
 			);
 			productRefGroup = 1B6638A525B10B530071F03D /* Products */;
 			projectDirPath = "";
@@ -959,6 +963,14 @@
 				minimumVersion = 1.7.0;
 			};
 		};
+		1B9D5A2A2695F5530034088E /* XCRemoteSwiftPackageReference "ZippyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/michaeleisel/ZippyJSON";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -976,6 +988,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1B96528B25D5C3DA0017A43E /* XCRemoteSwiftPackageReference "KeyboardLayoutGuide" */;
 			productName = KeyboardLayoutGuide;
+		};
+		1B9D5A2B2695F5530034088E /* ZippyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B9D5A2A2695F5530034088E /* XCRemoteSwiftPackageReference "ZippyJSON" */;
+			productName = ZippyJSON;
 		};
 /* End XCSwiftPackageProductDependency section */
 

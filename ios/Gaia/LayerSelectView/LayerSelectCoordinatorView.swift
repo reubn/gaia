@@ -3,6 +3,7 @@ import UIKit
 
 import Mapbox
 import CoreGPX
+import ZippyJSON
 
 
 class LayerSelectCoordinatorView: CoordinatorView, PanelDelegate {
@@ -27,7 +28,7 @@ class LayerSelectCoordinatorView: CoordinatorView, PanelDelegate {
   func acceptLayerDefinitions(from optionalData: Data? = nil, url: String? = nil) -> LayerAcceptanceResults? {
     let data = optionalData ?? Data()
      
-    let decoder = JSONDecoder()
+    let decoder = ZippyJSONDecoder()
     
     let layerDefintionArrayAttempt = try? decoder.decode([LayerDefinition].self, from: data)
     print("layerDefintionArrayAttempt")

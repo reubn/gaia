@@ -30,7 +30,7 @@ import Foundation
      }
      """.data(using: .utf8)!
 
-     let decoder = JSONDecoder()
+     let decoder = ZippyJSONDecoder()
      let dictionary = try! decoder.decode([String: AnyDecodable].self, from: json)
  */
 @frozen public struct AnyDecodable: Decodable {

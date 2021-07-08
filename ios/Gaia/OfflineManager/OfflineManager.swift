@@ -2,6 +2,7 @@ import Foundation
 import Network
 
 import Mapbox
+import ZippyJSON
 
 class OfflineManager {
   private let offlineStorage = MGLOfflineStorage.shared
@@ -148,7 +149,7 @@ class OfflineManager {
   
   func decodePackContext(pack: MGLOfflinePack) -> PackContext? {
     do {
-      let decoder = JSONDecoder()
+      let decoder = ZippyJSONDecoder()
 
       return try decoder.decode(PackContext.self, from: pack.context)
     } catch {

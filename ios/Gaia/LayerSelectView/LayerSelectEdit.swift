@@ -4,6 +4,7 @@ import SafariServices
 
 import Mapbox
 import KeyboardLayoutGuide
+import ZippyJSON
 
 class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   unowned let coordinatorView: LayerSelectCoordinatorView
@@ -136,7 +137,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
         return
       }
       
-      let decoder = JSONDecoder()
+      let decoder = ZippyJSONDecoder()
       
       let data = jsonText.data(using: .utf8)!
       let layerDefinition = try decoder.decode(LayerDefinition.self, from: data)
