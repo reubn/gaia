@@ -100,18 +100,28 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
         MapViewController.shared.lsfpc.present(documentPicker, animated: true, completion: nil)
       }),
       UIAction(title: "New from Visible", image: UIImage(systemName: "map"), attributes: LayerManager.shared.compositeStyle.sortedLayers.isEmpty ? [.hidden] : [], handler: {_ in
-        let randomId = randomString(length: 6)
+        let constituentLayers = LayerManager.shared.visibleLayers
+        
+        let randomSuffix = randomString(length: 6)
+        let id = "composite_\(randomSuffix)"
         
         let layerDefinition = LayerDefinition(
           metadata: LayerDefinition.Metadata(
-            id: "composite_\(randomId)",
+            id: id,
             name: "Composite Layer",
             group: ""
           ),
           style: LayerManager.shared.compositeStyle.toStyle()
         )
-        
-        _ = self.coordinatorView.acceptLayerDefinitions(from: [layerDefinition])
+
+        if let result = self.coordinatorView.acceptLayerDefinitions(from: [layerDefinition]),
+           result.rejected.isEmpty {
+          LayerManager.shared.hide(layers: constituentLayers)
+          
+          if let resultingLayer = LayerManager.shared.layers.first(where: {$0.id == id}){
+            LayerManager.shared.show(layer: resultingLayer, mutuallyExclusive: false)
+          }
+        }
       }),
       UIAction(title: "New", image: UIImage(systemName: "plus"), handler: {_ in
         self.requestLayerEdit(.new)
