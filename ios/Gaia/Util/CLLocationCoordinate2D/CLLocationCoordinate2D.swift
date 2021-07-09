@@ -35,7 +35,7 @@ extension CLLocationCoordinate2D: Codable, Equatable, Hashable {
       }
   }
   
-  private func format(decimal accuracy: FormatAccuracy) -> String {
+  func format(decimal accuracy: FormatAccuracy) -> String {
     let lat = Double(latitude)
     let lng = Double(longitude)
     
@@ -46,7 +46,7 @@ extension CLLocationCoordinate2D: Codable, Equatable, Hashable {
     }
   }
   
-  private func format(sexagesimal accuracy: FormatAccuracy) -> String {
+  func format(sexagesimal accuracy: FormatAccuracy) -> String {
     let formatter = MGLCoordinateFormatter()
     formatter.unitStyle = .short
 

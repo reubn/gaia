@@ -164,7 +164,7 @@ extension CLLocationCoordinate2D {
     self.init(latitude: lat, longitude: lon)
   }
   
-  private func format(gridReference accuracy: FormatAccuracy) -> String {
+  func format(gridReference accuracy: FormatAccuracy) -> String {
     let lat1 = latitude.toRadians
     let lon1 = longitude.toRadians
     
