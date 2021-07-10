@@ -92,7 +92,7 @@ class OfflineManager {
       var source = source
       
       if(source.capabilities.contains(.maxZoom)) {
-        source = source.setting(.maxZoom, to: context.zoom.to)
+        source = source.setting(.maxZoom, to: min(context.zoom.to, source.maxZoom ?? context.zoom.to))
       }
       
 //      if(source.capabilities.contains(.minZoom)) {
