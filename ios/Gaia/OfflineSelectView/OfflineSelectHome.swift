@@ -13,19 +13,30 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   unowned let coordinatorView: OfflineSelectCoordinatorView
 
   lazy var emptyState = OfflineSelectHomeEmpty()
+  
+  lazy var scrollView: UIScrollView = {
+    let scrollView = UIScrollView()
+    scrollView.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(0.75)
+    scrollView.layer.cornerRadius = 8
+    scrollView.layer.cornerCurve = .continuous
+    scrollView.clipsToBounds = true
+    
+    scrollView.addSubview(tableView)
+    
+    tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+
+    return scrollView
+  }()
 
   lazy var tableView: UITableView = {
     let tableView = DownloadsTableView()
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(0.75)
-    
-    tableView.layer.cornerRadius = 8
-    tableView.layer.cornerCurve = .continuous
-    tableView.clipsToBounds = true
-    
+    tableView.backgroundColor = .clear
+
     tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
-    tableView.isScrollEnabled = true
+    tableView.isScrollEnabled = false
     
     return tableView
   }()
@@ -77,13 +88,13 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     emptyState.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
     emptyState.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor).isActive = true
     
-    addSubview(tableView)
+    addSubview(scrollView)
 
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-    tableView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-    tableView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-    
+    scrollView.translatesAutoresizingMaskIntoConstraints = false
+    scrollView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+    scrollView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+    scrollView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+    scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
   }
   
   func viewWillEnter(data: Any?){
@@ -122,6 +133,10 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
   }
   
   func downloadDidUpdate(pack: MGLOfflinePack?) {
+    defer {
+      scrollView.contentSize.height = tableView.intrinsicContentSize.height
+    }
+    
     if(pack != nil){
       let index = OfflineManager.shared.downloads!.firstIndex(of: pack!)
       
