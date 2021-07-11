@@ -79,8 +79,8 @@ extension HUDMessage {
     )
   }
   
-  static func layer(_ layer: Layer) -> HUDMessage {
-    return HUDMessage.Quick(title: layer.name, systemName: "arrow.left.arrow.right.square.fill")
+  static func magicPinned(_ layer: Layer) -> HUDMessage {
+    return HUDMessage.Quick(title: layer.name, systemName: "pin.fill", tintColour: .systemBlue)
   }
   
   static let urlCommandInvalid = HUDMessage(title: "Command Invalid", systemName: "xmark.octagon.fill", tintColour: .systemRed)

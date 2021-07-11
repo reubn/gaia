@@ -682,7 +682,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     let layer = LayerManager.shared.magicPinned(forward: true)
     
     if(layer != nil) {
-      HUDManager.shared.displayMessage(message: .layer(layer!))
+      HUDManager.shared.displayMessage(message: .magicPinned(layer!))
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
   }
@@ -691,7 +691,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     let layer = LayerManager.shared.magicPinned(forward: false)
     
     if(layer != nil) {
-      HUDManager.shared.displayMessage(message: .layer(layer!))
+      HUDManager.shared.displayMessage(message: .magicPinned(layer!))
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
   }
