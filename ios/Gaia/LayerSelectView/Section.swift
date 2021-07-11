@@ -148,7 +148,7 @@ class Section: UIStackView {
     }
   }
   
-  func updateState(){
+  func updateState(first: Bool = false){
     switch openState {
       case .open:
         sectionOpenConstraint.isActive = true
@@ -164,9 +164,11 @@ class Section: UIStackView {
         sectionHiddenConstraint.isActive = true
     }
     
-//    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // needs more delay
-//      self.scrollView.heightDidChange()
-//    }
+    if(!first) {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // needs more delay
+        self.scrollView.heightDidChange()
+      }
+    }
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
