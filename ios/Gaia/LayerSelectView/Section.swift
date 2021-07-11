@@ -342,6 +342,8 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       return cell
     }
     
+    cell.setNeedsLayout()
+    
     var accessory: LayerCellAccessory
 
     if(_layer.enabled || _layer.visible || numberDisabledHidden == 0){
