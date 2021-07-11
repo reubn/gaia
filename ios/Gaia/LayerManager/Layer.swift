@@ -12,6 +12,7 @@ public class Layer: NSManagedObject {
   @NSManaged public var visible: Bool
   @NSManaged public var enabled: Bool
   @NSManaged public var pinned: Bool
+  @NSManaged public var quickToggle: Bool
   @NSManaged public var group: String
   @NSManaged public var groupIndex: Int16
   @NSManaged public var id: String
@@ -82,6 +83,7 @@ extension Layer {
       
       self.pinned = user.pinned
       self.enabled = user.enabled
+      self.quickToggle = user.quickToggle
     }
     
     self.style = layerDefinition.style

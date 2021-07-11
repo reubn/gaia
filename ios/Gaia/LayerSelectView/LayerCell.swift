@@ -59,6 +59,40 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     
     return label
   }()
+  
+  var quickToggleDisplayed: Bool = false {
+    didSet {
+      if(oldValue != quickToggleDisplayed) {
+        quickToggleBadge.isHidden = !quickToggleDisplayed
+      }
+      
+      if let _layer = _layer,
+         quickToggleDisplayed {
+        quickToggleBadge.tintColor = _layer.enabled ? .systemYellow : .systemGray
+      }
+    }
+  }
+  
+  lazy var quickToggleBadge: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = UIImage(systemName: "bolt.fill")
+    imageView.contentMode = .scaleAspectFit
+    
+    imageView.layer.shadowColor = UIColor.white.cgColor
+    imageView.layer.shadowOffset = CGSize(width: 0, height: 0)
+    imageView.layer.shadowOpacity = 0.33
+    imageView.layer.shadowRadius = 2
+    imageView.layer.masksToBounds = false
+    
+    addSubview(imageView)
+    
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.widthAnchor.constraint(equalToConstant: 12).isActive = true
+    imageView.topAnchor.constraint(equalTo: preview.topAnchor, constant: 5).isActive = true
+    imageView.leftAnchor.constraint(equalTo: preview.leftAnchor, constant: 5).isActive = true
+    
+    return imageView
+  }()
 
   var previewBlurReasons: [PreviewBlurReason] = [] {
     didSet {
@@ -268,6 +302,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     accessibilityLabel = title.text! + " Layer"
 
     accessoryType = _layer.visible ? .checkmark : .none
+    
+    quickToggleDisplayed = _layer.quickToggle
 
     DispatchQueue.main.async { // allow time for .isVisible() to return correct result
       self.needsUpdating = true

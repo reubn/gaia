@@ -6,7 +6,7 @@ import Mapbox
 class LayerManager {
   private let managedContext: NSManagedObjectContext
   
-  var magicLayers: [Layer]?
+  var savedQuickToggleLayers: [Layer]?
 
   let multicastCompositeStyleDidChangeDelegate = MulticastDelegate<(LayerManagerDelegate)>()
 
@@ -242,41 +242,41 @@ class LayerManager {
     layers.filter({$0.group == layerGroup.id})
   }
 
-  public func magic(bounds: MGLCoordinateBounds) -> (count: Int, restore: Bool) {
-    let visibleOverlayLayers = layers.filter({
+  public func quickToggle(bounds: MGLCoordinateBounds) -> (count: Int, restore: Bool) {
+    let visibleQuickToggleLayers = layers.filter({
       $0.visible
+      && $0.quickToggle
       && $0.enabled
-      && !$0.isOpaque
       && (
         $0.style.bounds.superbound == nil
         || bounds.intersects(with: $0.style.bounds.superbound!)
       )
     })
     
-    if(!visibleOverlayLayers.isEmpty) {
-      // visible overlays, capture
-      magicLayers = visibleOverlayLayers
+    if(!visibleQuickToggleLayers.isEmpty) {
+      // visible quick toggle, capture
+      savedQuickToggleLayers = visibleQuickToggleLayers
 
       // and hide them
-      hide(layers: visibleOverlayLayers)
+      hide(layers: visibleQuickToggleLayers)
       
-      return (count: visibleOverlayLayers.count, restore: false)
+      return (count: visibleQuickToggleLayers.count, restore: false)
     } else {
       //  no visible overlays
-      let visibleMagicLayers = magicLayers?.filter({$0.style.bounds.superbound == nil || bounds.intersects(with: $0.style.bounds.superbound!)}) ?? []
+      let visibleQuickToggleLayers = savedQuickToggleLayers?.filter({$0.style.bounds.superbound == nil || bounds.intersects(with: $0.style.bounds.superbound!)}) ?? []
     
       let layersToRestore: [Layer?] = {
-        if(!visibleMagicLayers.isEmpty) {
+        if(!visibleQuickToggleLayers.isEmpty) {
           // restore captured layers in bounds
-          return visibleMagicLayers
+          return visibleQuickToggleLayers
         }
         
-        let transparent = layers.filter({!$0.isOpaque && $0.enabled}).sorted(by: layerSortingFunction)
+        let quickToggleLayers = layers.filter({$0.quickToggle && $0.enabled}).sorted(by: layerSortingFunction)
         
         return [
-          // or top most overlay with and in bounds
-          transparent.first(where: {$0.style.bounds.superbound != nil && bounds.intersects(with: $0.style.bounds.superbound!)})
-            ?? transparent.first(where: {$0.style.bounds.superbound == nil}) // or top most global overlay
+          // or top most quick toggle with and in bounds
+          quickToggleLayers.first(where: {$0.style.bounds.superbound != nil && bounds.intersects(with: $0.style.bounds.superbound!)})
+            ?? quickToggleLayers.first(where: {$0.style.bounds.superbound == nil}) // or top most global overlay
         ]
       }()
         
@@ -284,7 +284,7 @@ class LayerManager {
       // and show them
       show(layers: layersToRestore)
 
-      magicLayers = nil
+      savedQuickToggleLayers = nil
       
       return (count: layersToRestore.count, restore: true)
     }

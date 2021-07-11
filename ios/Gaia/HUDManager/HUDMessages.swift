@@ -65,17 +65,17 @@ extension HUDMessage {
     return HUDMessage(title: title, systemName: "xmark.octagon.fill", tintColour: .systemRed)
   }
   
-  static func magic(_ tuple: (count: Int, restore: Bool)) -> HUDMessage {
+  static func quickToggle(_ tuple: (count: Int, restore: Bool)) -> HUDMessage {
     let (count, restore) = tuple
     
     let quantity = count == 1
-      ? "1 Layer"
+      ? "Layer"
       : "\(count) Layers"
     
     return HUDMessage.Quick(
       title: "\(quantity) \(restore ? "Restored" : "Hidden")",
-      systemName: "wand.and.stars",
-      tintColour: restore ? .systemIndigo : nil
+      systemName: "bolt.fill",
+      tintColour: .systemYellow
     )
   }
   

@@ -75,6 +75,13 @@ extension Section {
           self.layerSelectConfig.layerEditDelegate?.requestLayerEdit(.duplicate(layer))
       })
       
+      moreChildren.append(UIAction(
+        title: layer.quickToggle ? "Disable Quick Toggle" : "Enable Quick Toggle",
+        image: UIImage(systemName: layer.quickToggle ? "bolt.slash.fill" : "bolt.fill")) { _ in
+          layer.quickToggle = !layer.quickToggle
+          LayerManager.shared.save()
+      })
+      
       moreChildren.append(UIMenu(
         title: "Dark Mode",
         image: UIImage(systemName: "moon"),

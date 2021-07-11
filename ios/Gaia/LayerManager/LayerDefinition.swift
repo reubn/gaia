@@ -23,6 +23,7 @@ struct LayerDefinition: Codable, Hashable {
     
     var pinned = false
     var enabled = true
+    var quickToggle = false
   }
 }
 
@@ -44,7 +45,8 @@ extension LayerDefinition.User {
       groupIndex: Int(layer.groupIndex),
       
       pinned: layer.pinned,
-      enabled: layer.enabled
+      enabled: layer.enabled,
+      quickToggle: layer.quickToggle
     )
   }
 }
