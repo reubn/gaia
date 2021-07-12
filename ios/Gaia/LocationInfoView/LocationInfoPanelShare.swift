@@ -54,7 +54,10 @@ extension LocationInfoPanelViewController {
       }() : nil
 
       let activityViewController = UIActivityViewController(
-        activityItems: [CoordinateActivityItemProvider(coordinate: coordinate, image: composite), composite as Any],
+        activityItems: [
+          CoordinateTextActivityItemProvider(coordinate: coordinate, image: composite),
+          CoordinateImageActivityItemSource(coordinate: coordinate, image: composite)
+        ],
         applicationActivities: [
           GoogleMapsActivity(coordinate: coordinate),
           GoogleMapsStreetViewActivity(coordinate: coordinate)
@@ -67,7 +70,7 @@ extension LocationInfoPanelViewController {
   }
 }
 
-class CoordinateActivityItemProvider: UIActivityItemProvider {
+class CoordinateTextActivityItemProvider: UIActivityItemProvider {
   let coordinate: CLLocationCoordinate2D
   let image: UIImage?
   
@@ -104,24 +107,46 @@ class CoordinateActivityItemProvider: UIActivityItemProvider {
 }
   
   override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-    if(activityType != nil) {
-      switch activityType! {
-        case .message, .postToFacebook, .postToWeibo, .postToVimeo, .postToFlickr, .postToTwitter, .postToTencentWeibo:
-          return "Shared Location from Gaia:\n\n\(coordinate.format(.decimal(.low)))\n\n\(item)"
-        case .airDrop:
-          return URL(string: "https://maps.apple.com?ll=\(coordinate.latitude),\(coordinate.longitude)")!
-        case .copyToPasteboard:
-          return coordinate.format(.decimal(.high))
-        default:
-          return coordinate.format(.decimal(.low))
-      }
+    let `default` = "Shared Location from Gaia:\n\n\(coordinate.format(.decimal(.low)))\n\n\(item)"
+    
+    guard let activityType = activityType else {
+      return `default`
     }
     
-    return coordinate.format(.decimal(.low))
+    switch activityType {
+      case .airDrop:
+        return URL(string: "https://maps.apple.com?ll=\(coordinate.latitude),\(coordinate.longitude)")!
+      default:
+        return `default`
+    }
   }
   
   override func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType: UIActivity.ActivityType?) -> String {
     return "Shared Location from Gaia: \(coordinate.format(.decimal(.low)))"
+  }
+}
+
+class CoordinateImageActivityItemSource: NSObject, UIActivityItemSource {
+  let coordinate: CLLocationCoordinate2D
+  let image: UIImage?
+  
+  init(coordinate: CLLocationCoordinate2D, image: UIImage?) {
+    self.coordinate = coordinate
+    self.image = image
+  }
+  
+  
+  func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+    return image as Any
+  }
+  
+  func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+    switch activityType! {
+      case .message, .postToFacebook, .postToWeibo, .postToVimeo, .postToFlickr, .postToTwitter, .postToTencentWeibo:
+        return image
+      default:
+        return nil
+    }
   }
 }
 
@@ -181,5 +206,3 @@ class GoogleMapsStreetViewActivity: UIActivity {
     activityDidFinish(true)
   }
 }
-
-
