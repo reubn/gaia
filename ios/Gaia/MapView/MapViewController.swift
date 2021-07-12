@@ -598,6 +598,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     if gestureReconizer.state == UIGestureRecognizer.State.began {
       let change = LayerManager.shared.quickToggle(bounds: mapView.visibleCoordinateBounds)
       
+      if(change.count == 0) {
+        return
+      }
+      
       HUDManager.shared.displayMessage(message: .quickToggle(change))
       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }

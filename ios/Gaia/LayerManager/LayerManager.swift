@@ -265,7 +265,7 @@ class LayerManager {
       //  no visible overlays
       let visibleQuickToggleLayers = savedQuickToggleLayers?.filter({$0.style.bounds.superbound == nil || bounds.intersects(with: $0.style.bounds.superbound!)}) ?? []
     
-      let layersToRestore: [Layer?] = {
+      let layersToRestore: [Layer] = {() -> [Layer?] in 
         if(!visibleQuickToggleLayers.isEmpty) {
           // restore captured layers in bounds
           return visibleQuickToggleLayers
@@ -278,7 +278,7 @@ class LayerManager {
           quickToggleLayers.first(where: {$0.style.bounds.superbound != nil && bounds.intersects(with: $0.style.bounds.superbound!)})
             ?? quickToggleLayers.first(where: {$0.style.bounds.superbound == nil}) // or top most global overlay
         ]
-      }()
+      }().compactMap({$0})
         
       
       // and show them
