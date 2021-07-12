@@ -115,7 +115,7 @@ class CoordinateTextActivityItemProvider: UIActivityItemProvider {
     
     switch activityType {
       case .airDrop:
-        return URL(string: "https://maps.apple.com?ll=\(coordinate.latitude),\(coordinate.longitude)")!
+        return URL(string: "https://maps.apple.com?q=Shared%20Location&ll=\(coordinate.latitude),\(coordinate.longitude)")
       default:
         return `default`
     }
