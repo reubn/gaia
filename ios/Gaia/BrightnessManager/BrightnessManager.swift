@@ -25,7 +25,7 @@ class BrightnessManager: SettingsManagerDelegate {
   
   init() {
     SettingsManager.shared.multicastSettingManagerDelegate.add(delegate: self)
-    NotificationCenter.default.addObserver(self, selector: #selector(userChangedBrightness), name: UIScreen.brightnessDidChangeNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(systemBrightnessWasChanged), name: UIScreen.brightnessDidChangeNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(lowPowerModeChanged), name: .NSProcessInfoPowerStateDidChange, object: nil)
     
     touch()
@@ -111,7 +111,7 @@ class BrightnessManager: SettingsManagerDelegate {
     holds = holds.filter({$0.immortal})
   }
   
-  @objc func userChangedBrightness() {
+  @objc func systemBrightnessWasChanged() {
     defaultBrightness = screen.brightness
   }
   
