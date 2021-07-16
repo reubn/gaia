@@ -35,15 +35,15 @@ class BrightnessManager: SettingsManagerDelegate {
     touch()
   }
   
-  func touch(){
+  func touch(instant: Bool? = false){
     if !managementActive {
       return
     }
     
     if holds.isEmpty {
-      enactChange(level: SettingsManager.shared.autoAdjustmentLowPoint.value, instant: false)
+      enactChange(level: SettingsManager.shared.autoAdjustmentLowPoint.value, instant: instant ?? false)
     } else {
-      enactChange(level: defaultBrightness ?? fallbackBrightness, instant: true)
+      enactChange(level: defaultBrightness ?? fallbackBrightness, instant: instant ?? true)
     }
   }
   
@@ -112,7 +112,11 @@ class BrightnessManager: SettingsManagerDelegate {
   }
   
   @objc func systemBrightnessWasChanged() {
-    defaultBrightness = screen.brightness
+    if(UIApplication.shared.applicationState == .inactive){
+      defaultBrightness = screen.brightness
+    } else {
+      touch(instant: true)
+    }
   }
   
   @objc func lowPowerModeChanged() {
