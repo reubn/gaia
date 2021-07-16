@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-fileprivate let timeout: Double = 1.0
+fileprivate let timeout: Double = 1.25
 fileprivate let fadeDuration: Double = 0.1
 fileprivate let fadeTicksPerSecond: Double = 120
 fileprivate let fallbackBrightness: CGFloat = 0.75
