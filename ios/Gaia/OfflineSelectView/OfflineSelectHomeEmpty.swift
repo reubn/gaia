@@ -6,7 +6,7 @@ class OfflineSelectHomeEmpty: UIView {
     let label = UILabel()
       
     label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-    label.textColor = .secondaryLabel
+    label.textColor = .label
     label.numberOfLines = 0
 
     addSubview(label)
@@ -22,7 +22,7 @@ class OfflineSelectHomeEmpty: UIView {
     let label = UILabel()
       
     label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-    label.textColor = .tertiaryLabel
+    label.textColor = .secondaryLabel
     label.numberOfLines = 0
 
     addSubview(label)
