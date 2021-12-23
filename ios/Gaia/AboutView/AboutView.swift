@@ -140,16 +140,16 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     
     if let heading = userLocation.heading {
       let newRotation = MapViewController.shared.mapView.userTrackingMode == .followWithHeading
-        ? CGFloat(heading.trueHeading - 45)
+        ? heading.trueHeading - 45
         : 0
       
       let transform = CGAffineTransform(rotationAngle: newRotation * .pi / 180)
       
-      let currentRotation: CGFloat = {
+      let currentRotation: Double = {
         let raw = atan2(overlayView.transform.b, overlayView.transform.a)
         let corrected = raw < 0 ? raw + 2 * .pi : raw
         
-        return corrected * 180 / .pi
+        return corrected * 180 / Double.pi
       }()
       
       let r1 = currentRotation < 0 ? currentRotation + 360 : currentRotation
@@ -158,7 +158,7 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
       let delta = abs(r1 - r2)
       
       let duration = (delta / 360) * 0.5
-      let durationCorrected = duration < 0.05 ? 0 : Double(duration)
+      let durationCorrected = duration < 0.05 ? 0 : duration
       
       UIView.animate(withDuration: durationCorrected){
         self.overlayView.transform = transform

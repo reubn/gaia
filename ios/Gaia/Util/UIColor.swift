@@ -6,12 +6,12 @@ import Foundation
 import UIKit
 
 extension UIColor {
-  convenience init(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat, _ alpha: CGFloat = 1){
+  convenience init(_ red: Double, _ green: Double, _ blue: Double, _ alpha: Double = 1){
     self.init(
-      red: CGFloat(red) / 255,
-      green: CGFloat(green) / 255,
-      blue: CGFloat(blue) / 255,
-      alpha: CGFloat(alpha)
+      red: red / 255,
+      green: green / 255,
+      blue: blue / 255,
+      alpha: alpha
     )
   }
   
@@ -21,10 +21,10 @@ extension UIColor {
     }
     
     self.init(
-      red: CGFloat(array[0]) / 255,
-      green: CGFloat(array[1]) / 255,
-      blue: CGFloat(array[2]) / 255,
-      alpha: CGFloat(array.count == 4 ? array[3] : 1)
+      red: Double(array[0]) / 255,
+      green: Double(array[1]) / 255,
+      blue: Double(array[2]) / 255,
+      alpha: Double(array.count == 4 ? array[3] : 1)
     )
   }
   
@@ -39,7 +39,7 @@ extension UIColor {
       hex = hex.map({String(repeating: $0, count: 2)}).joined()
     }
     
-    let red, green, blue, alpha: CGFloat
+    let red, green, blue, alpha: Double
     
     let scanner = Scanner(string: hex)
     var hexNumber: UInt64 = 0
@@ -49,16 +49,16 @@ extension UIColor {
     
     switch hex.count {
       case 6:
-        red = CGFloat((hexNumber & 0xFF0000) >> 16)
-        green = CGFloat((hexNumber & 0x00FF00) >> 8)
-        blue = CGFloat(hexNumber & 0x0000FF)
+        red = Double((hexNumber & 0xFF0000) >> 16)
+        green = Double((hexNumber & 0x00FF00) >> 8)
+        blue = Double(hexNumber & 0x0000FF)
         alpha = 1.0
         
       case 8:
-        red = CGFloat((hexNumber & 0xFF000000) >> 24)
-        green = CGFloat((hexNumber & 0x00FF0000) >> 16)
-        blue = CGFloat((hexNumber & 0x0000FF00) >> 8)
-        alpha = CGFloat(hexNumber & 0x000000FF) / 255.0
+        red = Double((hexNumber & 0xFF000000) >> 24)
+        green = Double((hexNumber & 0x00FF0000) >> 16)
+        blue = Double((hexNumber & 0x0000FF00) >> 8)
+        alpha = Double(hexNumber & 0x000000FF) / 255.0
         
       default:
         return nil
@@ -67,7 +67,7 @@ extension UIColor {
     self.init(red, green, blue, alpha)
   }
   
-  convenience init(hue: CGFloat, saturation: CGFloat, lightness: CGFloat, alpha: CGFloat = 1) {
+  convenience init(hue: Double, saturation: Double, lightness: Double, alpha: Double = 1) {
     let brightness = lightness + saturation * min(lightness, 1 - lightness)
     let saturation = brightness == 0 ? 0 : 2 * (1 - (lightness / brightness))
     
@@ -88,7 +88,7 @@ extension UIColor {
     if let op = str.firstIndex(of: "("),
        let ep = str.firstIndex(of: ")"),
        ep == str.index(before: str.endIndex) {
-      var alpha: CGFloat?
+      var alpha: Double?
       
       let function = str[..<op]
       let params = str[str.index(after: op)..<ep]
@@ -126,7 +126,7 @@ extension UIColor {
             return nil
           }
           
-          self.init(hue: CGFloat(hue), saturation: CGFloat(saturation), lightness: CGFloat(lightness))
+          self.init(hue: hue, saturation: saturation, lightness: lightness)
         default:
           return nil
       }
@@ -161,14 +161,14 @@ extension UIColor {
   }
   
   struct Components {
-    let red: CGFloat
-    let green: CGFloat
-    let blue: CGFloat
-    let alpha: CGFloat
+    let red: Double
+    let green: Double
+    let blue: Double
+    let alpha: Double
   }
 }
 
-fileprivate func normaliseNumber(_ string: String, outOf: CGFloat = 255) -> CGFloat? {
+fileprivate func normaliseNumber(_ string: String, outOf: Double = 255) -> Double? {
   var string = string
   var outOf = outOf
   
@@ -186,7 +186,7 @@ fileprivate func normaliseNumber(_ string: String, outOf: CGFloat = 255) -> CGFl
     return nil
   }
   
-  return CGFloat(double) / outOf
+  return double / outOf
 }
 
 // http://www.w3.org/TR/css3-color/

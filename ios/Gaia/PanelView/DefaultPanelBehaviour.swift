@@ -4,5 +4,5 @@ import UIKit
 import FloatingPanel
 
 class DefaultPanelBehaviour: FloatingPanelBehavior {
-  let removalInteractionVelocityThreshold: CGFloat = 2
+  let removalInteractionVelocityThreshold: Double = 2
 }

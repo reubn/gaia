@@ -3,7 +3,7 @@ import UIKit
 
 class HUDView: UIView {
   let size = CGSize(width: 196, height: 50)
-  let padding: CGFloat = 30
+  let padding: Double = 30
   
   let message: HUDMessage
   let index: Int
@@ -11,8 +11,8 @@ class HUDView: UIView {
   
   let defaultIconColour: UIColor = .secondaryLabel
   
-//  lazy var visible: CGFloat = self._window.safeAreaInsets.top - 4 + (self.size.height * (CGFloat(index) + 1)) + (4 * CGFloat(index))
-  lazy var visible: CGFloat = self._window.safeAreaInsets.top - 4 + self.size.height
+//  lazy var visible: Double = self._window.safeAreaInsets.top - 4 + (self.size.height * (Double(index) + 1)) + (4 * Double(index))
+  lazy var visible: Double = self._window.safeAreaInsets.top - 4 + self.size.height
   
   lazy var icon: UIImageView = {
     let iconSize = (size.height / 2) - 2
@@ -101,7 +101,7 @@ class HUDView: UIView {
   
   func show(){
     _window.bringSubviewToFront(self)
-    layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
+    layer.zPosition = Double.greatestFiniteMagnitude
     
     let showDuration = 0.45
 

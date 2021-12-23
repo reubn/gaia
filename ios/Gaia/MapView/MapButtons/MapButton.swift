@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 class MapButton: UIButton {
-  let buttonSize: CGFloat = 45
+  let buttonSize: Double = 45
   
   init(){
     super.init(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))

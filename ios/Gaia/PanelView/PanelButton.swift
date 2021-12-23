@@ -2,14 +2,14 @@ import Foundation
 import UIKit
 
 class PanelButton: UIButton {
-  fileprivate let inset: CGFloat?
+  fileprivate let inset: Double?
   fileprivate let colour: UIColor
   fileprivate let backgroundColour: UIColor?
   fileprivate let deemphasise: Bool
   
   func getDefaultWeight() -> UIImage.SymbolWeight{.semibold}
   
-  init(_ systemName: String, weight: UIImage.SymbolWeight? = nil, inset: CGFloat? = nil, colour: UIColor = .systemBlue, backgroundColour: UIColor? = nil, deemphasise: Bool = false){
+  init(_ systemName: String, weight: UIImage.SymbolWeight? = nil, inset: Double? = nil, colour: UIColor = .systemBlue, backgroundColour: UIColor? = nil, deemphasise: Bool = false){
     self.colour = colour
     self.backgroundColour = backgroundColour
     self.deemphasise = deemphasise

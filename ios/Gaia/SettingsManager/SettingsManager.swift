@@ -10,7 +10,7 @@ class SettingsManager {
   lazy var rightHandedMenu = Setting(defaults, key: "RightHandedMenu", defaultValue: true)
   
   lazy var autoAdjustment = Setting(defaults, key: "AutoAdjustment", defaultValue: false)
-  lazy var autoAdjustmentLowPoint = Setting(defaults, key: "AutoAdjustmentLowPoint", defaultValue: CGFloat(0.1))
+  lazy var autoAdjustmentLowPoint = Setting(defaults, key: "AutoAdjustmentLowPoint", defaultValue: 0.1)
   
   func settingsDidChange(){
     print("sm sdc")

@@ -215,7 +215,7 @@ extension Section {
       }
 
       func setColourElement(interfacedLayer: Style.InterfacedLayer, title: String? = nil) -> UIMenuElement {
-        let colour = interfacedLayer.colour ?? iconColour.withAlphaComponent(CGFloat(interfacedLayer.opacity ?? 1))
+        let colour = interfacedLayer.colour ?? iconColour.withAlphaComponent(interfacedLayer.opacity ?? 1)
         let iconName = interfacedLayer.colourIsExpression
           ? "exclamationmark.circle.fill"
           : interfacedLayer.colour != nil
@@ -259,7 +259,7 @@ extension Section {
       }
       
       func setOpacityElement(interfacedLayer: Style.InterfacedLayer, title: String? = nil) -> UIMenuElement {
-        let iconColour = (interfacedLayer.colour ?? iconColour).withAlphaComponent(CGFloat(interfacedLayer.opacity ?? 1))
+        let iconColour = (interfacedLayer.colour ?? iconColour).withAlphaComponent(interfacedLayer.opacity ?? 1)
         
         let iconName = interfacedLayer.opacityIsExpression
           ? "exclamationmark.square.fill"
@@ -299,7 +299,7 @@ extension Section {
           
           return UIAction(
             title: String(format: "%d%%", percent),
-            image: UIImage(systemName: "square.fill")?.withTintColor(iconColour.withAlphaComponent(CGFloat(opacity))).withRenderingMode(.alwaysOriginal),
+            image: UIImage(systemName: "square.fill")?.withTintColor(iconColour.withAlphaComponent(opacity)).withRenderingMode(.alwaysOriginal),
             state: selected ? .on : .off) { _ in
             layer.style = layer.style.with(interfacedLayers.map({$0.setting(.opacity, to: opacity)}))
             LayerManager.shared.save()

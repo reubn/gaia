@@ -36,8 +36,8 @@ extension CLLocationCoordinate2D: Codable, Equatable, Hashable {
   }
   
   func format(decimal accuracy: FormatAccuracy) -> String {
-    let lat = Double(latitude)
-    let lng = Double(longitude)
+    let lat = latitude
+    let lng = longitude
     
     switch accuracy {
       case .high: return String(format: "%.6f, %.6f", lat, lng) // 11cm worst-case

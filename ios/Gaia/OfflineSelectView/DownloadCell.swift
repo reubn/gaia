@@ -7,9 +7,9 @@ import Mapbox
 class DownloadCell: UITableViewCell {
   let _t = 16
   
-  let cellHeight: CGFloat = 100
-  let previewSpacing: CGFloat = 15
-  lazy var previewSize: CGFloat = cellHeight - (2 * previewSpacing)
+  let cellHeight: Double = 100
+  let previewSpacing: Double = 15
+  lazy var previewSize: Double = cellHeight - (2 * previewSpacing)
   
   var pack: MGLOfflinePack?
   var context: PackContext? = nil
@@ -187,10 +187,10 @@ class DownloadCell: UITableViewCell {
       
       if(height >= width){
         preview.heightAnchor.constraint(equalToConstant: previewSize).isActive = true
-        preview.widthAnchor.constraint(equalTo: preview.heightAnchor, multiplier: CGFloat(width / height)).isActive = true
+        preview.widthAnchor.constraint(equalTo: preview.heightAnchor, multiplier: width / height).isActive = true
       } else {
         preview.widthAnchor.constraint(equalToConstant: previewSize).isActive = true
-        preview.heightAnchor.constraint(equalTo: preview.widthAnchor, multiplier: CGFloat(height / width)).isActive = true
+        preview.heightAnchor.constraint(equalTo: preview.widthAnchor, multiplier: height / width).isActive = true
       }
       
       

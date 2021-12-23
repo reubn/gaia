@@ -3,7 +3,7 @@ import UIKit
 import Mapbox
 
 class UserLocationButton: MapButton {
-  let iconSize: CGFloat = 18
+  let iconSize: Double = 18
   
   var arrow: CAShapeLayer?
   var mode: MGLUserTrackingMode = .none
@@ -41,7 +41,7 @@ class UserLocationButton: MapButton {
  
   func updateArrowForTrackingMode(mode: MGLUserTrackingMode) {
     self.mode = mode
-    let rotatedArrow = CGFloat(0.85)
+    let rotatedArrow = 0.85
      
     switch mode {
       case .none:
@@ -61,7 +61,7 @@ class UserLocationButton: MapButton {
     }
   }
  
-  func updateArrow(fillColor: UIColor, strokeColor: UIColor, rotation: CGFloat) {
+  func updateArrow(fillColor: UIColor, strokeColor: UIColor, rotation: Double) {
     guard let arrow = arrow else { return }
     
     arrow.fillColor = fillColor.cgColor

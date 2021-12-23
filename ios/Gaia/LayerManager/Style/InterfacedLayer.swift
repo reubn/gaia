@@ -112,7 +112,7 @@ extension Style {
             return nil
           }
  
-          opacityFromColourValue = Double(uiColor.components?.alpha ?? 1)
+          opacityFromColourValue = uiColor.components?.alpha ?? 1
           
           return uiColor
         }
@@ -133,7 +133,7 @@ extension Style {
       }()
       
       let opacity = opacityValue ?? opacityFromColourValue
-      let colour = colourBeforeOpacityModification?.withAlphaComponent(CGFloat(opacity))
+      let colour = colourBeforeOpacityModification?.withAlphaComponent(opacity)
       
       let interfacedLayer = InterfacedLayer(
         id: id,
@@ -182,7 +182,7 @@ extension Style {
           }
         }
         
-        if let opacity = desc.opacity ?? {let o = desc.colour?.components?.alpha; return o != nil ? Double(o!) : nil}() {
+        if let opacity = desc.opacity ?? desc.colour?.components?.alpha {
           switch type {
             case "raster": copy.layers[index].paint?[dynamicMember: "raster-opacity"] = AnyCodable(opacity)
             case "line": copy.layers[index].paint?[dynamicMember: "line-opacity"] = AnyCodable(opacity)

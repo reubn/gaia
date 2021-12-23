@@ -38,7 +38,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
   }
 
   let preview = MGLMapView(frame: CGRect.zero)
-  let previewSpacing: CGFloat = 15
+  let previewSpacing: Double = 15
   let title = UILabel()
   
   lazy var canvasView = CanvasView(frame: preview.frame, size: 10)

@@ -131,7 +131,7 @@ extension _AnyEncodable {
             try container.encode(nsnumber.intValue)
         case .floatType, .float32Type:
             try container.encode(nsnumber.floatValue)
-        case .doubleType, .float64Type, .cgFloatType:
+          case .doubleType, .float64Type, .cgFloatType:
             try container.encode(nsnumber.doubleValue)
         @unknown default:
             let context = EncodingError.Context(codingPath: container.codingPath, debugDescription: "NSNumber cannot be encoded because its type is not handled")

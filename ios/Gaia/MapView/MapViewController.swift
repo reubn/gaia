@@ -171,8 +171,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       ? (10, 15)
       : (-6, 6)
     
-    button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: CGFloat(bottom)).isActive = true
-    button.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: CGFloat(left)).isActive = true
+    button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: Double(bottom).isActive = true
+    button.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: Double(left).isActive = true
     
     button.addTarget(self, action: #selector(appIconButtonTapped), for: .touchUpInside)
     button.accessibilityLabel = "About"
@@ -195,7 +195,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   lazy var warningIconCountBackground = UIImage(systemName: "circle.fill")!.withTintColor(.white)
   lazy var warningIconCount: UIImageView = {
     let imageView = UIImageView(image: nil)
-    let size: CGFloat = 15
+    let size: Double = 15
 
     warningButton.addSubview(imageView)
     
@@ -213,7 +213,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     let button = MapButton()
     button.setImage(UIImage(systemName: "exclamationmark.triangle.fill"), for: .normal)
     
-    let inset: CGFloat = 10
+    let inset: Double = 10
     button.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
     button.imageView!.contentMode = .scaleAspectFit
     button.contentVerticalAlignment = .fill

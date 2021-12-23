@@ -4,7 +4,7 @@ import UIKit
 fileprivate let timeout: Double = 1.25
 fileprivate let fadeDuration: Double = 0.1
 fileprivate let fadeTicksPerSecond: Double = 120
-fileprivate let fallbackBrightness: CGFloat = 0.75
+fileprivate let fallbackBrightness: Double = 0.75
 
 class BrightnessManager: SettingsManagerDelegate {
   private let screen = UIScreen.main
@@ -19,7 +19,7 @@ class BrightnessManager: SettingsManagerDelegate {
     }
   }
   
-  var defaultBrightness: CGFloat?
+  var defaultBrightness: Double?
   
   var fadeWorkItems: [DispatchWorkItem] = []
   
@@ -62,7 +62,7 @@ class BrightnessManager: SettingsManagerDelegate {
     self.holds.remove(hold)
   }
   
-  private func enactChange(level: CGFloat, instant: Bool = false){
+  private func enactChange(level: Double, instant: Bool = false){
     clearFade()
     
     if(instant) {
@@ -72,18 +72,18 @@ class BrightnessManager: SettingsManagerDelegate {
     }
   }
   
-  private func fade(to value: CGFloat, duration: TimeInterval, ticksPerSecond: Double) {
+  private func fade(to value: Double, duration: TimeInterval, ticksPerSecond: Double) {
     let startingBrightness = screen.brightness
     let delta = value - startingBrightness
     let totalTicks = Int(ticksPerSecond * duration)
-    let changePerTick = delta / CGFloat(totalTicks)
+    let changePerTick = delta / Double(totalTicks)
     let delayBetweenTicks = 1 / ticksPerSecond
     
     let time = DispatchTime.now()
     
     for i in 1...totalTicks {
       let workItem = DispatchWorkItem {
-        self.screen.brightness = max(min(startingBrightness + (changePerTick * CGFloat(i)), 1), 0)
+        self.screen.brightness = max(min(startingBrightness + (changePerTick * Double(i)), 1), 0)
       }
       
       fadeWorkItems.append(workItem)

@@ -2,9 +2,9 @@ import Foundation
 import UIKit
 
 class CanvasView: UIView {
-  let squareSize: CGFloat
+  let squareSize: Double
   
-  init(frame: CGRect, size: CGFloat = 20) {
+  init(frame: CGRect, size: Double = 20) {
     squareSize = size
     super.init(frame: frame)
   }

@@ -28,7 +28,7 @@ extension UIImage {
     }
   }
   
-  func with(alpha: CGFloat) -> UIImage? {
+  func with(alpha: Double) -> UIImage? {
     UIGraphicsBeginImageContextWithOptions(size, false, scale)
     
     defer {
