@@ -35,7 +35,7 @@ class CoordinatorView: UIScrollView {
     chapter.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor).isActive = true
     chapter.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor).isActive = true
     chapter.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-    chapter.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: UIApplication.shared.windows.first!.safeAreaInsets.bottom).isActive = true // Bug?? Normal bottomAnchor doesn't work
+    chapter.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: (UIApplication.shared.connectedScenes.first! as! UIWindowScene).windows.first!.safeAreaInsets.bottom).isActive = true // Bug?? Normal bottomAnchor doesn't work
     
   }
   

@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 class HUDManager {
-  lazy var window = UIApplication.shared.windows.first(where: {$0.isKeyWindow})
+  lazy var window = (UIApplication.shared.connectedScenes.first! as! UIWindowScene).windows.first(where: {$0.isKeyWindow})
   
   var currentHUDViews: [HUDView] = []
   

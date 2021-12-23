@@ -25,7 +25,7 @@ class PanelLayout: FloatingPanelLayout {
   
   func prepareLayout(surfaceView: UIView, in view: UIView) -> [NSLayoutConstraint] {
     if UIDevice.current.userInterfaceIdiom == .phone {
-      if(UIDevice.current.orientation.isValidInterfaceOrientation ? UIDevice.current.orientation.isPortrait : (UIApplication.shared.windows.first?.windowScene?.interfaceOrientation.isPortrait)!) {
+      if(UIDevice.current.orientation.isValidInterfaceOrientation ? UIDevice.current.orientation.isPortrait : ((UIApplication.shared.connectedScenes.first! as! UIWindowScene).windows.first?.windowScene?.interfaceOrientation.isPortrait)!) {
         // iPhone Portrait
         return [
           surfaceView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),

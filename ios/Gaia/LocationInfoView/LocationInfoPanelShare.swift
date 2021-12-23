@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 import CoreLocation
-import MobileCoreServices
+import UniformTypeIdentifiers
 import LinkPresentation
 
 import Mapbox
@@ -93,7 +93,7 @@ class CoordinateTextActivityItemProvider: UIActivityItemProvider {
     linkMetadata.imageProvider = itemProvider
 
     if(image != nil) {
-      itemProvider.registerDataRepresentation(forTypeIdentifier: kUTTypePNG as String, visibility: .all) {completion in
+      itemProvider.registerDataRepresentation(forTypeIdentifier: UTType.png.identifier, visibility: .all) {completion in
         completion(self.image!.pngData(), nil)
         
         return nil

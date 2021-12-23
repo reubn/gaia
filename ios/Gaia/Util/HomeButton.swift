@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 let hasHomeButton: Bool = {
-  guard let window = UIApplication.shared.windows.first else {
+  guard let window = (UIApplication.shared.connectedScenes.first! as! UIWindowScene).windows.first else {
     return false
   }
   

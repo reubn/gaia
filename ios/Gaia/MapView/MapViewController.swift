@@ -167,7 +167,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     view.addSubview(button)
     
-    let (bottom, left) = UIApplication.shared.windows.first!.safeAreaInsets.bottom > 0
+    let (bottom, left) = (UIApplication.shared.connectedScenes.first! as! UIWindowScene).windows.first!.safeAreaInsets.bottom > 0
       ? (10, 15)
       : (-6, 6)
     
@@ -246,7 +246,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
           : [
               LayerManager.shared.pinnedLayers.sorted(by: LayerManager.shared.layerSortingFunction).first(where: {$0.isOpaque})
                 ?? LayerManager.shared.layers.first(where: {$0.isOpaque})
-            ].filter({$0 != nil})
+            ].compactMap({$0})
         
         if(!layersToShow.isEmpty) {
           LayerManager.shared.show(layers: layersToShow)
