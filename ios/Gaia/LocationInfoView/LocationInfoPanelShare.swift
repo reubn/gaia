@@ -141,7 +141,11 @@ class CoordinateImageActivityItemSource: NSObject, UIActivityItemSource {
   }
   
   func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-    switch activityType! {
+    guard let activityType = activityType else {
+      return nil
+    }
+
+    switch activityType {
       case .message, .postToFacebook, .postToWeibo, .postToVimeo, .postToFlickr, .postToTwitter, .postToTencentWeibo:
         return image
       default:
