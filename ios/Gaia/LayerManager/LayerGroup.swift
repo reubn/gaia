@@ -7,9 +7,9 @@ struct LayerGroup {
   let colour: UIColor
   var icon: String? = nil
   
-  var selectionFunction: (() -> [Layer])? = nil
+  var selectionFunction: (() -> [GaiaLayer])? = nil
   
-  func getLayers() -> [Layer] {
+  func getLayers() -> [GaiaLayer] {
     if(selectionFunction == nil) {
       return LayerManager.shared.getLayers(layerGroup: self)
     } else {

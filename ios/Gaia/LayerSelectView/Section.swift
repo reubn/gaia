@@ -10,15 +10,15 @@ class Section: UIStackView {
   let group: LayerGroup
   let layerSelectConfig: LayerSelectConfig
   
-  let layerCanDrop: ((Layer) -> Bool)?
-  let layerDidDrag: ((Layer) -> ())?
-  let layerDidDrop: ((Layer) -> ())?
+  let layerCanDrop: ((GaiaLayer) -> Bool)?
+  let layerDidDrag: ((GaiaLayer) -> ())?
+  let layerDidDrop: ((GaiaLayer) -> ())?
 
   let tableView = SectionTableView()
   
   unowned let scrollView: LayerSelectView
 
-  var layers: [Layer]
+  var layers: [GaiaLayer]
   var ready = false
   var updating = false
   var missedUpdate = false
@@ -66,9 +66,9 @@ class Section: UIStackView {
     layerSelectConfig: LayerSelectConfig,
     scrollView: LayerSelectView,
     normallyCollapsed: Bool = false,
-    layerCanDrop: ((Layer) -> Bool)? = nil,
-    layerDidDrag: ((Layer) -> ())? = nil,
-    layerDidDrop: ((Layer) -> ())? = nil
+    layerCanDrop: ((GaiaLayer) -> Bool)? = nil,
+    layerDidDrag: ((GaiaLayer) -> ())? = nil,
+    layerDidDrop: ((GaiaLayer) -> ())? = nil
   ){
     self.group = group
     self.layerSelectConfig = layerSelectConfig
@@ -211,7 +211,7 @@ class Section: UIStackView {
     }
   }
   
-   @discardableResult func toggleLayer(layer: Layer, mutuallyExclusive: Bool) -> Bool {
+   @discardableResult func toggleLayer(layer: GaiaLayer, mutuallyExclusive: Bool) -> Bool {
     var result: Bool
     
     if(layer.visible) {
@@ -236,7 +236,7 @@ class Section: UIStackView {
     LayerManager.shared.save()
   }
   
-  func remove(layer: Layer, indexPath: IndexPath){
+  func remove(layer: GaiaLayer, indexPath: IndexPath){
     let layerName = layer.name
     self.layers.remove(at: indexPath.row)
     LayerManager.shared.remove(layer: layer)
@@ -265,8 +265,8 @@ class Section: UIStackView {
 }
 
 struct DragDropContainer {
-  let layer: Layer
-  let layerDidDrag: ((Layer) -> ())?
+  let layer: GaiaLayer
+  let layerDidDrag: ((GaiaLayer) -> ())?
 }
 
 extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDropDelegate, UITableViewDelegate {  

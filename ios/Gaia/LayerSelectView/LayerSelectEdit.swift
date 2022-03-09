@@ -220,6 +220,6 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
 
 enum LayerEditRequest {
   case new
-  case edit(Layer)
-  case duplicate(Layer)
+  case edit(GaiaLayer)
+  case duplicate(GaiaLayer)
 }

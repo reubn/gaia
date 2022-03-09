@@ -13,9 +13,11 @@ extension LocationInfoPanelViewController {
         return callback(nil)
     }
     
+    let altitude = MGLAltitudeForZoomLevel(MapViewController.shared.mapView.mapboxMap.cameraState.zoom, MapViewController.shared.mapView.mapboxMap.cameraState.pitch, MapViewController.shared.mapView.mapboxMap.cameraState.center.latitude, MapViewController.shared.mapView.layer.bounds.size)
+    
     let options = MGLMapSnapshotOptions(
-      styleURL: MapViewController.shared.mapView.styleURL,
-      camera: MGLMapCamera(lookingAtCenter: coordinate, altitude: MapViewController.shared.mapView.camera.altitude, pitch: 0, heading: 0),
+      styleURL: MapViewController.shared.mapView.mapboxMap.style.uri?.url,
+      camera: MGLMapCamera(lookingAtCenter: coordinate, altitude: altitude, pitch: 0, heading: 0),
       size: CGSize(width: 600, height: 600)
     )
     options.zoomLevel = 15
@@ -38,7 +40,7 @@ extension LocationInfoPanelViewController {
     
     switch location {
       case .user:
-        coordinate = MapViewController.shared.mapView.userLocation!.coordinate
+        coordinate = MapViewController.shared.mapView.location.latestLocation!.coordinate
       case .map(let coord):
         coordinate = coord
     }

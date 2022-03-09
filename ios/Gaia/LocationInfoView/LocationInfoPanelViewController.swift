@@ -2,6 +2,8 @@ import Foundation
 import UIKit
 
 import Mapbox
+@_spi(Experimental)import MapboxMaps
+
 import FloatingPanel
 
 class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdateDelegate, MapViewTappedDelegate, SelectableLabelPasteDelegate, MapViewStyleDidChangeDelegate {
@@ -22,33 +24,35 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     }
   }
 
-  var mapSource: MGLSource {
+  var mapSource: Source {
     get {
-      MapViewController.shared.mapView.style?.source(withIdentifier: "location") ?? {
-        let source = MGLShapeSource(identifier: "location", features: [], options: nil)
+      (try? MapViewController.shared.mapView.mapboxMap.style.source(withId: "location")) ?? {
+        var source = GeoJSONSource()
+        source.data = .empty
         
-        MapViewController.shared.mapView.style?.addSource(source)
+        try! MapViewController.shared.mapView.mapboxMap.style.addSource(source, id: "location")
         
         return source
       }()
     }
   }
 
-  var mapLayer: MGLStyleLayer {
+  var mapLayer: Layer {
     get {
-      MapViewController.shared.mapView.style?.layer(withIdentifier: "location") ?? {
-        let layer = MGLSymbolStyleLayer(identifier: "location", source: mapSource)
+      (try? MapViewController.shared.mapView.mapboxMap.style.layer(withId: "location")) ?? {
+        var layer = SymbolLayer(id: "location")
+        layer.source = "location"
         
         let front = UIImage(named: "mapPin")!.withTintColor(.systemPink)
         let back = UIImage(named: "mapPinBack")!
       
         let image = front.draw(inFrontOf: back)
-        MapViewController.shared.mapView.style?.setImage(image, forName: "location")
+        try! MapViewController.shared.mapView.mapboxMap.style.addImage(image, id: "location", stretchX: [], stretchY: [])
          
-        layer.iconImageName = NSExpression(forConstantValue: "location")
-        layer.iconScale = NSExpression(forConstantValue: 0.5)
+        layer.iconImage = .constant(.name("location"))
+        layer.iconSize = .constant(0.5)
         
-        MapViewController.shared.mapView.style?.addLayer(layer)
+        try! MapViewController.shared.mapView.mapboxMap.style.addLayer(layer)
         
         return layer
       }()
@@ -174,9 +178,9 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
         userLocationDidUpdate()
         removePointsFromMap()
       case .map(let coordinate):
-        if case .map(let coordinate) = location, !MapViewController.shared.mapView.visibleCoordinateBounds.contains(coordinate: coordinate) {
-          MapViewController.shared.mapView.setCenter(coordinate, animated: true)
-        }
+//        if case .map(let coordinate) = location, !MGLCoordinateBounds(MapViewController.shared.mapView.cameraBounds.bounds).contains(coordinate: coordinate) {
+//          MapViewController.shared.mapView.mapboxMap.setCenter(coordinate, animated: true)
+//        }
         
         updateTitleCoordinate(coordinate)
         displayPointOnMap(coordinate: coordinate)
@@ -204,31 +208,31 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
   }
   
   func removePointsFromMap(){
-    MapViewController.shared.mapView.style?.removeSource(mapSource)
-    MapViewController.shared.mapView.style?.removeLayer(mapLayer)
+    try? MapViewController.shared.mapView.mapboxMap.style.removeSource(withId: "location")
+    try? MapViewController.shared.mapView.mapboxMap.style.removeLayer(withId: "location")
   }
   
   func userLocationDidUpdate() {
-    if(MapViewController.shared.mapView.userLocation == nil) {return}
-    
-    let coordinate = MapViewController.shared.mapView.userLocation!.coordinate
-    let heading = MapViewController.shared.mapView.userLocation!.heading
-    let location = MapViewController.shared.mapView.userLocation!.location
-    
-    if case .user = self.location {
-      updateTitleCoordinate(coordinate)
-    } else {
-      var distanceValue = (distanceDisplay.value as! CoordinatePair)
-      distanceValue.b = coordinate
-      distanceDisplay.value = distanceValue
-
-      var bearingValue = (bearingDisplay.value as! CoordinatePair)
-      bearingValue.b = coordinate
-      bearingDisplay.value = bearingValue
-    }
-    
-    self.headingDisplay.value = heading
-    self.elevationDisplay.value = location
+//    if(MapViewController.shared.mapView.mapboxMap.userLocation == nil) {return}
+//
+//    let coordinate = MapViewController.shared.mapView.mapboxMap.userLocation!.coordinate
+//    let heading = MapViewController.shared.mapView.mapboxMap.userLocation!.heading
+//    let location = MapViewController.shared.mapView.mapboxMap.userLocation!.location
+//
+//    if case .user = self.location {
+//      updateTitleCoordinate(coordinate)
+//    } else {
+//      var distanceValue = (distanceDisplay.value as! CoordinatePair)
+//      distanceValue.b = coordinate
+//      distanceDisplay.value = distanceValue
+//
+//      var bearingValue = (bearingDisplay.value as! CoordinatePair)
+//      bearingValue.b = coordinate
+//      bearingDisplay.value = bearingValue
+//    }
+//
+//    self.headingDisplay.value = heading
+//    self.elevationDisplay.value = location
   }
   
   override func panelButtonTapped(button: PanelButtonType) {

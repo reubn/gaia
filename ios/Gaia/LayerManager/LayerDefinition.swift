@@ -28,7 +28,7 @@ struct LayerDefinition: Codable, Hashable {
 }
 
 extension LayerDefinition.Metadata {
-  init(layer: Layer){
+  init(layer: GaiaLayer){
     self.init(
       id: layer.id,
       name: layer.name,
@@ -40,7 +40,7 @@ extension LayerDefinition.Metadata {
 }
 
 extension LayerDefinition.User {
-  init(layer: Layer){
+  init(layer: GaiaLayer){
     self.init(
       groupIndex: Int(layer.groupIndex),
       
@@ -52,7 +52,7 @@ extension LayerDefinition.User {
 }
 
 extension LayerDefinition {
-  init(layer: Layer){
+  init(layer: GaiaLayer){
     self.init(
       metadata: Metadata(layer: layer),
       user: User(layer: layer),

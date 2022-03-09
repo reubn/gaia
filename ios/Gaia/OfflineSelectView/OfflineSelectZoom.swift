@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 
 import Mapbox
+@_spi(Experimental)import MapboxMaps
 
 class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingDelegate, OfflineModeDelegate {
   unowned let coordinatorView: OfflineSelectCoordinatorView
@@ -18,12 +19,11 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
     coordinatorView.panelViewController.title = "Select Zoom"
     coordinatorView.panelViewController.panelButtons = [.previous, .accept]
     
-    MapViewController.shared.mapView.isScrollEnabled = false
-    MapViewController.shared.mapView.isRotateEnabled = false
-    MapViewController.shared.mapView.isPitchEnabled = false
-    MapViewController.shared.mapView.anchorRotateOrZoomGesturesToCenterCoordinate = true
-    MapViewController.shared.mapView.setVisibleCoordinateBounds(coordinatorView.selectedArea!, animated: true)
-    
+    MapViewController.shared.mapView.gestures.options.panEnabled = false
+    MapViewController.shared.mapView.gestures.options.pinchRotateEnabled = false
+    MapViewController.shared.mapView.gestures.options.pitchEnabled = false
+//    MapViewController.shared.mapView.mapboxMap.anchorRotateOrZoomGesturesToCenterCoordinate = true
+    try? MapViewController.shared.mapView.mapboxMap.setCameraBounds(with: CameraBoundsOptions(bounds: coordinatorView.selectedArea!.toCoordinateBounds()))
     MapViewController.shared.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)
     OfflineManager.shared.multicastOfflineModeDidChangeDelegate.add(delegate: self)
     
@@ -35,27 +35,27 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
   func viewWillExit(){
     print("exit OSZ")
     
-    MapViewController.shared.mapView.isScrollEnabled = true
-    MapViewController.shared.mapView.isRotateEnabled = true
-    MapViewController.shared.mapView.isPitchEnabled = true
-    MapViewController.shared.mapView.anchorRotateOrZoomGesturesToCenterCoordinate = false
+    MapViewController.shared.mapView.gestures.options.panEnabled = true
+    MapViewController.shared.mapView.gestures.options.pinchRotateEnabled = true
+    MapViewController.shared.mapView.gestures.options.pitchEnabled = true
+//    MapViewController.shared.mapView.mapboxMap.anchorRotateOrZoomGesturesToCenterCoordinate = false
     
     MapViewController.shared.multicastParentMapViewRegionIsChangingDelegate.remove(delegate: self)
   }
   
   func panelButtonTapped(button: PanelButtonType){
-    if(button == .accept){
-      let to = MapViewController.shared.mapView.zoomLevel.rounded(.up)
-      coordinatorView.selectedZoom = .init(from: to - 2, to: to)
-      
-      coordinatorView.forward()
-    } else if(button == .previous){
-      coordinatorView.back()
-    }
+//    if(button == .accept){
+//      let to = MapViewController.shared.mapView.cameraState.zoom.rounded(.up)
+//      coordinatorView.selectedZoom = .init(from: to - 2, to: to)
+//
+//      coordinatorView.forward()
+//    } else if(button == .previous){
+//      coordinatorView.back()
+//    }
   }
   
   func parentMapViewRegionIsChanging() {
-    coordinatorView.panelViewController.title = "Select Zoom: \(Int(MapViewController.shared.mapView.zoomLevel.rounded(.up)))"
+    coordinatorView.panelViewController.title = "Select Zoom: \(Int(MapViewController.shared.mapView.mapboxMap.cameraState.zoom.rounded(.up)))"
   }
   
   func offlineModeDidChange(offline: Bool) {

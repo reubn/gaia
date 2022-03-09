@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 
 import Mapbox
+@_spi(Experimental)import MapboxMaps
 
 class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableViewDataSource, OfflineManagerDelegate, OfflineModeDelegate, MapViewStyleDidChangeDelegate {
 
@@ -48,24 +49,26 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     }
   }
   
-  var mapSource: MGLSource {
-    MapViewController.shared.mapView.style?.source(withIdentifier: "offlinePreview") ?? {
-      let source = MGLShapeSource(identifier: "offlinePreview", features: [])
+  var mapSource: Source {
+    (try? MapViewController.shared.mapView.mapboxMap.style.source(withId: "offlinePreview")) ?? {
+      var source = GeoJSONSource()
+      source.data = .empty
       
-      MapViewController.shared.mapView.style?.addSource(source)
+      try! MapViewController.shared.mapView.mapboxMap.style.addSource(source, id: "offlinePreview")
       
       return source
     }()
   }
   
-  var mapLayer: MGLStyleLayer {
-    MapViewController.shared.mapView.style?.layer(withIdentifier: "offlinePreview") ?? {
-      let layer = MGLLineStyleLayer(identifier: "offlinePreview", source: mapSource)
+  var mapLayer: Layer {
+    (try? MapViewController.shared.mapView.mapboxMap.style.layer(withId: "offlinePreview")) ?? {
+      var layer = LineLayer(id: "offlinePreview")
+      layer.source = "offlinePreview"
       
-      layer.lineColor = NSExpression(forConstantValue: UIColor.systemRed)
-      layer.lineWidth = NSExpression(forConstantValue: 2.0)
+      layer.lineColor = .constant(.init(UIColor.systemRed))
+      layer.lineWidth = .constant(2.0)
       
-      MapViewController.shared.mapView.style?.addLayer(layer)
+      try! MapViewController.shared.mapView.mapboxMap.style.addLayer(layer)
       
       return layer
     }()
@@ -118,8 +121,8 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     print("exit OSH")
     rectangle = nil
     
-    MapViewController.shared.mapView.style?.removeSource(mapSource)
-    MapViewController.shared.mapView.style?.removeLayer(mapLayer)
+    try? MapViewController.shared.mapView.mapboxMap.style.removeSource(withId: "offlinePreview")
+    try? MapViewController.shared.mapView.mapboxMap.style.removeLayer(withId: "offlinePreview")
   }
   
   func panelButtonTapped(button: PanelButtonType){
@@ -271,8 +274,8 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     
     LayerManager.shared.filter({revealedLayers.contains($0)})
     
-    MapViewController.shared.mapView.setDirection(0, animated: false)
-    MapViewController.shared.mapView.setVisibleCoordinateBounds(bounds, sensible: true, alwaysShowWhole: true, edgePadding: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20), animated: true)
+    MapViewController.shared.mapView.mapboxMap.setCamera(to: CameraOptions(bearing: 0))
+    try! MapViewController.shared.mapView.mapboxMap.setCameraBounds(with: CameraBoundsOptions(bounds: bounds.toCoordinateBounds()))
   }
   
   required init(coder: NSCoder) {

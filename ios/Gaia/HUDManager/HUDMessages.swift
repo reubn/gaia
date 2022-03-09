@@ -79,7 +79,7 @@ extension HUDMessage {
     )
   }
   
-  static func magicPinned(_ layer: Layer) -> HUDMessage {
+  static func magicPinned(_ layer: GaiaLayer) -> HUDMessage {
     return HUDMessage.Quick(title: layer.name, systemName: "pin.fill", tintColour: .systemBlue)
   }
   

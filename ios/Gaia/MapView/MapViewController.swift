@@ -1,8 +1,10 @@
 import UIKit
+@_spi(Experimental)import MapboxMaps
 import Mapbox
+
 import FloatingPanel
 
-class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDelegate, OfflineModeDelegate, SettingsManagerDelegate, UIGestureRecognizerDelegate {
+class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDelegate, SettingsManagerDelegate, UIGestureRecognizerDelegate {
   let lsfpc = MemoryConsciousFloatingPanelController()
   let osfpc = MemoryConsciousFloatingPanelController()
   let lifpc = MemoryConsciousFloatingPanelController()
@@ -17,21 +19,21 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   var styleCachedConstraints: (zoomLevelsCovered: (Double, Double), bounds: Style.BoundsInfo)?
 
-  lazy var mapView: MGLMapView = {
-    let mapView = MGLMapView(frame: view.bounds)
+  lazy var mapView: MapView = {
+    let mapView = MapView(frame: view.bounds)
 
     mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    mapView.logoView.isHidden = true
-    mapView.attributionButton.isHidden = true
+//    mapView.logoView.isHidden = true
+//    mapView.attributionButton.isHidden = true
     
-    mapView.userTrackingMode = .followWithHeading
-    mapView.compassView.compassVisibility = .visible
-    mapView.compassViewPosition = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
-    mapView.zoomLevel = 11
-    
+//    mapView.userTrackingMode = .followWithHeading
+//    mapView.compassView.compassVisibility = .visible
+//    mapView.compassViewPosition = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
+//    mapView.zoomLevel = 11
+//
     mapView.tintColor = .systemBlue // user location should always be blue
 
-    mapView.delegate = self
+//    mapView.delegate = self
     
     view.addSubview(mapView)
 
@@ -96,7 +98,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }()
   
   lazy var userLocationButton: UserLocationButton = {
-    let userLocationButton = UserLocationButton(initialMode: mapView.userTrackingMode)
+    let userLocationButton = UserLocationButton(initialMode: .followWithHeading)
     userLocationButton.addTarget(self, action: #selector(locationButtonTapped), for: .touchUpInside)
     userLocationButton.translatesAutoresizingMaskIntoConstraints = false
     userLocationButton.accessibilityLabel = "Change Tracking Mode"
@@ -253,13 +255,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
           HUDManager.shared.displayMessage(message: .noLayersWarningFixed)
         }
       case .minZoom(let minZoom):
-        mapView.setZoomLevel(minZoom, animated: true)
+//        mapView.setZoomLevel(minZoom, animated: true)
         HUDManager.shared.displayMessage(message: .zoomWarningFixed)
       case .multipleOpaque(let top):
         LayerManager.shared.show(layer: top, mutuallyExclusive: true)
         HUDManager.shared.displayMessage(message: .multipleOpaqueWarningFixed)
       case .bounds(let superbound):
-        mapView.setVisibleCoordinateBounds(superbound, sensible: true, minZoom: styleCachedConstraints?.zoomLevelsCovered.0, animated: true)
+//        mapView.setVisibleCoordinateBounds(superbound, sensible: true, minZoom: styleCachedConstraints?.zoomLevelsCovered.0, animated: true)
         HUDManager.shared.displayMessage(message: .boundsWarningFixed)
       case .zeroOpacity(let layer):
         layer.style = layer.style.with(layer.style.interfacedLayers.compactMap({$0.opacity == 0 ? $0.setting(.opacity, to: 1.0) : nil}))
@@ -338,12 +340,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     multicastMapViewTappedDelegate.invoke(invocation: {$0.mapViewTapped()})
   }
   
-  func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?){
+  func mapView(_ mapView: MapView, didUpdate userLocation: MGLUserLocation?){
     multicastUserLocationDidUpdateDelegate.invoke(invocation: {$0.userLocationDidUpdate()})
     
     if(firstTimeLocating && userLocation?.location != nil) {
-      mapView.centerCoordinate = userLocation!.location!.coordinate
-      mapView.userTrackingMode = .follow
+//      mapView.centerCoordinate = userLocation!.location!.coordinate
+//      mapView.userTrackingMode = .follow
+      mapView.viewport.transition(to: mapView.viewport.makeFollowPuckViewportState())
       firstTimeLocating = false
     }
     
@@ -354,10 +357,10 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
   }
   
-  func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
+  func mapView(_ mapView: MapView, didSelect annotation: MGLAnnotation) {
     openLocationInfoPanel(location: .user)
     
-    mapView.deselectAnnotation(annotation, animated: false)
+//    mapView.deselectAnnotation(annotation, animated: false)
   }
   
   lazy var mapViewRegionIsChangingCheck = Debounce(time: 0.1){
@@ -365,7 +368,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     self.checkBounds()
   }
 
-  func mapViewRegionIsChanging(_ mapView: MGLMapView) {
+  func mapViewRegionIsChanging(_ mapView: MapView) {
     multicastParentMapViewRegionIsChangingDelegate.invoke(invocation: {$0.parentMapViewRegionIsChanging()})
     
     if(!ProcessInfo.processInfo.isLowPowerModeEnabled){
@@ -373,25 +376,25 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     }
   }
 
-  func mapView(_ mapView: MGLMapView, didChange mode: MGLUserTrackingMode, animated: Bool) {
+  func mapView(_ mapView: MapView, didChange mode: MGLUserTrackingMode, animated: Bool) {
     switch mode {
       case .followWithHeading, .followWithCourse:
-        mapView.locationManager.startUpdatingHeading()
-        mapView.locationManager.startUpdatingLocation()
+        mapView.location.locationProvider.startUpdatingHeading()
+        mapView.location.locationProvider.startUpdatingLocation()
         mapView.tintColor = .systemPink
       case .follow:
-        mapView.resetNorth()
-        mapView.locationManager.stopUpdatingHeading()
-        mapView.locationManager.startUpdatingLocation()
+//        mapView.resetNorth()
+        mapView.location.locationProvider.stopUpdatingHeading()
+        mapView.location.locationProvider.startUpdatingLocation()
         mapView.tintColor = .systemPink
       case .none:
         fallthrough
     @unknown default:
-      mapView.resetNorth()
-      mapView.locationManager.stopUpdatingHeading()
+//      mapView.resetNorth()
+      mapView.location.locationProvider.stopUpdatingHeading()
       
       if(ProcessInfo.processInfo.isLowPowerModeEnabled){
-        mapView.locationManager.stopUpdatingLocation()
+        mapView.location.locationProvider.stopUpdatingLocation()
         mapView.tintColor = .systemGray
       }
     }
@@ -402,7 +405,16 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   func compositeStyleDidChange(to: CompositeStyle, from: CompositeStyle?) {
     let style = to.toStyle()
     
-    mapView.styleURL = style.url
+    let encoder = JSONEncoder()
+    
+    let data = try? encoder.encode(style)
+    
+    print(String(decoding: data!, as: UTF8.self))
+    
+    if let url = style.url {
+      mapView.mapboxMap.loadStyleURI(StyleURI(url: url)!)
+    }
+    
     styleCachedConstraints = (style.zoomLevelsCovered, style.bounds)
 
     updateUIColourScheme(compositeStyle: to)
@@ -426,7 +438,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       let dark = compositeStyle.needsDarkUI
       mapView.window?.overrideUserInterfaceStyle = dark ? .dark : .light
       mapView.window?.tintColor = dark ? .white : uiColourTint
-      mapView.compassView.image = compassImage(dark: dark)
+//      mapView.compassView.image = compassImage(dark: dark)
     }
   }
   
@@ -438,7 +450,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       if insertions.count == 1,
          case .insert(_, let layer, _) = insertions.first!,
          layer.style.bounds.superbound != nil {
-        mapView.setVisibleCoordinateBounds(layer.style.bounds.superbound!, sensible: true, minZoom: styleCachedConstraints?.zoomLevelsCovered.0, animated: true)
+//        mapView.setVisibleCoordinateBounds(layer.style.bounds.superbound!, sensible: true, minZoom: styleCachedConstraints?.zoomLevelsCovered.0, animated: true)
       }
     }
   }
@@ -464,24 +476,24 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   func checkZoomLevel(){
-    let (minimumZoom, _) = styleCachedConstraints!.zoomLevelsCovered
-    if(mapView.zoomLevel < minimumZoom - 2.5){
-      warnings.insert(.minZoom(minimumZoom))
-    } else if(!warnings.isEmpty){
-      warnings = warnings.filter({if case .minZoom = $0 {return false}; return true})
-    }
+//    let (minimumZoom, _) = styleCachedConstraints!.zoomLevelsCovered
+//    if(mapView.zoomLevel < minimumZoom - 2.5){
+//      warnings.insert(.minZoom(minimumZoom))
+//    } else if(!warnings.isEmpty){
+//      warnings = warnings.filter({if case .minZoom = $0 {return false}; return true})
+//    }
   }
   
   func checkBounds(){
-    let allBounds = styleCachedConstraints!.bounds.individual
-    let showingLayerWithinBounds = allBounds.isEmpty || allBounds.contains(where: {$0.intersects(with: mapView.visibleCoordinateBounds)})
-
-    if(!showingLayerWithinBounds){
-      let superbound = styleCachedConstraints!.bounds.superbound!
-      warnings.insert(.bounds(superbound))
-    } else if(!warnings.isEmpty){
-      warnings = warnings.filter({if case .bounds = $0 {return false}; return true})
-    }
+//    let allBounds = styleCachedConstraints!.bounds.individual
+//    let showingLayerWithinBounds = allBounds.isEmpty || allBounds.contains(where: {$0.intersects(with: mapView.visibleCoordinateBounds)})
+//
+//    if(!showingLayerWithinBounds){
+//      let superbound = styleCachedConstraints!.bounds.superbound!
+//      warnings.insert(.bounds(superbound))
+//    } else if(!warnings.isEmpty){
+//      warnings = warnings.filter({if case .bounds = $0 {return false}; return true})
+//    }
   }
 
   func offlineModeDidChange(offline: Bool){
@@ -489,31 +501,31 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   @objc func longPressed(gestureReconizer: UILongPressGestureRecognizer){
-    if gestureReconizer.state == UIGestureRecognizer.State.began {
-      let point = gestureReconizer.location(in: mapView)
-      let coordinate = mapView.convert(point, toCoordinateFrom: nil)
-      
-      openLocationInfoPanel(location: .map(coordinate))
-    }
+//    if gestureReconizer.state == UIGestureRecognizer.State.began {
+//      let point = gestureReconizer.location(in: mapView)
+//      let coordinate = mapView.convert(point, toCoordinateFrom: nil)
+//
+//      openLocationInfoPanel(location: .map(coordinate))
+//    }
   }
 
   @objc func locationButtonTapped(sender: UserLocationButton) {
-    var mode: MGLUserTrackingMode
-
-    switch (mapView.userTrackingMode) {
-      case .none:
-        mode = .follow
-      case .follow:
-        mode = .followWithHeading
-      case .followWithHeading:
-        mode = .follow
-      case .followWithCourse:
-        mode = .none
-      @unknown default:
-        fatalError("Unknown user tracking mode")
-    }
-
-    mapView.userTrackingMode = mode
+//    var mode: MGLUserTrackingMode
+//
+//    switch (mapView.userTrackingMode) {
+//      case .none:
+//        mode = .follow
+//      case .follow:
+//        mode = .followWithHeading
+//      case .followWithHeading:
+//        mode = .follow
+//      case .followWithCourse:
+//        mode = .none
+//      @unknown default:
+//        fatalError("Unknown user tracking mode")
+//    }
+//
+//    mapView.userTrackingMode = mode
   }
   
   @objc func locationButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
@@ -595,16 +607,16 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   @objc func quickToggleLongPress(gestureReconizer: UILongPressGestureRecognizer) {
-    if gestureReconizer.state == UIGestureRecognizer.State.began {
-      let change = LayerManager.shared.quickToggle(bounds: mapView.visibleCoordinateBounds)
-      
-      if(change.count == 0) {
-        return
-      }
-      
-      HUDManager.shared.displayMessage(message: .quickToggle(change))
-      UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-    }
+//    if gestureReconizer.state == UIGestureRecognizer.State.began {
+//      let change = LayerManager.shared.quickToggle(bounds: mapView.visibleCoordinateBounds)
+//
+//      if(change.count == 0) {
+//        return
+//      }
+//
+//      HUDManager.shared.displayMessage(message: .quickToggle(change))
+//      UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+//    }
   }
   
   @objc func offlineButtonTapped(sender: MapButton) {
@@ -701,7 +713,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   func settingsDidChange() {
-    mapView.compassViewPosition = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
+//    mapView.compassViewPosition = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
     setMapButtonGroupSide(right: SettingsManager.shared.rightHandedMenu.value)
   }
   
@@ -733,7 +745,7 @@ enum WarningReason: Equatable, Hashable {
   case minZoom(Double)
   case bounds(MGLCoordinateBounds)
   
-  case emptyStyle([Layer]?)
-  case multipleOpaque(Layer)
-  case zeroOpacity(Layer)
+  case emptyStyle([GaiaLayer]?)
+  case multipleOpaque(GaiaLayer)
+  case zeroOpacity(GaiaLayer)
 }

@@ -1,5 +1,6 @@
 import Foundation
 import Mapbox
+@_spi(Experimental)import MapboxMaps
 
 extension MGLCoordinateBounds: Codable, Equatable, Hashable {
   public static func == (lhs: Self, rhs: Self) -> Bool {
@@ -75,7 +76,21 @@ extension MGLCoordinateBounds: Codable, Equatable, Hashable {
     self.init(sw: sw, ne: ne)
   }
   
+  public init(_ from: CoordinateBounds) {
+    self.init(sw: from.southwest, ne: from.northeast)
+  }
+  
   public var jsonArray: AnyCodable {
     [sw.longitude, sw.latitude, ne.longitude, ne.latitude]
+  }
+  
+  public func toCoordinateBounds() -> CoordinateBounds {
+    return CoordinateBounds(self)
+  }
+}
+
+extension CoordinateBounds {
+  convenience init(_ from: MGLCoordinateBounds) {
+    self.init(southwest: from.sw, northeast: from.ne)
   }
 }

@@ -78,7 +78,7 @@ class OfflineManager {
     downloadPack(layers: layers, context: context)
   }
   
-  func downloadPack(layers: [Layer], context: PackContext) {
+  func downloadPack(layers: [GaiaLayer], context: PackContext) {
     if offlineMode {
       HUDManager.shared.displayMessage(message: .warnDownloadInOfflineMode)
       return

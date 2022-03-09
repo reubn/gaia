@@ -6,7 +6,7 @@ import Mapbox
 class LayerManager {
   private let managedContext: NSManagedObjectContext
   
-  var savedQuickToggleLayers: [Layer]?
+  var savedQuickToggleLayers: [GaiaLayer]?
 
   let multicastCompositeStyleDidChangeDelegate = MulticastDelegate<(LayerManagerDelegate)>()
 
@@ -20,21 +20,21 @@ class LayerManager {
   
   lazy var groupIds = groups.map({$0.id})
   
-  var layers: [Layer] = []
+  var layers: [GaiaLayer] = []
 
-  var visibleLayers: [Layer]{
+  var visibleLayers: [GaiaLayer]{
     get {
       layers.filter({$0.visible})
     }
   }
   
-  var pinnedLayers: [Layer]{
+  var pinnedLayers: [GaiaLayer]{
     get {
       layers.filter({$0.pinned})
     }
   }
   
-  var ungroupedLayers: [Layer]{
+  var ungroupedLayers: [GaiaLayer]{
     get {
       layers.filter({!groupIds.contains($0.group)})
     }
@@ -62,7 +62,7 @@ class LayerManager {
     reloadData()
   }
 
-  func layerSortingFunction(a: Layer, b: Layer) -> Bool {
+  func layerSortingFunction(a: GaiaLayer, b: GaiaLayer) -> Bool {
     if(a.isOpaque != b.isOpaque) {
       return b.isOpaque
     }
@@ -83,7 +83,7 @@ class LayerManager {
   }
   
   func clearData(){
-      let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Layer")
+      let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "GaiaLayer")
       let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
 
       do {
@@ -94,10 +94,10 @@ class LayerManager {
     }
 
   func reloadData() {
-    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Layer")
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "GaiaLayer")
 
     do {
-      layers = try managedContext.fetch(fetchRequest) as! [Layer]
+      layers = try managedContext.fetch(fetchRequest) as! [GaiaLayer]
       let previous = _compositeStyle
       
       _compositeStyle = nil // flush cache
@@ -161,7 +161,7 @@ class LayerManager {
           
           if(existing == nil) {
             print("yes we are adding")
-            let layer = Layer(layerDefinition, context: managedContext)
+            let layer = GaiaLayer(layerDefinition, context: managedContext)
             return .accepted(method, layer: layer)
           }
           
@@ -173,7 +173,7 @@ class LayerManager {
     return error
   }
   
-  func remove(layer: Layer){
+  func remove(layer: GaiaLayer){
     for layer in layer.style.layers {
       InterfacedCache.shared.layers.removeValue(forKey: layer.hashValue)
     }
@@ -187,7 +187,7 @@ class LayerManager {
     save()
   }
 
-  @discardableResult func show(layer: Layer, mutuallyExclusive: Bool) -> Bool {
+  @discardableResult func show(layer: GaiaLayer, mutuallyExclusive: Bool) -> Bool {
     if(!layer.isOpaque || !mutuallyExclusive) {
       layer.visible = true
     } else {
@@ -203,7 +203,7 @@ class LayerManager {
     return true
   }
 
-  @discardableResult func hide(layer: Layer, mutuallyExclusive: Bool) -> Bool {
+  @discardableResult func hide(layer: GaiaLayer, mutuallyExclusive: Bool) -> Bool {
     if(!layer.isOpaque || !mutuallyExclusive || visibleLayers.filter({$0.isOpaque}).count > 1) {
       layer.visible = false
       save()
@@ -214,7 +214,7 @@ class LayerManager {
     return false
   }
   
-  func show(layers _layers: [Layer?]) {
+  func show(layers _layers: [GaiaLayer?]) {
     for layer in _layers {
       layer?.visible = true
     }
@@ -222,7 +222,7 @@ class LayerManager {
     save()
   }
   
-  func hide(layers _layers: [Layer?]) {
+  func hide(layers _layers: [GaiaLayer?]) {
     for layer in _layers {
       layer?.visible = false
     }
@@ -230,7 +230,7 @@ class LayerManager {
     save()
   }
   
-  func filter(_ shouldBeVisible: (Layer) -> Bool){
+  func filter(_ shouldBeVisible: (GaiaLayer) -> Bool){
     for layer in layers {
       layer.visible = shouldBeVisible(layer)
     }
@@ -238,7 +238,7 @@ class LayerManager {
     save()
   }
 
-  public func getLayers(layerGroup: LayerGroup) -> [Layer] {
+  public func getLayers(layerGroup: LayerGroup) -> [GaiaLayer] {
     layers.filter({$0.group == layerGroup.id})
   }
 
@@ -265,7 +265,7 @@ class LayerManager {
       //  no visible overlays
       let visibleQuickToggleLayers = savedQuickToggleLayers?.filter({$0.style.bounds.superbound == nil || bounds.intersects(with: $0.style.bounds.superbound!)}) ?? []
     
-      let layersToRestore: [Layer] = {() -> [Layer?] in 
+      let layersToRestore: [GaiaLayer] = {() -> [GaiaLayer?] in 
         if(!visibleQuickToggleLayers.isEmpty) {
           // restore captured layers in bounds
           return visibleQuickToggleLayers
@@ -290,7 +290,7 @@ class LayerManager {
     }
   }
   
-  public func magicPinned(forward: Bool) -> Layer? {
+  public func magicPinned(forward: Bool) -> GaiaLayer? {
     let interestedLayers = pinnedLayers.filter({$0.isOpaque}).sorted(by: layerSortingFunction)
     
     if(interestedLayers.isEmpty) {return nil}

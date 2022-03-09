@@ -1,9 +1,9 @@
 import Foundation
 
 struct CompositeStyle: Equatable, Hashable {
-  let sortedLayers: [Layer]
+  let sortedLayers: [GaiaLayer]
   
-  var topOpaque: Layer? {
+  var topOpaque: GaiaLayer? {
     sortedLayers.first(where: {$0.isOpaque})
   }
   
@@ -19,7 +19,7 @@ struct CompositeStyle: Equatable, Hashable {
     sortedLayers.filter({$0.isOpaque}).count > 1
   }
   
-  var revealedLayers: [Layer] {
+  var revealedLayers: [GaiaLayer] {
     sortedLayers.filter({!$0.isOpaque || $0 == topOpaque})
   }
   
@@ -52,7 +52,7 @@ struct CompositeStyle: Equatable, Hashable {
     )
   }
   
-  init(sortedLayers: [Layer]){
+  init(sortedLayers: [GaiaLayer]){
     self.sortedLayers = sortedLayers
   }
 }

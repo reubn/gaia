@@ -3,6 +3,7 @@ import UIKit
 import AVFoundation
 
 import Mapbox
+@_spi(Experimental)import MapboxMaps
 
 class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegionIsChangingDelegate {
   var emojiTimer: Timer? = nil
@@ -134,14 +135,14 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
   }
   
   func userLocationDidUpdate() {
-    guard let userLocation = MapViewController.shared.mapView.userLocation else {
+    guard let userLocation = MapViewController.shared.mapView.location.latestLocation else {
       return
     }
     
     if let heading = userLocation.heading {
-      let newRotation = MapViewController.shared.mapView.userTrackingMode == .followWithHeading
-        ? heading.trueHeading - 45
-        : 0
+      let newRotation = 0.0 //MapViewController.shared.mapView.mapboxMap.userTrackingMode == .followWithHeading
+//        ? heading.trueHeading - 45
+//        : 0
       
       let transform = CGAffineTransform(rotationAngle: newRotation * .pi / 180)
       
@@ -174,12 +175,12 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
   }
   
   func parentMapViewRegionIsChanging() {
-    if(MapViewController.shared.mapView.zoomLevel < KEY_LOCATIONS_NEEDED_VIEW_ZOOM) {
+    if(MapViewController.shared.mapView.mapboxMap.cameraState.zoom < KEY_LOCATIONS_NEEDED_VIEW_ZOOM) {
       return
     }
     
     for (index, keyLocationPair) in KEY_LOCATIONS.enumerated() {
-      if(!keyLocationPair.seen && MapViewController.shared.mapView.visibleCoordinateBounds.contains(coordinate: keyLocationPair.location)){
+      if(!keyLocationPair.seen && MGLCoordinateBounds(MapViewController.shared.mapView.mapboxMap.cameraBounds.bounds).contains(coordinate: keyLocationPair.location)){
         KEY_LOCATIONS[index].seen = true
         KEY_LOCATIONS[index].seenReason = .view
         

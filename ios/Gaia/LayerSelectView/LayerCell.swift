@@ -5,7 +5,7 @@ import CoreData
 import Mapbox
 
 class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
-  var _layer: Layer?
+  var _layer: GaiaLayer?
   
   var first = true
   var visible = false
@@ -235,8 +235,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
       styleCachedConstraints = (displayedStyle!.zoomLevelsCovered, displayedStyle!.bounds)
     }
     
-    let zoomLevel = MapViewController.shared.mapView.zoomLevel
-    let visibleBounds = MapViewController.shared.mapView.visibleCoordinateBounds
+    let zoomLevel = MapViewController.shared.mapView.cameraState.zoom
+    let visibleBounds = MGLCoordinateBounds(MapViewController.shared.mapView.mapboxMap.cameraBounds.bounds)
     
     if(zoomLevel < styleCachedConstraints!.zoomLevelsCovered.0 - 2){
       previewBlurReasons.append(.minZoom)
@@ -258,16 +258,16 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     let centerPoint = CGPoint(x: parent.width * 0.5, y: parent.height * 0.25)
     
     preview.setCenter(
-      MapViewController.shared.mapView.convert(centerPoint, toCoordinateFrom: nil),
+      MapViewController.shared.mapView.mapboxMap.coordinate(for: centerPoint),
       zoomLevel: zoomLevel - 0.5,
-      direction: MapViewController.shared.mapView.direction,
+      direction: MapViewController.shared.mapView.cameraState.bearing,
       animated: false
     )
     
     needsUpdating = false
   }
 
-  func update(_layer: Layer, layerSelectConfig: LayerSelectConfig, scrollView: LayerSelectView, accessory: LayerCellAccessory) {
+  func update(_layer: GaiaLayer, layerSelectConfig: LayerSelectConfig, scrollView: LayerSelectView, accessory: LayerCellAccessory) {
     self._layer = _layer
     self.accessory = accessory
  

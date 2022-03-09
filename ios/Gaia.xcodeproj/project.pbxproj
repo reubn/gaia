@@ -55,7 +55,7 @@
 		1B6638CC25B1E9BD0071F03D /* MapButtonGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6638CB25B1E9BD0071F03D /* MapButtonGroup.swift */; };
 		1B6638CE25B1EA5F0071F03D /* MapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6638CD25B1EA5F0071F03D /* MapButton.swift */; };
 		1B7644B525CA169D00572A70 /* MemoryConsciousFloatingPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644B425CA169D00572A70 /* MemoryConsciousFloatingPanelController.swift */; };
-		1B7644BF25CAD61900572A70 /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644BD25CAD61900572A70 /* Layer.swift */; };
+		1B7644BF25CAD61900572A70 /* GaiaLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644BD25CAD61900572A70 /* GaiaLayer.swift */; };
 		1B7644C125CAFA2F00572A70 /* LayerDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C025CAFA2F00572A70 /* LayerDefinition.swift */; };
 		1B7644C325CAFA7300572A70 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C225CAFA7300572A70 /* Style.swift */; };
 		1B7644C825CC3E9000572A70 /* PanelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7644C725CC3E9000572A70 /* PanelButton.swift */; };
@@ -65,6 +65,16 @@
 		1B8C078E25C48245008C08B2 /* LocationInfoPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */; };
 		1B8C078F25C48245008C08B2 /* LocationInfoPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */; };
 		1B8C079325C493E5008C08B2 /* SelectableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C079225C493E5008C08B2 /* SelectableLabel.swift */; };
+		1B93173827D90602002B6CA0 /* MapboxMobileEvents.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B93173227D905F2002B6CA0 /* MapboxMobileEvents.xcframework */; };
+		1B93173927D90602002B6CA0 /* MapboxMobileEvents.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B93173227D905F2002B6CA0 /* MapboxMobileEvents.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1B93173A27D90604002B6CA0 /* Turf.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B93172E27D905F2002B6CA0 /* Turf.xcframework */; };
+		1B93173B27D90604002B6CA0 /* Turf.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B93172E27D905F2002B6CA0 /* Turf.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1B93173C27D90605002B6CA0 /* MapboxMaps.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B93173127D905F2002B6CA0 /* MapboxMaps.xcframework */; };
+		1B93173D27D90605002B6CA0 /* MapboxMaps.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B93173127D905F2002B6CA0 /* MapboxMaps.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1B93173E27D90606002B6CA0 /* MapboxCoreMaps.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B93172F27D905F2002B6CA0 /* MapboxCoreMaps.xcframework */; };
+		1B93173F27D90606002B6CA0 /* MapboxCoreMaps.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B93172F27D905F2002B6CA0 /* MapboxCoreMaps.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1B93174027D90608002B6CA0 /* MapboxCommon.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B93173027D905F2002B6CA0 /* MapboxCommon.xcframework */; };
+		1B93174127D90608002B6CA0 /* MapboxCommon.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B93173027D905F2002B6CA0 /* MapboxCommon.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1B96528825D58EFC0017A43E /* LayerSelectConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96528725D58EFC0017A43E /* LayerSelectConfig.swift */; };
 		1B96528A25D5BC550017A43E /* LayerSelectEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96528925D5BC550017A43E /* LayerSelectEdit.swift */; };
 		1B96528D25D5C3DA0017A43E /* KeyboardLayoutGuide in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */; };
@@ -97,7 +107,6 @@
 		1BB94BD8260CAAAB002C0D67 /* LayerGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB94BD7260CAAAB002C0D67 /* LayerGroup.swift */; };
 		1BB94BF6260E2B89002C0D67 /* CharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB94BF5260E2B89002C0D67 /* CharacterSet.swift */; };
 		1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; };
-		1BBD3FEF25B63B10007B8BC7 /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF025B70679007B8BC7 /* LayerSelectPanelLayout.swift */; };
 		1BBD3FF325B708A6007B8BC7 /* PanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF225B708A6007B8BC7 /* PanelViewController.swift */; };
 		1BBD3FF525B70C06007B8BC7 /* OfflineSelectPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF425B70C06007B8BC7 /* OfflineSelectPanelLayout.swift */; };
@@ -112,6 +121,7 @@
 		1BD6A3C02600FD49001E503D /* CLLocationDegrees.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3BF2600FD49001E503D /* CLLocationDegrees.swift */; };
 		1BDACA63260A4B8700248962 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDACA62260A4B8700248962 /* String.swift */; };
 		1BDACA65260A4BA700248962 /* NSRegularExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDACA64260A4BA700248962 /* NSRegularExpression.swift */; };
+		1BE75D9327D91B9F00E22D8E /* StyleURI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE75D9227D91B9F00E22D8E /* StyleURI.swift */; };
 		1BEE8D5B25C58FF5004260C1 /* MetricDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5A25C58FF5004260C1 /* MetricDisplay.swift */; };
 		1BEE8D5E25C599B3004260C1 /* HeadingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */; };
 		1BEE8D6025C59A4D004260C1 /* ElevationDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */; };
@@ -125,8 +135,12 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				1BBD3FEF25B63B10007B8BC7 /* MapboxMobileEvents.framework in Embed Frameworks */,
+				1B93173F27D90606002B6CA0 /* MapboxCoreMaps.xcframework in Embed Frameworks */,
+				1B93173B27D90604002B6CA0 /* Turf.xcframework in Embed Frameworks */,
 				1B6638C225B10B610071F03D /* Mapbox.framework in Embed Frameworks */,
+				1B93174127D90608002B6CA0 /* MapboxCommon.xcframework in Embed Frameworks */,
+				1B93173D27D90605002B6CA0 /* MapboxMaps.xcframework in Embed Frameworks */,
+				1B93173927D90602002B6CA0 /* MapboxMobileEvents.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -182,7 +196,7 @@
 		1B6638CB25B1E9BD0071F03D /* MapButtonGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapButtonGroup.swift; sourceTree = "<group>"; };
 		1B6638CD25B1EA5F0071F03D /* MapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapButton.swift; sourceTree = "<group>"; };
 		1B7644B425CA169D00572A70 /* MemoryConsciousFloatingPanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryConsciousFloatingPanelController.swift; sourceTree = "<group>"; };
-		1B7644BD25CAD61900572A70 /* Layer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layer.swift; sourceTree = "<group>"; };
+		1B7644BD25CAD61900572A70 /* GaiaLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GaiaLayer.swift; sourceTree = "<group>"; };
 		1B7644C025CAFA2F00572A70 /* LayerDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerDefinition.swift; sourceTree = "<group>"; };
 		1B7644C225CAFA7300572A70 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		1B7644C725CC3E9000572A70 /* PanelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelButton.swift; sourceTree = "<group>"; };
@@ -192,6 +206,11 @@
 		1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelLayout.swift; sourceTree = "<group>"; };
 		1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelViewController.swift; sourceTree = "<group>"; };
 		1B8C079225C493E5008C08B2 /* SelectableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableLabel.swift; sourceTree = "<group>"; };
+		1B93172E27D905F2002B6CA0 /* Turf.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Turf.xcframework; sourceTree = "<group>"; };
+		1B93172F27D905F2002B6CA0 /* MapboxCoreMaps.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MapboxCoreMaps.xcframework; sourceTree = "<group>"; };
+		1B93173027D905F2002B6CA0 /* MapboxCommon.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MapboxCommon.xcframework; sourceTree = "<group>"; };
+		1B93173127D905F2002B6CA0 /* MapboxMaps.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MapboxMaps.xcframework; sourceTree = "<group>"; };
+		1B93173227D905F2002B6CA0 /* MapboxMobileEvents.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MapboxMobileEvents.xcframework; sourceTree = "<group>"; };
 		1B96528725D58EFC0017A43E /* LayerSelectConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectConfig.swift; sourceTree = "<group>"; };
 		1B96528925D5BC550017A43E /* LayerSelectEdit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayerSelectEdit.swift; sourceTree = "<group>"; };
 		1B96529125D7E5F20017A43E /* LayerSelectViewEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectViewEmpty.swift; sourceTree = "<group>"; };
@@ -235,6 +254,7 @@
 		1BD6A3BF2600FD49001E503D /* CLLocationDegrees.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationDegrees.swift; sourceTree = "<group>"; };
 		1BDACA62260A4B8700248962 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		1BDACA64260A4BA700248962 /* NSRegularExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRegularExpression.swift; sourceTree = "<group>"; };
+		1BE75D9227D91B9F00E22D8E /* StyleURI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleURI.swift; sourceTree = "<group>"; };
 		1BEE8D5A25C58FF5004260C1 /* MetricDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricDisplay.swift; sourceTree = "<group>"; };
 		1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingDisplay.swift; sourceTree = "<group>"; };
 		1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevationDisplay.swift; sourceTree = "<group>"; };
@@ -248,9 +268,14 @@
 			files = (
 				1B04BF7525D1CB5F00FCD5D4 /* CoreGPX in Frameworks */,
 				1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */,
+				1B93173A27D90604002B6CA0 /* Turf.xcframework in Frameworks */,
+				1B93173C27D90605002B6CA0 /* MapboxMaps.xcframework in Frameworks */,
+				1B93173827D90602002B6CA0 /* MapboxMobileEvents.xcframework in Frameworks */,
 				1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */,
+				1B93174027D90608002B6CA0 /* MapboxCommon.xcframework in Frameworks */,
 				1B96528D25D5C3DA0017A43E /* KeyboardLayoutGuide in Frameworks */,
 				1B6638C125B10B610071F03D /* Mapbox.framework in Frameworks */,
+				1B93173E27D90606002B6CA0 /* MapboxCoreMaps.xcframework in Frameworks */,
 				1B9D5A2C2695F5530034088E /* ZippyJSON in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -343,7 +368,7 @@
 		1B3401D325B4A1370091FA3B /* LayerManager */ = {
 			isa = PBXGroup;
 			children = (
-				1B7644BD25CAD61900572A70 /* Layer.swift */,
+				1B7644BD25CAD61900572A70 /* GaiaLayer.swift */,
 				1B3401D425B4A1570091FA3B /* LayerManager.swift */,
 				1BB94BD7260CAAAB002C0D67 /* LayerGroup.swift */,
 				1BB94BD5260CAA8F002C0D67 /* LayerAcceptance.swift */,
@@ -380,6 +405,7 @@
 				1B545D652667DF270024BE67 /* geoJSON.swift */,
 				1BA29B2B2672C4F300D5FDBB /* Debounce.swift */,
 				1B2F908B267FB68200D275CB /* Hashable.swift */,
+				1BE75D9227D91B9F00E22D8E /* StyleURI.swift */,
 				1B5D8CDC2688A56400FAE4DA /* HomeButton.swift */,
 			);
 			path = Util;
@@ -449,6 +475,11 @@
 		1B6638BF25B10B610071F03D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1B93173027D905F2002B6CA0 /* MapboxCommon.xcframework */,
+				1B93172F27D905F2002B6CA0 /* MapboxCoreMaps.xcframework */,
+				1B93173127D905F2002B6CA0 /* MapboxMaps.xcframework */,
+				1B93173227D905F2002B6CA0 /* MapboxMobileEvents.xcframework */,
+				1B93172E27D905F2002B6CA0 /* Turf.xcframework */,
 				1B0D09C625EE956000ED5345 /* AnyCodable */,
 				1B6638C425B10CEB0071F03D /* MapboxMobileEvents.framework */,
 				1B6638C025B10B610071F03D /* Mapbox.framework */,
@@ -641,6 +672,7 @@
 				1B7644C325CAFA7300572A70 /* Style.swift in Sources */,
 				1BF4B7FA261700C200D87E35 /* UIView.swift in Sources */,
 				1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */,
+				1BE75D9327D91B9F00E22D8E /* StyleURI.swift in Sources */,
 				1B6033BD25D1DBD300211150 /* UIColor.swift in Sources */,
 				1B8C079325C493E5008C08B2 /* SelectableLabel.swift in Sources */,
 				1B0D09CB25EE956000ED5345 /* AnyCodable.swift in Sources */,
@@ -707,7 +739,7 @@
 				1B8C078F25C48245008C08B2 /* LocationInfoPanelViewController.swift in Sources */,
 				1BB94BD6260CAA8F002C0D67 /* LayerAcceptance.swift in Sources */,
 				1B3401D025B474260091FA3B /* SectionTableView.swift in Sources */,
-				1B7644BF25CAD61900572A70 /* Layer.swift in Sources */,
+				1B7644BF25CAD61900572A70 /* GaiaLayer.swift in Sources */,
 				1B6033BF25D1DBEE00211150 /* randomSystemColor.swift in Sources */,
 				1BDACA63260A4B8700248962 /* String.swift in Sources */,
 				1B0D09CA25EE956000ED5345 /* AnyDecodable.swift in Sources */,

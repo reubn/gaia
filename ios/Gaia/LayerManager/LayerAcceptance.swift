@@ -2,20 +2,20 @@ import Foundation
 
 enum LayerAcceptanceMethod {
   case add
-  case update(Layer? = nil)
+  case update(GaiaLayer? = nil)
 }
 
 struct LayerAcceptanceResult {
   let method: LayerAcceptanceMethod?
   let error: LayerAcceptanceError?
   
-  let layer: Layer?
+  let layer: GaiaLayer?
   
   var accepted: Bool {
     error == nil
   }
   
-  static func accepted(_ method: LayerAcceptanceMethod, layer: Layer? = nil) -> Self {
+  static func accepted(_ method: LayerAcceptanceMethod, layer: GaiaLayer? = nil) -> Self {
     self.init(method: method, error: nil, layer: layer)
   }
   

@@ -3,7 +3,7 @@ import CoreLocation
 
 import Mapbox
 
-extension CLLocationCoordinate2D: Codable, Equatable, Hashable {
+extension CLLocationCoordinate2D: Codable, Hashable {
   enum Format {
     case decimal(FormatAccuracy)
     case sexagesimal(FormatAccuracy)

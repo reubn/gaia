@@ -3,10 +3,10 @@ import CoreData
 
 import ZippyJSON
 
-@objc(Layer)
-public class Layer: NSManagedObject {
-  @nonobjc public class func fetchRequest() -> NSFetchRequest<Layer> {
-      return NSFetchRequest<Layer>(entityName: "Layer")
+@objc(GaiaLayer)
+public class GaiaLayer: NSManagedObject {
+  @nonobjc public class func fetchRequest() -> NSFetchRequest<GaiaLayer> {
+      return NSFetchRequest<GaiaLayer>(entityName: "GaiaLayer")
   }
 
   @NSManaged public var visible: Bool
@@ -64,7 +64,7 @@ public class Layer: NSManagedObject {
 }
 
 // Layer from LayerDefinition
-extension Layer {
+extension GaiaLayer {
   convenience init(_ layerDefinition: LayerDefinition, context: NSManagedObjectContext){
     self.init(context: context)
     

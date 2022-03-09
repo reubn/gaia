@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Layer" representedClassName="Layer" syncable="YES">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="GaiaLayer" representedClassName="GaiaLayer" syncable="YES">
         <attribute name="attribution" optional="YES" attributeType="String"/>
         <attribute name="enabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="group" attributeType="String"/>
@@ -14,6 +14,6 @@
         <attribute name="visible" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="Layer" positionX="0" positionY="0" width="128" height="208"/>
+        <element name="GaiaLayer" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

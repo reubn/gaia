@@ -7,7 +7,7 @@ class OfflineSelectCoordinatorView: CoordinatorView, PanelDelegate {
   unowned let panelViewController: OfflineSelectPanelViewController
   
   var selectedArea: MGLCoordinateBounds?
-  var selectedLayers: [Layer]?
+  var selectedLayers: [GaiaLayer]?
   var selectedZoom: PackContext.ZoomBounds?
 
   init(panelViewController: OfflineSelectPanelViewController){
