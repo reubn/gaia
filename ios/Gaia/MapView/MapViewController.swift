@@ -404,13 +404,7 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
   
   func compositeStyleDidChange(to: CompositeStyle, from: CompositeStyle?) {
     let style = to.toStyle()
-    
-    let encoder = JSONEncoder()
-    
-    let data = try? encoder.encode(style)
-    
-    print(String(decoding: data!, as: UTF8.self))
-    
+
     if let url = style.url {
       mapView.mapboxMap.loadStyleURI(StyleURI(url: url)!)
     }
