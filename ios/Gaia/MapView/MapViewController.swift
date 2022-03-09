@@ -171,8 +171,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       ? (10, 15)
       : (-6, 6)
     
-    button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: Double(bottom).isActive = true
-    button.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: Double(left).isActive = true
+    button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: Double(bottom)).isActive = true
+    button.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: Double(left)).isActive = true
     
     button.addTarget(self, action: #selector(appIconButtonTapped), for: .touchUpInside)
     button.accessibilityLabel = "About"
