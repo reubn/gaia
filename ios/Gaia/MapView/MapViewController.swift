@@ -23,14 +23,15 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
     let mapView = MapView(frame: view.bounds)
 
     mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//    mapView.logoView.isHidden = true
-//    mapView.attributionButton.isHidden = true
+    mapView.ornaments.logoView.layer.opacity = 0
+    mapView.ornaments.attributionButton.layer.opacity = 0
+    mapView.ornaments.options.scaleBar.visibility = .hidden
     
 //    mapView.userTrackingMode = .followWithHeading
-//    mapView.compassView.compassVisibility = .visible
-//    mapView.compassViewPosition = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
+    mapView.ornaments.options.compass.visibility = .visible
+    mapView.ornaments.options.compass.position = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
 //    mapView.zoomLevel = 11
-//
+    
     mapView.tintColor = .systemBlue // user location should always be blue
 
 //    mapView.delegate = self
@@ -432,7 +433,7 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
       let dark = compositeStyle.needsDarkUI
       mapView.window?.overrideUserInterfaceStyle = dark ? .dark : .light
       mapView.window?.tintColor = dark ? .white : uiColourTint
-//      mapView.compassView.image = compassImage(dark: dark)
+      updateCompass(dark: dark)
     }
   }
   
@@ -707,7 +708,7 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
   }
   
   func settingsDidChange() {
-//    mapView.compassViewPosition = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
+    mapView.ornaments.options.compass.position = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
     setMapButtonGroupSide(right: SettingsManager.shared.rightHandedMenu.value)
   }
   
