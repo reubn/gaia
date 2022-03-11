@@ -21,8 +21,10 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
     
     MapViewController.shared.mapView.gestures.options.panEnabled = false
     MapViewController.shared.mapView.gestures.options.pinchRotateEnabled = false
+    MapViewController.shared.mapView.gestures.options.pinchPanEnabled = false
     MapViewController.shared.mapView.gestures.options.pitchEnabled = false
-//    MapViewController.shared.mapView.mapboxMap.anchorRotateOrZoomGesturesToCenterCoordinate = true
+    MapViewController.shared.mapView.gestures.options.focalPoint = CGPoint(x: MapViewController.shared.mapView.bounds.width * 0.5, y: MapViewController.shared.mapView.bounds.height * 0.5)
+
     try? MapViewController.shared.mapView.mapboxMap.setCameraBounds(with: CameraBoundsOptions(bounds: coordinatorView.selectedArea!.toCoordinateBounds()))
     MapViewController.shared.multicastParentMapViewRegionIsChangingDelegate.add(delegate: self)
     OfflineManager.shared.multicastOfflineModeDidChangeDelegate.add(delegate: self)
@@ -37,8 +39,9 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
     
     MapViewController.shared.mapView.gestures.options.panEnabled = true
     MapViewController.shared.mapView.gestures.options.pinchRotateEnabled = true
+    MapViewController.shared.mapView.gestures.options.pinchPanEnabled = true
     MapViewController.shared.mapView.gestures.options.pitchEnabled = true
-//    MapViewController.shared.mapView.mapboxMap.anchorRotateOrZoomGesturesToCenterCoordinate = false
+    MapViewController.shared.mapView.gestures.options.focalPoint = nil
     
     MapViewController.shared.multicastParentMapViewRegionIsChangingDelegate.remove(delegate: self)
   }
