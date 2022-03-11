@@ -504,12 +504,12 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
   }
   
   @objc func longPressed(gestureReconizer: UILongPressGestureRecognizer){
-//    if gestureReconizer.state == UIGestureRecognizer.State.began {
-//      let point = gestureReconizer.location(in: mapView)
-//      let coordinate = mapView.convert(point, toCoordinateFrom: nil)
-//
-//      openLocationInfoPanel(location: .map(coordinate))
-//    }
+    if gestureReconizer.state == UIGestureRecognizer.State.began {
+      let point = gestureReconizer.location(in: mapView)
+      let coordinate = mapView.mapboxMap.coordinate(for: point)
+
+      openLocationInfoPanel(location: .map(coordinate))
+    }
   }
 
   @objc func locationButtonTapped(sender: UserLocationButton) {

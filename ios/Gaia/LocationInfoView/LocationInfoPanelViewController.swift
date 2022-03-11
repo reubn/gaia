@@ -178,9 +178,9 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
         userLocationDidUpdate()
         removePointsFromMap()
       case .map(let coordinate):
-//        if case .map(let coordinate) = location, !MGLCoordinateBounds(MapViewController.shared.mapView.cameraBounds.bounds).contains(coordinate: coordinate) {
-//          MapViewController.shared.mapView.mapboxMap.setCenter(coordinate, animated: true)
-//        }
+        if case .map(let coordinate) = location, !MGLCoordinateBounds(MapViewController.shared.mapView.mapboxMap.cameraBounds.bounds).contains(coordinate: coordinate) {
+          MapViewController.shared.mapView.camera.fly(to: .init(center: coordinate))
+        }
         
         updateTitleCoordinate(coordinate)
         displayPointOnMap(coordinate: coordinate)
@@ -200,10 +200,9 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
   }
   
   func displayPointOnMap(coordinate: CLLocationCoordinate2D){
-    let point = MGLPointFeature()
-    point.coordinate = coordinate
- 
-    (mapSource as! MGLShapeSource).shape = point
+    _ = mapSource
+    try! MapViewController.shared.mapView.mapboxMap.style.updateGeoJSONSource(withId: "location", geoJSON: .geometry(.point(Point(coordinate))))
+    
     _ = mapLayer
   }
   
