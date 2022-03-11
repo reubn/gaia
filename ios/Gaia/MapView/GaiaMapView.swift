@@ -42,6 +42,8 @@ class GaiaMapView: MapView {
       
       switch newMode {
         case .none:
+          location.options.puckType = nil
+          location.options.puckBearingEnabled = false
           viewport.idle()
         case .follow:
           location.options.puckType = makePuck(showBearing: false)
