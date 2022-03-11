@@ -75,6 +75,10 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
     fingerUpDown.delegate = self
     mapView.addGestureRecognizer(fingerUpDown)
     
+    mapView.mapboxMap.onEvery(.cameraChanged) {_ in
+      self.mapViewRegionIsChanging()
+    }
+    
     return mapView
   }()
   
@@ -340,7 +344,7 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
     _ = appIconButton
     
     compositeStyleDidChange(to: LayerManager.shared.compositeStyle, from: nil)
-    mapViewRegionIsChanging(mapView)
+    mapViewRegionIsChanging()
   }
   
   @objc func singleTapped(){
@@ -375,7 +379,7 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
     self.checkBounds()
   }
 
-  func mapViewRegionIsChanging(_ mapView: MapView) {
+  func mapViewRegionIsChanging() {
     multicastParentMapViewRegionIsChangingDelegate.invoke(invocation: {$0.parentMapViewRegionIsChanging()})
     
     if(!ProcessInfo.processInfo.isLowPowerModeEnabled){
