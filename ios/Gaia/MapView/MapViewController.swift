@@ -264,7 +264,7 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
           HUDManager.shared.displayMessage(message: .noLayersWarningFixed)
         }
       case .minZoom(let minZoom):
-//        mapView.setZoomLevel(minZoom, animated: true)
+        mapView.camera.fly(to: .init(zoom: minZoom))
         HUDManager.shared.displayMessage(message: .zoomWarningFixed)
       case .multipleOpaque(let top):
         LayerManager.shared.show(layer: top, mutuallyExclusive: true)
@@ -477,24 +477,26 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
   }
   
   func checkZoomLevel(){
-//    let (minimumZoom, _) = styleCachedConstraints!.zoomLevelsCovered
-//    if(mapView.zoomLevel < minimumZoom - 2.5){
-//      warnings.insert(.minZoom(minimumZoom))
-//    } else if(!warnings.isEmpty){
-//      warnings = warnings.filter({if case .minZoom = $0 {return false}; return true})
-//    }
+    let (minimumZoom, _) = styleCachedConstraints!.zoomLevelsCovered
+    
+    if(mapView.cameraState.zoom < minimumZoom - 2.5){
+      warnings.insert(.minZoom(minimumZoom))
+    } else if(!warnings.isEmpty){
+      warnings = warnings.filter({if case .minZoom = $0 {return false}; return true})
+    }
   }
   
   func checkBounds(){
-//    let allBounds = styleCachedConstraints!.bounds.individual
-//    let showingLayerWithinBounds = allBounds.isEmpty || allBounds.contains(where: {$0.intersects(with: mapView.visibleCoordinateBounds)})
-//
-//    if(!showingLayerWithinBounds){
-//      let superbound = styleCachedConstraints!.bounds.superbound!
-//      warnings.insert(.bounds(superbound))
-//    } else if(!warnings.isEmpty){
-//      warnings = warnings.filter({if case .bounds = $0 {return false}; return true})
-//    }
+    let allBounds = styleCachedConstraints!.bounds.individual
+    let mapBounds = MGLCoordinateBounds(mapView.mapboxMap.coordinateBounds(for: mapView.bounds))
+    let showingLayerWithinBounds = allBounds.isEmpty || allBounds.contains(where: {$0.intersects(with: mapBounds)})
+
+    if(!showingLayerWithinBounds){
+      let superbound = styleCachedConstraints!.bounds.superbound!
+      warnings.insert(.bounds(superbound))
+    } else if(!warnings.isEmpty){
+      warnings = warnings.filter({if case .bounds = $0 {return false}; return true})
+    }
   }
 
   func offlineModeDidChange(offline: Bool){
