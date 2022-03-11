@@ -6,9 +6,9 @@ class UserLocationButton: MapButton {
   let iconSize: Double = 18
   
   var arrow: CAShapeLayer?
-  var mode: MGLUserTrackingMode = .none
+  var mode: UserTrackingMode = .none
  
-  init(initialMode: MGLUserTrackingMode) {
+  init(initialMode: UserTrackingMode) {
     super.init()
     
     let arrow = CAShapeLayer()
@@ -39,7 +39,7 @@ class UserLocationButton: MapButton {
     return bezierPath.cgPath
   }
  
-  func updateArrowForTrackingMode(mode: MGLUserTrackingMode) {
+  func updateArrowForTrackingMode(mode: UserTrackingMode) {
     self.mode = mode
     let rotatedArrow = 0.85
      
@@ -53,11 +53,6 @@ class UserLocationButton: MapButton {
       case .followWithHeading:
         updateArrow(fillColor: tintColor, strokeColor: tintColor, rotation: 0)
         accessibilityValue = "user location with heading"
-      case .followWithCourse:
-        updateArrow(fillColor: UIColor.systemPink, strokeColor: UIColor.systemPurple, rotation: 0)
-        accessibilityValue = "user location with course"
-      @unknown default:
-        fatalError("Unknown user tracking mode")
     }
   }
  

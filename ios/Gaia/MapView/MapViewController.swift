@@ -6,7 +6,7 @@ import Mapbox
 
 import FloatingPanel
 
-class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDelegate, SettingsManagerDelegate, UIGestureRecognizerDelegate {
+class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, LayerManagerDelegate, OfflineModeDelegate, SettingsManagerDelegate, UIGestureRecognizerDelegate {
   let lsfpc = MemoryConsciousFloatingPanelController()
   let osfpc = MemoryConsciousFloatingPanelController()
   let lifpc = MemoryConsciousFloatingPanelController()
@@ -21,8 +21,8 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
   
   var styleCachedConstraints: (zoomLevelsCovered: (Double, Double), bounds: Style.BoundsInfo)?
 
-  lazy var mapView: MapView = {
-    let mapView = MapView(frame: view.bounds)
+  lazy var mapView: GaiaMapView = {
+    let mapView = GaiaMapView(frame: view.bounds)
     
     mapView.fixTransparency()
 
@@ -31,7 +31,7 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
     mapView.ornaments.attributionButton.layer.opacity = 0
     mapView.ornaments.options.scaleBar.visibility = .hidden
     
-//    mapView.userTrackingMode = .followWithHeading
+    mapView.userTrackingMode = .followWithHeading
     mapView.ornaments.options.compass.visibility = .visible
     mapView.ornaments.options.compass.position = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
 //    mapView.mapboxMap.setCamera(to: .init(zoom: 11))
@@ -74,6 +74,8 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
     mapView.mapboxMap.onEvery(.cameraChanged) {_ in
       self.mapViewRegionIsChanging()
     }
+    
+    mapView.multicastUserTrackingModeDidChangeDelegate.add(delegate: self)
     
     return mapView
   }()
@@ -383,31 +385,29 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
     }
   }
 
-//  func mapView(_ mapView: MapView, didChange mode: MGLUserTrackingMode, animated: Bool) {
-//    switch mode {
-//      case .followWithHeading, .followWithCourse:
-//        mapView.location.locationProvider.startUpdatingHeading()
-//        mapView.location.locationProvider.startUpdatingLocation()
-//        mapView.tintColor = .systemPink
-//      case .follow:
+  func userTrackingModeDidChange(to mode: UserTrackingMode) {
+    switch mode {
+      case .followWithHeading:
+        mapView.location.locationProvider.startUpdatingHeading()
+        mapView.location.locationProvider.startUpdatingLocation()
+        mapView.tintColor = .systemPink
+      case .follow:
 //        mapView.resetNorth()
-//        mapView.location.locationProvider.stopUpdatingHeading()
-//        mapView.location.locationProvider.startUpdatingLocation()
-//        mapView.tintColor = .systemPink
-//      case .none:
-//        fallthrough
-//    @unknown default:
+        mapView.location.locationProvider.stopUpdatingHeading()
+        mapView.location.locationProvider.startUpdatingLocation()
+        mapView.tintColor = .systemPink
+      case .none:
 //      mapView.resetNorth()
-//      mapView.location.locationProvider.stopUpdatingHeading()
-//
-//      if(ProcessInfo.processInfo.isLowPowerModeEnabled){
-//        mapView.location.locationProvider.stopUpdatingLocation()
-//        mapView.tintColor = .systemGray
-//      }
-//    }
-//
-//    userLocationButton.updateArrowForTrackingMode(mode: mode)
-//  }
+      mapView.location.locationProvider.stopUpdatingHeading()
+
+      if(ProcessInfo.processInfo.isLowPowerModeEnabled){
+        mapView.location.locationProvider.stopUpdatingLocation()
+        mapView.tintColor = .systemGray
+      }
+    }
+
+    userLocationButton.updateArrowForTrackingMode(mode: mode)
+  }
   
   func compositeStyleDidChange(to: CompositeStyle, from: CompositeStyle?) {
     let style = to.toStyle()
@@ -511,22 +511,18 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
   }
 
   @objc func locationButtonTapped(sender: UserLocationButton) {
-//    var mode: MGLUserTrackingMode
-//
-//    switch (mapView.userTrackingMode) {
-//      case .none:
-//        mode = .follow
-//      case .follow:
-//        mode = .followWithHeading
-//      case .followWithHeading:
-//        mode = .follow
-//      case .followWithCourse:
-//        mode = .none
-//      @unknown default:
-//        fatalError("Unknown user tracking mode")
-//    }
-//
-//    mapView.userTrackingMode = mode
+    var mode: UserTrackingMode
+
+    switch (mapView.userTrackingMode) {
+      case .none:
+        mode = .follow
+      case .follow:
+        mode = .followWithHeading
+      case .followWithHeading:
+        mode = .follow
+    }
+
+    mapView.userTrackingMode = mode
   }
   
   @objc func locationButtonLongPressed(gestureReconizer: UILongPressGestureRecognizer) {
