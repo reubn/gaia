@@ -36,12 +36,8 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
   
   func viewWillExit(){
     print("exit OSZ")
-    
-    MapViewController.shared.mapView.gestures.options.panEnabled = true
-    MapViewController.shared.mapView.gestures.options.pinchRotateEnabled = true
-    MapViewController.shared.mapView.gestures.options.pinchPanEnabled = true
-    MapViewController.shared.mapView.gestures.options.pitchEnabled = true
-    MapViewController.shared.mapView.gestures.options.focalPoint = nil
+
+    MapViewController.shared.mapView.resetGestures()
     
     MapViewController.shared.multicastParentMapViewRegionIsChangingDelegate.remove(delegate: self)
   }

@@ -57,6 +57,14 @@ class GaiaMapView: MapView {
     }
   }
   
+  func resetGestures(){
+    gestures.options.panEnabled = true
+    gestures.options.pinchRotateEnabled = true
+    gestures.options.pinchPanEnabled = true
+    gestures.options.pitchEnabled = true
+    gestures.options.focalPoint = nil
+  }
+  
   fileprivate func makePuck(showBearing: Bool = false) -> PuckType {
     var config: Puck2DConfiguration = .makeDefault(showBearing: showBearing)
     config.showsAccuracyRing = true

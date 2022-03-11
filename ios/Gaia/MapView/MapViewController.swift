@@ -36,6 +36,8 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
     mapView.ornaments.options.compass.position = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
 //    mapView.mapboxMap.setCamera(to: .init(zoom: 11))
     
+    mapView.resetGestures()
+    
     mapView.tintColor = .systemBlue // user location should always be blue
 
 //    mapView.delegate = self
