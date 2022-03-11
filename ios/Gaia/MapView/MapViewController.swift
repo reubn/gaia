@@ -351,28 +351,28 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
     multicastMapViewTappedDelegate.invoke(invocation: {$0.mapViewTapped()})
   }
   
-  func mapView(_ mapView: MapView, didUpdate userLocation: MGLUserLocation?){
-    multicastUserLocationDidUpdateDelegate.invoke(invocation: {$0.userLocationDidUpdate()})
-    
-    if(firstTimeLocating && userLocation?.location != nil) {
+//  func mapView(_ mapView: MapView, didUpdate userLocation: MGLUserLocation?){
+//    multicastUserLocationDidUpdateDelegate.invoke(invocation: {$0.userLocationDidUpdate()})
+//
+//    if(firstTimeLocating && userLocation?.location != nil) {
 //      mapView.centerCoordinate = userLocation!.location!.coordinate
 //      mapView.userTrackingMode = .follow
-      mapView.viewport.transition(to: mapView.viewport.makeFollowPuckViewportState())
-      firstTimeLocating = false
-    }
-    
-    if let location = userLocation?.location {
-      let radius = location.horizontalAccuracy
-      
-      mapView.tintColor = radius >= 30 ? .systemPink : .systemBlue
-    }
-  }
+//      mapView.viewport.transition(to: mapView.viewport.makeFollowPuckViewportState())
+//      firstTimeLocating = false
+//    }
+//
+//    if let location = userLocation?.location {
+//      let radius = location.horizontalAccuracy
+//
+//      mapView.tintColor = radius >= 30 ? .systemPink : .systemBlue
+//    }
+//  }
   
-  func mapView(_ mapView: MapView, didSelect annotation: MGLAnnotation) {
-    openLocationInfoPanel(location: .user)
-    
+//  func mapView(_ mapView: MapView, didSelect annotation: MGLAnnotation) {
+//    openLocationInfoPanel(location: .user)
+//
 //    mapView.deselectAnnotation(annotation, animated: false)
-  }
+//  }
   
   lazy var mapViewRegionIsChangingCheck = Debounce(time: 0.1){
     self.checkZoomLevel()
@@ -387,31 +387,31 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
     }
   }
 
-  func mapView(_ mapView: MapView, didChange mode: MGLUserTrackingMode, animated: Bool) {
-    switch mode {
-      case .followWithHeading, .followWithCourse:
-        mapView.location.locationProvider.startUpdatingHeading()
-        mapView.location.locationProvider.startUpdatingLocation()
-        mapView.tintColor = .systemPink
-      case .follow:
+//  func mapView(_ mapView: MapView, didChange mode: MGLUserTrackingMode, animated: Bool) {
+//    switch mode {
+//      case .followWithHeading, .followWithCourse:
+//        mapView.location.locationProvider.startUpdatingHeading()
+//        mapView.location.locationProvider.startUpdatingLocation()
+//        mapView.tintColor = .systemPink
+//      case .follow:
 //        mapView.resetNorth()
-        mapView.location.locationProvider.stopUpdatingHeading()
-        mapView.location.locationProvider.startUpdatingLocation()
-        mapView.tintColor = .systemPink
-      case .none:
-        fallthrough
-    @unknown default:
+//        mapView.location.locationProvider.stopUpdatingHeading()
+//        mapView.location.locationProvider.startUpdatingLocation()
+//        mapView.tintColor = .systemPink
+//      case .none:
+//        fallthrough
+//    @unknown default:
 //      mapView.resetNorth()
-      mapView.location.locationProvider.stopUpdatingHeading()
-      
-      if(ProcessInfo.processInfo.isLowPowerModeEnabled){
-        mapView.location.locationProvider.stopUpdatingLocation()
-        mapView.tintColor = .systemGray
-      }
-    }
-
-    userLocationButton.updateArrowForTrackingMode(mode: mode)
-  }
+//      mapView.location.locationProvider.stopUpdatingHeading()
+//
+//      if(ProcessInfo.processInfo.isLowPowerModeEnabled){
+//        mapView.location.locationProvider.stopUpdatingLocation()
+//        mapView.tintColor = .systemGray
+//      }
+//    }
+//
+//    userLocationButton.updateArrowForTrackingMode(mode: mode)
+//  }
   
   func compositeStyleDidChange(to: CompositeStyle, from: CompositeStyle?) {
     let style = to.toStyle()
