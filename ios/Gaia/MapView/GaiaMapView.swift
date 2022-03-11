@@ -8,8 +8,8 @@ class GaiaMapView: MapView {
     _followPuckViewportState ?? {
       _followPuckViewportState = viewport.makeFollowPuckViewportState(
         options: FollowPuckViewportStateOptions(
-          padding: UIEdgeInsets(top: 200, left: 0, bottom: 0, right: 0),
           bearing: .constant(0),
+          pitch: 0,
           animationDuration: 0.5
         )
       )
