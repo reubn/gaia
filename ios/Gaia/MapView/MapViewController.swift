@@ -715,6 +715,10 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
     }
   }
   
+  @objc func compassTapped(){
+    mapView.camera.ease(to: .init(bearing: 0), duration: 0.5)
+  }
+  
   func settingsDidChange() {
     mapView.ornaments.options.compass.position = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
     setMapButtonGroupSide(right: SettingsManager.shared.rightHandedMenu.value)

@@ -45,6 +45,10 @@ extension MapViewController {
     mapView.ornaments.compassView.layer.shadowRadius = 10;
     
     mapView.ornaments.compassView.accessibilityLabel = "Compass"
+    
+  
+    let singleTap = UITapGestureRecognizer(target: self, action: #selector(compassTapped))
+    mapView.ornaments.compassView.addGestureRecognizer(singleTap)
   }
   
   func updateCompass(dark: Bool = true){
