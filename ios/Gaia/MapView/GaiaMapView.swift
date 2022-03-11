@@ -3,21 +3,6 @@ import Foundation
 @_spi(Experimental)import MapboxMaps
 
 class GaiaMapView: MapView {
-  fileprivate var _followPuckViewportState: ViewportState? = nil
-  var followPuckViewportState: ViewportState {
-    _followPuckViewportState ?? {
-      _followPuckViewportState = viewport.makeFollowPuckViewportState(
-        options: FollowPuckViewportStateOptions(
-          bearing: .constant(0),
-          pitch: 0,
-          animationDuration: 0.5
-        )
-      )
-      
-      return _followPuckViewportState!
-    }()
-  }
-  
   var multicastUserTrackingModeDidChangeDelegate = MulticastDelegate<(UserTrackingModeDidChangeDelegate)>()
   
   var userTrackingMode: UserTrackingMode {
@@ -48,11 +33,11 @@ class GaiaMapView: MapView {
         case .follow:
           location.options.puckType = makePuck(showBearing: false)
           location.options.puckBearingEnabled = false
-          viewport.transition(to: followPuckViewportState)
+          viewport.transition(to: makeViewportState(withBearing: false))
         case .followWithHeading:
           location.options.puckType = makePuck(showBearing: true)
           location.options.puckBearingEnabled = true
-          viewport.transition(to: followPuckViewportState)
+          viewport.transition(to: makeViewportState(withBearing: true))
       }
     }
   }
@@ -63,6 +48,16 @@ class GaiaMapView: MapView {
     gestures.options.pinchPanEnabled = true
     gestures.options.pitchEnabled = true
     gestures.options.focalPoint = nil
+  }
+  
+  fileprivate func makeViewportState(withBearing: Bool = false) -> ViewportState {
+    viewport.makeFollowPuckViewportState(
+      options: FollowPuckViewportStateOptions(
+        bearing: withBearing ? .heading : nil,
+        pitch: 0,
+        animationDuration: 0.5
+      )
+    )
   }
   
   fileprivate func makePuck(showBearing: Bool = false) -> PuckType {
