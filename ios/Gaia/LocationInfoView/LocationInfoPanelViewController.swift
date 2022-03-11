@@ -212,26 +212,26 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
   }
   
   func userLocationDidUpdate() {
-//    if(MapViewController.shared.mapView.mapboxMap.userLocation == nil) {return}
-//
-//    let coordinate = MapViewController.shared.mapView.mapboxMap.userLocation!.coordinate
-//    let heading = MapViewController.shared.mapView.mapboxMap.userLocation!.heading
-//    let location = MapViewController.shared.mapView.mapboxMap.userLocation!.location
-//
-//    if case .user = self.location {
-//      updateTitleCoordinate(coordinate)
-//    } else {
-//      var distanceValue = (distanceDisplay.value as! CoordinatePair)
-//      distanceValue.b = coordinate
-//      distanceDisplay.value = distanceValue
-//
-//      var bearingValue = (bearingDisplay.value as! CoordinatePair)
-//      bearingValue.b = coordinate
-//      bearingDisplay.value = bearingValue
-//    }
-//
-//    self.headingDisplay.value = heading
-//    self.elevationDisplay.value = location
+    if(MapViewController.shared.mapView.location.latestLocation == nil) {return}
+
+    let coordinate = MapViewController.shared.mapView.location.latestLocation!.coordinate
+    let heading = MapViewController.shared.mapView.location.latestLocation!.heading
+    let location = MapViewController.shared.mapView.location.latestLocation!.location
+
+    if case .user = self.location {
+      updateTitleCoordinate(coordinate)
+    } else {
+      var distanceValue = (distanceDisplay.value as! CoordinatePair)
+      distanceValue.b = coordinate
+      distanceDisplay.value = distanceValue
+
+      var bearingValue = (bearingDisplay.value as! CoordinatePair)
+      bearingValue.b = coordinate
+      bearingDisplay.value = bearingValue
+    }
+
+    self.headingDisplay.value = heading
+    self.elevationDisplay.value = location
   }
   
   override func panelButtonTapped(button: PanelButtonType) {
