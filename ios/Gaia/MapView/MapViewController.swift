@@ -610,16 +610,16 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
   }
   
   @objc func quickToggleLongPress(gestureReconizer: UILongPressGestureRecognizer) {
-//    if gestureReconizer.state == UIGestureRecognizer.State.began {
-//      let change = LayerManager.shared.quickToggle(bounds: mapView.visibleCoordinateBounds)
-//
-//      if(change.count == 0) {
-//        return
-//      }
-//
-//      HUDManager.shared.displayMessage(message: .quickToggle(change))
-//      UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-//    }
+    if gestureReconizer.state == UIGestureRecognizer.State.began {
+      let change = LayerManager.shared.quickToggle(bounds: MGLCoordinateBounds(mapView.mapboxMap.cameraBounds.bounds))
+
+      if(change.count == 0) {
+        return
+      }
+
+      HUDManager.shared.displayMessage(message: .quickToggle(change))
+      UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+    }
   }
   
   @objc func offlineButtonTapped(sender: MapButton) {
