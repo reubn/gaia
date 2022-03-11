@@ -36,7 +36,7 @@ class MapViewController: UIViewController, LayerManagerDelegate, OfflineModeDele
 //    mapView.userTrackingMode = .followWithHeading
     mapView.ornaments.options.compass.visibility = .visible
     mapView.ornaments.options.compass.position = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
-//    mapView.zoomLevel = 11
+//    mapView.mapboxMap.setCamera(to: .init(zoom: 11))
     
     mapView.tintColor = .systemBlue // user location should always be blue
 
