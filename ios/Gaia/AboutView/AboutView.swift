@@ -180,7 +180,7 @@ class AboutView: UIScrollView, UserLocationDidUpdateDelegate, ParentMapViewRegio
     }
     
     for (index, keyLocationPair) in KEY_LOCATIONS.enumerated() {
-      if(!keyLocationPair.seen && MGLCoordinateBounds(MapViewController.shared.mapView.mapboxMap.cameraBounds.bounds).contains(coordinate: keyLocationPair.location)){
+      if(!keyLocationPair.seen && MapViewController.shared.mapView.visibleCoordinateBounds.contains(coordinate: keyLocationPair.location)){
         KEY_LOCATIONS[index].seen = true
         KEY_LOCATIONS[index].seenReason = .view
         

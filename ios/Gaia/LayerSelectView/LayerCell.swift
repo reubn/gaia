@@ -250,7 +250,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     }
     
     let zoomLevel = MapViewController.shared.mapView.cameraState.zoom
-    let visibleBounds = MGLCoordinateBounds(MapViewController.shared.mapView.mapboxMap.cameraBounds.bounds)
+    let visibleBounds = MapViewController.shared.mapView.visibleCoordinateBounds
     
     if(zoomLevel < styleCachedConstraints!.zoomLevelsCovered.0 - 2){
       previewBlurReasons.append(.minZoom)

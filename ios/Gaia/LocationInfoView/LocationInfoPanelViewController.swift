@@ -178,7 +178,7 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
         userLocationDidUpdate()
         removePointsFromMap()
       case .map(let coordinate):
-        if case .map(let coordinate) = location, !MGLCoordinateBounds(MapViewController.shared.mapView.mapboxMap.cameraBounds.bounds).contains(coordinate: coordinate) {
+        if case .map(let coordinate) = location, !MapViewController.shared.mapView.visibleCoordinateBounds.contains(coordinate: coordinate) {
           MapViewController.shared.mapView.camera.fly(to: .init(center: coordinate))
         }
         

@@ -605,7 +605,7 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
   
   @objc func quickToggleLongPress(gestureReconizer: UILongPressGestureRecognizer) {
     if gestureReconizer.state == UIGestureRecognizer.State.began {
-      let change = LayerManager.shared.quickToggle(bounds: MGLCoordinateBounds(mapView.mapboxMap.cameraBounds.bounds))
+      let change = LayerManager.shared.quickToggle(bounds: mapView.visibleCoordinateBounds)
 
       if(change.count == 0) {
         return

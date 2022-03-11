@@ -26,7 +26,7 @@ class OfflineSelectArea: UIView, CoordinatedView {
   
   func panelButtonTapped(button: PanelButtonType){
     if(button == .next){
-      coordinatorView.selectedArea = MGLCoordinateBounds(MapViewController.shared.mapView.mapboxMap.cameraBounds.bounds)
+      coordinatorView.selectedArea = MapViewController.shared.mapView.visibleCoordinateBounds
       coordinatorView.forward()
     } else if(button == .previous){
       coordinatorView.back()
