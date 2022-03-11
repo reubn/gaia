@@ -383,6 +383,8 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
     if(!ProcessInfo.processInfo.isLowPowerModeEnabled){
       mapViewRegionIsChangingCheck.go()
     }
+    
+    userTrackingModeDidChange(to: mapView.userTrackingMode)
   }
 
   func userTrackingModeDidChange(to mode: UserTrackingMode) {
