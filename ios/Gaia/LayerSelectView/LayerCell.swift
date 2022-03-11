@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import CoreData
 
+@_spi(Experimental)import MapboxMaps
 import Mapbox
 
 class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
@@ -37,7 +38,7 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     }
   }
 
-  let preview = MGLMapView(frame: CGRect.zero)
+  let preview = MapView(frame: CGRect.zero)
   let previewSpacing: Double = 15
   let title = UILabel()
   
@@ -168,17 +169,26 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     preview.clipsToBounds = true
     preview.backgroundColor = .black
     preview.layer.allowsEdgeAntialiasing = true
+    
+    preview.fixTransparency()
+    
+    preview.gestures.options.panEnabled = false
+    preview.gestures.options.pinchEnabled = false
+    preview.gestures.options.pinchRotateEnabled = false
+    preview.gestures.options.pinchZoomEnabled = false
+    preview.gestures.options.pinchPanEnabled = false
+    preview.gestures.options.pitchEnabled = false
+    preview.gestures.options.doubleTapToZoomInEnabled = false
+    preview.gestures.options.doubleTouchToZoomOutEnabled = false
+    preview.gestures.options.quickZoomEnabled = false
 
-    preview.allowsScrolling = false
-    preview.allowsTilting = false
-    preview.allowsZooming = false
-    preview.allowsRotating = false
-    preview.compassView.isHidden = true
-    preview.showsUserLocation = false
-    preview.showsUserHeadingIndicator = false
-
-    preview.logoView.isHidden = true
-    preview.attributionButton.isHidden = true
+    preview.ornaments.options.scaleBar.visibility = .hidden
+    preview.ornaments.options.compass.visibility = .hidden
+//    preview.showsUserLocation = false
+//    preview.showsUserHeadingIndicator = false
+//
+    preview.ornaments.logoView.layer.opacity = 0
+    preview.ornaments.attributionButton.layer.opacity = 0
 
     contentView.addSubview(preview)
 
@@ -229,7 +239,11 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
    
     if(queuedStyle != displayedStyle) {
       displayedStyle = queuedStyle
-      preview.styleURL = displayedStyle!.url
+
+      if let url = displayedStyle!.url {
+        preview.mapboxMap.loadStyleURI(StyleURI(url: url)!)
+      }
+      
       preview.tintColor = _layer!.style.colour ?? (_layer!.needsDarkUI ? .white : .systemBlue)
       
       styleCachedConstraints = (displayedStyle!.zoomLevelsCovered, displayedStyle!.bounds)
@@ -257,12 +271,13 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     let parent = MapViewController.shared.mapView.bounds
     let centerPoint = CGPoint(x: parent.width * 0.5, y: parent.height * 0.25)
     
-    preview.setCenter(
-      MapViewController.shared.mapView.mapboxMap.coordinate(for: centerPoint),
-      zoomLevel: zoomLevel - 0.5,
-      direction: MapViewController.shared.mapView.cameraState.bearing,
-      animated: false
+    let cameraOptions = CameraOptions(
+      center: MapViewController.shared.mapView.mapboxMap.coordinate(for: centerPoint),
+      zoom: zoomLevel - 0.5,
+      bearing: MapViewController.shared.mapView.cameraState.bearing,
+      pitch: 0
     )
+    preview.mapboxMap.setCamera(to: cameraOptions)
     
     needsUpdating = false
   }
