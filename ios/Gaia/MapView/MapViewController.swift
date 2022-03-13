@@ -712,7 +712,14 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
   }
   
   @objc func compassTapped(){
-    mapView.camera.ease(to: .init(bearing: 0, pitch: 0), duration: 0.5)
+    mapView.camera.ease(
+      to: CameraOptions(
+        bearing: 0,
+        pitch: mapView.cameraState.bearing == 0 ? 0 : nil
+      ),
+      duration: 0.3,
+      curve: .easeOut
+    )
   }
   
   func settingsDidChange() {
