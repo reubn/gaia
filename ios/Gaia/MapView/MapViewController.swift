@@ -31,16 +31,12 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
     mapView.ornaments.attributionButton.layer.opacity = 0
     mapView.ornaments.options.scaleBar.visibility = .hidden
     
-    mapView.userTrackingMode = .followWithHeading
     mapView.ornaments.options.compass.visibility = .visible
     mapView.ornaments.options.compass.position = SettingsManager.shared.rightHandedMenu.value ? .topRight : .topLeft
-//    mapView.mapboxMap.setCamera(to: .init(zoom: 11))
     
     mapView.resetGestures()
     
     mapView.tintColor = .systemBlue // user location should always be blue
-
-//    mapView.delegate = self
     
     view.addSubview(mapView)
 
