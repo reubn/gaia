@@ -20,6 +20,8 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
   var firstTimeLocating = true
   
   var styleCachedConstraints: (zoomLevelsCovered: (Double, Double), bounds: Style.BoundsInfo)?
+  
+  var enactedUserTrackingMode: UserTrackingMode?
 
   lazy var mapView: GaiaMapView = {
     let mapView = GaiaMapView(frame: view.bounds)
@@ -393,6 +395,10 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
   }
 
   func userTrackingModeDidChange(to mode: UserTrackingMode) {
+    if(enactedUserTrackingMode == mode) {
+      return
+    }
+    
     switch mode {
       case .followWithHeading:
         mapView.location.locationProvider.startUpdatingHeading()
@@ -414,6 +420,7 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
     }
 
     userLocationButton.updateArrowForTrackingMode(mode: mode)
+    enactedUserTrackingMode = mode
   }
   
   func compositeStyleDidChange(to: CompositeStyle, from: CompositeStyle?) {
