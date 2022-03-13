@@ -33,11 +33,11 @@ class GaiaMapView: MapView {
         case .follow:
           location.options.puckType = makePuck(showBearing: false)
           location.options.puckBearingEnabled = false
-          viewport.transition(to: makeViewportState(withBearing: false))
+          viewport.transition(to: makeViewportState(withBearing: false), transition: makeDefaultTransition())
         case .followWithHeading:
           location.options.puckType = makePuck(showBearing: true)
           location.options.puckBearingEnabled = true
-          viewport.transition(to: makeViewportState(withBearing: true))
+          viewport.transition(to: makeViewportState(withBearing: true), transition: makeDefaultTransition())
       }
     }
   }
@@ -48,6 +48,10 @@ class GaiaMapView: MapView {
     gestures.options.pinchPanEnabled = true
     gestures.options.pitchEnabled = true
     gestures.options.focalPoint = nil
+  }
+  
+  fileprivate func makeDefaultTransition() -> ViewportTransition {
+    viewport.makeDefaultViewportTransition()
   }
   
   fileprivate func makeViewportState(withBearing: Bool = false) -> ViewportState {
