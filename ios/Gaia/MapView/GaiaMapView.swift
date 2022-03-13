@@ -23,6 +23,7 @@ class GaiaMapView: MapView {
     }
     
     set(newMode) {
+      print("set utm", newMode, "from", userTrackingMode)
       self.multicastUserTrackingModeDidChangeDelegate.invoke(invocation: {$0.userTrackingModeDidChange(to: newMode)})
       
       switch newMode {
