@@ -392,13 +392,13 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
         mapView.location.locationProvider.startUpdatingLocation()
         mapView.tintColor = .systemPink
       case .follow:
-//        mapView.resetNorth()
+        mapView.camera.ease(to: .init(bearing: 0), duration: 0.3)
         mapView.location.locationProvider.stopUpdatingHeading()
         mapView.location.locationProvider.startUpdatingLocation()
         mapView.tintColor = .systemPink
       case .none:
-//      mapView.resetNorth()
-      mapView.location.locationProvider.stopUpdatingHeading()
+        mapView.camera.ease(to: .init(bearing: 0), duration: 0.3)
+        mapView.location.locationProvider.stopUpdatingHeading()
 
       if(ProcessInfo.processInfo.isLowPowerModeEnabled){
         mapView.location.locationProvider.stopUpdatingLocation()
