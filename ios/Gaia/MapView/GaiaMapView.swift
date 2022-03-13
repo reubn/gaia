@@ -29,14 +29,34 @@ class GaiaMapView: MapView {
         case .none:
           location.options.puckType = nil
           location.options.puckBearingEnabled = false
+          
+          camera.ease(to: .init(bearing: 0), duration: 0.3)
+          location.locationProvider.stopUpdatingHeading()
+          
+          if(ProcessInfo.processInfo.isLowPowerModeEnabled){
+            location.locationProvider.stopUpdatingLocation()
+            tintColor = .systemGray
+          }
+          
           viewport.idle()
         case .follow:
           location.options.puckType = makePuck(showBearing: false)
           location.options.puckBearingEnabled = false
+          
+          camera.ease(to: .init(bearing: 0), duration: 0.3)
+          location.locationProvider.stopUpdatingHeading()
+          location.locationProvider.startUpdatingLocation()
+          tintColor = .systemPink
+          
           viewport.transition(to: makeViewportState(withBearing: false), transition: makeDefaultTransition())
         case .followWithHeading:
           location.options.puckType = makePuck(showBearing: true)
           location.options.puckBearingEnabled = true
+          
+          location.locationProvider.startUpdatingHeading()
+          location.locationProvider.startUpdatingLocation()
+          tintColor = .systemPink
+          
           viewport.transition(to: makeViewportState(withBearing: true), transition: makeDefaultTransition())
       }
     }

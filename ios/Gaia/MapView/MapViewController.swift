@@ -20,8 +20,6 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
   var firstTimeLocating = true
   
   var styleCachedConstraints: (zoomLevelsCovered: (Double, Double), bounds: Style.BoundsInfo)?
-  
-  var enactedUserTrackingMode: UserTrackingMode?
 
   lazy var mapView: GaiaMapView = {
     let mapView = GaiaMapView(frame: view.bounds)
@@ -390,37 +388,10 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
     if(!ProcessInfo.processInfo.isLowPowerModeEnabled){
       mapViewRegionIsChangingCheck.go()
     }
-    
-    userTrackingModeDidChange(to: mapView.userTrackingMode)
   }
 
   func userTrackingModeDidChange(to mode: UserTrackingMode) {
-    if(enactedUserTrackingMode == mode) {
-      return
-    }
-    
-    switch mode {
-      case .followWithHeading:
-        mapView.location.locationProvider.startUpdatingHeading()
-        mapView.location.locationProvider.startUpdatingLocation()
-        mapView.tintColor = .systemPink
-      case .follow:
-        mapView.camera.ease(to: .init(bearing: 0), duration: 0.3)
-        mapView.location.locationProvider.stopUpdatingHeading()
-        mapView.location.locationProvider.startUpdatingLocation()
-        mapView.tintColor = .systemPink
-      case .none:
-        mapView.camera.ease(to: .init(bearing: 0), duration: 0.3)
-        mapView.location.locationProvider.stopUpdatingHeading()
-
-      if(ProcessInfo.processInfo.isLowPowerModeEnabled){
-        mapView.location.locationProvider.stopUpdatingLocation()
-        mapView.tintColor = .systemGray
-      }
-    }
-
     userLocationButton.updateArrowForTrackingMode(mode: mode)
-    enactedUserTrackingMode = mode
   }
   
   func compositeStyleDidChange(to: CompositeStyle, from: CompositeStyle?) {
