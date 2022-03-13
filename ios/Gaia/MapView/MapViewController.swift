@@ -39,6 +39,13 @@ class MapViewController: UIViewController, UserTrackingModeDidChangeDelegate, La
     mapView.tintColor = .systemBlue // user location should always be blue
     
     view.addSubview(mapView)
+    
+    if let currentLocation = mapView.location.latestLocation {
+      let cameraOptions = CameraOptions(center: currentLocation.coordinate, zoom: 11)
+      mapView.mapboxMap.setCamera(to: cameraOptions)
+    }
+    
+    mapView.userTrackingMode = .follow
 
     let singleTap = UITapGestureRecognizer(target: self, action: #selector(singleTapped))
     singleTap.require(toFail: mapView.gestures.singleTapGestureRecognizer)
