@@ -78,7 +78,7 @@ class GaiaMapView: MapView {
     viewport.makeFollowPuckViewportState(
       options: FollowPuckViewportStateOptions(
         bearing: withBearing ? .heading : nil,
-        pitch: 0,
+        pitch: nil,
         animationDuration: 0.5
       )
     )
