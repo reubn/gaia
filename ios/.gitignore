@@ -28,6 +28,9 @@ DerivedData/
 *.framework/*
 !*.framework/Assets.car
 *.framework.dSYM
+
+*.xcframework/*
+
 .DS_Store
 
 *private*
