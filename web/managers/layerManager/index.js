@@ -57,16 +57,19 @@ class LayerManager extends ET {
   accept(layerDefinitionx){
     const layerDefinitions = Array.isArray(layerDefinitionx) ? layerDefinitionx : [layerDefinitionx]
 
-    for(const layerDefinition of layerDefinitions) {
+    const layers = layerDefinitions.map(layerDefinition => {
       const existingWithEditedId = this.layers.find(layer => layer.id == layerDefinition.metadata.id)
+      const newLayer = !existingWithEditedId && Layer.fromLayerDefinition(layerDefinition)
 
       if(existingWithEditedId) existingWithEditedId.update(layerDefinition)
-      else {
-        this.layers.push(Layer.fromLayerDefinition(layerDefinition))
-      }
-    }
+      else this.layers.push(newLayer)
+
+      return existingWithEditedId || newLayer
+    })
 
     this.save()
+
+    return layers
   }
 
   layerSortingFunction(a, b) {
