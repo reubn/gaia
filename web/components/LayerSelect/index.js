@@ -28,10 +28,24 @@ const LayerSelect = ({darkMode=false}) => {
     else layerManager.show(layer, true)
   }
 
+  const onDragOver = event => event.preventDefault()
+
+  const onDrop = event => {
+    event.preventDefault();
+
+    [...event.dataTransfer.items].forEach(async item => {
+      const text = await item.getAsFile().text()
+
+      const layers = layerManager.accept(JSON.parse(text))
+
+      if(layers.length === 1) layerManager.show(layers[0], true)
+    })
+  }
+
   const content = layers.sort(layerManager.layerSortingFunction).reverse().map(layer => <LayerCell layer={layer} onClick={onClick} />)
 
   return (
-    <section className={`${layerSelect} ${darkMode ? dark : light} ${open ? openStyle : closedStyle}`} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+    <section className={`${layerSelect} ${darkMode ? dark : light} ${open ? openStyle : closedStyle}`} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onDragOver={onDragOver} onDrop={onDrop}>
       <p className={`${handle} ${locked ? lockedStyle : ''}`} onClick={() => setLocked(!locked)}>{locked ? '􀎠' : '􀆈'}</p>
       {content}
     </section>
