@@ -52,6 +52,22 @@ export default () => {
 
       <KeyCombo combo="ctrl+=" handler={() => setMaxTileZoom(maxTileZoom + 1)} />
       <KeyCombo combo="ctrl+-" handler={() => setMaxTileZoom(maxTileZoom - 1)} />
+      <KeyCombo combo="s" handler={toggleLayer('stravaRun')} />
+      <KeyCombo combo="o" handler={toggleLayer('magicOS', 'bingSat')} />
     </section>
   )
 }
+
+const toggleLayer = (id, id2) => () => {
+    const layer = layerManager.layers.find(({id: _id}) => id == _id)
+    const layer2 = id2 && layerManager.layers.find(({id: _id}) => id2 == _id)
+
+    if(layer.visible) {
+      if(id2) layerManager.show(layer2)
+      layerManager.hide(layer)
+    }
+    else {
+      layerManager.show(layer)
+      if(id2) layerManager.hide(layer2)
+    }
+  }
