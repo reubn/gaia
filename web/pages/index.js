@@ -34,19 +34,10 @@ export default () => {
       ...state,
       style: {
         ...style,
-        sources: {
-          ...style.sources,
-          'mapbox-dem': {
-            'type': 'raster-dem',
-            'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-            'tileSize': 512,
-            'maxzoom': 14
-          }
-        },
-        terrain: {
-          source: 'mapbox-dem',
+        terrain: exaggeration ? {
+          ...style.terrain,
           exaggeration: exaggeration
-        }
+        } : style.terrain
       }
     })
 
