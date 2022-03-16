@@ -93,7 +93,16 @@ class SuperMap extends mapboxgl.Map {
 
     global.map = this
 
+    map.on('moveend', () => {
+      const state = {
+        zoom: map.getZoom(),
+        bearing: map.getBearing(),
+        pitch: map.getPitch(),
+        ...map.getCenter()
+      }
 
+      localStorage.setItem('state', JSON.stringify(state))
+    })
 
     this.addControl(draw, 'top-left')
 

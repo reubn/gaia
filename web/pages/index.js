@@ -11,12 +11,12 @@ import KeyCombo from '@/components/KeyCombo'
 
 export default () => {
   const lm = typeof window !== 'undefined' ? layerManager.useLayerManager() : []
-  const [maxTileZoom, setMaxTileZoom] = useState(17)
+  const [maxTileZoom, setMaxTileZoom] = useState(global.localStorage?.getItem('maxTileZoom') || 17)
   global.setMaxTileZoom = setMaxTileZoom
-  const [exaggeration, setExaggeration] = useState(0)
+  const [exaggeration, setExaggeration] = useState(global.localStorage?.getItem('exaggeration') || 0)
   global.setExaggeration = setExaggeration
 
-  const [state, setState] = useState({
+  const [state, setState] = useState(global.localStorage?.getItem('state') ? JSON.parse(global.localStorage.getItem('state')) : {
     lat: 52.7577,
     lng: -2.4376,
     zoom: 8
@@ -26,7 +26,10 @@ export default () => {
 
   useEffect(() => {
     const compositeStyle = layerManager.compositeStyle
-    let style = compositeStyle.toStyle({maxTileZoom})
+    let style = compositeStyle.toStyle({maxTileZoom: +maxTileZoom})
+
+    global.localStorage.setItem('maxTileZoom', maxTileZoom)
+    global.localStorage.setItem('exaggeration', exaggeration)
 
     console.log(compositeStyle.needsDarkUI)
     setDarkMode(compositeStyle.needsDarkUI)
@@ -36,7 +39,7 @@ export default () => {
         ...style,
         terrain: exaggeration ? {
           ...style.terrain,
-          exaggeration: exaggeration
+          exaggeration: +exaggeration
         } : style.terrain
       }
     })

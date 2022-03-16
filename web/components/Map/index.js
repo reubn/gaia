@@ -4,16 +4,18 @@ import KeyCombo from '@/components/KeyCombo'
 
 import {map as mapStyle, light, dark} from './styles'
 
-const Map = ({lat, lng, zoom, style, darkMode}) => {
+const Map = ({lat, lng, zoom, bearing, pitch, style, darkMode}) => {
   const mapContainer = useRef()
   const [map, setMap] = useState(null)
 
   useEffect(() => {
     const map = new SuperMap({
       container: mapContainer.current,
-      style: style,
+      style,
       center: [lng, lat],
-      zoom: zoom,
+      zoom,
+      bearing: bearing || 0,
+      pitch: pitch || 0,
 
       attributionControl: false,
       renderWorldCopies: false,
