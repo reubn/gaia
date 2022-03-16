@@ -66,11 +66,11 @@ const toggleLayer = (id, id2) => () => {
     const layer2 = id2 && layerManager.layers.find(({id: _id}) => id2 == _id)
 
     if(layer.visible) {
-      if(id2) layerManager.show(layer2)
+      if(id2) layerManager.show(layer2, true)
       layerManager.hide(layer)
     }
     else {
-      layerManager.show(layer)
+      layerManager.show(layer, true)
       if(id2) layerManager.hide(layer2)
     }
   }
