@@ -56,8 +56,9 @@ export default () => {
       <KeyCombo combo="ctrl+=" handler={() => setMaxTileZoom(maxTileZoom + 1)} />
       <KeyCombo combo="ctrl+-" handler={() => setMaxTileZoom(maxTileZoom - 1)} />
       <KeyCombo combo="s" handler={toggleLayer('stravaRun')} />
-      <KeyCombo combo="o" handler={toggleLayer('magicOS', 'bingSat')} />
-      <KeyCombo combo="g" handler={toggleLayer('googleSat', 'bingSat')} />
+      <KeyCombo combo="o" handler={toggleLayer('magicOS')} />
+      <KeyCombo combo="g" handler={toggleLayer('googleSat')} />
+      <KeyCombo combo="b" handler={toggleLayer('bingSat')} />
     </section>
   )
 }
