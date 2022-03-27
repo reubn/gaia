@@ -101,32 +101,23 @@ extension CLLocationCoordinate2D: Codable, Equatable, Hashable {
     )
   }
   
-  init?(_ string: String) {
-    let coords = string
-      .split(separator: ",")
-      .compactMap({Double($0.trimmingCharacters(in: .whitespacesAndNewlines))})
-
-    if(coords.count == 2) {
-      self.init()
-      
-      self.latitude = coords[0]
-      self.longitude = coords[1]
-      
-      if(!CLLocationCoordinate2DIsValid(self)) {
-        self.latitude = coords[1]
-        self.longitude = coords[0]
-      }
-
-      if(!CLLocationCoordinate2DIsValid(self)){
-        return nil
-      }
+  init?(_ _string: String) {
+    let characterSet: CharacterSet = .whitespacesAndNewlines.union(.init(charactersIn: "()[]{}\"”″'’′‘"))
+    
+    let string = _string.trimmingCharacters(in: characterSet)
+    
+    if let coord = Self.init(decimal: string) ?? Self.init(gridReference: string) ?? Self.init(sexagesimal: string) {
+      self.init(clone: coord)
     } else {
-      self.init(gridReference: string)
-      
-      if(!CLLocationCoordinate2DIsValid(self)){
-        return nil
-      }
+      return nil
     }
+  }
+  
+  init(clone: CLLocationCoordinate2D) {
+    self.init()
+    
+    self.latitude = clone.latitude
+    self.longitude = clone.longitude
   }
 
   public func encode(to encoder: Encoder) throws {

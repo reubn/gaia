@@ -65,6 +65,9 @@
 		1B8C078E25C48245008C08B2 /* LocationInfoPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */; };
 		1B8C078F25C48245008C08B2 /* LocationInfoPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */; };
 		1B8C079325C493E5008C08B2 /* SelectableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C079225C493E5008C08B2 /* SelectableLabel.swift */; };
+		1B93A9CF27F09F4D00497DB4 /* sexagesimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B93A9CE27F09F4D00497DB4 /* sexagesimal.swift */; };
+		1B93A9D127F0A64800497DB4 /* NSTextCheckingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B93A9D027F0A64800497DB4 /* NSTextCheckingResult.swift */; };
+		1B93A9D327F0CEE900497DB4 /* decimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B93A9D227F0CEE900497DB4 /* decimal.swift */; };
 		1B96528825D58EFC0017A43E /* LayerSelectConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96528725D58EFC0017A43E /* LayerSelectConfig.swift */; };
 		1B96528A25D5BC550017A43E /* LayerSelectEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96528925D5BC550017A43E /* LayerSelectEdit.swift */; };
 		1B96528D25D5C3DA0017A43E /* KeyboardLayoutGuide in Frameworks */ = {isa = PBXBuildFile; productRef = 1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */; };
@@ -192,6 +195,9 @@
 		1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelLayout.swift; sourceTree = "<group>"; };
 		1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelViewController.swift; sourceTree = "<group>"; };
 		1B8C079225C493E5008C08B2 /* SelectableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableLabel.swift; sourceTree = "<group>"; };
+		1B93A9CE27F09F4D00497DB4 /* sexagesimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sexagesimal.swift; sourceTree = "<group>"; };
+		1B93A9D027F0A64800497DB4 /* NSTextCheckingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextCheckingResult.swift; sourceTree = "<group>"; };
+		1B93A9D227F0CEE900497DB4 /* decimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = decimal.swift; sourceTree = "<group>"; };
 		1B96528725D58EFC0017A43E /* LayerSelectConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectConfig.swift; sourceTree = "<group>"; };
 		1B96528925D5BC550017A43E /* LayerSelectEdit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayerSelectEdit.swift; sourceTree = "<group>"; };
 		1B96529125D7E5F20017A43E /* LayerSelectViewEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerSelectViewEmpty.swift; sourceTree = "<group>"; };
@@ -368,6 +374,7 @@
 				1B6033C025D1DC4A00211150 /* randomString.swift */,
 				1BDACA62260A4B8700248962 /* String.swift */,
 				1BDACA64260A4BA700248962 /* NSRegularExpression.swift */,
+				1B93A9D027F0A64800497DB4 /* NSTextCheckingResult.swift */,
 				1B9D5A2D269757020034088E /* CLLocationCoordinate2D */,
 				1BA03E3525DE8BE300EE273C /* UIImage.swift */,
 				1B9DDAFB25F2AC1E00B3407F /* Collection.swift */,
@@ -480,6 +487,8 @@
 			children = (
 				1BA03E3325DDAEEE00EE273C /* CLLocationCoordinate2D.swift */,
 				1B9D5A2E2697571D0034088E /* gridReferences.swift */,
+				1B93A9CE27F09F4D00497DB4 /* sexagesimal.swift */,
+				1B93A9D227F0CEE900497DB4 /* decimal.swift */,
 			);
 			path = CLLocationCoordinate2D;
 			sourceTree = "<group>";
@@ -686,9 +695,11 @@
 				1B6033C125D1DC4A00211150 /* randomString.swift in Sources */,
 				1BBD3FF325B708A6007B8BC7 /* PanelViewController.swift in Sources */,
 				1B7644C125CAFA2F00572A70 /* LayerDefinition.swift in Sources */,
+				1B93A9CF27F09F4D00497DB4 /* sexagesimal.swift in Sources */,
 				1B0D09B925E6C1CA00ED5345 /* HUDView.swift in Sources */,
 				1B3401CC25B473E40091FA3B /* LayerCell.swift in Sources */,
 				1B62CE9125D0288400D06E55 /* AboutPanelLayout.swift in Sources */,
+				1B93A9D327F0CEE900497DB4 /* decimal.swift in Sources */,
 				1BBD3FFD25B8927E007B8BC7 /* OfflineManager.swift in Sources */,
 				1BD6A3BE2600E34B001E503D /* CoordinatePair.swift in Sources */,
 				1BA9BD2625C21D7C00AC97C7 /* LayerSelectImport.swift in Sources */,
@@ -714,6 +725,7 @@
 				1B96529225D7E5F20017A43E /* LayerSelectViewEmpty.swift in Sources */,
 				1B8C078E25C48245008C08B2 /* LocationInfoPanelLayout.swift in Sources */,
 				1B3401D525B4A1570091FA3B /* LayerManager.swift in Sources */,
+				1B93A9D127F0A64800497DB4 /* NSTextCheckingResult.swift in Sources */,
 				1B62CE9025D0288400D06E55 /* AboutView.swift in Sources */,
 				1B7644C825CC3E9000572A70 /* PanelButton.swift in Sources */,
 				1B47B96B25FA497900504761 /* Commands.swift in Sources */,

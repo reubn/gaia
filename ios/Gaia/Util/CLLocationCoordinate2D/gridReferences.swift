@@ -15,6 +15,7 @@ fileprivate let lookup = [
 
 extension CLLocationCoordinate2D {
   init?(gridReference: String) {
+    print("gr")
     let string = gridReference.replacingOccurrences(of: "[\\n\\r\\t\\s-_]", with: "", options: .regularExpression).uppercased()
     
     let firstTwo = string.prefix(2)
@@ -55,7 +56,7 @@ extension CLLocationCoordinate2D {
     
     let easting = e * magnitude
     let northing = n * magnitude
-    
+    print("gr success")
     self.init(easting: easting, northing: northing)
   }
   
