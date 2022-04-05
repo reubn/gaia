@@ -37,7 +37,7 @@ export default () => {
       ...state,
       style: {
         ...style,
-        terrain: exaggeration ? {
+        terrain: exaggeration && style.terrain ? {
           ...style.terrain,
           exaggeration: +exaggeration
         } : style.terrain
