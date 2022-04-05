@@ -88,7 +88,8 @@ class SuperMap extends mapboxgl.Map {
     super({
       ...options,
       attributionControl: false,
-      renderWorldCopies: false
+      renderWorldCopies: false,
+      maxTileCacheSize: Infinity
     })
 
     global.map = this
