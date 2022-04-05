@@ -109,12 +109,12 @@ extension LayerDefinition {
     let id = "gpx_" + random
     
     let tracks = gpx.tracks.flatMap {track in
-      track.segments.map {trackSegment in
+      track.tracksegments.map {trackSegment in
         [
           "type": "Feature",
           "geometry": [
             "type": "LineString",
-            "coordinates": trackSegment.points.map {trackPoint in
+            "coordinates": trackSegment.trackpoints.map {trackPoint in
               [trackPoint.longitude!, trackPoint.latitude!]
             }
           ]

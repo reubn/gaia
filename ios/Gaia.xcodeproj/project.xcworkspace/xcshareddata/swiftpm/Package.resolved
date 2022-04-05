@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/vincentneo/CoreGPX",
         "state": {
           "branch": null,
-          "revision": "bc61acc0b64f8f09a51811ac0664885af30d0a41",
-          "version": "0.9.0"
+          "revision": "3694305c58059896245701ab7554a6e88aaefd61",
+          "version": "0.8.2"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/SCENEE/FloatingPanel",
         "state": {
           "branch": null,
-          "revision": "0fbbbc8d99b4dfe58bb1dd704d14b45f35b46584",
-          "version": "2.5.1"
+          "revision": "16fea625be25d9a713630a4a43cbc0778740ebf4",
+          "version": "2.3.0"
         }
       },
       {
