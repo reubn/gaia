@@ -30,8 +30,8 @@ struct Style: Codable, Equatable, Hashable {
 
   var zoomLevelsCovered: (min: Double, max: Double) {
     (
-      min: interfacedSources.compactMap({$0.minZoom}).max() ?? 0,
-      max: interfacedSources.compactMap({$0.maxZoom}).min() ?? 22
+      min: interfacedSources.map({$0.minZoom ?? 0}).min() ?? 0, // is this what we want? need to test
+      max: interfacedSources.map({$0.maxZoom ?? 22}).max() ?? 22
     )
   }
   
