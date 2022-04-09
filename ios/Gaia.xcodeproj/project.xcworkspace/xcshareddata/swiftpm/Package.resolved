@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/vincentneo/CoreGPX",
         "state": {
           "branch": null,
-          "revision": "3694305c58059896245701ab7554a6e88aaefd61",
-          "version": "0.8.2"
+          "revision": "bc61acc0b64f8f09a51811ac0664885af30d0a41",
+          "version": "0.9.0"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/SCENEE/FloatingPanel",
         "state": {
           "branch": null,
-          "revision": "16fea625be25d9a713630a4a43cbc0778740ebf4",
-          "version": "2.3.0"
+          "revision": "fe30e60235c5cc753e2ee2a3eebc8e654971634d",
+          "version": "2.5.2"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/freshOS/KeyboardLayoutGuide",
         "state": {
           "branch": null,
-          "revision": "2a62a1a0b64e3c7db227c7da67e94292c1897903",
-          "version": "1.7.0"
+          "revision": "b14abc2ff6a6b934b81b7004edb65f910ac68bdc",
+          "version": "1.8.0"
         }
       },
       {
