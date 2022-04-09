@@ -196,7 +196,7 @@ class Section: UIStackView {
         : group.getLayers().filter({$0.enabled}).sorted(by: LayerManager.shared.layerSortingFunction)
       self.ready = true
       
-      DispatchQueue.main.async {
+      DispatchQueue.main.async { [self] in
         if(self.layers.count > 0) {
           if(openState == .hidden) {
             openState =  normallyCollapsed ? .collapsed : .open
