@@ -114,7 +114,7 @@ extension LayerDefinition {
           "type": "Feature",
           "geometry": [
             "type": "LineString",
-            "coordinates": trackSegment.pointspoints.map {trackPoint in
+            "coordinates": trackSegment.points.map {trackPoint in
               [trackPoint.longitude!, trackPoint.latitude!]
             }
           ]
