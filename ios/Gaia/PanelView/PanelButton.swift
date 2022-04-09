@@ -60,6 +60,23 @@ class PanelButton: UIButton {
       
     }
   }
+  
+  fileprivate var pulseAnimation: PulseAnimation?
+  var isPulsing: Bool = false {
+    didSet {
+      if(oldValue == isPulsing) {return}
+          
+      if(isPulsing){
+        pulseAnimation = PulseAnimation(radius: 100, postion: .init(x: 30, y: 15))
+        pulseAnimation!.animationDuration = 2
+        pulseAnimation!.backgroundColor = self.colour.cgColor
+        self.layer.insertSublayer(pulseAnimation!, at: 0)
+      } else {
+        pulseAnimation!.removeAllAnimations()
+        pulseAnimation = nil
+      }
+    }
+  }
 }
 
 class PanelSmallButton: PanelButton {
@@ -76,4 +93,64 @@ class PanelSmallButton: PanelButton {
     widthAnchor.constraint(equalToConstant: 30).isActive = true
     heightAnchor.constraint(equalTo: widthAnchor).isActive = true
   }
+}
+
+
+class PulseAnimation: CALayer {
+  var animationGroup = CAAnimationGroup()
+  var animationDuration: TimeInterval = 1.5
+  var radius: CGFloat = 200
+  
+  override init(layer: Any) {
+    super.init(layer: layer)
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  init(radius: CGFloat, postion: CGPoint){
+    super.init()
+    self.backgroundColor = UIColor.black.cgColor
+    self.contentsScale = UIScreen.main.scale
+    self.opacity = 0
+    self.radius = radius
+    self.position = postion
+    
+    self.bounds = CGRect(x: 0, y: 0, width: radius * 2, height: radius * 2)
+    self.cornerRadius = radius
+    
+    DispatchQueue.global(qos: .default).async {
+      self.setupAnimationGroup()
+      DispatchQueue.main.async {
+        self.add(self.animationGroup, forKey: "pulse")
+      }
+    }
+  }
+  
+  func scaleAnimation() -> CABasicAnimation {
+    let scaleAnimaton = CABasicAnimation(keyPath: "transform.scale.xy")
+    scaleAnimaton.fromValue = 0
+    scaleAnimaton.toValue = 1
+    scaleAnimaton.duration = animationDuration
+    return scaleAnimaton
+  }
+  
+  func createOpacityAnimation() -> CAKeyframeAnimation {
+    let opacityAnimiation = CAKeyframeAnimation(keyPath: "opacity")
+    opacityAnimiation.duration = animationDuration
+    opacityAnimiation.values = [0.4, 0.8, 0]
+    opacityAnimiation.keyTimes = [0, 0.3, 1]
+    return opacityAnimiation
+  }
+  
+  func setupAnimationGroup() {
+    self.animationGroup.duration = animationDuration
+    self.animationGroup.repeatCount = .infinity
+    let defaultCurve = CAMediaTimingFunction(name: CAMediaTimingFunctionName.default)
+    self.animationGroup.timingFunction = defaultCurve
+    self.animationGroup.animations = [scaleAnimation(), createOpacityAnimation()]
+  }
+  
+  
 }

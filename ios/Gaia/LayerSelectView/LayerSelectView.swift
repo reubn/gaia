@@ -104,6 +104,9 @@ class LayerSelectView: UIScrollView, UIScrollViewDelegate, LayerManagerDelegate 
     })
     
     emptyState.update()
+    
+    let newButton = (superview as? LayerSelectHome)?.coordinatorView.panelViewController.getPanelButton(.new)
+    newButton?.isPulsing = LayerManager.shared.layers.isEmpty
   }
   
   func heightDidChange() {

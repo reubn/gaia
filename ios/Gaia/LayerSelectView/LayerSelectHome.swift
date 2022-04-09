@@ -88,6 +88,9 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     coordinatorView.panelViewController.panelButtons = [.share, .new, .dismiss]
 
     let newButton = coordinatorView.panelViewController.getPanelButton(.new)
+    
+    newButton.isPulsing = LayerManager.shared.layers.isEmpty
+    
     newButton.menu = UIMenu(title: "", children: [
       UIAction(title: "Import from URL", image: UIImage(systemName: "link"), handler: {_ in
         self.coordinatorView.goTo(1)
@@ -125,7 +128,52 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
       }),
       UIAction(title: "New", image: UIImage(systemName: "plus"), handler: {_ in
         self.requestLayerEdit(.new)
-      })
+      }),
+      UIMenu(title: "", options: [.displayInline], children: [
+        UIDeferredMenuElement.uncached {[weak self] completion in
+          let action = UIAction(title: "Add OpenStreetMap", image: UIImage(systemName: "map"), attributes: LayerManager.shared.layers.isEmpty ? [] : [.hidden], handler: {_ in
+            let id = "osm"
+            let layerDefinition = LayerDefinition(
+              metadata: LayerDefinition.Metadata(
+                id: id,
+                name: "OpenStreetMap",
+                group: "base",
+                attribution: "© OpenStreetMap contributors"
+              ),
+              style: Style(
+                sources: [
+                  id: [
+                    "tiles": [
+                      "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    ],
+                    "tileSize": 128,
+                    "type": "raster"
+                  ]
+                ],
+                layers: [
+                  [
+                    "id": id,
+                    "paint": [
+                      "raster-opacity": 1
+                    ],
+                    "source": id,
+                    "type": "raster"
+                  ]
+                ]
+              )
+            )
+            
+            if let result = self?.coordinatorView.acceptLayerDefinitions(from: [layerDefinition]),
+               result.rejected.isEmpty {
+              if let resultingLayer = LayerManager.shared.layers.first(where: {$0.id == id}){
+                LayerManager.shared.show(layer: resultingLayer, mutuallyExclusive: true)
+              }
+            }
+          })
+          
+          completion([action])
+        }
+      ])
     ])
     newButton.adjustsImageWhenHighlighted = false
     newButton.showsMenuAsPrimaryAction = true
