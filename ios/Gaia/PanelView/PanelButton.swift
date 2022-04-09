@@ -7,7 +7,8 @@ class PanelButton: UIButton {
   fileprivate let backgroundColour: UIColor?
   fileprivate let deemphasise: Bool
   
-  func getDefaultWeight() -> UIImage.SymbolWeight{.semibold}
+  func getDefaultWeight() -> UIImage.SymbolWeight {.semibold}
+  func getSize() -> CGSize {.init(width: 60, height: 30)}
   
   init(_ systemName: String, weight: UIImage.SymbolWeight? = nil, inset: Double? = nil, colour: UIColor = .systemBlue, backgroundColour: UIColor? = nil, deemphasise: Bool = false){
     self.colour = colour
@@ -33,12 +34,13 @@ class PanelButton: UIButton {
     let inset = self.inset ?? 7
     imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
     
+    let size = getSize()
     layer.cornerRadius = 15
     layer.cornerCurve = .circular
     
     translatesAutoresizingMaskIntoConstraints = false
-    heightAnchor.constraint(equalToConstant: 30).isActive = true
-    widthAnchor.constraint(equalTo: heightAnchor, multiplier: 2).isActive = true
+    heightAnchor.constraint(equalToConstant: size.height).isActive = true
+    widthAnchor.constraint(equalToConstant: size.width).isActive = true
   }
   
   required init?(coder: NSCoder) {
@@ -67,9 +69,9 @@ class PanelButton: UIButton {
       if(oldValue == isPulsing) {return}
           
       if(isPulsing){
-        pulseAnimation = PulseAnimation(radius: 100, postion: .init(x: 30, y: 15))
-        pulseAnimation!.animationDuration = 2
-        pulseAnimation!.backgroundColor = self.colour.cgColor
+        let size = getSize()
+        pulseAnimation = PulseAnimation(radius: 100, postion: .init(x: size.width / 2, y: size.height / 2))
+        pulseAnimation!.backgroundColor = (self.backgroundColour ?? self.colour).cgColor
         self.layer.insertSublayer(pulseAnimation!, at: 0)
       } else {
         pulseAnimation!.removeAllAnimations()
@@ -80,25 +82,14 @@ class PanelButton: UIButton {
 }
 
 class PanelSmallButton: PanelButton {
-  override func getDefaultWeight() -> UIImage.SymbolWeight{.semibold}
-
-  override func setSize(){
-    let inset = self.inset ?? 7
-    imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
-    
-    layer.cornerRadius = 15
-    layer.cornerCurve = .circular
-    
-    translatesAutoresizingMaskIntoConstraints = false
-    widthAnchor.constraint(equalToConstant: 30).isActive = true
-    heightAnchor.constraint(equalTo: widthAnchor).isActive = true
-  }
+  override func getDefaultWeight() -> UIImage.SymbolWeight {.semibold}
+  override func getSize() -> CGSize {.init(width: 30, height: 30)}
 }
 
 
 class PulseAnimation: CALayer {
   var animationGroup = CAAnimationGroup()
-  var animationDuration: TimeInterval = 1.5
+  var animationDuration: TimeInterval = 3
   var radius: CGFloat = 200
   
   override init(layer: Any) {
@@ -139,13 +130,13 @@ class PulseAnimation: CALayer {
   func createOpacityAnimation() -> CAKeyframeAnimation {
     let opacityAnimiation = CAKeyframeAnimation(keyPath: "opacity")
     opacityAnimiation.duration = animationDuration
-    opacityAnimiation.values = [0.4, 0.8, 0]
-    opacityAnimiation.keyTimes = [0, 0.3, 1]
+    opacityAnimiation.values =   [0.4, 0.8, 0.7, 0.4, 0.0]
+    opacityAnimiation.keyTimes = [0.0, 0.25, 0.5, 0.75, 1.0]
     return opacityAnimiation
   }
   
   func setupAnimationGroup() {
-    self.animationGroup.duration = animationDuration
+    self.animationGroup.duration = animationDuration + 3
     self.animationGroup.repeatCount = .infinity
     let defaultCurve = CAMediaTimingFunction(name: CAMediaTimingFunctionName.default)
     self.animationGroup.timingFunction = defaultCurve
