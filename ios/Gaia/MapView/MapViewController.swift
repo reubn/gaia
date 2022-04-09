@@ -464,7 +464,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   func checkZoomLevel(){
-    let zoomCorrection = 1.9
+    let zoomCorrection = 2.5
 
     let (minimumZoom, _) = styleCachedConstraints!.zoomLevelsCovered
     if(mapView.zoomLevel < minimumZoom - zoomCorrection){
