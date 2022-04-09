@@ -37,6 +37,17 @@ extension LayerDefinition.Metadata {
       attribution: layer.attribution
     )
   }
+  
+  static func random(idPrefix: String?, namePrefix: String?, group: String="") -> Self {
+    let random = randomString(length: 3)
+    let id = (idPrefix != nil ? (idPrefix! + "_") : "") + random
+    
+    return Self(
+      id: id,
+      name: (namePrefix != nil ? (namePrefix! + " ") : "") + random,
+      group: group
+    )
+  }
 }
 
 extension LayerDefinition.User {
@@ -60,41 +71,31 @@ extension LayerDefinition {
     )
   }
   
-  init(style: Style){
-    let random = randomString(length: 3)
-    let id = "style_" + random
+  init(style: Style, metadata _metadata: LayerDefinition.Metadata? = nil){
+    let metadata = _metadata ?? .random(idPrefix: "style", namePrefix: "Style")
     
     self.init(
-      metadata: Metadata(
-        id: id,
-        name: "Import " + random,
-        group: ""
-      ),
+      metadata: metadata,
       style: style
     )
   }
   
-  init(xyzURL: String){
-    let random = randomString(length: 3)
-    let id = "xyz_" + random
-    
+  init(xyzURL: String, metadata _metadata: LayerDefinition.Metadata? = nil){
+    let metadata = _metadata ?? .random(idPrefix: "xyz", namePrefix: "XYZ")
+  
     self.init(
-      metadata: Metadata(
-        id: id,
-        name: "XYZ Import" + random,
-        group: ""
-      ),
+      metadata: metadata,
       style: Style(
         sources: [
-          id: [
+          metadata.id: [
             "type": "raster",
             "tiles": [xyzURL]
           ]
         ],
         layers: [
           [
-            "id": id,
-            "source": id,
+            "id": metadata.id,
+            "source": metadata.id,
             "type": "raster"
           ]
         ]
@@ -102,11 +103,8 @@ extension LayerDefinition {
     )
   }
   
-  init(gpx: GPXRoot){
-    let random = randomString(length: 3)
-    
-    let name = gpx.metadata?.name ?? "GPX Import \(random)"
-    let id = "gpx_" + random
+  init(gpx: GPXRoot, metadata _metadata: LayerDefinition.Metadata? = nil){
+    let metadata = _metadata ?? .random(idPrefix: "gpx", namePrefix: "GPX", group: "gpx")
     
     let tracks = gpx.tracks.flatMap {track in
       track.segments.map {trackSegment in
@@ -132,8 +130,6 @@ extension LayerDefinition {
       ]
     }
     
-    let metadata = Metadata(id: id, name: name, group: "gpx")
-    
     let features: AnyCodable = [
       "type": "FeatureCollection",
       "features": tracks + waypoints
@@ -142,11 +138,8 @@ extension LayerDefinition {
     self.init(geoJSON: features, metadata: metadata)
   }
   
-  init(geoJSON geojson: AnyCodable, metadata: Metadata?=nil){
-    let random = randomString(length: 3)
-    
-    let name = metadata?.name ?? "GeoJSON Import \(random)"
-    let id = metadata?.id ?? "geojson_" + random
+  init(geoJSON geojson: AnyCodable, metadata _metadata: LayerDefinition.Metadata? = nil){
+    let metadata = _metadata ?? .random(idPrefix: "geojson", namePrefix: "GeoJSON", group: "gpx")
     
     let features = geoJSON(flatten: geojson)
     
@@ -174,7 +167,7 @@ extension LayerDefinition {
     var layers: [AnyCodable] = []
     
     if let data = featureCollections["line"] {
-      let lineKey = id + "_line"
+      let lineKey = metadata.id + "_line"
       
       sources[lineKey] = [
         "type": "geojson",
@@ -203,7 +196,7 @@ extension LayerDefinition {
     }
     
     if let data = featureCollections["circle"] {
-      let circleKey = id + "_circle"
+      let circleKey = metadata.id + "_circle"
       
       sources[circleKey] =  [
         "type": "geojson",
@@ -228,7 +221,7 @@ extension LayerDefinition {
     }
     
     if let data = featureCollections["fill"] {
-      let fillKey = id + "_fill"
+      let fillKey = metadata.id + "_fill"
       
       sources[fillKey] = [
         "type": "geojson",
@@ -246,11 +239,7 @@ extension LayerDefinition {
     }
     
     self.init(
-      metadata: metadata ?? Metadata(
-        id: id,
-        name: name,
-        group: "gpx"
-      ),
+      metadata: metadata,
       style: Style(
         sources: sources,
         layers: layers

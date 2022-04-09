@@ -69,30 +69,21 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   func handleRequest(request: LayerEditRequest){
     self.request = request
     
-    let layerDefinition: LayerDefinition? = {
-      switch request {
-        case .new:
-          return nil
-        case .edit(let layer), .duplicate(let layer):
-          return LayerDefinition(layer: layer)
-      }
-    }()
-    
-    do {
-      if(layerDefinition == nil) {throw "No Layer"}
+    switch request {
+      case .new:
+        jsonEditor.text = generateNewLayerDefinitionString()
+      case .edit(let layer), .duplicate(let layer):
+        let layerDefinition = LayerDefinition(layer: layer)
 
-      let encoder = JSONEncoder()
-      encoder.outputFormatting = [.sortedKeys, .prettyPrinted, .withoutEscapingSlashes]
-
-      let jsonData = try encoder.encode(layerDefinition)
-      let jsonString = String(data: jsonData, encoding: .utf8)!
-
-      let editorText = jsonString.replacingOccurrences(of: "\" : ", with: "\": ")
-      jsonEditor.text = editorText
-    } catch {
-      print(error)
-
-      jsonEditor.text = generateNewLayerDefinitionString()
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys, .prettyPrinted, .withoutEscapingSlashes]
+        
+        if let jsonData = try? encoder.encode(layerDefinition) {
+          let jsonString = String(data: jsonData, encoding: .utf8)!
+          
+          let editorText = jsonString.replacingOccurrences(of: "\" : ", with: "\": ")
+          jsonEditor.text = editorText
+        }
     }
     
     initialText = jsonEditor.text
@@ -129,46 +120,41 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   func process(){
     let jsonText = jsonEditor.text!
     
-    do {
-      if(jsonText == initialText){
-        handleError(message: .layerNotModified)
-        coordinatorView.goTo(0)
-        
-        return
+    if(jsonText == initialText){
+      switch request! {
+        case .edit: handleError(message: .layerNotModified)
+        default: ()
       }
       
-      let decoder = ZippyJSONDecoder()
-      
-      let data = jsonText.data(using: .utf8)!
-      let layerDefinition = try decoder.decode(LayerDefinition.self, from: data)
-      
-      let method: LayerAcceptanceMethod = {
-        switch request! {
-          case .new, .duplicate:
-            return .add
-        case .edit(let layer):
-            return .update(layer)
-        }
-      }()
-      
-      let results = coordinatorView.acceptLayerDefinitions(from: [layerDefinition], methods: [method])
-      
-      if(results == nil){
-         return self.handleError(message: .syntaxError)
-       }
-      
-      if(results!.rejected.isEmpty) {
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
-        HUDManager.shared.displayMessage(message: .layersAccepted(results!))
-
-        coordinatorView.goTo(0)
-      } else {
-        return handleError(message: .layerRejected(results!))
-      }
-    } catch {
-      print(error)
-      handleError(message: .syntaxError)
+      coordinatorView.goTo(0)
+    
+      return
     }
+    
+    let data = jsonText.data(using: .utf8)!
+    
+    let results: LayerAcceptanceResults?
+    
+    switch request! {
+      case .new, .duplicate:
+        results = coordinatorView.acceptLayerDefinitions(from: data, methods: [.add])
+      case .edit(let layer):
+        results = coordinatorView.acceptLayerDefinitions(from: data, metadata: LayerDefinition.Metadata(layer: layer), methods: [.update(layer)])
+    }
+ 
+    if(results == nil){
+       return self.handleError(message: .syntaxError)
+     }
+    
+    if(results!.rejected.isEmpty) {
+      UINotificationFeedbackGenerator().notificationOccurred(.success)
+      HUDManager.shared.displayMessage(message: .layersAccepted(results!))
+
+      coordinatorView.goTo(0)
+    } else {
+      return handleError(message: .layerRejected(results!))
+    }
+    
   }
   
   func handleError(message: HUDMessage){

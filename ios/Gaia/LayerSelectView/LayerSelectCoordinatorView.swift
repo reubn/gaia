@@ -25,7 +25,7 @@ class LayerSelectCoordinatorView: CoordinatorView, PanelDelegate {
     super.ready()
   }
   
-  func acceptLayerDefinitions(from optionalData: Data? = nil, url: String? = nil) -> LayerAcceptanceResults? {
+  func acceptLayerDefinitions(from optionalData: Data? = nil, url: String? = nil, metadata: LayerDefinition.Metadata?=nil, methods: [LayerAcceptanceMethod]? = nil) -> LayerAcceptanceResults? {
     let data = optionalData ?? Data()
      
     let decoder = ZippyJSONDecoder()
@@ -48,7 +48,7 @@ class LayerSelectCoordinatorView: CoordinatorView, PanelDelegate {
         return nil
       }
       
-      let layerDefinition = LayerDefinition(style: decodeAttempt)
+      let layerDefinition = LayerDefinition(style: decodeAttempt, metadata: metadata)
       
       return [layerDefinition]
     }()
@@ -60,7 +60,7 @@ class LayerSelectCoordinatorView: CoordinatorView, PanelDelegate {
         return nil
       }
       
-      let layerDefinition = LayerDefinition(geoJSON: decodeAttempt)
+      let layerDefinition = LayerDefinition(geoJSON: decodeAttempt, metadata: metadata)
       
       return [layerDefinition]
     }()
@@ -72,7 +72,7 @@ class LayerSelectCoordinatorView: CoordinatorView, PanelDelegate {
         return nil
       }
       
-      let layerDefinition = LayerDefinition(gpx: decodeAttempt)
+      let layerDefinition = LayerDefinition(gpx: decodeAttempt, metadata: metadata)
       
       return [layerDefinition]
     }()
@@ -84,14 +84,14 @@ class LayerSelectCoordinatorView: CoordinatorView, PanelDelegate {
         return nil
       }
       
-      let layerDefinition = LayerDefinition(xyzURL: url)
+      let layerDefinition = LayerDefinition(xyzURL: url, metadata: metadata)
       
       return [layerDefinition]
     }()
     
     let layerDefinitions = xyzSingleAttempt ?? []
     
-    return acceptLayerDefinitions(from: layerDefinitions)
+    return acceptLayerDefinitions(from: layerDefinitions, methods: methods)
   }
   
   func acceptLayerDefinitions(from layerDefinitions: [LayerDefinition], methods: [LayerAcceptanceMethod]? = nil) -> LayerAcceptanceResults? {
