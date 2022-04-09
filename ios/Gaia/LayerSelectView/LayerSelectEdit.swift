@@ -133,6 +133,9 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   func panelButtonTapped(button: PanelButtonType){
     if(button == .accept) {process()}
     else if(button == .previous) {coordinatorView.goTo(0)}
+    else if(button == .help) {
+      helpButton?.isPulsing = false
+    }
   }
   
   func process(){
@@ -163,7 +166,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     }
  
     if(results == nil){
-       return self.handleError(message: .syntaxError)
+      return self.handleError(message: .syntaxError)
      }
     
     if(results!.rejected.isEmpty) {
@@ -179,6 +182,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   
   func handleError(message: HUDMessage){
     acceptButton?.isEnabled = false
+    helpButton?.isPulsing = true
     
     UINotificationFeedbackGenerator().notificationOccurred(.error)
     
@@ -187,6 +191,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   
   func textViewDidChange(_ textView: UITextView){
     acceptButton?.isEnabled = true
+    helpButton?.isPulsing = false
   }
   
   func generateNewLayerDefinitionString() -> String {
@@ -194,7 +199,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     let randomName = NAME_LIST.randomElement()!
     
     return """
-// This file is a LayerDefinition. Style, GeoJSON, and GPX also supported
+// LayerDefinition
 
 {
 "metadata": {
