@@ -13,7 +13,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   var acceptButton: PanelButton?
   var initialText: String = ""
   
-  lazy var jsonEditor: UITextView = {
+  lazy var textEditor: UITextView = {
     let textView = UITextView()
     
     textView.delegate = self
@@ -55,13 +55,13 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     
     acceptButton = coordinatorView.panelViewController.getPanelButton(.accept)
 
-    jsonEditor.translatesAutoresizingMaskIntoConstraints = false
-    jsonEditor.topAnchor.constraint(equalTo: topAnchor).isActive = true
-    jsonEditor.bottomAnchor.constraint(equalTo: keyboardLayoutGuideNoSafeArea.topAnchor, constant: -10).isActive = true
-    jsonEditor.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-    jsonEditor.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+    textEditor.translatesAutoresizingMaskIntoConstraints = false
+    textEditor.topAnchor.constraint(equalTo: topAnchor).isActive = true
+    textEditor.bottomAnchor.constraint(equalTo: keyboardLayoutGuideNoSafeArea.topAnchor, constant: -10).isActive = true
+    textEditor.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+    textEditor.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
     
-    MapViewController.shared.lsfpc.track(scrollView: jsonEditor)
+    MapViewController.shared.lsfpc.track(scrollView: textEditor)
     
     handleRequest(request: data as? LayerEditRequest ?? .new)
   }
@@ -71,7 +71,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     
     switch request {
       case .new:
-        jsonEditor.text = generateNewLayerDefinitionString()
+        textEditor.text = generateNewLayerDefinitionString()
       case .edit(let layer), .duplicate(let layer):
         let layerDefinition = LayerDefinition(layer: layer)
 
@@ -82,14 +82,14 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
           let jsonString = String(data: jsonData, encoding: .utf8)!
           
           let editorText = jsonString.replacingOccurrences(of: "\" : ", with: "\": ")
-          jsonEditor.text = editorText
+          textEditor.text = editorText
         }
     }
     
-    initialText = jsonEditor.text
+    initialText = textEditor.text
     
-    jsonEditor.becomeFirstResponder()
-    jsonEditor.selectedRange = NSRange(location: 0, length: 0)
+    textEditor.becomeFirstResponder()
+    textEditor.selectedRange = NSRange(location: 0, length: 0)
     
     acceptButton?.isEnabled = true // be optimistic
     
@@ -118,9 +118,11 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   }
   
   func process(){
-    let jsonText = jsonEditor.text!
+  
+    let regex = try? NSRegularExpression(pattern: #"^\/\/.*$"#, options: .anchorsMatchLines)
+    let text = regex?.replaceMatches(textEditor.text!, with: "").trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
     
-    if(jsonText == initialText){
+    if(text == initialText){
       switch request! {
         case .edit: handleError(message: .layerNotModified)
         default: ()
@@ -131,7 +133,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
       return
     }
     
-    let data = jsonText.data(using: .utf8)!
+    let data = text.data(using: .utf8)!
     
     let results: LayerAcceptanceResults?
     
@@ -174,6 +176,8 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     let randomName = NAME_LIST.randomElement()!
     
     return """
+// This file is a LayerDefinition. Style, GeoJSON, and GPX also supported
+
 {
 "metadata": {
   "id": "\(randomId)",
