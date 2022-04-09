@@ -11,6 +11,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     
   var request: LayerEditRequest?
   var acceptButton: PanelButton?
+  var helpButton: PanelButton?
   var initialText: String = ""
   
   lazy var textEditor: UITextView = {
@@ -54,6 +55,28 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     coordinatorView.panelViewController.panelButtons = [.previous, .accept, .help]
     
     acceptButton = coordinatorView.panelViewController.getPanelButton(.accept)
+    helpButton = coordinatorView.panelViewController.getPanelButton(.help)
+    
+    helpButton?.menu = UIMenu(title: "Supported Formats", children: [
+      UIAction(title: "Layer Definition", handler: {_ in}),
+      UIAction(title: "Style (JSON)", image: UIImage(systemName: "arrow.up.forward.square"), handler: {_ in
+        let vc = SFSafariViewController(url: URL(string: "https://docs.mapbox.com/mapbox-gl-js/style-spec/root")!)
+        vc.modalPresentationStyle = .popover
+        MapViewController.shared.lsfpc.present(vc, animated: true)
+      }),
+      UIAction(title: "GeoJSON", image: UIImage(systemName: "arrow.up.forward.square"), handler: {_ in
+        let vc = SFSafariViewController(url: URL(string: "https://geojson.org/")!)
+        vc.modalPresentationStyle = .popover
+        MapViewController.shared.lsfpc.present(vc, animated: true)
+      }),
+      UIAction(title: "GPX", image: UIImage(systemName: "arrow.up.forward.square"), handler: {_ in
+        let vc = SFSafariViewController(url: URL(string: "https://www.topografix.com/gpx.asp")!)
+        vc.modalPresentationStyle = .popover
+        MapViewController.shared.lsfpc.present(vc, animated: true)
+      })
+    ])
+    
+    helpButton?.showsMenuAsPrimaryAction = true
 
     textEditor.translatesAutoresizingMaskIntoConstraints = false
     textEditor.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -110,11 +133,6 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   func panelButtonTapped(button: PanelButtonType){
     if(button == .accept) {process()}
     else if(button == .previous) {coordinatorView.goTo(0)}
-    else if(button == .help) {
-      let vc = SFSafariViewController(url: URL(string: "https://docs.mapbox.com/mapbox-gl-js/style-spec/root")!)
-      vc.modalPresentationStyle = .popover
-      MapViewController.shared.lsfpc.present(vc, animated: true)
-    }
   }
   
   func process(){
