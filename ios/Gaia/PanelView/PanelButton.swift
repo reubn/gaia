@@ -74,7 +74,7 @@ class PanelButton: UIButton {
         pulseAnimation!.backgroundColor = (self.backgroundColour ?? self.colour).cgColor
         self.layer.insertSublayer(pulseAnimation!, at: 0)
       } else {
-        pulseAnimation!.removeAllAnimations()
+        pulseAnimation!.stopped = true
         pulseAnimation = nil
       }
     }
@@ -87,10 +87,12 @@ class PanelSmallButton: PanelButton {
 }
 
 
-class PulseAnimation: CALayer {
+class PulseAnimation: CALayer, CAAnimationDelegate {
   var animationGroup = CAAnimationGroup()
   var animationDuration: TimeInterval = 3
   var radius: CGFloat = 200
+  
+  var stopped = false
   
   override init(layer: Any) {
     super.init(layer: layer)
@@ -113,9 +115,18 @@ class PulseAnimation: CALayer {
     
     DispatchQueue.global(qos: .default).async {
       self.setupAnimationGroup()
-      DispatchQueue.main.async {
-        self.add(self.animationGroup, forKey: "pulse")
-      }
+      self.pulse()
+    }
+  }
+  
+  func pulse(){
+    if(self.stopped) {
+      self.removeAllAnimations()
+      return
+    }
+    
+    DispatchQueue.main.async {
+      self.add(self.animationGroup, forKey: "pulse")
     }
   }
   
@@ -124,6 +135,7 @@ class PulseAnimation: CALayer {
     scaleAnimaton.fromValue = 0
     scaleAnimaton.toValue = 1
     scaleAnimaton.duration = animationDuration
+    
     return scaleAnimaton
   }
   
@@ -137,11 +149,14 @@ class PulseAnimation: CALayer {
   
   func setupAnimationGroup() {
     self.animationGroup.duration = animationDuration + 3
-    self.animationGroup.repeatCount = .infinity
+    self.animationGroup.repeatCount = 1
     let defaultCurve = CAMediaTimingFunction(name: CAMediaTimingFunctionName.default)
     self.animationGroup.timingFunction = defaultCurve
     self.animationGroup.animations = [scaleAnimation(), createOpacityAnimation()]
+    self.animationGroup.delegate = self
   }
   
-  
+  func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+    pulse()
+  }
 }
