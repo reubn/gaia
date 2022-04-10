@@ -3,7 +3,7 @@ import CoreData
 
 import Mapbox
 
-class LayerManager {
+class LayerManager: SettingsManagerDelegate {
   private let managedContext: NSManagedObjectContext
   
   var savedQuickToggleLayers: [Layer]?
@@ -58,8 +58,14 @@ class LayerManager {
     let appDelegate = UIApplication.shared.delegate as? AppDelegate
     self.managedContext = appDelegate!.persistentContainer.viewContext
     
+    SettingsManager.shared.multicastSettingManagerDelegate.add(delegate: self)
+    
 //    clearData()
     reloadData()
+  }
+  
+  func settingsDidChange() {
+    self.reloadData()
   }
 
   func layerSortingFunction(a: Layer, b: Layer) -> Bool {

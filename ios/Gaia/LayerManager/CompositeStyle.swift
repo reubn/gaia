@@ -31,16 +31,29 @@ struct CompositeStyle: Equatable, Hashable {
     var glyphs: Style.Glyphs? = nil
     var terrain: Style.Terrain? = nil
     
+    var hoistedSymbolLayers: [Style.Layer] = []
+    
     for layer in sortedLayers.reversed() {
       let style = layer.style
       
       sources.merge(style.sources) {(_, new) in new}
-      layers += style.layers
+
+      style.layers.forEach({
+        let type = $0.type?.value as? String
+        
+        if(SettingsManager.shared.hoistSymbolLayers.value && type == "symbol"){
+          hoistedSymbolLayers.append($0)
+        } else {
+          layers.append($0)
+        }
+      })
       
       sprite = sprite ?? style.sprite
       glyphs = glyphs ?? style.glyphs
       terrain = terrain ?? style.terrain
     }
+    
+    layers += hoistedSymbolLayers
 
     return Style(
       sources: sources,

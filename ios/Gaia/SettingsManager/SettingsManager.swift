@@ -7,6 +7,7 @@ class SettingsManager {
   let multicastSettingManagerDelegate = MulticastDelegate<(SettingsManagerDelegate)>()
   
   lazy var showDisabledLayers = Setting(defaults, key: "ShowDisabledLayers", defaultValue: true)
+  lazy var hoistSymbolLayers = Setting(defaults, key: "HoistSymbolLayers", defaultValue: true)
   lazy var rightHandedMenu = Setting(defaults, key: "RightHandedMenu", defaultValue: true)
   
   lazy var autoAdjustment = Setting(defaults, key: "AutoAdjustment", defaultValue: false)

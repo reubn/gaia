@@ -44,6 +44,7 @@ class AboutPanelViewController: PanelViewController, SettingsManagerDelegate {
         }
       ]),
       UIAction(title: "Show Disabled Layers", image: UIImage(systemName: "square.slash.fill"), setting: SettingsManager.shared.showDisabledLayers, update: SettingsManager.shared.settingsDidChange),
+      UIAction(title: "Hoist Symbol Layers", image: UIImage(systemName: "square.2.stack.3d.top.filled"), setting: SettingsManager.shared.hoistSymbolLayers, update: SettingsManager.shared.settingsDidChange),
       UIMenu(title: "Screen Brightness", image: UIImage(systemName: "sun.max.fill"), children: [
         UIAction(title: "\(SettingsManager.shared.autoAdjustment.value ? "Disable" : "Enable") Auto Adjustment", image: UIImage(systemName: SettingsManager.shared.autoAdjustment.value ? "sun.max.fill" : "sun.min")){_ in
           SettingsManager.shared.autoAdjustment.toggle()
