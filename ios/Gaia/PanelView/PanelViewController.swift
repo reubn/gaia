@@ -60,6 +60,17 @@ class PanelViewController: UIViewController, FloatingPanelControllerDelegate {
     .share: PanelButton("square.and.arrow.up", deemphasise: true)
   ]
   
+  func getPanelButton(_ panelButtonType: PanelButtonType) -> PanelButton {
+    switch panelButtonType {
+      case .custom(let panelButton): return panelButton
+      default: return buttonsMap[panelButtonType]!
+    }
+  }
+  
+  func getPanelButtonType(_ panelButton: PanelButton) -> PanelButtonType {
+    buttonsMap.key(forValue: panelButton) ?? .custom(panelButton)
+  }
+
   var panelButtons: [PanelButtonType] = [] {
     didSet {
       for subView in self.buttonsView.arrangedSubviews {
@@ -67,8 +78,8 @@ class PanelViewController: UIViewController, FloatingPanelControllerDelegate {
         subView.removeFromSuperview()
       }
       
-      for panelButton in panelButtons {
-        let button = buttonsMap[panelButton]!
+      for panelButtonType in panelButtons {
+        let button = getPanelButton(panelButtonType)
         
         button.isEnabled = true
         button.addTarget(self, action: #selector(_panelButtonTapped(_:)), for: .touchUpInside)
@@ -80,11 +91,7 @@ class PanelViewController: UIViewController, FloatingPanelControllerDelegate {
   }
   
   @objc private func _panelButtonTapped(_ sender: PanelButton){
-    panelButtonTapped(button: buttonsMap.key(forValue: sender)!)
-  }
-  
-  func getPanelButton(_ button: PanelButtonType) -> PanelButton {
-    return buttonsMap[button]!
+    panelButtonTapped(button: getPanelButtonType(sender))
   }
   
   func panelButtonTapped(button: PanelButtonType){
@@ -168,7 +175,7 @@ class PanelViewController: UIViewController, FloatingPanelControllerDelegate {
   }
 }
 
-enum PanelButtonType {
+enum PanelButtonType: Hashable {
   case accept
   case dismiss
   case reject
@@ -179,6 +186,14 @@ enum PanelButtonType {
   case share
   case help
   case settings
+  case custom(PanelButton)
+  
+  func hash(into hasher: inout Hasher) {
+    switch self {
+      case .custom(let panelButton): hasher.combine(panelButton)
+      default: hasher.combine(String(describing: self))
+    }
+  }
 }
 
 protocol PanelDelegate {
