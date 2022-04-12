@@ -39,6 +39,8 @@ extension LocationInfoPanelViewController {
     switch location {
       case .user:
         coordinate = MapViewController.shared.mapView.userLocation!.coordinate
+      case .marker(let marker):
+        coordinate = marker.coordinate
       case .map(let coord):
         coordinate = coord
     }
