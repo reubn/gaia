@@ -334,8 +334,64 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapViewRegionIsChanging(mapView)
   }
   
-  @objc func singleTapped(){
+  var mapSource: MGLSource {
+    MapViewController.shared.mapView.style?.source(withIdentifier: "offlinePreview") ?? {
+      let source = MGLShapeSource(identifier: "offlinePreview", features: [])
+      
+      MapViewController.shared.mapView.style?.addSource(source)
+      
+      return source
+    }()
+  }
+  
+  var mapLayer: MGLStyleLayer {
+    MapViewController.shared.mapView.style?.layer(withIdentifier: "offlinePreview") ?? {
+      let layer = MGLLineStyleLayer(identifier: "offlinePreview", source: mapSource)
+      
+      layer.lineColor = NSExpression(forConstantValue: UIColor.systemRed)
+      layer.lineWidth = NSExpression(forConstantValue: 2.0)
+      
+      MapViewController.shared.mapView.style?.addLayer(layer)
+      
+      return layer
+    }()
+  }
+  
+  var rectangle: MGLPolylineFeature? {
+    didSet {
+      (mapSource as? MGLShapeSource)?.shape = rectangle
+      _ = mapLayer
+    }
+  }
+  
+  @objc func singleTapped(gestureRecogniser: UITapGestureRecognizer){
+//    print("markerLayer", MarkerManager.shared.markerLayer)
+//    print("markers", MarkerManager.shared.markers)
     multicastMapViewTappedDelegate.invoke(invocation: {$0.mapViewTapped()})
+    
+    let point = gestureRecogniser.location(in: mapView)
+    let rect = CGRect(center: point, size: CGSize(width: 30, height: 30))
+    
+    let bounds = mapView.convert(rect, toCoordinateBoundsFrom: mapView)
+    
+    let corners = [bounds.ne, bounds.nw, bounds.sw, bounds.se, bounds.ne]
+    rectangle = MGLPolylineFeature(coordinates: corners, count: UInt(corners.count))
+    
+    let markers = MarkerManager.shared.markers(in: bounds)
+    
+    print("tapped markers", markers)
+    
+    if let marker = markers.first {
+      self.openLocationInfoPanel(location: .marker(marker))
+    } else {
+      if presentedViewController != nil {
+        let isMe = presentedViewController == lifpc
+        
+        if(isMe) {
+          presentedViewController!.dismiss(animated: false, completion: nil)
+        }
+      }
+    }
   }
   
   func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?){
