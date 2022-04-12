@@ -107,6 +107,7 @@
 		1BBD3FFA25B89181007B8BC7 /* OfflineSelectCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FF925B89181007B8BC7 /* OfflineSelectCoordinatorView.swift */; };
 		1BBD3FFD25B8927E007B8BC7 /* OfflineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */; };
 		1BBD3FFF25B8B0B5007B8BC7 /* CompositeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FFE25B8B0B5007B8BC7 /* CompositeStyle.swift */; };
+		1BD40D8B2805C552002E45E7 /* MarkerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D8A2805C552002E45E7 /* MarkerManager.swift */; };
 		1BD6A3B825FF4CAA001E503D /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3B725FF4CAA001E503D /* CanvasView.swift */; };
 		1BD6A3BA2600DF25001E503D /* LocationInfoPanelShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */; };
 		1BD6A3BC2600E2E1001E503D /* BearingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */; };
@@ -232,6 +233,7 @@
 		1BBD3FF925B89181007B8BC7 /* OfflineSelectCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectCoordinatorView.swift; sourceTree = "<group>"; };
 		1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineManager.swift; sourceTree = "<group>"; };
 		1BBD3FFE25B8B0B5007B8BC7 /* CompositeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeStyle.swift; sourceTree = "<group>"; };
+		1BD40D8A2805C552002E45E7 /* MarkerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerManager.swift; sourceTree = "<group>"; };
 		1BD6A3B725FF4CAA001E503D /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelShare.swift; sourceTree = "<group>"; };
 		1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BearingDisplay.swift; sourceTree = "<group>"; };
@@ -428,6 +430,7 @@
 		1B6638A625B10B530071F03D /* Gaia */ = {
 			isa = PBXGroup;
 			children = (
+				1BD40D892805C535002E45E7 /* MarkerManager */,
 				1B2F9086267F441000D275CB /* BrightnessManager */,
 				1B96FF322663F6D3002E685D /* SettingsManager */,
 				1BF4B7FC2618581D00D87E35 /* PanelView */,
@@ -522,6 +525,14 @@
 				1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */,
 			);
 			path = OfflineManager;
+			sourceTree = "<group>";
+		};
+		1BD40D892805C535002E45E7 /* MarkerManager */ = {
+			isa = PBXGroup;
+			children = (
+				1BD40D8A2805C552002E45E7 /* MarkerManager.swift */,
+			);
+			path = MarkerManager;
 			sourceTree = "<group>";
 		};
 		1BEE8D5C25C599A0004260C1 /* MetricDisplay */ = {
@@ -662,6 +673,7 @@
 				1BBD3FF125B70679007B8BC7 /* LayerSelectPanelLayout.swift in Sources */,
 				1B2F9088267F442000D275CB /* BrightnessManager.swift in Sources */,
 				1B6638AC25B10B530071F03D /* MapViewController.swift in Sources */,
+				1BD40D8B2805C552002E45E7 /* MarkerManager.swift in Sources */,
 				1B96FF342663F6E4002E685D /* SettingsManager.swift in Sources */,
 				1BEE8D5E25C599B3004260C1 /* HeadingDisplay.swift in Sources */,
 				1B96FF362663FD75002E685D /* UIAction.swift in Sources */,
