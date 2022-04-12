@@ -108,6 +108,7 @@
 		1BBD3FFD25B8927E007B8BC7 /* OfflineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */; };
 		1BBD3FFF25B8B0B5007B8BC7 /* CompositeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD3FFE25B8B0B5007B8BC7 /* CompositeStyle.swift */; };
 		1BD40D8B2805C552002E45E7 /* MarkerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D8A2805C552002E45E7 /* MarkerManager.swift */; };
+		1BD40D8D2805D986002E45E7 /* CGRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D8C2805D986002E45E7 /* CGRect.swift */; };
 		1BD6A3B825FF4CAA001E503D /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3B725FF4CAA001E503D /* CanvasView.swift */; };
 		1BD6A3BA2600DF25001E503D /* LocationInfoPanelShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */; };
 		1BD6A3BC2600E2E1001E503D /* BearingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */; };
@@ -234,6 +235,7 @@
 		1BBD3FFC25B8927E007B8BC7 /* OfflineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineManager.swift; sourceTree = "<group>"; };
 		1BBD3FFE25B8B0B5007B8BC7 /* CompositeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeStyle.swift; sourceTree = "<group>"; };
 		1BD40D8A2805C552002E45E7 /* MarkerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerManager.swift; sourceTree = "<group>"; };
+		1BD40D8C2805D986002E45E7 /* CGRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGRect.swift; sourceTree = "<group>"; };
 		1BD6A3B725FF4CAA001E503D /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelShare.swift; sourceTree = "<group>"; };
 		1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BearingDisplay.swift; sourceTree = "<group>"; };
@@ -387,6 +389,7 @@
 				1BA29B2B2672C4F300D5FDBB /* Debounce.swift */,
 				1B2F908B267FB68200D275CB /* Hashable.swift */,
 				1B5D8CDC2688A56400FAE4DA /* HomeButton.swift */,
+				1BD40D8C2805D986002E45E7 /* CGRect.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -652,6 +655,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BD40D8D2805D986002E45E7 /* CGRect.swift in Sources */,
 				1BD6A3B825FF4CAA001E503D /* CanvasView.swift in Sources */,
 				1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */,
 				1B9DDAFC25F2AC1E00B3407F /* Collection.swift in Sources */,
