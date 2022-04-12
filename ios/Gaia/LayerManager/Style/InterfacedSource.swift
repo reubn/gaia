@@ -4,12 +4,15 @@ import Mapbox
 extension Style {
   struct InterfacedSource {
     let id: String
+    let type: String
     
     let capabilities: Set<Capability>
     
     var minZoom: Double?
     var maxZoom: Double?
     var bounds: MGLCoordinateBounds?
+    
+    var geoJSONData: AnyCodable? = nil
     
     func setting(_ capability: Capability, to: Any?) -> Self{
       var copy = self
@@ -43,6 +46,8 @@ extension Style {
       var bounds: MGLCoordinateBounds?
       var capabilities: Set<InterfacedSource.Capability>
       
+      var geoJSONData: AnyCodable?
+      
       switch type {
         case "vector", "raster", "raster-dem":
           minZoom = source.minzoom?.value as? NSNumber
@@ -60,6 +65,7 @@ extension Style {
           
           capabilities = [.minZoom, .maxZoom, .bounds]
         case "geojson":
+          geoJSONData = source.data
           maxZoom = source.maxzoom?.value as? NSNumber
           
           if let data = source.data {
@@ -73,10 +79,12 @@ extension Style {
       
       let interfacedSource = InterfacedSource(
         id: id,
+        type: type,
         capabilities: capabilities,
         minZoom: minZoom?.doubleValue,
         maxZoom: maxZoom?.doubleValue,
-        bounds: bounds
+        bounds: bounds,
+        geoJSONData: geoJSONData
       )
       InterfacedCache.shared.sources[hashValue] = interfacedSource
       
@@ -88,6 +96,15 @@ extension Style {
       case maxZoom
       case bounds
     }
+    
+    func getMarkerGeoJSONFeatures() -> [AnyCodable] {
+      if let geoJSONData = geoJSONData {
+          let features = geoJSON(flatten: geoJSONData)
+          return features.filter(Marker.featureIsMarker).compactMap({$0})
+      }
+      
+      return []
+    }
   }
   
   func with(_ sourceOptions: [InterfacedSource]) -> Self {
@@ -95,32 +112,42 @@ extension Style {
     
     for desc in sourceOptions {
       let id = desc.id
-      if let source = copy.sources[id],
-         let type = source.type?.value as? String {
+      var source = copy.sources[id] ?? Source(["type": desc.type])
+      
+      if let type = source.type?.value as? String {
         let hashValue = source.hashValue(combining: id)
         InterfacedCache.shared.sources.removeValue(forKey: hashValue)
         
         if let minZoom = desc.minZoom {
           switch type {
-            case "vector", "raster", "raster-dem": copy.sources[id]?.minzoom = AnyCodable(minZoom)
+            case "vector", "raster", "raster-dem": source.minzoom = AnyCodable(minZoom)
             default: ()
           }
         }
         
         if let maxZoom = desc.maxZoom {
           switch type {
-            case "vector", "raster", "raster-dem", "geojson": copy.sources[id]?.maxzoom = AnyCodable(maxZoom)
+            case "vector", "raster", "raster-dem", "geojson": source.maxzoom = AnyCodable(maxZoom)
             default: ()
           }
         }
         
         if let bounds = desc.bounds {
           switch type {
-            case "vector", "raster", "raster-dem": copy.sources[id]?.bounds = bounds.jsonArray
+            case "vector", "raster", "raster-dem": source.bounds = bounds.jsonArray
             default: ()
           }
         }
         
+        if let geoJSON = desc.geoJSONData {
+          switch type {
+            case "geojson": source.data = geoJSON
+            default: ()
+          }
+        }
+
+        
+        copy.sources[id] = source
       }
     }
     
