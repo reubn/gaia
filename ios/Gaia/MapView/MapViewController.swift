@@ -33,12 +33,15 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapView.delegate = self
     
     view.addSubview(mapView)
-
-    let singleTap = UITapGestureRecognizer(target: self, action: #selector(singleTapped))
+    
+    let singleTapInstant = UITapGestureRecognizer(target: self, action: #selector(singleTapped))
+    mapView.addGestureRecognizer(singleTapInstant)
+    
     for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-      singleTap.require(toFail: recognizer)
+      if(recognizer != singleTapInstant) {
+        recognizer.require(toFail: singleTapInstant)
+      }
     }
-    mapView.addGestureRecognizer(singleTap)
 
     let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
     longPress.numberOfTouchesRequired = 1
