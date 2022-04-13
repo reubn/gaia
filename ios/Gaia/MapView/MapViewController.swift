@@ -379,8 +379,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     let markers = MarkerManager.shared.markers(in: bounds)
     
-    print("tapped markers", markers)
-    
     if let marker = markers.first {
       self.openLocationInfoPanel(location: .marker(marker))
     } else {
