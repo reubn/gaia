@@ -110,13 +110,6 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
   
   var defferedMenuElement: UIDeferredMenuElement {
     UIDeferredMenuElement.uncached({completion in
-      let marker: Marker?
-      
-      if case .marker(let _marker) = self.location {
-        marker = _marker
-      } else {
-        marker = nil
-      }
       
       let colours: [UIColor] = [.systemRed, .systemOrange, .systemYellow, .systemGreen, .systemCyan, .systemBlue, .systemIndigo, .systemPurple, .systemPink]
       
@@ -132,37 +125,37 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
       
       let actions: [UIMenuElement]
       
-      if let marker = marker {
-        let removePin = UIAction(
-          title: "Remove Marker",
-          image: UIImage(systemName: "mappin.slash")) {_ in
-            print("remove marker", marker.id)
+      switch self.location {
+        case .user, .map:
+          actions = makeColourActions {colour in
+            self.addMarker(colour: colour)
+          }
+        case .marker(let marker):
+          let removePin = UIAction(
+            title: "Remove Marker",
+            image: UIImage(systemName: "mappin.slash")) {_ in
+              self.removeMarker(marker)
+            }
+          
+          let changeColourChildren = makeColourActions {colour in
+            MarkerManager.shared.latestColour = colour
+            
+            let newMarker = Marker(marker: marker, colour: colour)
+            
+            print("change colour", marker.id, newMarker.id)
+            
+            self.update(location: .marker(newMarker))
+            
             if let index = MarkerManager.shared.markers.firstIndex(of: marker) {
-              MarkerManager.shared.markers.remove(at: index)
-              self.update(location: .map(marker.coordinate))
+              MarkerManager.shared.markers[index] = newMarker
+            } else {
+              print("change colour", "marker not found!!!!", marker.id.uuidString)
             }
           }
-        
-        let children = makeColourActions {colour in
-          MarkerManager.shared.latestColour = colour
-          if let index = MarkerManager.shared.markers.firstIndex(of: marker) {
-            MarkerManager.shared.markers[index].colour = colour
-            self.update(location: .marker(marker))
-          }
-        }
-        
-        let colourMenu = UIMenu(title: "Change Colour", children: children)
-        
-        actions = [removePin, colourMenu]
-      } else {
-        actions = makeColourActions {colour in
-          MarkerManager.shared.latestColour = colour
           
-          let newMarker = Marker(coordinate: self.coordinate, colour: colour)
+          let colourMenu = UIMenu(title: "Change Colour", children: changeColourChildren)
           
-          MarkerManager.shared.markers.append(newMarker)
-          self.update(location: .marker(newMarker))
-        }
+          actions = [removePin, colourMenu]
       }
  
       completion(actions)
@@ -181,8 +174,6 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     self.popoverTitle.addGestureRecognizer(labelTap)
     
     self.panelButtons = [.share, .custom(pinButton), .dismiss]
-    
-    pinButton.menu = UIMenu(title: "", children: [defferedMenuElement])
     
     view.addSubview(mainView)
     
@@ -204,14 +195,12 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     super.viewWillDisappear(animated)
     
     removePointsFromMap()
+    MapViewController.shared.multicastUserLocationDidUpdateDelegate.remove(delegate: self)
+    MapViewController.shared.multicastMapViewStyleDidChangeDelegate.remove(delegate: self)
   }
   
   func styleDidChange() {
-    switch location {
-      case .user: ()
-      case .map(let coordinate): displayPointOnMap(coordinate: coordinate)
-      case .marker(let marker): displayPointOnMap(coordinate: marker.coordinate)
-    }
+    displayOnMap()
   }
   
   func userDidPaste(content: String) {
@@ -226,6 +215,7 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     self.location = location
     
     print("location update", location)
+    updatePinButton()
     
     switch location {
       case .user:
@@ -233,13 +223,8 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
         
         userLocationDidUpdate()
         removePointsFromMap()
-        pinButton.showsMenuAsPrimaryAction = false
-      case .marker(let marker):
-        handlePointUpdate(coordinate: marker.coordinate)
-        pinButton.showsMenuAsPrimaryAction = true
-      case .map(let coordinate):
-        handlePointUpdate(coordinate: coordinate)
-        pinButton.showsMenuAsPrimaryAction = false
+      case .marker, .map:
+        handlePointUpdate()
     }
   }
         
@@ -251,13 +236,23 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     }
   }
   
-  func handlePointUpdate(coordinate: CLLocationCoordinate2D) {
+  func updatePinButton(){
+    pinButton.showsMenuAsPrimaryAction = false
+    pinButton.menu = UIMenu(title: "", children: [defferedMenuElement])
+    
+    switch location {
+      case .user, .map: pinButton.setDisplayConfig(.init(systemName: "mappin", colour: MarkerManager.shared.latestColour ?? .systemPink))
+      case .marker(let marker): pinButton.setDisplayConfig(.init(systemName: "mappin.slash", colour: marker.colour))
+    }
+  }
+  
+  func handlePointUpdate() {
     if !MapViewController.shared.mapView.visibleCoordinateBounds.contains(coordinate: coordinate) {
       MapViewController.shared.mapView.setCenter(coordinate, animated: true)
     }
     
     updateTitleCoordinate(coordinate)
-    displayPointOnMap(coordinate: coordinate)
+    displayOnMap()
     
     metricDisplays = [bearingDisplay, distanceDisplay]
     
@@ -272,24 +267,47 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     UIImpactFeedbackGenerator(style: .light).impactOccurred()
   }
   
-  private var markerImageSet: Set<UIColor> = []
+  private var markerImageMap: [UIColor: UIImage] = [:]
   
   func getMarkerImage(colour: UIColor) -> String {
-    let name = colour.toHex()!
+    let key = String(colour.hashValue)
     
-    if (!markerImageSet.contains(colour)) {
-      print("not cached")
+   if(markerImageMap[colour] == nil) {
       let front = UIImage(named: "mapPin")!.withTintColor(colour)
       let back = UIImage(named: "mapPinBack")!
+      let image = front.draw(inFrontOf: back)
       
-      markerImageSet.insert(colour)
-      MapViewController.shared.mapView.style?.setImage(front.draw(inFrontOf: back), forName: name)
+      markerImageMap[colour] = image
     }
-  
-    return name
+    
+    MapViewController.shared.mapView.style?.setImage(markerImageMap[colour]!, forName: key)
+    
+    return key
   }
   
-  func displayPointOnMap(coordinate: CLLocationCoordinate2D){
+  func addMarker(colour: UIColor = MarkerManager.shared.latestColour ?? .systemPink){
+    let newMarker = Marker(coordinate: coordinate, colour: colour)
+    
+    update(location: .marker(newMarker))
+    MarkerManager.shared.markers.append(newMarker)
+  }
+  
+  func removeMarker(_ marker: Marker){
+    self.update(location: .map(marker.coordinate))
+    
+    if let index = MarkerManager.shared.markers.firstIndex(of: marker) {
+      MarkerManager.shared.markers.remove(at: index)
+    } else {
+      print("remove", "marker not found!!!!", marker.id.uuidString)
+    }
+  }
+  
+  func displayOnMap(){
+    if case .user = location {
+      print("skipping, display point as location is for user")
+      return
+    }
+    
     let point = MGLPointFeature()
     point.coordinate = coordinate
  
@@ -300,10 +318,9 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     if case .marker(let marker) = location {
       colour = marker.colour
     } else {
-      colour = .systemPink
+      colour = .systemGray
     }
   
-    _ = mapLayer
     let layer = (mapLayer as! MGLSymbolStyleLayer)
     
     layer.iconImageName = NSExpression(forConstantValue: getMarkerImage(colour: colour))
@@ -346,11 +363,10 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     if(button == .share){
       showShareSheet(panelButton)
     } else if(button == .custom(pinButton)){
-      
-      let newMarker = Marker(coordinate: self.coordinate, colour: MarkerManager.shared.latestColour ?? .systemPink)
-      
-      MarkerManager.shared.markers.append(newMarker)
-      update(location: .marker(newMarker))
+      switch location {
+        case .user, .map: addMarker()
+        case .marker(let marker): removeMarker(marker)
+      }
     }
   }
   
