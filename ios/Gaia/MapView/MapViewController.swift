@@ -584,6 +584,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 
       if(isMe) {
         ((presentedViewController as! MemoryConsciousFloatingPanelController).contentViewController! as! LocationInfoPanelViewController).update(location: location)
+          UIImpactFeedbackGenerator(style: .light).impactOccurred()
         
         return
       } else {

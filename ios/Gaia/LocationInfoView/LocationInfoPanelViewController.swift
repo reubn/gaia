@@ -263,8 +263,6 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     var bearingValue = (bearingDisplay.value as! CoordinatePair)
     bearingValue.a = coordinate
     bearingDisplay.value = bearingValue
-    
-    UIImpactFeedbackGenerator(style: .light).impactOccurred()
   }
   
   private var markerImageMap: [UIColor: UIImage] = [:]
