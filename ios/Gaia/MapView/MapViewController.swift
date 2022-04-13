@@ -10,7 +10,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   let multicastParentMapViewRegionIsChangingDelegate = MulticastDelegate<(ParentMapViewRegionIsChangingDelegate)>()
   let multicastUserLocationDidUpdateDelegate = MulticastDelegate<(UserLocationDidUpdateDelegate)>()
-  let multicastMapViewTappedDelegate = MulticastDelegate<(MapViewTappedDelegate)>()
   let multicastMapViewStyleDidChangeDelegate = MulticastDelegate<(MapViewStyleDidChangeDelegate)>()
 
   var firstTimeLocating = true
@@ -335,10 +334,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   @objc func singleTapped(gestureRecogniser: UITapGestureRecognizer){
-//    print("markerLayer", MarkerManager.shared.markerLayer)
-//    print("markers", MarkerManager.shared.markers)
-    multicastMapViewTappedDelegate.invoke(invocation: {$0.mapViewTapped()})
-    
     let point = gestureRecogniser.location(in: mapView)
     let rect = CGRect(center: point, size: CGSize(width: 30, height: 30))
     
