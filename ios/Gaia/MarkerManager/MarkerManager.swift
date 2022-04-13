@@ -46,11 +46,19 @@ class MarkerManager {
   }
 }
 
-struct Marker: Equatable {
+struct Marker: Hashable, Equatable {
   let coordinate: CLLocationCoordinate2D
   let id: UUID
   
-  var colour: UIColor
+  let colour: UIColor
+  
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+  
+  static func ==(lhs: Self, rhs: Self) -> Bool {
+    return lhs.id == rhs.id
+  }
 }
 
 extension Marker {
@@ -79,6 +87,10 @@ extension Marker {
   
   init(coordinate: CLLocationCoordinate2D, colour: UIColor){
     self.init(coordinate: coordinate, id: UUID(), colour: colour)
+  }
+  
+  init(marker: Self, colour: UIColor){
+    self.init(coordinate: marker.coordinate, id: marker.id, colour: colour)
   }
   
   var geoJSON: AnyCodable {
