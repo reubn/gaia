@@ -6,8 +6,7 @@ import FloatingPanel
 import CoreLocation
 
 class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdateDelegate, SelectableLabelPasteDelegate, MapViewStyleDidChangeDelegate {
-  
-  let pinButton = PanelSmallButton("mappin", colour: .systemPink)
+  let pinButton = PanelSmallButton(.init(systemName: "mappin", colour: .systemPink))
   
   var location: LocationInfoType
   var titleCoordinate: CoordinateFormat? {
