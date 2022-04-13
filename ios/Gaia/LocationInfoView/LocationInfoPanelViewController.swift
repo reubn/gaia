@@ -241,7 +241,7 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     pinButton.menu = UIMenu(title: "", children: [defferedMenuElement])
     
     switch location {
-      case .user, .map: pinButton.setDisplayConfig(.init(systemName: "mappin", colour: MarkerManager.shared.latestColour ?? .systemPink))
+      case .user, .map: pinButton.setDisplayConfig(.init(systemName: "mappin", colour: MarkerManager.shared.latestColour))
       case .marker(let marker): pinButton.setDisplayConfig(.init(systemName: "mappin.slash", colour: marker.colour))
     }
   }
@@ -285,7 +285,7 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     return key
   }
   
-  func addMarker(colour: UIColor = MarkerManager.shared.latestColour ?? .systemPink){
+  func addMarker(colour: UIColor = MarkerManager.shared.latestColour){
     let newMarker = Marker(coordinate: coordinate, colour: colour)
     
     update(location: .marker(newMarker))

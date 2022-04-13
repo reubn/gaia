@@ -39,7 +39,7 @@ class MarkerManager {
     }
   }
   
-  lazy var latestColour: UIColor? = markers.last?.colour
+  lazy var latestColour: UIColor = markers.last?.colour ?? .systemPink
   
   func markers(in bounds: MGLCoordinateBounds) -> [Marker] {
     markers.filter({bounds.contains(coordinate: $0.coordinate)})
@@ -85,11 +85,11 @@ extension Marker {
     self.init(coordinate: coordinate, id: uuid, colour: colour)
   }
   
-  init(coordinate: CLLocationCoordinate2D, colour: UIColor){
+  init(coordinate: CLLocationCoordinate2D, colour: UIColor=MarkerManager.shared.latestColour){
     self.init(coordinate: coordinate, id: UUID(), colour: colour)
   }
   
-  init(marker: Self, colour: UIColor){
+  init(marker: Self, colour: UIColor=MarkerManager.shared.latestColour){
     self.init(coordinate: marker.coordinate, id: marker.id, colour: colour)
   }
   
