@@ -344,12 +344,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     if let marker = markers.first {
       self.openLocationInfoPanel(location: .marker(marker))
     } else {
-      if presentedViewController != nil {
-        let isMe = presentedViewController == lifpc
-        
-        if(isMe) {
-          presentedViewController!.dismiss(animated: false, completion: nil)
-        }
+      let isMe = presentedViewController == lifpc
+      
+      if(isMe) {
+        presentedViewController!.dismiss(animated: false, completion: nil)
+      } else {
+        let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+        self.openLocationInfoPanel(location: .map(coordinate))
       }
     }
   }
@@ -511,7 +512,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       let point = gestureReconizer.location(in: mapView)
       let coordinate = mapView.convert(point, toCoordinateFrom: nil)
       
-      openLocationInfoPanel(location: .map(coordinate))
+      let newMarker = Marker(coordinate: coordinate)
+      MarkerManager.shared.markers.append(newMarker)
+      openLocationInfoPanel(location: .marker(newMarker))
     }
   }
 
