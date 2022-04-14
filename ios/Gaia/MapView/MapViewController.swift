@@ -34,12 +34,17 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     view.addSubview(mapView)
     
-    let singleTapInstant = UITapGestureRecognizer(target: self, action: #selector(singleTapped))
+    let singleTapInstant = UITapGestureRecognizer(target: self, action: #selector(singleTappedInstant))
+    singleTapInstant.delegate = self
     mapView.addGestureRecognizer(singleTapInstant)
     
+    let singleTapConclusive = UITapGestureRecognizer(target: self, action: #selector(singleTappedConclusive))
+    mapView.addGestureRecognizer(singleTapConclusive)
+    
+    
     for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-      if(recognizer != singleTapInstant) {
-        recognizer.require(toFail: singleTapInstant)
+      if(recognizer != singleTapConclusive && recognizer != singleTapInstant) {
+        singleTapConclusive.require(toFail: recognizer)
       }
     }
 
@@ -336,7 +341,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapViewRegionIsChanging(mapView)
   }
   
-  @objc func singleTapped(gestureRecogniser: UITapGestureRecognizer){
+  var singleTapHandled: Bool = false
+  
+  @objc func singleTappedInstant(gestureRecogniser: UITapGestureRecognizer){
     let point = gestureRecogniser.location(in: mapView)
     let rect = CGRect(center: point, size: CGSize(width: 30, height: 30))
     
@@ -344,18 +351,27 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 
     let markers = MarkerManager.shared.markers(in: bounds)
     
+    singleTapHandled = false
     if let marker = markers.first {
       self.openLocationInfoPanel(location: .marker(marker))
+      singleTapHandled = true
     } else {
       let isMe = presentedViewController == lifpc
-      
       if(isMe) {
         presentedViewController!.dismiss(animated: false, completion: nil)
-      } else {
-        let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
-        self.openLocationInfoPanel(location: .map(coordinate))
+        singleTapHandled = true
       }
     }
+  }
+  
+  @objc func singleTappedConclusive(gestureRecogniser: UITapGestureRecognizer){
+    guard !singleTapHandled else {
+      return
+    }
+    
+    let point = gestureRecogniser.location(in: mapView)
+    let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+    self.openLocationInfoPanel(location: .map(coordinate))
   }
   
   func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?){
