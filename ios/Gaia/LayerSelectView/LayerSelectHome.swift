@@ -201,16 +201,10 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     coordinatorView.goTo(2, data: request)
   }
   
-  var colourPickerPublisher: Any?
-  
   func requestLayerColourPicker(_ colour: UIColor, supportsAlpha: Bool = false, callback: @escaping (UIColor) -> Void) {
-    let colourPicker = UIColorPickerViewController()
+    let colourPicker = UIColourPickerViewController(callback: callback)
     colourPicker.supportsAlpha = supportsAlpha
     colourPicker.selectedColor = colour
-  
-    colourPickerPublisher = colourPicker.publisher(for: \.selectedColor)
-    .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
-    .sink(receiveValue: callback)
     
     MapViewController.shared.lsfpc.present(colourPicker, animated: true, completion: nil)
   }
