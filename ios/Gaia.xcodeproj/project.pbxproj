@@ -110,6 +110,7 @@
 		1BD40D8B2805C552002E45E7 /* MarkerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D8A2805C552002E45E7 /* MarkerManager.swift */; };
 		1BD40D8D2805D986002E45E7 /* CGRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D8C2805D986002E45E7 /* CGRect.swift */; };
 		1BD40D8F2808795E002E45E7 /* UIColourPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D8E2808795E002E45E7 /* UIColourPickerViewController.swift */; };
+		1BD40D9228087F92002E45E7 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 1BD40D9128087F92002E45E7 /* OrderedCollections */; };
 		1BD6A3B825FF4CAA001E503D /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3B725FF4CAA001E503D /* CanvasView.swift */; };
 		1BD6A3BA2600DF25001E503D /* LocationInfoPanelShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */; };
 		1BD6A3BC2600E2E1001E503D /* BearingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */; };
@@ -261,6 +262,7 @@
 				1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */,
 				1B96528D25D5C3DA0017A43E /* KeyboardLayoutGuide in Frameworks */,
 				1B6638C125B10B610071F03D /* Mapbox.framework in Frameworks */,
+				1BD40D9228087F92002E45E7 /* OrderedCollections in Frameworks */,
 				1B9D5A2C2695F5530034088E /* ZippyJSON in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -598,6 +600,7 @@
 				1B04BF7425D1CB5F00FCD5D4 /* CoreGPX */,
 				1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */,
 				1B9D5A2B2695F5530034088E /* ZippyJSON */,
+				1BD40D9128087F92002E45E7 /* OrderedCollections */,
 			);
 			productName = Gaia;
 			productReference = 1B6638A425B10B530071F03D /* Gaia Dev.app */;
@@ -631,6 +634,7 @@
 				1B04BF7325D1CB5F00FCD5D4 /* XCRemoteSwiftPackageReference "CoreGPX" */,
 				1B96528B25D5C3DA0017A43E /* XCRemoteSwiftPackageReference "KeyboardLayoutGuide" */,
 				1B9D5A2A2695F5530034088E /* XCRemoteSwiftPackageReference "ZippyJSON" */,
+				1BD40D9028087F92002E45E7 /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			productRefGroup = 1B6638A525B10B530071F03D /* Products */;
 			projectDirPath = "";
@@ -1011,6 +1015,14 @@
 				minimumVersion = 1.2.4;
 			};
 		};
+		1BD40D9028087F92002E45E7 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1033,6 +1045,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1B9D5A2A2695F5530034088E /* XCRemoteSwiftPackageReference "ZippyJSON" */;
 			productName = ZippyJSON;
+		};
+		1BD40D9128087F92002E45E7 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1BD40D9028087F92002E45E7 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
 		};
 /* End XCSwiftPackageProductDependency section */
 

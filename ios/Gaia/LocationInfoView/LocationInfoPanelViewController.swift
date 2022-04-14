@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import OrderedCollections
 
 import Mapbox
 import FloatingPanel
@@ -111,12 +112,22 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
   var defferedMenuElement: UIDeferredMenuElement {
     UIDeferredMenuElement.uncached({completion in
       
-      let colours: [UIColor] = [.systemRed, .systemOrange, .systemYellow, .systemGreen, .systemCyan, .systemBlue, .systemIndigo, .systemPurple, .systemPink]
+      let colours: OrderedDictionary<UIColor, String> = [
+        .systemPink: "Pink",
+        .systemPurple: "Purple",
+        .systemIndigo: "Indigo",
+        .systemBlue: "Blue",
+        .systemCyan: "Cyan",
+        .systemGreen: "Green",
+        .systemYellow: "Yellow",
+        .systemOrange: "Orange",
+        .systemRed: "Red"
+      ]
       
       let makeColourActions = {(callback: @escaping (UIColor) -> Void) -> [UIAction] in
-        colours.map({colour in
+        colours.map({(colour, name) in
           UIAction(
-            title: colour.accessibilityName,
+            title: name,
             image: UIImage(systemName: "circle.fill")?.withTintColor(colour).withRenderingMode(.alwaysOriginal)) {_ in
               callback(colour)
             }
@@ -137,23 +148,17 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
               self.removeMarker(marker)
             }
           
-          let changeColourChildren = makeColourActions {colour in
-            MarkerManager.shared.latestColour = colour
-            
-            let newMarker = Marker(marker: marker, colour: colour)
-            
-            print("change colour", marker.id, newMarker.id)
-            
-            self.update(location: .marker(newMarker))
-            
-            if let index = MarkerManager.shared.markers.firstIndex(of: marker) {
-              MarkerManager.shared.markers[index] = newMarker
-            } else {
-              print("change colour", "marker not found!!!!", marker.id.uuidString)
+          let changeColourChildren = [
+            UIAction(title: "Other...", image: UIImage(systemName: "circle.hexagongrid.fill")?.withRenderingMode(.alwaysOriginal)){_ in
+              let colourPicker = UIColourPickerViewController(){colour in self.changeMarker(marker, colour: colour)}
+              colourPicker.supportsAlpha = true
+              colourPicker.selectedColor = marker.colour
+              
+              MapViewController.shared.lifpc.present(colourPicker, animated: true, completion: nil)
             }
-          }
+          ] + makeColourActions {colour in self.changeMarker(marker, colour: colour)}
           
-          let colourMenu = UIMenu(title: "Change Colour", children: changeColourChildren)
+          let colourMenu = UIMenu(title: "Change Colour", image: UIImage(systemName: "circle.fill")?.withTintColor(marker.colour).withRenderingMode(.alwaysOriginal), children: changeColourChildren)
           
           actions = [removePin, colourMenu]
       }
@@ -297,6 +302,22 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
       MarkerManager.shared.markers.remove(at: index)
     } else {
       print("remove", "marker not found!!!!", marker.id.uuidString)
+    }
+  }
+  
+  func changeMarker(_ marker: Marker, colour: UIColor){
+    MarkerManager.shared.latestColour = colour
+    
+    let newMarker = Marker(marker: marker, colour: colour)
+    
+    print("change colour", marker.id, newMarker.id)
+    
+    self.update(location: .marker(newMarker))
+    
+    if let index = MarkerManager.shared.markers.firstIndex(of: marker) {
+      MarkerManager.shared.markers[index] = newMarker
+    } else {
+      print("change colour", "marker not found!!!!", marker.id.uuidString)
     }
   }
   
