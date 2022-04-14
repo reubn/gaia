@@ -567,8 +567,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       let isMe = presentedViewController == lifpc
 
       if(isMe) {
-        ((presentedViewController as! MemoryConsciousFloatingPanelController).contentViewController! as! LocationInfoPanelViewController).update(location: location)
+        let locationInfoPanelViewController = ((presentedViewController as! MemoryConsciousFloatingPanelController).contentViewController! as! LocationInfoPanelViewController)
+        let positiveFeedback = locationInfoPanelViewController.location != location
+        locationInfoPanelViewController.update(location: location)
+        
+        if(positiveFeedback){
           UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        }
         
         return
       } else {

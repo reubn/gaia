@@ -392,7 +392,7 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
 }
 
 
-enum LocationInfoType {
+enum LocationInfoType: Equatable {
   case user
   case map(CLLocationCoordinate2D)
   case marker(Marker)
