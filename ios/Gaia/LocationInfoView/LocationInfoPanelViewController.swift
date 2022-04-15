@@ -148,7 +148,9 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
         case .marker(let marker):
           let removePin = UIAction(
             title: "Remove Marker",
-            image: UIImage(systemName: "mappin.slash")) {_ in
+            image: UIImage(systemName: "mappin.slash"),
+            attributes: .destructive
+          ) {_ in
               self.removeMarker(marker)
             }
           
