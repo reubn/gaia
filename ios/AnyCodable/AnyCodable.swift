@@ -178,7 +178,7 @@ extension AnyCodable: Hashable {
     }
 }
 
-func toHashable(_ value: Any) -> AnyHashable {
+func toHashable(_ value: Any) -> AnyHashable? {
   switch value {
     case let value as AnyHashable:
       return value
@@ -194,6 +194,8 @@ func toHashable(_ value: Any) -> AnyHashable {
     case let value as [String: Any]:
       let anyCodable = value.mapValues(tryCastAnyHashable)
       return anyCodable
+    case is Void:
+      return nil
     
     default:
       fatalError("Unknown Type")
