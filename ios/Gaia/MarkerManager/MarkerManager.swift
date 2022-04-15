@@ -14,8 +14,7 @@ class MarkerManager {
   var markers: [Marker] {
     get {
       self.markerLayer?.style.interfacedSources
-        .flatMap({$0.getMarkerGeoJSONFeatures()})
-        .compactMap({Marker(feature: $0)})
+        .flatMap(extractMarkers)
       ?? []
     }
     
@@ -41,6 +40,15 @@ class MarkerManager {
   }
   
   lazy var latestColour: UIColor = markers.last?.colour ?? .systemPink
+  
+  func extractMarkers(_ interfacedSource: Style.InterfacedSource) -> [Marker] {
+    if let geoJSONData = interfacedSource.geoJSONData {
+      let features = geoJSON(flatten: geoJSONData)
+      return features.compactMap({Marker(feature: $0)})
+    }
+    
+    return []
+  }
   
   func markers(in bounds: MGLCoordinateBounds) -> [Marker] {
     markers.filter({bounds.contains(coordinate: $0.coordinate)})
@@ -101,8 +109,10 @@ struct Marker: Hashable, Equatable {
 }
 
 extension Marker {
-  init?(feature: AnyCodable){
-    guard let properties = feature.properties,
+  init?(feature: AnyCodable?){
+    guard
+      let feature = feature,
+      let properties = feature.properties,
       let uuidString = properties.gaiaUUID?.value as? String,
       let uuid = UUID.init(uuidString: uuidString),
       let geometry = feature.geometry,
@@ -136,7 +146,6 @@ extension Marker {
     [
       "type": "Feature",
       "properties": [
-        "gaiaMarker": true,
         "gaiaUUID": id.uuidString,
         "colour": "#\(colour.toHex() ?? "000000")"
       ],
@@ -148,9 +157,5 @@ extension Marker {
         "type": "Point"
       ]
     ]
-  }
-  
-  static func featureIsMarker(_ feature: AnyCodable?) -> Bool {
-    feature?.properties?.gaiaMarker?.value as? Bool ?? false
   }
 }

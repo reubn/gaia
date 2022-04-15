@@ -96,15 +96,6 @@ extension Style {
       case maxZoom
       case bounds
     }
-    
-    func getMarkerGeoJSONFeatures() -> [AnyCodable] {
-      if let geoJSONData = geoJSONData {
-          let features = geoJSON(flatten: geoJSONData)
-          return features.filter(Marker.featureIsMarker).compactMap({$0})
-      }
-      
-      return []
-    }
   }
   
   func with(_ sourceOptions: [InterfacedSource]) -> Self {
