@@ -21,8 +21,8 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
           self.popoverTitle.text = coordinate.format(.sexagesimal(.low))
           self.popoverTitle.selectionText = self.popoverTitle.text
         case .coordinate(.gridReference):
-          self.popoverTitle.text = coordinate.format(.gridReference(.low))
-          self.popoverTitle.selectionText = self.popoverTitle.text
+          self.popoverTitle.text = coordinate.format(.gridReference(.low, space: true))
+          self.popoverTitle.selectionText = coordinate.format(.gridReference(.high))
         case .title(let marker):
           self.popoverTitle.text = marker.title ?? "Untitled"
           self.popoverTitle.selectionText = self.popoverTitle.text

@@ -165,7 +165,7 @@ extension CLLocationCoordinate2D {
     self.init(latitude: lat, longitude: lon)
   }
   
-  func format(gridReference accuracy: FormatAccuracy) -> String {
+  func format(gridReference accuracy: FormatAccuracy, space: Bool=false) -> String {
     let lat1 = latitude.toRadians
     let lon1 = longitude.toRadians
     
@@ -257,20 +257,19 @@ extension CLLocationCoordinate2D {
     
     let seemsValid = x >= 0 && y >= 0 && x < lookup.count && y < lookup[x].count
     
-    if(!seemsValid){
+    let delimiter = space ? " " : ""
+    let letters = seemsValid ? lookup[x][y] : "XX"
+    let numberOfDigits: Int = {
       switch accuracy {
-        case .high: return "XX 00000 00000"
-        case .low: return "XX000000"
-        case .specific(_): return "XX 0000 0000"
+        case .low: return 3
+        case .high: return 5
+        case .specific(let int): return int
       }
-    }
+    }()
     
-    let letters = lookup[x][y]
+    let eString = seemsValid ? String(e.prefix(numberOfDigits)) : String(repeating: "0", count: numberOfDigits)
+    let nString = seemsValid ? String(n.prefix(numberOfDigits)) : String(repeating: "0", count: numberOfDigits)
     
-    switch accuracy {
-      case .high: return "\(letters) \(e.prefix(5)) \(n.prefix(5))"
-      case .low: return "\(letters)\(e.prefix(3))\(n.prefix(3))"
-      case .specific(let places): return "\(letters) \(e.prefix(places)) \(n.prefix(places))"
-    }
+    return letters + delimiter + eString + delimiter + nString
   }
 }
