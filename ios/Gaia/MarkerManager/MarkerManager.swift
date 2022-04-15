@@ -99,6 +99,8 @@ struct Marker: Hashable, Equatable {
   
   let colour: UIColor
   
+  var title: String? = nil
+  
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
   }
@@ -129,17 +131,23 @@ extension Marker {
       colour = .black
     }
     
+    let title = properties.title?.value as? String
+    
     let coordinate = CLLocationCoordinate2D(latitude: coordinateArray[1], longitude: coordinateArray[0])
 
-    self.init(coordinate: coordinate, id: uuid, colour: colour)
+    self.init(coordinate: coordinate, id: uuid, colour: colour, title: title)
   }
   
-  init(coordinate: CLLocationCoordinate2D, colour: UIColor=MarkerManager.shared.latestColour){
-    self.init(coordinate: coordinate, id: UUID(), colour: colour)
+  init(coordinate: CLLocationCoordinate2D, colour: UIColor=MarkerManager.shared.latestColour, title: String?=nil){
+    self.init(coordinate: coordinate, id: UUID(), colour: colour, title: title)
   }
   
   init(marker: Self, colour: UIColor=MarkerManager.shared.latestColour){
-    self.init(coordinate: marker.coordinate, id: marker.id, colour: colour)
+    self.init(coordinate: marker.coordinate, id: marker.id, colour: colour, title: marker.title)
+  }
+  
+  init(marker: Self, colour: UIColor=MarkerManager.shared.latestColour, title: String?){
+    self.init(coordinate: marker.coordinate, id: marker.id, colour: colour, title: title)
   }
   
   var geoJSON: AnyCodable {
@@ -147,7 +155,8 @@ extension Marker {
       "type": "Feature",
       "properties": [
         "gaiaUUID": id.uuidString,
-        "colour": "#\(colour.toHex() ?? "000000")"
+        "colour": "#\(colour.toHex() ?? "000000")",
+        "title": title
       ],
       "geometry": [
         "coordinates": [

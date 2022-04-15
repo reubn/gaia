@@ -5,23 +5,27 @@ import OrderedCollections
 import Mapbox
 import FloatingPanel
 import CoreLocation
+import CoreGPX
 
 class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdateDelegate, SelectableLabelPasteDelegate, MapViewStyleDidChangeDelegate {
   let pinButton = PanelSmallButton(.init(systemName: "mappin", colour: .systemPink))
   
   var location: LocationInfoType
-  var titleCoordinate: CoordinateFormat? {
+  var titleContent: TitleFormat? {
     didSet {
-      switch titleCoordinate! {
-        case .decimal(let coordinate):
+      switch titleContent! {
+        case .coordinate(.decimal):
           self.popoverTitle.text = coordinate.format(.decimal(.low))
           self.popoverTitle.selectionText = coordinate.format(.decimal(.high))
-        case .sexagesimal(let coordinate):
+        case .coordinate(.sexagesimal):
           self.popoverTitle.text = coordinate.format(.sexagesimal(.low))
-          self.popoverTitle.selectionText = coordinate.format(.sexagesimal(.low))
-        case .gridReference(let coordinate):
+          self.popoverTitle.selectionText = self.popoverTitle.text
+        case .coordinate(.gridReference):
           self.popoverTitle.text = coordinate.format(.gridReference(.low))
-          self.popoverTitle.selectionText = coordinate.format(.gridReference(.low))
+          self.popoverTitle.selectionText = self.popoverTitle.text
+        case .title(let marker):
+          self.popoverTitle.text = marker.title ?? "Untitled"
+          self.popoverTitle.selectionText = self.popoverTitle.text
       }
     }
   }
@@ -256,7 +260,11 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
       MapViewController.shared.mapView.setCenter(coordinate, animated: true)
     }
     
-    updateTitleCoordinate(coordinate)
+    switch location {
+      case .user, .map: titleContent = titleContent ?? .coordinate(.decimal)
+      case .marker(let marker): titleContent = .title(marker)
+    }
+    
     displayOnMap()
     
     metricDisplays = [bearingDisplay, distanceDisplay]
@@ -359,7 +367,7 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     let location = MapViewController.shared.mapView.userLocation!.location
     
     if case .user = self.location {
-      updateTitleCoordinate(coordinate)
+      titleContent = titleContent ?? .coordinate(.decimal)
     } else {
       var distanceValue = (distanceDisplay.value as! CoordinatePair)
       distanceValue.b = coordinate
@@ -389,21 +397,17 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     }
   }
   
-  func updateTitleCoordinate(_ coordinate: CLLocationCoordinate2D){
-    switch titleCoordinate {
-      case .decimal(_): titleCoordinate = .decimal(coordinate)
-      case .sexagesimal(_): titleCoordinate = .sexagesimal(coordinate)
-      case .gridReference(_): titleCoordinate = .gridReference(coordinate)
-        
-      case nil: titleCoordinate = .decimal(coordinate)
-    }
-  }
-  
   @objc func labelTapped(){
-    switch titleCoordinate! {
-      case .decimal(let coordinate): titleCoordinate = .sexagesimal(coordinate)
-      case .sexagesimal(let coordinate): titleCoordinate = .gridReference(coordinate)
-      case .gridReference(let coordinate): titleCoordinate = .decimal(coordinate)
+    switch titleContent! {
+      case .coordinate(.decimal): titleContent = .coordinate(.sexagesimal)
+      case .coordinate(.sexagesimal): titleContent = .coordinate(.gridReference)
+      case .coordinate(.gridReference):
+        if case .marker(let marker) = location {
+          titleContent = .title(marker)
+        } else {
+          titleContent = .coordinate(.decimal)
+        }
+      case .title: titleContent = .coordinate(.decimal)
     }
   }
   
@@ -419,8 +423,13 @@ enum LocationInfoType: Equatable {
   case marker(Marker)
 }
 
+enum TitleFormat {
+  case title(Marker)
+  case coordinate(CoordinateFormat)
+}
+
 enum CoordinateFormat {
-  case decimal(CLLocationCoordinate2D)
-  case sexagesimal(CLLocationCoordinate2D)
-  case gridReference(CLLocationCoordinate2D)
+  case decimal
+  case sexagesimal
+  case gridReference
 }
