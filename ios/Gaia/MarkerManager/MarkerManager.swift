@@ -5,6 +5,8 @@ import ZippyJSON
 class MarkerManager {
   static let shared = MarkerManager()
   
+  let gaiaMarkerId = "gaiaMarker"
+  
   var markerLayer: Layer? {
     LayerManager.shared.layers.first(where: {$0.markerLayer})
   }
@@ -18,7 +20,7 @@ class MarkerManager {
     }
     
     set {
-      guard let markerLayer = markerLayer else {
+      guard let markerLayer = markerLayer ?? addMarkerLayer() else {
         return
       }
       
@@ -30,8 +32,7 @@ class MarkerManager {
         ]
       ])
       
-      let gaiaMarkerSourceId = "gaiaMarkerSource"
-      let newInterfacedSource = Style.InterfacedSource.create((gaiaMarkerSourceId, newSource))!
+      let newInterfacedSource = Style.InterfacedSource.create((gaiaMarkerId, newSource))!
       
       markerLayer.style = markerLayer.style.with([newInterfacedSource])
   
@@ -43,6 +44,44 @@ class MarkerManager {
   
   func markers(in bounds: MGLCoordinateBounds) -> [Marker] {
     markers.filter({bounds.contains(coordinate: $0.coordinate)})
+  }
+  
+  func addMarkerLayer() -> Layer? {
+    print("addMarkerLayer")
+    let metadata = LayerDefinition.Metadata(id: gaiaMarkerId, name: "Gaia Markers", group: "overlay")
+    let user = LayerDefinition.User(groupIndex: 0, pinned: false, enabled: true, quickToggle: false, markerLayer: true)
+    
+    let styleLayer = Style.Layer([
+      "id": gaiaMarkerId,
+      "paint": [
+        "circle-color": [
+          "get",
+          "colour"
+        ],
+        "circle-opacity": 1,
+        "circle-radius": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          5,
+          3,
+          10,
+          5,
+          16,
+          6
+        ]
+      ],
+      "source": gaiaMarkerId,
+      "type": "circle"
+    ])
+    let style = Style(sources: [:], layers: [styleLayer])
+    let layerDefinition = LayerDefinition(metadata: metadata, user: user, style: style)
+    
+    return LayerManager.shared.accept(layerDefinition: layerDefinition).layer
   }
 }
 
