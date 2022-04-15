@@ -261,8 +261,12 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
     }
     
     switch location {
-      case .user, .map: titleContent = titleContent ?? .coordinate(.decimal)
-      case .marker(let marker): titleContent = .title(marker)
+      case .marker(let marker) where marker.title != nil: titleContent = .title(marker)
+      default:
+        switch titleContent {
+          case .title, .none: titleContent = .coordinate(.decimal)
+          default: titleContent = titleContent!
+        }
     }
     
     displayOnMap()
@@ -402,10 +406,9 @@ class LocationInfoPanelViewController: PanelViewController, UserLocationDidUpdat
       case .coordinate(.decimal): titleContent = .coordinate(.sexagesimal)
       case .coordinate(.sexagesimal): titleContent = .coordinate(.gridReference)
       case .coordinate(.gridReference):
-        if case .marker(let marker) = location {
-          titleContent = .title(marker)
-        } else {
-          titleContent = .coordinate(.decimal)
+        switch location {
+          case .marker(let marker) where marker.title != nil: titleContent = .title(marker)
+          default: titleContent = .coordinate(.decimal)
         }
       case .title: titleContent = .coordinate(.decimal)
     }
