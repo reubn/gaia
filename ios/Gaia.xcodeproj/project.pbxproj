@@ -63,7 +63,7 @@
 		1B8AE3892605384900CF3D8E /* MGLMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8AE3882605384900CF3D8E /* MGLMapView.swift */; };
 		1B8C078A25C43C58008C08B2 /* PanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078925C43C58008C08B2 /* PanelLayout.swift */; };
 		1B8C078E25C48245008C08B2 /* LocationInfoPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */; };
-		1B8C078F25C48245008C08B2 /* LocationInfoPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */; };
+		1B8C078F25C48245008C08B2 /* LocationInfoHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C078D25C48245008C08B2 /* LocationInfoHome.swift */; };
 		1B8C079325C493E5008C08B2 /* SelectableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C079225C493E5008C08B2 /* SelectableLabel.swift */; };
 		1B93A9CF27F09F4D00497DB4 /* sexagesimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B93A9CE27F09F4D00497DB4 /* sexagesimal.swift */; };
 		1B93A9D327F0CEE900497DB4 /* decimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B93A9D227F0CEE900497DB4 /* decimal.swift */; };
@@ -111,6 +111,9 @@
 		1BD40D8D2805D986002E45E7 /* CGRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D8C2805D986002E45E7 /* CGRect.swift */; };
 		1BD40D8F2808795E002E45E7 /* UIColourPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D8E2808795E002E45E7 /* UIColourPickerViewController.swift */; };
 		1BD40D9228087F92002E45E7 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 1BD40D9128087F92002E45E7 /* OrderedCollections */; };
+		1BD40D94280AD61F002E45E7 /* LocationInfoPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D93280AD61F002E45E7 /* LocationInfoPanelViewController.swift */; };
+		1BD40D96280AD690002E45E7 /* LocationInfoCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D95280AD690002E45E7 /* LocationInfoCoordinatorView.swift */; };
+		1BD40D98280ADD5C002E45E7 /* LayerInfoMarkerRename.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D97280ADD5C002E45E7 /* LayerInfoMarkerRename.swift */; };
 		1BD6A3B825FF4CAA001E503D /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3B725FF4CAA001E503D /* CanvasView.swift */; };
 		1BD6A3BA2600DF25001E503D /* LocationInfoPanelShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */; };
 		1BD6A3BC2600E2E1001E503D /* BearingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */; };
@@ -196,7 +199,7 @@
 		1B8AE3882605384900CF3D8E /* MGLMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGLMapView.swift; sourceTree = "<group>"; };
 		1B8C078925C43C58008C08B2 /* PanelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelLayout.swift; sourceTree = "<group>"; };
 		1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelLayout.swift; sourceTree = "<group>"; };
-		1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelViewController.swift; sourceTree = "<group>"; };
+		1B8C078D25C48245008C08B2 /* LocationInfoHome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInfoHome.swift; sourceTree = "<group>"; };
 		1B8C079225C493E5008C08B2 /* SelectableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableLabel.swift; sourceTree = "<group>"; };
 		1B93A9CE27F09F4D00497DB4 /* sexagesimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sexagesimal.swift; sourceTree = "<group>"; };
 		1B93A9D227F0CEE900497DB4 /* decimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = decimal.swift; sourceTree = "<group>"; };
@@ -239,6 +242,9 @@
 		1BD40D8A2805C552002E45E7 /* MarkerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerManager.swift; sourceTree = "<group>"; };
 		1BD40D8C2805D986002E45E7 /* CGRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGRect.swift; sourceTree = "<group>"; };
 		1BD40D8E2808795E002E45E7 /* UIColourPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColourPickerViewController.swift; sourceTree = "<group>"; };
+		1BD40D93280AD61F002E45E7 /* LocationInfoPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelViewController.swift; sourceTree = "<group>"; };
+		1BD40D95280AD690002E45E7 /* LocationInfoCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoCoordinatorView.swift; sourceTree = "<group>"; };
+		1BD40D97280ADD5C002E45E7 /* LayerInfoMarkerRename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerInfoMarkerRename.swift; sourceTree = "<group>"; };
 		1BD6A3B725FF4CAA001E503D /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelShare.swift; sourceTree = "<group>"; };
 		1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BearingDisplay.swift; sourceTree = "<group>"; };
@@ -475,7 +481,10 @@
 			isa = PBXGroup;
 			children = (
 				1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */,
-				1B8C078D25C48245008C08B2 /* LocationInfoPanelViewController.swift */,
+				1BD40D93280AD61F002E45E7 /* LocationInfoPanelViewController.swift */,
+				1BD40D95280AD690002E45E7 /* LocationInfoCoordinatorView.swift */,
+				1B8C078D25C48245008C08B2 /* LocationInfoHome.swift */,
+				1BD40D97280ADD5C002E45E7 /* LayerInfoMarkerRename.swift */,
 				1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */,
 				1BEE8D5C25C599A0004260C1 /* MetricDisplay */,
 			);
@@ -665,8 +674,10 @@
 				1BD40D8D2805D986002E45E7 /* CGRect.swift in Sources */,
 				1BD6A3B825FF4CAA001E503D /* CanvasView.swift in Sources */,
 				1B3401C525B34AD00091FA3B /* LayerSelectPanelViewController.swift in Sources */,
+				1BD40D94280AD61F002E45E7 /* LocationInfoPanelViewController.swift in Sources */,
 				1B9DDAFC25F2AC1E00B3407F /* Collection.swift in Sources */,
 				1B7644C325CAFA7300572A70 /* Style.swift in Sources */,
+				1BD40D96280AD690002E45E7 /* LocationInfoCoordinatorView.swift in Sources */,
 				1BF4B7FA261700C200D87E35 /* UIView.swift in Sources */,
 				1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */,
 				1B6033BD25D1DBD300211150 /* UIColor.swift in Sources */,
@@ -723,6 +734,7 @@
 				1B93A9D327F0CEE900497DB4 /* decimal.swift in Sources */,
 				1BBD3FFD25B8927E007B8BC7 /* OfflineManager.swift in Sources */,
 				1BD6A3BE2600E34B001E503D /* CoordinatePair.swift in Sources */,
+				1BD40D98280ADD5C002E45E7 /* LayerInfoMarkerRename.swift in Sources */,
 				1BA9BD2625C21D7C00AC97C7 /* LayerSelectImport.swift in Sources */,
 				1BBD3FF825B88F56007B8BC7 /* OfflineSelectPanelViewController.swift in Sources */,
 				1B0D09BB25E7A0E200ED5345 /* HUDMessages.swift in Sources */,
@@ -736,7 +748,7 @@
 				1BBD3FF525B70C06007B8BC7 /* OfflineSelectPanelLayout.swift in Sources */,
 				1B6638AA25B10B530071F03D /* SceneDelegate.swift in Sources */,
 				1B2F9091267FCBDF00D275CB /* InterfacedLayer.swift in Sources */,
-				1B8C078F25C48245008C08B2 /* LocationInfoPanelViewController.swift in Sources */,
+				1B8C078F25C48245008C08B2 /* LocationInfoHome.swift in Sources */,
 				1BB94BD6260CAA8F002C0D67 /* LayerAcceptance.swift in Sources */,
 				1B3401D025B474260091FA3B /* SectionTableView.swift in Sources */,
 				1B7644BF25CAD61900572A70 /* Layer.swift in Sources */,

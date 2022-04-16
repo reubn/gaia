@@ -7,7 +7,7 @@ import LinkPresentation
 
 import Mapbox
 
-extension LocationInfoPanelViewController {
+extension LocationInfoHome {
   func generatePreview(coordinate: CLLocationCoordinate2D, _ callback: @escaping (UIImage?) -> ()){
     if(OfflineManager.shared.offlineMode) {
         return callback(nil)
@@ -67,7 +67,7 @@ extension LocationInfoPanelViewController {
       )
       
       activityViewController.popoverPresentationController?.sourceView = sender
-      self.present(activityViewController, animated: true, completion: nil)
+      self.coordinatorView.panelViewController.present(activityViewController, animated: true, completion: nil)
     }
   }
 }
