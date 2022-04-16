@@ -568,8 +568,8 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 
       if(isMe) {
         let locationInfoPanelViewController = ((presentedViewController as! MemoryConsciousFloatingPanelController).contentViewController! as! LocationInfoPanelViewController)
-        let positiveFeedback = locationInfoPanelViewController.location != location
-        locationInfoPanelViewController.coordinatorView.update(location: location)
+        let positiveFeedback = locationInfoPanelViewController.coordinatorView?.location != location
+        locationInfoPanelViewController.coordinatorView?.update(location: location)
         
         if(positiveFeedback){
           UIImpactFeedbackGenerator(style: .light).impactOccurred()

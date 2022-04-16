@@ -40,24 +40,12 @@ class LocationInfoMarkerRename: UIView, CoordinatedView {
   
   func viewWillEnter(data: Any?){
     print("enter LIMR")
-    
-    guard let marker = data as? Marker else {
-      return
-    }
-    
-    self.marker = marker
-    
+
     if(MapViewController.shared.lifpc.viewIfLoaded?.window != nil) {
       MapViewController.shared.lifpc.move(to: .half, animated: true)
     }
     
-    if let title = marker.title {
-      coordinatorView.panelViewController.title = "Rename Marker"
-      titleInput.text = title
-    } else {
-      coordinatorView.panelViewController.title = "Add Title"
-      titleInput.text = ""
-    }
+    update(data: data)
     
     coordinatorView.panelViewController.panelButtons = [.previous, .accept]
     
@@ -68,6 +56,22 @@ class LocationInfoMarkerRename: UIView, CoordinatedView {
     titleInput.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
     
     titleInput.becomeFirstResponder()
+  }
+  
+  func update(data: Any?) {
+    if let marker = data as? Marker {
+      self.marker = marker
+      
+      if let title = marker.title {
+        coordinatorView.panelViewController.title = "Rename Marker"
+        titleInput.text = title
+      } else {
+        coordinatorView.panelViewController.title = "Add Title"
+        titleInput.text = ""
+      }
+    } else {
+      coordinatorView.back()
+    }
   }
   
   func viewWillExit(){
@@ -96,6 +100,7 @@ class LocationInfoMarkerRename: UIView, CoordinatedView {
       return
     }
     
+    coordinatorView.back()
     coordinatorView.changeMarker(marker, title: newTitle)
   }
   

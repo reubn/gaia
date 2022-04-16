@@ -7,12 +7,19 @@ import FloatingPanel
 import CoreLocation
 import CoreGPX
 
-class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, SelectableLabelPasteDelegate, MapViewStyleDidChangeDelegate {
+class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, SelectableLabelPasteDelegate {
   unowned let coordinatorView: LocationInfoCoordinatorView
   
   let pinButton = PanelSmallButton(.init(icon: .systemName("plus"), colour: .systemPink))
   
-  var location: LocationInfoType
+  var location: LocationInfoType {
+    coordinatorView.location
+  }
+  
+  var coordinate: CLLocationCoordinate2D {
+    coordinatorView.coordinate
+  }
+  
   var titleContent: TitleFormat? {
     didSet {
       switch titleContent! {
@@ -32,30 +39,6 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
     }
   }
 
-  var mapSource: MGLSource {
-    get {
-      MapViewController.shared.mapView.style?.source(withIdentifier: "location") ?? {
-        let source = MGLShapeSource(identifier: "location", features: [], options: nil)
-        
-        MapViewController.shared.mapView.style?.addSource(source)
-        
-        return source
-      }()
-    }
-  }
-
-  var mapLayer: MGLStyleLayer {
-    get {
-      MapViewController.shared.mapView.style?.layer(withIdentifier: "location") ?? {
-        let layer = MGLSymbolStyleLayer(identifier: "location", source: mapSource)
-
-        MapViewController.shared.mapView.style?.addLayer(layer)
-        
-        return layer
-      }()
-    }
-  }
-  
   lazy var pVC = coordinatorView.panelViewController
   
   lazy var labelTap = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
@@ -187,9 +170,8 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
     })
   }
 
-  init(coordinatorView: LocationInfoCoordinatorView, location: LocationInfoType){
+  init(coordinatorView: LocationInfoCoordinatorView){
     self.coordinatorView = coordinatorView
-    self.location = location
     
     super.init(frame: CGRect())
     
@@ -200,19 +182,13 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
     mainView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor).isActive = true
     mainView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
     mainView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-    
-    update(location: location)
-  }
-  
-  func styleDidChange() {
-    displayOnMap()
   }
   
   func userDidPaste(content: String) {
     let coordinate = CLLocationCoordinate2D(content)
     
     if(coordinate != nil){
-      update(location: .map(coordinate!))
+      coordinatorView.update(location: .map(coordinate!))
     }
   }
   
@@ -228,52 +204,38 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
     pVC.popoverTitle.addGestureRecognizer(labelTap)
     
     MapViewController.shared.multicastUserLocationDidUpdateDelegate.add(delegate: self)
-    MapViewController.shared.multicastMapViewStyleDidChangeDelegate.add(delegate: self)
     
     userLocationDidUpdate()
     
-    if let location = data as? LocationInfoType {
-      update(location: location)
-    }
+    update(data: data)
   }
   
   func viewWillExit() {
-    removePointsFromMap()
-    
     pVC.popoverTitle.pasteDelegate = nil
     pVC.popoverTitle.isUserInteractionEnabled = false
     pVC.popoverTitle.removeGestureRecognizer(labelTap)
     
     MapViewController.shared.multicastUserLocationDidUpdateDelegate.remove(delegate: self)
-    MapViewController.shared.multicastMapViewStyleDidChangeDelegate.remove(delegate: self)
   }
   
 
-  func update(location: LocationInfoType){
-    self.location = location
-    
-    print("location update", location)
-    updatePinButton()
-    
-    switch location {
-      case .user:
-        metricDisplays = [headingDisplay, elevationDisplay]
-        
-        userLocationDidUpdate()
-        removePointsFromMap()
-      case .marker, .map:
-        handlePointUpdate()
+  func update(data: Any?){
+    if let location = data as? LocationInfoType {
+      print("location update", location)
+      updatePinButton()
+      
+      
+      switch location {
+        case .user:
+          metricDisplays = [headingDisplay, elevationDisplay]
+          
+          userLocationDidUpdate()
+        case .marker, .map:
+          handlePointUpdate()
+      }
     }
   }
         
-  var coordinate: CLLocationCoordinate2D {
-    switch location {
-      case .user: return MapViewController.shared.mapView.userLocation!.coordinate
-      case .map(let coordinate):  return coordinate
-      case .marker(let marker): return marker.coordinate
-    }
-  }
-  
   func updatePinButton(){
     pinButton.showsMenuAsPrimaryAction = true
     
@@ -292,10 +254,6 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
   }
   
   func handlePointUpdate() {
-    if !MapViewController.shared.mapView.visibleCoordinateBounds.contains(coordinate: coordinate) {
-      MapViewController.shared.mapView.setCenter(coordinate, animated: true)
-    }
-    
     switch location {
       case .marker(let marker) where marker.title != nil: titleContent = .title(marker)
       default:
@@ -304,9 +262,7 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
           default: titleContent = titleContent!
         }
     }
-    
-    displayOnMap()
-    
+  
     metricDisplays = [bearingDisplay, distanceDisplay]
     
     var distanceValue = (distanceDisplay.value as! CoordinatePair)
@@ -318,54 +274,7 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
     bearingDisplay.value = bearingValue
   }
   
-  private var markerImageMap: [UIColor: UIImage] = [:]
-  
-  func getMarkerImage(colour: UIColor) -> String {
-    let key = String(colour.hashValue)
-    
-   if(markerImageMap[colour] == nil) {
-      let front = UIImage(named: "mapPin")!.withTintColor(colour)
-      let back = UIImage(named: "mapPinBack")!
-      let image = front.draw(inFrontOf: back)
-      
-      markerImageMap[colour] = image
-    }
-    
-    MapViewController.shared.mapView.style?.setImage(markerImageMap[colour]!, forName: key)
-    
-    return key
-  }
-  
-  func displayOnMap(){
-    if case .user = location {
-      print("skipping, display point as location is for user")
-      return
-    }
-    
-    let point = MGLPointFeature()
-    point.coordinate = coordinate
  
-    (mapSource as! MGLShapeSource).shape = point
-    
-    let colour: UIColor
-    
-    if case .marker(let marker) = location {
-      colour = marker.colour
-    } else {
-      colour = .systemGray
-    }
-  
-    let layer = (mapLayer as! MGLSymbolStyleLayer)
-    
-    layer.iconImageName = NSExpression(forConstantValue: getMarkerImage(colour: colour))
-    layer.iconScale = NSExpression(forConstantValue: 0.5)
-  }
-  
-  func removePointsFromMap(){
-    MapViewController.shared.mapView.style?.removeSource(mapSource)
-    MapViewController.shared.mapView.style?.removeLayer(mapLayer)
-  }
-  
   func userLocationDidUpdate() {
     if(MapViewController.shared.mapView.userLocation == nil) {return}
     
@@ -413,13 +322,6 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-}
-
-
-enum LocationInfoType: Equatable {
-  case user
-  case map(CLLocationCoordinate2D)
-  case marker(Marker)
 }
 
 enum TitleFormat {

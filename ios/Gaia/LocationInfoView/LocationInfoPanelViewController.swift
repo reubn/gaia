@@ -5,15 +5,18 @@ import Mapbox
 import FloatingPanel
 
 class LocationInfoPanelViewController: PanelViewController {
-  lazy var coordinatorView = LocationInfoCoordinatorView(panelViewController: self)
-  
-  let location: LocationInfoType
+  var coordinatorView: LocationInfoCoordinatorView?
   
   init(location: LocationInfoType){
-    self.location = location
     super.init(title: "")
     
     self.panelButtons = [.dismiss]
+    
+    self.coordinatorView = LocationInfoCoordinatorView(panelViewController: self, location: location)
+    
+    guard let coordinatorView = coordinatorView else {
+      return
+    }
     
     view.addSubview(coordinatorView)
     
@@ -27,7 +30,9 @@ class LocationInfoPanelViewController: PanelViewController {
   override func panelButtonTapped(button: PanelButtonType) {
     super.panelButtonTapped(button: button)
     
-    coordinatorView.panelButtonTapped(button: button)
+    if let coordinatorView = coordinatorView {
+      coordinatorView.panelButtonTapped(button: button)
+    }
   }
   
   required init?(coder aDecoder: NSCoder) {
