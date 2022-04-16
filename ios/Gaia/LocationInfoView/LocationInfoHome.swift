@@ -10,7 +10,7 @@ import CoreGPX
 class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, SelectableLabelPasteDelegate, MapViewStyleDidChangeDelegate {
   unowned let coordinatorView: LocationInfoCoordinatorView
   
-  let pinButton = PanelSmallButton(.init(systemName: "mappin", colour: .systemPink))
+  let pinButton = PanelSmallButton(.init(icon: .systemName("plus"), colour: .systemPink))
   
   var location: LocationInfoType
   var titleContent: TitleFormat? {
@@ -282,10 +282,10 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
     switch location {
       case .user, .map:
         menuTitle = "Add Marker"
-        pinButton.setDisplayConfig(.init(systemName: "mappin", colour: MarkerManager.shared.latestColour))
+        pinButton.setDisplayConfig(.init(icon: .systemName("plus"), colour: MarkerManager.shared.latestColour))
       case .marker(let marker):
         menuTitle = ""
-        pinButton.setDisplayConfig(.init(systemName: "pencil", colour: marker.colour))
+        pinButton.setDisplayConfig(.init(icon: .systemName("screwdriver.fill"), colour: marker.colour))
     }
     
     pinButton.menu = UIMenu(title: menuTitle, children: [defferedMenuElement])
