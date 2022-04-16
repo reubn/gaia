@@ -22,7 +22,15 @@ class PanelButton: UIButton {
   func setDisplayConfig(_ displayConfig: DisplayConfig){
     self.displayConfig = displayConfig
     
-    setImage(UIImage(systemName: displayConfig.systemName, withConfiguration: UIImage.SymbolConfiguration(weight: displayConfig.weight ?? getDefaultWeight())), for: .normal)
+    let iconConfig = UIImage.SymbolConfiguration(weight: displayConfig.weight ?? getDefaultWeight())
+    let image: UIImage?
+    
+    switch displayConfig.icon {
+      case .systemName(let systemName): image = UIImage(systemName: systemName, withConfiguration: iconConfig)
+      case .custom(let custom): image = UIImage(named: custom, in: nil, with: iconConfig)
+    }
+    
+    setImage(image, for: .normal)
     
     tintColor = (displayConfig.deemphasise || (displayConfig.backgroundColour != nil)) ? displayConfig.colour : .white
     backgroundColor = displayConfig.backgroundColour ?? (displayConfig.deemphasise ? .white : displayConfig.colour)
@@ -79,12 +87,17 @@ class PanelButton: UIButton {
   }
   
   struct DisplayConfig {
-    var systemName: String
+    var icon: Icon
     var weight: UIImage.SymbolWeight? = nil
     var inset: Double? = nil
     var colour: UIColor = .systemBlue
     var backgroundColour: UIColor? = nil
     var deemphasise: Bool = false
+    
+    enum Icon {
+      case systemName(String)
+      case custom(String)
+    }
   }
 }
 
