@@ -179,6 +179,8 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
     newButton.showsMenuAsPrimaryAction = true
   }
   
+  func update(data: Any?) {}
+  
   func viewWillExit(){
     print("exit LSH")
 

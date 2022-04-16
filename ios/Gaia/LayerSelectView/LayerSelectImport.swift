@@ -66,6 +66,8 @@ class LayerSelectImport: UIView, CoordinatedView {
     urlChanged()
   }
   
+  func update(data: Any?) {}
+  
   func viewWillExit(){
     print("exit LSI")
   }

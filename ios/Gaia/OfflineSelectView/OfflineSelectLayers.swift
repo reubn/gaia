@@ -42,6 +42,8 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
     updatePanel()
   }
   
+  func update(data: Any?) {}
+  
   func viewWillExit(){
     print("exit OSL")
     

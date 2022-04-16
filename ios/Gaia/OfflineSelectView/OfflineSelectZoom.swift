@@ -32,6 +32,8 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
     coordinatorView.selectedZoom = nil
   }
   
+  func update(data: Any?) {}
+  
   func viewWillExit(){
     print("exit OSZ")
     
