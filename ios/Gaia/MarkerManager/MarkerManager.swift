@@ -51,7 +51,11 @@ class MarkerManager {
   }
   
   func markers(in bounds: MGLCoordinateBounds) -> [Marker] {
-    markers.filter({bounds.contains(coordinate: $0.coordinate)})
+    let center = bounds.center
+    
+    return markers.filter({bounds.contains(coordinate: $0.coordinate)}).sorted(by: {lhs, rhs in
+      lhs.coordinate.distance(to: center) < rhs.coordinate.distance(to: center)
+    })
   }
   
   func addMarkerLayer() -> Layer? {
