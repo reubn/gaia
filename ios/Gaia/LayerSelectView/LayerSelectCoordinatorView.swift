@@ -113,20 +113,6 @@ class LayerSelectCoordinatorView: CoordinatorView, PanelDelegate {
     return results
   }
   
-  func panelDidDisappear() {
-    if let current = story[storyPosition] as? PanelDelegate {
-      current.panelDidDisappear()
-    }
-    
-    story[storyPosition].viewWillExit()
-  }
-  
-  func panelDidMove() {
-    if let current = story[storyPosition] as? PanelDelegate {
-      current.panelDidMove()
-    }
-  }
-  
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

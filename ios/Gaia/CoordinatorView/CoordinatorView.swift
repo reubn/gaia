@@ -63,6 +63,20 @@ class CoordinatorView: UIScrollView {
     story[storyPosition].panelButtonTapped(button: button)
   }
   
+  func panelDidDisappear() {
+    if let current = story[storyPosition] as? PanelDelegate {
+      current.panelDidDisappear()
+    }
+    
+    story[storyPosition].viewWillExit()
+  }
+  
+  func panelDidMove() {
+    if let current = story[storyPosition] as? PanelDelegate {
+      current.panelDidMove()
+    }
+  }
+  
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
