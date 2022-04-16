@@ -10,7 +10,7 @@ import CoreGPX
 class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, SelectableLabelPasteDelegate {
   unowned let coordinatorView: LocationInfoCoordinatorView
   
-  let pinButton = PanelSmallButton(.init(icon: .systemName("plus"), colour: .systemPink))
+  let markerButton = PanelSmallButton(.init(icon: .systemName("plus"), colour: .systemPink))
   
   var location: LocationInfoType {
     coordinatorView.location
@@ -24,22 +24,20 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
     didSet {
       switch titleContent! {
         case .coordinate(.decimal):
-          pVC.popoverTitle.text = coordinate.format(.decimal(.low))
-          pVC.popoverTitle.selectionText = coordinate.format(.decimal(.high))
+          coordinatorView.panelViewController.popoverTitle.text = coordinate.format(.decimal(.low))
+          coordinatorView.panelViewController.popoverTitle.selectionText = coordinate.format(.decimal(.high))
         case .coordinate(.sexagesimal):
-          pVC.popoverTitle.text = coordinate.format(.sexagesimal(.low))
-          pVC.popoverTitle.selectionText = pVC.popoverTitle.text
+          coordinatorView.panelViewController.popoverTitle.text = coordinate.format(.sexagesimal(.low))
+          coordinatorView.panelViewController.popoverTitle.selectionText = coordinatorView.panelViewController.popoverTitle.text
         case .coordinate(.gridReference):
-          pVC.popoverTitle.text = coordinate.format(.gridReference(.low, space: true))
-          pVC.popoverTitle.selectionText = coordinate.format(.gridReference(.high))
+          coordinatorView.panelViewController.popoverTitle.text = coordinate.format(.gridReference(.low, space: true))
+          coordinatorView.panelViewController.popoverTitle.selectionText = coordinate.format(.gridReference(.high))
         case .title(let marker):
-          pVC.popoverTitle.text = marker.title ?? "Untitled"
-          pVC.popoverTitle.selectionText = pVC.popoverTitle.text
+          coordinatorView.panelViewController.popoverTitle.text = marker.title ?? "Untitled"
+          coordinatorView.panelViewController.popoverTitle.selectionText = coordinatorView.panelViewController.popoverTitle.text
       }
     }
   }
-
-  lazy var pVC = coordinatorView.panelViewController
   
   lazy var labelTap = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
   
@@ -183,25 +181,17 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
     mainView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
     mainView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
   }
-  
-  func userDidPaste(content: String) {
-    let coordinate = CLLocationCoordinate2D(content)
     
-    if(coordinate != nil){
-      coordinatorView.update(location: .map(coordinate!))
-    }
-  }
-  
   func viewWillEnter(data: Any?){
-    pVC.panelButtons = [.share, .custom(pinButton), .dismiss]
+    coordinatorView.panelViewController.panelButtons = [.share, .custom(markerButton), .dismiss]
     
     if(MapViewController.shared.lifpc.viewIfLoaded?.window != nil) {
       MapViewController.shared.lifpc.move(to: .tip, animated: true)
     }
     
-    pVC.popoverTitle.pasteDelegate = self
-    pVC.popoverTitle.isUserInteractionEnabled = true
-    pVC.popoverTitle.addGestureRecognizer(labelTap)
+    coordinatorView.panelViewController.popoverTitle.pasteDelegate = self
+    coordinatorView.panelViewController.popoverTitle.isUserInteractionEnabled = true
+    coordinatorView.panelViewController.popoverTitle.addGestureRecognizer(labelTap)
     
     MapViewController.shared.multicastUserLocationDidUpdateDelegate.add(delegate: self)
     
@@ -211,9 +201,9 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
   }
   
   func viewWillExit() {
-    pVC.popoverTitle.pasteDelegate = nil
-    pVC.popoverTitle.isUserInteractionEnabled = false
-    pVC.popoverTitle.removeGestureRecognizer(labelTap)
+    coordinatorView.panelViewController.popoverTitle.pasteDelegate = nil
+    coordinatorView.panelViewController.popoverTitle.isUserInteractionEnabled = false
+    coordinatorView.panelViewController.popoverTitle.removeGestureRecognizer(labelTap)
     
     MapViewController.shared.multicastUserLocationDidUpdateDelegate.remove(delegate: self)
   }
@@ -222,8 +212,7 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
   func update(data: Any?){
     if let location = data as? LocationInfoType {
       print("location update", location)
-      updatePinButton()
-      
+      updateMarkerButton()
       
       switch location {
         case .user:
@@ -231,29 +220,29 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
           
           userLocationDidUpdate()
         case .marker, .map:
-          handlePointUpdate()
+          nonUserLocationDidUpdate()
       }
     }
   }
         
-  func updatePinButton(){
-    pinButton.showsMenuAsPrimaryAction = true
+  func updateMarkerButton(){
+    markerButton.showsMenuAsPrimaryAction = true
     
     let menuTitle: String
     
     switch location {
       case .user, .map:
         menuTitle = "Add Marker"
-        pinButton.setDisplayConfig(.init(icon: .systemName("plus"), colour: MarkerManager.shared.latestColour))
+        markerButton.setDisplayConfig(.init(icon: .systemName("plus"), colour: MarkerManager.shared.latestColour))
       case .marker(let marker):
         menuTitle = ""
-        pinButton.setDisplayConfig(.init(icon: .systemName("screwdriver.fill"), colour: marker.colour))
+        markerButton.setDisplayConfig(.init(icon: .systemName("screwdriver.fill"), colour: marker.colour))
     }
     
-    pinButton.menu = UIMenu(title: menuTitle, children: [defferedMenuElement])
+    markerButton.menu = UIMenu(title: menuTitle, children: [defferedMenuElement])
   }
   
-  func handlePointUpdate() {
+  func nonUserLocationDidUpdate() {
     switch location {
       case .marker(let marker) where marker.title != nil: titleContent = .title(marker)
       default:
@@ -299,10 +288,18 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
   }
   
   func panelButtonTapped(button: PanelButtonType) {
-    let panelButton = pVC.getPanelButton(button)
+    let panelButton = coordinatorView.panelViewController.getPanelButton(button)
     
     if(button == .share){
       showShareSheet(panelButton)
+    }
+  }
+  
+  func userDidPaste(content: String) {
+    let coordinate = CLLocationCoordinate2D(content)
+    
+    if(coordinate != nil){
+      coordinatorView.update(location: .map(coordinate!))
     }
   }
   

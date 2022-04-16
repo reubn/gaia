@@ -15,10 +15,9 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
     }
   }
   
-  
-  var mapSource: MGLSource {
+  var bubbleSource: MGLShapeSource {
     get {
-      MapViewController.shared.mapView.style?.source(withIdentifier: "location") ?? {
+      MapViewController.shared.mapView.style?.source(withIdentifier: "location") as? MGLShapeSource ?? {
         let source = MGLShapeSource(identifier: "location", features: [], options: nil)
         
         MapViewController.shared.mapView.style?.addSource(source)
@@ -28,10 +27,10 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
     }
   }
   
-  var mapLayer: MGLStyleLayer {
+  var bubbleLayer: MGLSymbolStyleLayer {
     get {
-      MapViewController.shared.mapView.style?.layer(withIdentifier: "location") ?? {
-        let layer = MGLSymbolStyleLayer(identifier: "location", source: mapSource)
+      MapViewController.shared.mapView.style?.layer(withIdentifier: "location") as? MGLSymbolStyleLayer ?? {
+        let layer = MGLSymbolStyleLayer(identifier: "location", source: bubbleSource)
         
         MapViewController.shared.mapView.style?.addLayer(layer)
         
@@ -64,7 +63,7 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
   override func panelDidDisappear() {
     super.panelDidDisappear()
     
-    removePointsFromMap()
+    hideBubble()
     MapViewController.shared.multicastMapViewStyleDidChangeDelegate.remove(delegate: self)
   }
   
@@ -72,10 +71,8 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
     self.location = location
     
     switch location {
-      case .user:
-        removePointsFromMap()
-      case .marker, .map:
-        handlePointUpdate()
+      case .user: hideBubble()
+      case .marker, .map: showBubble()
     }
 
     currentChapter?.update(data: location)
@@ -122,42 +119,33 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
     }
   }
   
-  private var markerImageMap: [UIColor: UIImage] = [:]
+  private var bubbleImageMap: [UIColor: UIImage] = [:]
   
-  func getMarkerImage(colour: UIColor) -> String {
+  func getBubbleImage(colour: UIColor) -> String {
     let key = String(colour.hashValue)
     
-    if(markerImageMap[colour] == nil) {
+    if(bubbleImageMap[colour] == nil) {
       let front = UIImage(named: "mapPin")!.withTintColor(colour)
       let back = UIImage(named: "mapPinBack")!
       let image = front.draw(inFrontOf: back)
       
-      markerImageMap[colour] = image
+      bubbleImageMap[colour] = image
     }
     
-    MapViewController.shared.mapView.style?.setImage(markerImageMap[colour]!, forName: key)
+    MapViewController.shared.mapView.style?.setImage(bubbleImageMap[colour]!, forName: key)
     
     return key
   }
   
-  func handlePointUpdate() {
+  func showBubble(){
     if !MapViewController.shared.mapView.visibleCoordinateBounds.contains(coordinate: coordinate) {
       MapViewController.shared.mapView.setCenter(coordinate, animated: true)
-    }
-    
-    displayOnMap()
-  }
-  
-  func displayOnMap(){
-    if case .user = location {
-      print("skipping, display point as location is for user")
-      return
     }
     
     let point = MGLPointFeature()
     point.coordinate = coordinate
     
-    (mapSource as! MGLShapeSource).shape = point
+    bubbleSource.shape = point
     
     let colour: UIColor
     
@@ -167,19 +155,17 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
       colour = .systemGray
     }
     
-    let layer = (mapLayer as! MGLSymbolStyleLayer)
-    
-    layer.iconImageName = NSExpression(forConstantValue: getMarkerImage(colour: colour))
-    layer.iconScale = NSExpression(forConstantValue: 0.5)
+    bubbleLayer.iconImageName = NSExpression(forConstantValue: getBubbleImage(colour: colour))
+    bubbleLayer.iconScale = NSExpression(forConstantValue: 0.5)
   }
   
-  func removePointsFromMap(){
-    MapViewController.shared.mapView.style?.removeSource(mapSource)
-    MapViewController.shared.mapView.style?.removeLayer(mapLayer)
+  func hideBubble(){
+    MapViewController.shared.mapView.style?.removeSource(bubbleSource)
+    MapViewController.shared.mapView.style?.removeLayer(bubbleLayer)
   }
   
   func styleDidChange() {
-    displayOnMap()
+    showBubble()
   }
   
   required init(coder: NSCoder) {
