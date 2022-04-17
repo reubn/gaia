@@ -3,6 +3,8 @@ import UIKit
 
 import Mapbox
 
+fileprivate var bubbleImageMap: [UIColor: UIImage] = [:]
+
 class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleDidChangeDelegate {
   unowned let panelViewController: LocationInfoPanelViewController
   
@@ -72,7 +74,7 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
     
     switch location {
       case .user: hideBubble()
-      case .marker, .map: showBubble()
+      case .marker, .map: showBubble(firstTime: true)
     }
 
     currentChapter?.update(data: location)
@@ -119,9 +121,7 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
     }
   }
   
-  private var bubbleImageMap: [UIColor: UIImage] = [:]
-  
-  func getBubbleImage(colour: UIColor) -> String {
+  func getBubbleImage(colour: UIColor) -> (key: String, image: UIImage) {
     let key = String(colour.hashValue)
     
     if(bubbleImageMap[colour] == nil) {
@@ -134,19 +134,10 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
     
     MapViewController.shared.mapView.style?.setImage(bubbleImageMap[colour]!, forName: key)
     
-    return key
+    return (key: key, image: bubbleImageMap[colour]!)
   }
-  
-  func showBubble(){
-    if !MapViewController.shared.mapView.visibleCoordinateBounds.contains(coordinate: coordinate) {
-      MapViewController.shared.mapView.setCenter(coordinate, animated: true)
-    }
-    
-    let point = MGLPointFeature()
-    point.coordinate = coordinate
-    
-    bubbleSource.shape = point
-    
+
+  func showBubble(firstTime: Bool = true){
     let colour: UIColor
     
     if case .marker(let marker) = location {
@@ -155,7 +146,30 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
       colour = .systemGray
     }
     
-    bubbleLayer.iconImageName = NSExpression(forConstantValue: getBubbleImage(colour: colour))
+    let bubbleImage = getBubbleImage(colour: colour)
+    let bubbleImageSize = bubbleImage.image.size
+    
+    let xPadding = bubbleImageSize.width / 8
+    let topPadding = (bubbleImageSize.height / 4) - 10
+    let bottomPadding = locationInfoPanelTipBottomInset + 2
+    
+    let insets = UIEdgeInsets(top: topPadding, left: xPadding, bottom: bottomPadding, right: xPadding)
+    
+    let safeRect = MapViewController.shared.mapView.bounds
+      .inset(by: MapViewController.shared.mapView.safeAreaInsets)
+      .inset(by: insets)
+    let safeBounds = MapViewController.shared.mapView.convert(safeRect, toCoordinateBoundsFrom: MapViewController.shared.mapView)
+ 
+    if firstTime && !safeBounds.contains(coordinate: coordinate) {
+      MapViewController.shared.mapView.setCenter(coordinate, animated: true)
+    }
+    
+    let point = MGLPointFeature()
+    point.coordinate = coordinate
+    
+    bubbleSource.shape = point
+    
+    bubbleLayer.iconImageName = NSExpression(forConstantValue: bubbleImage.key)
     bubbleLayer.iconScale = NSExpression(forConstantValue: 0.5)
   }
   
@@ -165,7 +179,7 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
   }
   
   func styleDidChange() {
-    showBubble()
+    showBubble(firstTime: false)
   }
   
   required init(coder: NSCoder) {
