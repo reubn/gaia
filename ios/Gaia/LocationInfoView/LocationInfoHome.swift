@@ -274,7 +274,10 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
     let location = userLocation.location
     
     if case .user = self.location {
-      titleContent = titleContent ?? .coordinate(.decimal)
+      switch titleContent {
+        case .title: titleContent = .coordinate(.decimal)
+        default: titleContent = titleContent ?? .coordinate(.decimal)
+      }
     } else {
       var distanceValue = (distanceDisplay.value as! CoordinatePair)
       distanceValue.b = coordinate
