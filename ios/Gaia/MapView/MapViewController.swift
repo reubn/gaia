@@ -351,6 +351,14 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
 
     let markers = MarkerManager.shared.markers(in: bounds)
     
+    if let userLocation = mapView.userLocation?.coordinate,
+      bounds.contains(coordinate: userLocation){
+      self.openLocationInfoPanel(location: .user)
+      singleTapHandled = true
+      
+      return
+    }
+    
     singleTapHandled = false
     if let marker = markers.first {
       self.openLocationInfoPanel(location: .marker(marker))
@@ -391,8 +399,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
-    openLocationInfoPanel(location: .user)
-    
     mapView.deselectAnnotation(annotation, animated: false)
   }
   
