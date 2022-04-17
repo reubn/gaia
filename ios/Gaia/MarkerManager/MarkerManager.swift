@@ -13,9 +13,11 @@ class MarkerManager {
 
   var markers: [Marker] {
     get {
-      self.markerLayer?.style.interfacedSources
-        .flatMap(extractMarkers)
-      ?? []
+      guard let markerLayer = markerLayer, markerLayer.visible else {
+        return []
+      }
+      
+      return markerLayer.style.interfacedSources.flatMap(extractMarkers)
     }
     
     set {
