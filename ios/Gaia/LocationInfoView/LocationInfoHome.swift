@@ -265,11 +265,13 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
   
  
   func userLocationDidUpdate() {
-    if(MapViewController.shared.mapView.userLocation == nil) {return}
+    guard let userLocation = MapViewController.shared.mapView.userLocation else {
+      return
+    }
     
-    let coordinate = MapViewController.shared.mapView.userLocation!.coordinate
-    let heading = MapViewController.shared.mapView.userLocation!.heading
-    let location = MapViewController.shared.mapView.userLocation!.location
+    let coordinate = userLocation.coordinate
+    let heading = userLocation.heading
+    let location = userLocation.location
     
     if case .user = self.location {
       titleContent = titleContent ?? .coordinate(.decimal)
