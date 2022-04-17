@@ -68,26 +68,14 @@ class MarkerManager {
     let styleLayer = Style.Layer([
       "id": gaiaMarkerId,
       "paint": [
-        "circle-color": [
+        "circle-color": "#ffffff",
+        "circle-opacity": 1,
+        "circle-radius": 2.5,
+        "circle-stroke-color": [
           "get",
           "colour"
         ],
-        "circle-opacity": 1,
-        "circle-radius": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          5,
-          3,
-          10,
-          5,
-          16,
-          6
-        ]
+        "circle-stroke-width": 3
       ],
       "source": gaiaMarkerId,
       "type": "circle"
