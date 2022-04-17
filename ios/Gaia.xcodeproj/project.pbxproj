@@ -114,6 +114,7 @@
 		1BD40D94280AD61F002E45E7 /* LocationInfoPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D93280AD61F002E45E7 /* LocationInfoPanelViewController.swift */; };
 		1BD40D96280AD690002E45E7 /* LocationInfoCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D95280AD690002E45E7 /* LocationInfoCoordinatorView.swift */; };
 		1BD40D98280ADD5C002E45E7 /* LayerInfoMarkerRename.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D97280ADD5C002E45E7 /* LayerInfoMarkerRename.swift */; };
+		1BD40D9A280C0AE1002E45E7 /* SetAlgebra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD40D99280C0AE1002E45E7 /* SetAlgebra.swift */; };
 		1BD6A3B825FF4CAA001E503D /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3B725FF4CAA001E503D /* CanvasView.swift */; };
 		1BD6A3BA2600DF25001E503D /* LocationInfoPanelShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */; };
 		1BD6A3BC2600E2E1001E503D /* BearingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */; };
@@ -245,6 +246,7 @@
 		1BD40D93280AD61F002E45E7 /* LocationInfoPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelViewController.swift; sourceTree = "<group>"; };
 		1BD40D95280AD690002E45E7 /* LocationInfoCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoCoordinatorView.swift; sourceTree = "<group>"; };
 		1BD40D97280ADD5C002E45E7 /* LayerInfoMarkerRename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerInfoMarkerRename.swift; sourceTree = "<group>"; };
+		1BD40D99280C0AE1002E45E7 /* SetAlgebra.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetAlgebra.swift; sourceTree = "<group>"; };
 		1BD6A3B725FF4CAA001E503D /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoPanelShare.swift; sourceTree = "<group>"; };
 		1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BearingDisplay.swift; sourceTree = "<group>"; };
@@ -380,6 +382,7 @@
 				1BD40D8E2808795E002E45E7 /* UIColourPickerViewController.swift */,
 				1B8C079225C493E5008C08B2 /* SelectableLabel.swift */,
 				1B04BF6E25D077FC00FCD5D4 /* AppIcon.swift */,
+				1BD40D99280C0AE1002E45E7 /* SetAlgebra.swift */,
 				1B6033BC25D1DBD300211150 /* UIColor.swift */,
 				1B96FF352663FD75002E685D /* UIAction.swift */,
 				1BD6A3BF2600FD49001E503D /* CLLocationDegrees.swift */,
@@ -744,6 +747,7 @@
 				1B6638A825B10B530071F03D /* AppDelegate.swift in Sources */,
 				1BA03E3A25DEB9BE00EE273C /* DistanceDisplay.swift in Sources */,
 				1B2F908F267FCBAC00D275CB /* InterfacedSource.swift in Sources */,
+				1BD40D9A280C0AE1002E45E7 /* SetAlgebra.swift in Sources */,
 				1BD6A3BC2600E2E1001E503D /* BearingDisplay.swift in Sources */,
 				1BBD3FF525B70C06007B8BC7 /* OfflineSelectPanelLayout.swift in Sources */,
 				1B6638AA25B10B530071F03D /* SceneDelegate.swift in Sources */,
