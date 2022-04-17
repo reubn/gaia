@@ -39,7 +39,9 @@ class SelectableLabel: UILabel {
   }
   
   override func paste(_ sender: Any?) {
-    pasteDelegate!.userDidPaste(content: UIPasteboard.general.string!)
+    if let content = UIPasteboard.general.string {
+      pasteDelegate?.userDidPaste(content: content)
+    }
   }
 
   @objc func handleLongPress(_ recogniser: UIGestureRecognizer) {
