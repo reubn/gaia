@@ -36,8 +36,8 @@ class MarkerManager {
       let newInterfacedSource = Style.InterfacedSource.create((gaiaMarkerId, newSource))!
       
       markerLayer.style = markerLayer.style.with([newInterfacedSource])
-  
-      LayerManager.shared.save()
+      markerLayer.enabled = true
+      LayerManager.shared.show(layers: [markerLayer])
     }
   }
   
