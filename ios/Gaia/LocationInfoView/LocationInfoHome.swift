@@ -301,10 +301,8 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
   }
   
   func userDidPaste(content: String) {
-    let coordinate = CLLocationCoordinate2D(content)
-    
-    if(coordinate != nil){
-      coordinatorView.update(location: .map(coordinate!))
+    if let coordinate = CLLocationCoordinate2D(content){
+      coordinatorView.update(location: .map(coordinate))
     }
   }
   
