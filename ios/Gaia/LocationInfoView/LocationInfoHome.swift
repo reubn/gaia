@@ -101,7 +101,7 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
   }
   
   var defferedMenuElement: UIDeferredMenuElement {
-    UIDeferredMenuElement.uncached({completion in
+    UIDeferredMenuElement.uncached({[unowned self] completion in
       
       let colours: OrderedDictionary<UIColor, String> = [
         .systemPink: "Pink",
@@ -138,26 +138,26 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
             title: "Remove Marker",
             image: UIImage(systemName: "mappin.slash"),
             attributes: .destructive
-          ) {_ in
+          ) {[unowned self] _ in
             self.coordinatorView.removeMarker(marker)
             }
           
           let editTitle = UIAction(
             title: marker.title != nil ? "Rename \(marker.title!)" : "Add Title",
             image: UIImage(systemName: "character.cursor.ibeam")
-          ) {_ in
+          ) {[unowned self] _ in
             self.coordinatorView.goTo(1, data: marker)
           }
           
           let changeColourChildren = [
-            UIAction(title: "Other...", image: UIImage(systemName: "circle.hexagongrid.fill")?.withRenderingMode(.alwaysOriginal)){_ in
-              let colourPicker = UIColourPickerViewController(){colour in self.coordinatorView.changeMarker(marker, colour: colour)}
+            UIAction(title: "Other...", image: UIImage(systemName: "circle.hexagongrid.fill")?.withRenderingMode(.alwaysOriginal)){ _ in
+              let colourPicker = UIColourPickerViewController(){[unowned self] colour in self.coordinatorView.changeMarker(marker, colour: colour)}
               colourPicker.supportsAlpha = true
               colourPicker.selectedColor = marker.colour
               
               MapViewController.shared.lifpc.present(colourPicker, animated: true, completion: nil)
             }
-          ] + makeColourActions(marker.colour) {colour in self.coordinatorView.changeMarker(marker, colour: colour)}
+          ] + makeColourActions(marker.colour) {[unowned self] colour in self.coordinatorView.changeMarker(marker, colour: colour)}
           
           let colourMenu = UIMenu(title: "Change Colour", image: UIImage(systemName: "circle.fill")?.withTintColor(marker.colour).withRenderingMode(.alwaysOriginal), children: changeColourChildren)
           
