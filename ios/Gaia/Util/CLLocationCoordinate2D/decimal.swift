@@ -1,10 +1,3 @@
-//
-//  decimal.swift
-//  Gaia
-//
-//  Created by Reuben Eggar on 27/03/2022.
-//
-
 import Foundation
 import CoreLocation
 
