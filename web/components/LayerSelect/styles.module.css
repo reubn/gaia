@@ -34,6 +34,11 @@
   transition: opacity 0.3s ease-out 0.15s;
 }
 
+.closed > *:not(.handle) {
+  height: 0;
+  padding: 0;
+}
+
 .closed {
   height: 3rem;
   width: 3rem;
