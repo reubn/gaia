@@ -10,7 +10,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   
   let multicastParentMapViewRegionIsChangingDelegate = MulticastDelegate<(ParentMapViewRegionIsChangingDelegate)>()
   let multicastUserLocationDidUpdateDelegate = MulticastDelegate<(UserLocationDidUpdateDelegate)>()
-  let multicastMapViewTappedDelegate = MulticastDelegate<(MapViewTappedDelegate)>()
   let multicastMapViewStyleDidChangeDelegate = MulticastDelegate<(MapViewStyleDidChangeDelegate)>()
 
   var firstTimeLocating = true
@@ -34,12 +33,20 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapView.delegate = self
     
     view.addSubview(mapView)
-
-    let singleTap = UITapGestureRecognizer(target: self, action: #selector(singleTapped))
+    
+    let singleTapInstant = UITapGestureRecognizer(target: self, action: #selector(singleTappedInstant))
+    singleTapInstant.delegate = self
+    mapView.addGestureRecognizer(singleTapInstant)
+    
+    let singleTapConclusive = UITapGestureRecognizer(target: self, action: #selector(singleTappedConclusive))
+    mapView.addGestureRecognizer(singleTapConclusive)
+    
+    
     for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-      singleTap.require(toFail: recognizer)
+      if(recognizer != singleTapConclusive && recognizer != singleTapInstant) {
+        singleTapConclusive.require(toFail: recognizer)
+      }
     }
-    mapView.addGestureRecognizer(singleTap)
 
     let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
     longPress.numberOfTouchesRequired = 1
@@ -334,8 +341,45 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     mapViewRegionIsChanging(mapView)
   }
   
-  @objc func singleTapped(){
-    multicastMapViewTappedDelegate.invoke(invocation: {$0.mapViewTapped()})
+  var singleTapHandled: Bool = false
+  
+  @objc func singleTappedInstant(gestureRecogniser: UITapGestureRecognizer){
+    let point = gestureRecogniser.location(in: mapView)
+    let rect = CGRect(center: point, size: CGSize(width: 30, height: 30))
+    
+    let bounds = mapView.convert(rect, toCoordinateBoundsFrom: mapView)
+
+    let markers = MarkerManager.shared.markers(in: bounds)
+    
+    if let userLocation = mapView.userLocation?.coordinate,
+      bounds.contains(coordinate: userLocation){
+      self.openLocationInfoPanel(location: .user)
+      singleTapHandled = true
+      
+      return
+    }
+    
+    singleTapHandled = false
+    if let marker = markers.first {
+      self.openLocationInfoPanel(location: .marker(marker))
+      singleTapHandled = true
+    } else {
+      let isMe = presentedViewController == lifpc
+      if(isMe) {
+        presentedViewController!.dismiss(animated: false, completion: nil)
+        singleTapHandled = true
+      }
+    }
+  }
+  
+  @objc func singleTappedConclusive(gestureRecogniser: UITapGestureRecognizer){
+    guard !singleTapHandled else {
+      return
+    }
+    
+    let point = gestureRecogniser.location(in: mapView)
+    let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+    self.openLocationInfoPanel(location: .map(coordinate))
   }
   
   func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?){
@@ -355,8 +399,6 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
   }
   
   func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
-    openLocationInfoPanel(location: .user)
-    
     mapView.deselectAnnotation(annotation, animated: false)
   }
   
@@ -495,7 +537,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       let point = gestureReconizer.location(in: mapView)
       let coordinate = mapView.convert(point, toCoordinateFrom: nil)
       
-      openLocationInfoPanel(location: .map(coordinate))
+      let newMarker = Marker(coordinate: coordinate)
+      MarkerManager.shared.markers.append(newMarker)
+      openLocationInfoPanel(location: .marker(newMarker))
     }
   }
 
@@ -529,7 +573,13 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       let isMe = presentedViewController == lifpc
 
       if(isMe) {
-        ((presentedViewController as! MemoryConsciousFloatingPanelController).contentViewController! as! LocationInfoPanelViewController).update(location: location)
+        let locationInfoPanelViewController = ((presentedViewController as! MemoryConsciousFloatingPanelController).contentViewController! as! LocationInfoPanelViewController)
+        let positiveFeedback = locationInfoPanelViewController.coordinatorView?.location != location
+        locationInfoPanelViewController.coordinatorView?.update(location: location)
+        
+        if(positiveFeedback){
+          UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        }
         
         return
       } else {

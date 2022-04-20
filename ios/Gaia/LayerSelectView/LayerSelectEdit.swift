@@ -126,6 +126,8 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     }()
   }
   
+  func update(data: Any?) {}
+  
   func viewWillExit(){
     print("exit LSE")
   }

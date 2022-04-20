@@ -13,7 +13,7 @@ extension CLLocationCoordinate2D {
     let coords = decimal
       .components(separatedBy: .whitespacesAndNewlines.union(.init(charactersIn: ",")))
       .compactMap({Double($0.trimmingCharacters(in: .whitespacesAndNewlines))})
-    
+
     if(coords.count == 2) {
       self.init()
       
@@ -28,8 +28,8 @@ extension CLLocationCoordinate2D {
       if(!CLLocationCoordinate2DIsValid(self)) {
         return nil
       }
+    } else {
+      return nil
     }
-    
-    return nil
   }
 }

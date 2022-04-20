@@ -4,6 +4,8 @@ import UIKit
 class CoordinatorView: UIScrollView {
   var storyPosition = -1
   
+  var currentChapter: CoordinatedView? {storyPosition >= 0 && storyPosition < story.count ? story[storyPosition] : nil}
+  
   lazy var story: [CoordinatedView] = []
   
   init(){
@@ -11,7 +13,7 @@ class CoordinatorView: UIScrollView {
   }
   
   private func read(direction: Int = 1, newPosition: Int? = nil, data: Any? = nil){
-    let previousChapter = storyPosition >= 0 && storyPosition < story.count ? story[storyPosition] : nil
+    let previousChapter = currentChapter
     
     let testStoryNextPosition = newPosition ?? storyPosition + direction
     
@@ -60,7 +62,21 @@ class CoordinatorView: UIScrollView {
   }
   
   func panelButtonTapped(button: PanelButtonType) {
-    story[storyPosition].panelButtonTapped(button: button)
+    currentChapter?.panelButtonTapped(button: button)
+  }
+  
+  func panelDidDisappear() {
+    if let panelDelegate = currentChapter as? PanelDelegate {
+      panelDelegate.panelDidDisappear()
+    }
+    
+    currentChapter?.viewWillExit()
+  }
+  
+  func panelDidMove() {
+    if let panelDelegate = currentChapter as? PanelDelegate {
+      panelDelegate.panelDidMove()
+    }
   }
   
   required init(coder: NSCoder) {

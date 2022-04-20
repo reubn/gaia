@@ -10,6 +10,7 @@
         <attribute name="overrideUIMode" optional="YES" attributeType="String"/>
         <attribute name="pinned" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="quickToggle" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="markerLayer" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="styleString" optional="YES" attributeType="String"/>
         <attribute name="visible" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
     </entity>

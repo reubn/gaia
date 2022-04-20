@@ -1,61 +1,68 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "CoreGPX",
-        "repositoryURL": "https://github.com/vincentneo/CoreGPX",
-        "state": {
-          "branch": null,
-          "revision": "bc61acc0b64f8f09a51811ac0664885af30d0a41",
-          "version": "0.9.0"
-        }
-      },
-      {
-        "package": "FloatingPanel",
-        "repositoryURL": "https://github.com/SCENEE/FloatingPanel",
-        "state": {
-          "branch": null,
-          "revision": "fe30e60235c5cc753e2ee2a3eebc8e654971634d",
-          "version": "2.5.2"
-        }
-      },
-      {
-        "package": "JJLISO8601DateFormatter",
-        "repositoryURL": "https://github.com/michaeleisel/JJLISO8601DateFormatter",
-        "state": {
-          "branch": null,
-          "revision": "99fadf2e6425a0f827b1b485ea60bc2b7ecdd22c",
-          "version": "0.1.4"
-        }
-      },
-      {
-        "package": "KeyboardLayoutGuide",
-        "repositoryURL": "https://github.com/freshOS/KeyboardLayoutGuide",
-        "state": {
-          "branch": null,
-          "revision": "b14abc2ff6a6b934b81b7004edb65f910ac68bdc",
-          "version": "1.8.0"
-        }
-      },
-      {
-        "package": "ZippyJSON",
-        "repositoryURL": "https://github.com/michaeleisel/ZippyJSON",
-        "state": {
-          "branch": null,
-          "revision": "1ab389998592d038a60a3ca71aa7554d0e84ab4a",
-          "version": "1.2.4"
-        }
-      },
-      {
-        "package": "ZippyJSONCFamily",
-        "repositoryURL": "https://github.com/michaeleisel/ZippyJSONCFamily",
-        "state": {
-          "branch": null,
-          "revision": "c55123b23f0faa898b22bf1b967e72a2df51fdb4",
-          "version": "1.2.4"
-        }
+  "pins" : [
+    {
+      "identity" : "coregpx",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vincentneo/CoreGPX",
+      "state" : {
+        "revision" : "bc61acc0b64f8f09a51811ac0664885af30d0a41",
+        "version" : "0.9.0"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "floatingpanel",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SCENEE/FloatingPanel",
+      "state" : {
+        "revision" : "fe30e60235c5cc753e2ee2a3eebc8e654971634d",
+        "version" : "2.5.2"
+      }
+    },
+    {
+      "identity" : "jjliso8601dateformatter",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/michaeleisel/JJLISO8601DateFormatter",
+      "state" : {
+        "revision" : "99fadf2e6425a0f827b1b485ea60bc2b7ecdd22c",
+        "version" : "0.1.4"
+      }
+    },
+    {
+      "identity" : "keyboardlayoutguide",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/freshOS/KeyboardLayoutGuide",
+      "state" : {
+        "revision" : "b14abc2ff6a6b934b81b7004edb65f910ac68bdc",
+        "version" : "1.8.0"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections.git",
+      "state" : {
+        "revision" : "48254824bb4248676bf7ce56014ff57b142b77eb",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "zippyjson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/michaeleisel/ZippyJSON",
+      "state" : {
+        "revision" : "1ab389998592d038a60a3ca71aa7554d0e84ab4a",
+        "version" : "1.2.4"
+      }
+    },
+    {
+      "identity" : "zippyjsoncfamily",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/michaeleisel/ZippyJSONCFamily",
+      "state" : {
+        "revision" : "c55123b23f0faa898b22bf1b967e72a2df51fdb4",
+        "version" : "1.2.4"
+      }
+    }
+  ],
+  "version" : 2
 }

@@ -60,15 +60,30 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     return label
   }()
   
-  var quickToggleDisplayed: Bool = false {
+  lazy var badgeMap: [BadgeType: (UIImageView, UIColor)] = [
+    .quickToggle: (quickToggleBadge, .systemYellow),
+    .markerLayer: (markerLayerBadge, .systemPink),
+  ]
+  
+  enum BadgeType {
+    case quickToggle
+    case markerLayer
+  }
+  
+  var displayedBadges: Set<BadgeType> = [] {
     didSet {
-      if(oldValue != quickToggleDisplayed) {
-        quickToggleBadge.isHidden = !quickToggleDisplayed
-      }
-      
-      if let _layer = _layer,
-         quickToggleDisplayed {
-        quickToggleBadge.tintColor = _layer.enabled ? .systemYellow : .systemGray
+      for (type, (icon, colour)) in badgeMap {
+        let wasVisible = oldValue.contains(type)
+        let isVisible = displayedBadges.contains(type)
+        
+        if(wasVisible != isVisible) {
+          icon.isHidden = !isVisible
+        }
+        
+        if let _layer = _layer,
+           isVisible {
+          icon.tintColor = _layer.enabled ? colour : .systemGray
+        }
       }
     }
   }
@@ -90,6 +105,31 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
     imageView.widthAnchor.constraint(equalToConstant: 12).isActive = true
     imageView.topAnchor.constraint(equalTo: preview.topAnchor, constant: 5).isActive = true
     imageView.leftAnchor.constraint(equalTo: preview.leftAnchor, constant: 5).isActive = true
+    
+    imageView.isHidden = true
+    
+    return imageView
+  }()
+  
+  lazy var markerLayerBadge: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = UIImage(systemName: "mappin")
+    imageView.contentMode = .scaleAspectFit
+    
+    imageView.layer.shadowColor = UIColor.black.cgColor
+    imageView.layer.shadowOffset = CGSize(width: 0, height: 0)
+    imageView.layer.shadowOpacity = 0.33
+    imageView.layer.shadowRadius = 2
+    imageView.layer.masksToBounds = false
+    
+    addSubview(imageView)
+    
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.widthAnchor.constraint(equalToConstant: 12).isActive = true
+    imageView.topAnchor.constraint(equalTo: preview.topAnchor, constant: 5).isActive = true
+    imageView.rightAnchor.constraint(equalTo: preview.rightAnchor, constant: -5).isActive = true
+    
+    imageView.isHidden = true
     
     return imageView
   }()
@@ -303,7 +343,8 @@ class LayerCell: UITableViewCell, ParentMapViewRegionIsChangingDelegate {
 
     accessoryType = _layer.visible ? .checkmark : .none
     
-    quickToggleDisplayed = _layer.quickToggle
+    displayedBadges.set(.quickToggle, to: _layer.quickToggle)
+    displayedBadges.set(.markerLayer, to: _layer.markerLayer)
 
     DispatchQueue.main.async { // allow time for .isVisible() to return correct result
       self.needsUpdating = true

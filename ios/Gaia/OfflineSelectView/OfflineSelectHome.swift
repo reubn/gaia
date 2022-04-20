@@ -114,6 +114,8 @@ class OfflineSelectHome: UIView, CoordinatedView, UITableViewDelegate, UITableVi
     emptyState.update()
   }
   
+  func update(data: Any?) {}
+  
   func viewWillExit(){
     print("exit OSH")
     rectangle = nil

@@ -48,16 +48,16 @@ class PanelViewController: UIViewController, FloatingPanelControllerDelegate {
   let uiImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
   
   private lazy var buttonsMap: [PanelButtonType: PanelButton] = [
-    .dismiss: PanelSmallButton("xmark", weight: .bold, colour: .systemGray, backgroundColour: .tertiarySystemBackground),
-    .help: PanelSmallButton("questionmark", colour: .white, backgroundColour: .systemIndigo),
-    .settings: PanelButton("gear", inset: 6, colour: .white, backgroundColour: .systemGray),
-    .accept: PanelButton("checkmark", colour: .systemGreen),
-    .reject: PanelButton("xmark", colour: .systemRed),
-    .next: PanelButton("arrow.right"),
-    .previous: PanelButton("arrow.left", deemphasise: true),
-    .new: PanelButton("plus"),
-    .star: PanelButton("star.fill", colour: .systemOrange),
-    .share: PanelButton("square.and.arrow.up", deemphasise: true)
+    .dismiss: PanelSmallButton(.init(icon: .systemName("xmark"), weight: .bold, colour: .systemGray, backgroundColour: .tertiarySystemBackground)),
+    .help: PanelSmallButton(.init(icon: .systemName("questionmark"), colour: .white, backgroundColour: .systemIndigo)),
+    .settings: PanelButton(.init(icon: .systemName("gear"), inset: 6, colour: .white, backgroundColour: .systemGray)),
+    .accept: PanelButton(.init(icon: .systemName("checkmark"), colour: .systemGreen)),
+    .reject: PanelButton(.init(icon: .systemName("xmark"), colour: .systemRed)),
+    .next: PanelButton(.init(icon: .systemName("arrow.right"))),
+    .previous: PanelButton(.init(icon: .systemName("arrow.left"), deemphasise: true)),
+    .new: PanelButton(.init(icon: .systemName("plus"))),
+    .star: PanelButton(.init(icon: .systemName("star.fill"), colour: .systemOrange)),
+    .share: PanelButton(.init(icon: .systemName("square.and.arrow.up"), deemphasise: true))
   ]
   
   func getPanelButton(_ panelButtonType: PanelButtonType) -> PanelButton {

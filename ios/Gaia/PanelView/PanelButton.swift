@@ -2,36 +2,42 @@ import Foundation
 import UIKit
 
 class PanelButton: UIButton {
-  fileprivate let inset: Double?
-  fileprivate let colour: UIColor
-  fileprivate let backgroundColour: UIColor?
-  fileprivate let deemphasise: Bool
+  private(set) var displayConfig: DisplayConfig
   
   func getDefaultWeight() -> UIImage.SymbolWeight {.semibold}
   func getSize() -> CGSize {.init(width: 60, height: 30)}
   
-  init(_ systemName: String, weight: UIImage.SymbolWeight? = nil, inset: Double? = nil, colour: UIColor = .systemBlue, backgroundColour: UIColor? = nil, deemphasise: Bool = false){
-    self.colour = colour
-    self.backgroundColour = backgroundColour
-    self.deemphasise = deemphasise
-    self.inset = inset
-    
+  init(_ displayConfig: DisplayConfig){
+    self.displayConfig = displayConfig
     super.init(frame: CGRect())
-  
-    setImage(UIImage(systemName: systemName, withConfiguration: UIImage.SymbolConfiguration(weight: weight ?? getDefaultWeight())), for: .normal)
-    
-    tintColor = (deemphasise || (backgroundColour != nil)) ? colour : .white
-    backgroundColor = backgroundColour ?? (deemphasise ? .white : colour)
     
     contentVerticalAlignment = .fill
     contentHorizontalAlignment = .fill
     imageView!.contentMode = .scaleAspectFit
     
+    setDisplayConfig(displayConfig)
     setSize()
   }
   
+  func setDisplayConfig(_ displayConfig: DisplayConfig){
+    self.displayConfig = displayConfig
+    
+    let iconConfig = UIImage.SymbolConfiguration(weight: displayConfig.weight ?? getDefaultWeight())
+    let image: UIImage?
+    
+    switch displayConfig.icon {
+      case .systemName(let systemName): image = UIImage(systemName: systemName, withConfiguration: iconConfig)
+      case .custom(let custom): image = UIImage(named: custom, in: nil, with: iconConfig)
+    }
+    
+    setImage(image, for: .normal)
+    
+    tintColor = (displayConfig.deemphasise || (displayConfig.backgroundColour != nil)) ? displayConfig.colour : .white
+    backgroundColor = displayConfig.backgroundColour ?? (displayConfig.deemphasise ? .white : displayConfig.colour)
+  }
+  
   func setSize(){
-    let inset = self.inset ?? 7
+    let inset = displayConfig.inset ?? 7
     imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
     
     let size = getSize()
@@ -49,14 +55,14 @@ class PanelButton: UIButton {
   
   override var isEnabled: Bool {
     didSet {
-      if(deemphasise) {
+      if(displayConfig.deemphasise) {
         tintColor = isEnabled
-          ? (deemphasise || backgroundColour != nil) ? colour : .white
+          ? (displayConfig.deemphasise || displayConfig.backgroundColour != nil) ? displayConfig.colour : .white
           : .systemGray
         
       } else {
         backgroundColor = isEnabled
-          ? backgroundColour ?? (deemphasise ? .white : colour)
+          ? displayConfig.backgroundColour ?? (displayConfig.deemphasise ? .white : displayConfig.colour)
           : .systemGray
       }
       
@@ -71,12 +77,26 @@ class PanelButton: UIButton {
       if(isPulsing){
         let size = getSize()
         pulseAnimation = PulseAnimation(radius: 100, postion: .init(x: size.width / 2, y: size.height / 2))
-        pulseAnimation!.backgroundColor = (self.backgroundColour ?? self.colour).cgColor
+        pulseAnimation!.backgroundColor = (self.displayConfig.backgroundColour ?? self.displayConfig.colour).cgColor
         self.layer.insertSublayer(pulseAnimation!, at: 0)
       } else {
         pulseAnimation!.stopped = true
         pulseAnimation = nil
       }
+    }
+  }
+  
+  struct DisplayConfig {
+    var icon: Icon
+    var weight: UIImage.SymbolWeight? = nil
+    var inset: Double? = nil
+    var colour: UIColor = .systemBlue
+    var backgroundColour: UIColor? = nil
+    var deemphasise: Bool = false
+    
+    enum Icon {
+      case systemName(String)
+      case custom(String)
     }
   }
 }

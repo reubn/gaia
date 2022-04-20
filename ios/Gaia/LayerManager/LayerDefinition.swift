@@ -24,6 +24,7 @@ struct LayerDefinition: Codable, Hashable {
     var pinned = false
     var enabled = true
     var quickToggle = false
+    var markerLayer = false
   }
 }
 
@@ -57,7 +58,8 @@ extension LayerDefinition.User {
       
       pinned: layer.pinned,
       enabled: layer.enabled,
-      quickToggle: layer.quickToggle
+      quickToggle: layer.quickToggle,
+      markerLayer: layer.markerLayer
     )
   }
 }

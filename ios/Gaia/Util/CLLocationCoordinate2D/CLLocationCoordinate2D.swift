@@ -8,7 +8,7 @@ extension CLLocationCoordinate2D: Codable, Equatable, Hashable {
     case decimal(FormatAccuracy)
     case sexagesimal(FormatAccuracy)
     
-    case gridReference(FormatAccuracy)
+    case gridReference(FormatAccuracy, space: Bool=false)
   }
   
   enum FormatAccuracy {
@@ -31,7 +31,7 @@ extension CLLocationCoordinate2D: Codable, Equatable, Hashable {
     switch _format {
       case .decimal(let accuracy): return format(decimal: accuracy)
       case .sexagesimal(let accuracy): return format(sexagesimal: accuracy)
-      case .gridReference(let accuracy): return format(gridReference: accuracy)
+      case .gridReference(let accuracy, let space): return format(gridReference: accuracy, space: space)
       }
   }
   

@@ -13,6 +13,7 @@ public class Layer: NSManagedObject {
   @NSManaged public var enabled: Bool
   @NSManaged public var pinned: Bool
   @NSManaged public var quickToggle: Bool
+  @NSManaged public var markerLayer: Bool
   @NSManaged public var group: String
   @NSManaged public var groupIndex: Int16
   @NSManaged public var id: String
@@ -84,6 +85,7 @@ extension Layer {
       self.pinned = user.pinned
       self.enabled = user.enabled
       self.quickToggle = user.quickToggle
+      self.markerLayer = user.markerLayer
     }
     
     self.style = layerDefinition.style

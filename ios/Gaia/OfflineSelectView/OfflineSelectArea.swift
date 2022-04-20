@@ -20,6 +20,8 @@ class OfflineSelectArea: UIView, CoordinatedView {
     coordinatorView.selectedArea = nil
   }
   
+  func update(data: Any?) {}
+  
   func viewWillExit(){
     print("exit OSA")
   }
