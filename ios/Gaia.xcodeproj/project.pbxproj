@@ -83,6 +83,9 @@
 		1BA03E3625DE8BE300EE273C /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA03E3525DE8BE300EE273C /* UIImage.swift */; };
 		1BA03E3A25DEB9BE00EE273C /* DistanceDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA03E3925DEB9BE00EE273C /* DistanceDisplay.swift */; };
 		1BA29B2C2672C4F300D5FDBB /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA29B2B2672C4F300D5FDBB /* Debounce.swift */; };
+		1BA4FCC0282470E500D923F1 /* Runestone in Frameworks */ = {isa = PBXBuildFile; productRef = 1BA4FCBF282470E500D923F1 /* Runestone */; };
+		1BA4FCC3282471D700D923F1 /* TreeSitterJSONRunestone in Frameworks */ = {isa = PBXBuildFile; productRef = 1BA4FCC2282471D700D923F1 /* TreeSitterJSONRunestone */; };
+		1BA4FCC528247D3D00D923F1 /* PlainTextTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA4FCC428247D3D00D923F1 /* PlainTextTheme.swift */; };
 		1BA9BD0A25BA1C6300AC97C7 /* OfflineSelectHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0925BA1C6300AC97C7 /* OfflineSelectHome.swift */; };
 		1BA9BD0C25BA266700AC97C7 /* CoordinatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0B25BA266700AC97C7 /* CoordinatedView.swift */; };
 		1BA9BD0E25BA281800AC97C7 /* OfflineSelectArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9BD0D25BA281800AC97C7 /* OfflineSelectArea.swift */; };
@@ -218,6 +221,7 @@
 		1BA03E3525DE8BE300EE273C /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		1BA03E3925DEB9BE00EE273C /* DistanceDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceDisplay.swift; sourceTree = "<group>"; };
 		1BA29B2B2672C4F300D5FDBB /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
+		1BA4FCC428247D3D00D923F1 /* PlainTextTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextTheme.swift; sourceTree = "<group>"; };
 		1BA9BD0925BA1C6300AC97C7 /* OfflineSelectHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectHome.swift; sourceTree = "<group>"; };
 		1BA9BD0B25BA266700AC97C7 /* CoordinatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatedView.swift; sourceTree = "<group>"; };
 		1BA9BD0D25BA281800AC97C7 /* OfflineSelectArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectArea.swift; sourceTree = "<group>"; };
@@ -267,8 +271,10 @@
 			files = (
 				1B04BF7525D1CB5F00FCD5D4 /* CoreGPX in Frameworks */,
 				1BBD3FEE25B63B10007B8BC7 /* MapboxMobileEvents.framework in Frameworks */,
+				1BA4FCC3282471D700D923F1 /* TreeSitterJSONRunestone in Frameworks */,
 				1B3401C325B33FAD0091FA3B /* FloatingPanel in Frameworks */,
 				1B96528D25D5C3DA0017A43E /* KeyboardLayoutGuide in Frameworks */,
+				1BA4FCC0282470E500D923F1 /* Runestone in Frameworks */,
 				1B6638C125B10B610071F03D /* Mapbox.framework in Frameworks */,
 				1BD40D9228087F92002E45E7 /* OrderedCollections in Frameworks */,
 				1B9D5A2C2695F5530034088E /* ZippyJSON in Frameworks */,
@@ -329,6 +335,7 @@
 				1BA9BD2325C212A900AC97C7 /* LayerSelectHome.swift */,
 				1BA9BD2525C21D7C00AC97C7 /* LayerSelectImport.swift */,
 				1B96528925D5BC550017A43E /* LayerSelectEdit.swift */,
+				1BA4FCC428247D3D00D923F1 /* PlainTextTheme.swift */,
 				1B3401D125B474420091FA3B /* Section.swift */,
 				1B99746B266A45BB00420B0F /* LayerCellMenu.swift */,
 				1B3401CB25B473E40091FA3B /* LayerCell.swift */,
@@ -613,6 +620,8 @@
 				1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */,
 				1B9D5A2B2695F5530034088E /* ZippyJSON */,
 				1BD40D9128087F92002E45E7 /* OrderedCollections */,
+				1BA4FCBF282470E500D923F1 /* Runestone */,
+				1BA4FCC2282471D700D923F1 /* TreeSitterJSONRunestone */,
 			);
 			productName = Gaia;
 			productReference = 1B6638A425B10B530071F03D /* Gaia Dev.app */;
@@ -647,6 +656,8 @@
 				1B96528B25D5C3DA0017A43E /* XCRemoteSwiftPackageReference "KeyboardLayoutGuide" */,
 				1B9D5A2A2695F5530034088E /* XCRemoteSwiftPackageReference "ZippyJSON" */,
 				1BD40D9028087F92002E45E7 /* XCRemoteSwiftPackageReference "swift-collections" */,
+				1BA4FCBE282470E500D923F1 /* XCRemoteSwiftPackageReference "Runestone" */,
+				1BA4FCC1282471D700D923F1 /* XCRemoteSwiftPackageReference "treesitterlanguages" */,
 			);
 			productRefGroup = 1B6638A525B10B530071F03D /* Products */;
 			projectDirPath = "";
@@ -710,6 +721,7 @@
 				1B8AE3892605384900CF3D8E /* MGLMapView.swift in Sources */,
 				1BA9BD0A25BA1C6300AC97C7 /* OfflineSelectHome.swift in Sources */,
 				1BA9BD1225BB879200AC97C7 /* DownloadCell.swift in Sources */,
+				1BA4FCC528247D3D00D923F1 /* PlainTextTheme.swift in Sources */,
 				1BA9BD1B25BF3CD000AC97C7 /* DownloadsTableView.swift in Sources */,
 				1BEE8D6025C59A4D004260C1 /* ElevationDisplay.swift in Sources */,
 				1BD40D8F2808795E002E45E7 /* UIColourPickerViewController.swift in Sources */,
@@ -1031,6 +1043,22 @@
 				minimumVersion = 1.2.4;
 			};
 		};
+		1BA4FCBE282470E500D923F1 /* XCRemoteSwiftPackageReference "Runestone" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simonbs/Runestone";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		1BA4FCC1282471D700D923F1 /* XCRemoteSwiftPackageReference "treesitterlanguages" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simonbs/treesitterlanguages";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		1BD40D9028087F92002E45E7 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-collections.git";
@@ -1061,6 +1089,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1B9D5A2A2695F5530034088E /* XCRemoteSwiftPackageReference "ZippyJSON" */;
 			productName = ZippyJSON;
+		};
+		1BA4FCBF282470E500D923F1 /* Runestone */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1BA4FCBE282470E500D923F1 /* XCRemoteSwiftPackageReference "Runestone" */;
+			productName = Runestone;
+		};
+		1BA4FCC2282471D700D923F1 /* TreeSitterJSONRunestone */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1BA4FCC1282471D700D923F1 /* XCRemoteSwiftPackageReference "treesitterlanguages" */;
+			productName = TreeSitterJSONRunestone;
 		};
 		1BD40D9128087F92002E45E7 /* OrderedCollections */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -6,6 +6,9 @@ import Mapbox
 import KeyboardLayoutGuide
 import ZippyJSON
 
+import Runestone
+import TreeSitterJSONRunestone
+
 class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   unowned let coordinatorView: LayerSelectCoordinatorView
     
@@ -13,15 +16,21 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   var acceptButton: PanelButton?
   var helpButton: PanelButton?
   var initialText: String = ""
+  var text: String {
+    set {
+      let state = TextViewState(text: newValue, theme: PlainTextTheme.shared, language: .json)
+      textEditor.setState(state)
+    }
+    
+    get {
+      textEditor.text
+    }
+  }
   
-  lazy var textEditor: UITextView = {
-    let textView = UITextView()
+  lazy var textEditor: TextView = {
+    let textView = TextView()
     
     textView.delegate = self
-
-    textView.textColor = .darkGray
-    textView.font = .monospacedSystemFont(ofSize: 14, weight: .medium)
-    textView.backgroundColor = .white
     textView.layer.cornerRadius = 8
     textView.layer.cornerCurve = .continuous
     textView.tintColor = .systemBlue
@@ -29,6 +38,20 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     textView.keyboardType = .asciiCapable
     textView.autocapitalizationType = .none
     textView.autocorrectionType = .no
+    
+    textView.showLineNumbers = false
+    textView.showPageGuide = false
+    
+    textView.lineSelectionDisplayType = .disabled
+    
+    textView.showTabs = false
+    textView.showSpaces = false
+    textView.showLineBreaks = false
+    textView.showSoftLineBreaks = false
+
+    textView.lineHeightMultiplier = 1.3
+    
+    textView.isLineWrappingEnabled = false
     
     addSubview(textView)
     
@@ -94,7 +117,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     
     switch request {
       case .new:
-        textEditor.text = generateNewLayerDefinitionString()
+        text = generateNewLayerDefinitionString()
       case .edit(let layer), .duplicate(let layer):
         let layerDefinition = LayerDefinition(layer: layer)
 
@@ -105,11 +128,11 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
           let jsonString = String(data: jsonData, encoding: .utf8)!
           
           let editorText = jsonString.replacingOccurrences(of: "\" : ", with: "\": ")
-          textEditor.text = editorText
+          text = editorText
         }
     }
     
-    initialText = textEditor.text
+    initialText = text
     
     textEditor.becomeFirstResponder()
     textEditor.selectedRange = NSRange(location: 0, length: 0)
@@ -143,7 +166,7 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
   func process(){
   
     let regex = try? NSRegularExpression(pattern: #"^\/\/.*$"#, options: .anchorsMatchLines)
-    let text = regex?.replaceMatches(textEditor.text!, with: "").trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+    let text = regex?.replaceMatches(text, with: "").trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
     
     if(text == initialText){
       switch request! {
