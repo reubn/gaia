@@ -53,6 +53,10 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     
     textView.isLineWrappingEnabled = false
     
+    textView.insertionPointColor = textView.tintColor
+    textView.selectionBarColor = textView.tintColor
+    textView.selectionHighlightColor = textView.tintColor.withAlphaComponent(0.2)
+    
     addSubview(textView)
     
     return textView
