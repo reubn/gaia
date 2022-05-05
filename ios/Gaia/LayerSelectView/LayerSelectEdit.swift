@@ -127,8 +127,15 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
         if let jsonData = try? encoder.encode(layerDefinition) {
           let jsonString = String(data: jsonData, encoding: .utf8)!
           
-          let editorText = jsonString.replacingOccurrences(of: "\" : ", with: "\": ")
-          text = editorText
+          let spacedColonRegex = try! NSRegularExpression(pattern: #"\s:"#)
+          let emptySquareBracketsRegex = try! NSRegularExpression(pattern: #"(\[\s+\])"#)
+          let emptyCurlyBracketsRegex = try! NSRegularExpression(pattern: #"(\{\s+\})"#)
+
+          text = [
+            (spacedColonRegex, ":"),
+            (emptyCurlyBracketsRegex, "{}"),
+            (emptySquareBracketsRegex, "[]")
+          ].reduce(jsonString, {(result, regexPair) in regexPair.0.replaceMatches(result, with: regexPair.1)})
         }
     }
     
