@@ -3,6 +3,8 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 import length from '@turf/length'
 
+const colours = ['#fe3e5e','#ffed61','#ffc233','#3dfa7c','#5aedc8','#4dcfff','#fc277c','#f05','#c34ef9','#952ef5','#5252ff']
+
 const geoJSON = JSON.parse(global.localStorage?.getItem('geoJSON') ?? '{}') || {}
 
 export const draw = new MapboxDraw({
@@ -11,6 +13,7 @@ export const draw = new MapboxDraw({
   //   trash: true
   // },
   // displayControlsDefault: false,
+  userProperties: true,
   styles: [
     {
       'id': 'points-are-blue',
@@ -49,7 +52,10 @@ export const draw = new MapboxDraw({
           "line-join": "round"
         },
         "paint": {
-          "line-color": "#5C1BF5",
+          "line-color": [
+            "get",
+            "user_colour"
+          ],
           "line-opacity": 0.6988188976377951,
           // "line-dasharray": [0.2, 2],
           "line-width": 5
@@ -109,24 +115,14 @@ MapboxDraw.modes.simple_select.clickOnVertex = function(state, e) {
 }
 
 const routeUpdate = (map, mode, {features: [feature]}) => {
-  function download({filename, mime, content}) {
-    const element = document.createElement('a')
-    element.setAttribute('href', `data:${mime};charset=utf-8,${encodeURIComponent(content)}`)
-    element.setAttribute('download', filename)
-
-    element.style.display = 'none'
-    document.body.appendChild(element)
-
-    element.click()
-    document.body.removeChild(element)
-  }
-
-  const devToolLink = {
-  get downloadGeoJSON() {
-      download({filename: `${feature.id}.geojson`, mime: 'application/geo+json', content: JSON.stringify(feature)})
+  if(mode === 'create') {
+    feature.properties = {
+      ...feature.properties,
+      colour: colours[Math.ceil(Math.random() * (colours.length - 1))]
     }
+
+    draw.add(feature)
   }
-  console.log(mode, feature, length(feature, {units: 'kilometers'}), devToolLink)
 
   if(mode === 'delete') delete geoJSON[feature.id]
   else geoJSON[feature.id] = feature
@@ -145,4 +141,27 @@ export default map => {
   map.on('draw.create', boundRouteUpdate('create'))
   map.on('draw.update', boundRouteUpdate('update'))
   map.on('draw.delete', boundRouteUpdate('delete'))
+
+  map.on('draw.selectionchange', ({features: [feature]}) => {
+    if(!feature) return
+
+    function download({filename, mime, content}) {
+      const element = document.createElement('a')
+      element.setAttribute('href', `data:${mime};charset=utf-8,${encodeURIComponent(content)}`)
+      element.setAttribute('download', filename)
+
+      element.style.display = 'none'
+      document.body.appendChild(element)
+
+      element.click()
+      document.body.removeChild(element)
+    }
+
+    const devToolLink = {
+    get downloadGeoJSON() {
+        download({filename: `${feature.id}.geojson`, mime: 'application/geo+json', content: JSON.stringify(feature)})
+      }
+    }
+    console.log(feature, length(feature, {units: 'kilometers'}), devToolLink)
+  })
 }
