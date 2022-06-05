@@ -88,6 +88,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     if let data = try? Data(contentsOf: url) {
       var message: HUDMessage = .syntaxError
       
+      if let coordinate = CLLocationCoordinate2D(image: data) {
+        MapViewController.shared.openLocationInfoPanel(location: .map(coordinate))
+        return
+      }
+      
       MapViewController.shared.toggleLayerSelectPanel(keepOpen: true)
       
       if let results = (MapViewController.shared.lsfpc.contentViewController as? LayerSelectPanelViewController)?.coordinatorView.acceptLayerDefinitions(from: data) {
