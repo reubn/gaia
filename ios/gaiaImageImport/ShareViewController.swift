@@ -13,18 +13,28 @@ class CustomShareViewController: UIViewController {
             let imageURL = url as? URL,
             let data = try? Data(contentsOf: imageURL),
             let coordinate = CLLocationCoordinate2D(image: data){
+            let command = URLInterface.Command.go(coordinate)
             
-            self.openURL(URL(string: "gaia://?go=\(coordinate.latitude),\(coordinate.longitude)")!)
-            self.extensionContext?.completeRequest(returningItems: [])
-          } else {
-            let error = NSError(domain: "some.bundle.identifier", code: 0, userInfo: [NSLocalizedDescriptionKey: "An error description"])
-            self.extensionContext?.cancelRequest(withError: error)
+            if let gaiaURL = URLInterface.shared.encode(commands: [command]){
+              self.openURL(gaiaURL)
+              self.extensionContext?.completeRequest(returningItems: [])
+            } else {
+              self.error()
+            }
+            
           }
         }
+      } else {
+        self.error()
       }
   }
   
-  @objc func openURL(_ url: URL) -> Bool {
+  func error(){
+    let error = NSError(domain: "some.bundle.identifier", code: 0, userInfo: [NSLocalizedDescriptionKey: "An error description"])
+    self.extensionContext?.cancelRequest(withError: error)
+  }
+  
+  @objc @discardableResult func openURL(_ url: URL) -> Bool {
     var responder: UIResponder? = self
     while responder != nil {
       if let application = responder as? UIApplication {
