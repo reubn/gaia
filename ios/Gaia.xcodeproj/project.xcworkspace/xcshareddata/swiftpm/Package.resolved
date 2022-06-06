@@ -42,7 +42,7 @@
       "location" : "https://github.com/simonbs/Runestone",
       "state" : {
         "branch" : "main",
-        "revision" : "922003263562cffa0f53ba92a17a89b2049e06de"
+        "revision" : "39420016c7492bb90a496e8e4c37291454d6090e"
       }
     },
     {
@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/michaeleisel/ZippyJSON",
       "state" : {
-        "revision" : "1ab389998592d038a60a3ca71aa7554d0e84ab4a",
-        "version" : "1.2.4"
+        "revision" : "31b991dfec66a4489b49142e7e5c0060e434f0ec",
+        "version" : "1.2.5"
       }
     },
     {

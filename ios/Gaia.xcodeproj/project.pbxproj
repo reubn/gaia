@@ -67,6 +67,7 @@
 		1B8C079325C493E5008C08B2 /* SelectableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C079225C493E5008C08B2 /* SelectableLabel.swift */; };
 		1B93A9CF27F09F4D00497DB4 /* sexagesimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B93A9CE27F09F4D00497DB4 /* sexagesimal.swift */; };
 		1B93A9D327F0CEE900497DB4 /* decimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B93A9D227F0CEE900497DB4 /* decimal.swift */; };
+		1B95ACA7284DDFF000FA67B2 /* ZippyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 1B95ACA6284DDFF000FA67B2 /* ZippyJSON */; };
 		1B95ACAC284DE11B00FA67B2 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B95ACAB284DE11B00FA67B2 /* Commands.swift */; };
 		1B95ACAF284DE1C500FA67B2 /* URLInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B95ACAE284DE1C500FA67B2 /* URLInterface.swift */; };
 		1B96528825D58EFC0017A43E /* LayerSelectConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96528725D58EFC0017A43E /* LayerSelectConfig.swift */; };
@@ -320,6 +321,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B95ACA7284DDFF000FA67B2 /* ZippyJSON in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,6 +701,9 @@
 			dependencies = (
 			);
 			name = imageImport;
+			packageProductDependencies = (
+				1B95ACA6284DDFF000FA67B2 /* ZippyJSON */,
+			);
 			productName = gaiaImageImport;
 			productReference = 1BD25E59284D4EAF00D3D29B /* imageImport.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -1267,6 +1272,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1B3401C125B33FAD0091FA3B /* XCRemoteSwiftPackageReference "FloatingPanel" */;
 			productName = FloatingPanel;
+		};
+		1B95ACA6284DDFF000FA67B2 /* ZippyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B9D5A2A2695F5530034088E /* XCRemoteSwiftPackageReference "ZippyJSON" */;
+			productName = ZippyJSON;
 		};
 		1B96528C25D5C3DA0017A43E /* KeyboardLayoutGuide */ = {
 			isa = XCSwiftPackageProductDependency;
