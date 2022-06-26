@@ -25,7 +25,7 @@ class HUDView: UIView {
     
     imageView.translatesAutoresizingMaskIntoConstraints = false
     imageView.leftAnchor.constraint(equalTo: leftAnchor, constant: padding / 2).isActive = true
-    imageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+    imageView.centerYAnchor.constraint(equalTo: topAnchor, constant: size.height / 2).isActive = true
     
     imageView.widthAnchor.constraint(equalToConstant: iconSize).isActive = true
     imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
@@ -65,7 +65,6 @@ class HUDView: UIView {
     let blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffect.Style.systemThinMaterial))
     blur.frame = subView.bounds
     blur.autoresizingMask = subView.autoresizingMask
-    blur.isUserInteractionEnabled = false
 
     subView.insertSubview(blur, at: 0)
     insertSubview(subView, at: 0)
@@ -77,8 +76,22 @@ class HUDView: UIView {
     _window.addSubview(self)
     
     title.text = message.title
+    title.lineBreakMode = .byWordWrapping
+    title.numberOfLines = 0
+    
+    translatesAutoresizingMaskIntoConstraints = false
+    centerXAnchor.constraint(equalTo: _window.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    topAnchor.constraint(equalTo: _window.topAnchor, constant: -self.size.height).isActive = true
+    
+    rightAnchor.constraint(greaterThanOrEqualTo: title.rightAnchor, constant: padding).isActive = true
+    
+    //    widthAnchor.constraint(greaterThanOrEqualToConstant: size.width).isActive = true
+//    topAnchor.constraint(equalTo: _window.safeAreaLayoutGuide.topAnchor).isActive = true
+    heightAnchor.constraint(equalTo: title.heightAnchor, constant: padding).isActive = true
+    
     
     title.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+    title.widthAnchor.constraint(lessThanOrEqualToConstant: size.width).isActive = true
     title.rightAnchor.constraint(greaterThanOrEqualTo: rightAnchor, constant: -padding).isActive = true
     
     if(message.systemName != nil) {
@@ -88,15 +101,6 @@ class HUDView: UIView {
     } else {
       title.leftAnchor.constraint(equalTo: leftAnchor, constant: padding).isActive = true
     }
-    
-    translatesAutoresizingMaskIntoConstraints = false
-    centerXAnchor.constraint(equalTo: _window.safeAreaLayoutGuide.centerXAnchor).isActive = true
-    bottomAnchor.constraint(equalTo: _window.topAnchor, constant: 0).isActive = true
-    
-    rightAnchor.constraint(greaterThanOrEqualTo: title.rightAnchor, constant: padding).isActive = true
-
-//    widthAnchor.constraint(greaterThanOrEqualToConstant: size.width).isActive = true
-    heightAnchor.constraint(equalToConstant: size.height).isActive = true
   }
   
   func show(){
@@ -113,9 +117,12 @@ class HUDView: UIView {
       self.icon.tintColor = self.message.tintColour ?? self.defaultIconColour
       self.icon.layoutIfNeeded()
     }
+    
+    let tap = UITapGestureRecognizer(target: self, action: #selector(hide))
+    self.addGestureRecognizer(tap)
   }
   
-  func hide(){
+  @objc func hide(){
     UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
       self.transform = CGAffineTransform(translationX: 0, y: 0)
       self.layer.opacity = 0
