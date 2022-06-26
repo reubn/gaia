@@ -91,6 +91,10 @@ struct Style: Codable, Equatable, Hashable {
     interfacedLayers.first(where: {$0.colour != nil})?.colour
   }
   
+  var hasData: Bool {
+    interfacedSources.contains(where: {$0.capabilities.contains(.data)})
+  }
+  
   struct BoundsInfo {
     let individual: [MGLCoordinateBounds]
     let superbound: MGLCoordinateBounds?

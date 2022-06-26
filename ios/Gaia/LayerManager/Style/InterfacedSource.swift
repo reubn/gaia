@@ -14,7 +14,7 @@ extension Style {
     
     var geoJSONData: AnyCodable? = nil
     
-    func setting(_ capability: Capability, to: Any?) -> Self{
+    func setting(_ capability: Capability, to: Any?) -> Self {
       var copy = self
       
       if capabilities.contains(capability) {
@@ -22,6 +22,7 @@ extension Style {
           case .minZoom: copy.minZoom = to as! Double?
           case .maxZoom: copy.maxZoom = to as! Double?
           case .bounds: copy.bounds = to as! MGLCoordinateBounds?
+          case .data: ()
         }
       }
       
@@ -72,7 +73,7 @@ extension Style {
             bounds = geoJSON(bounds: data)
           }
           
-          capabilities = [.maxZoom, .bounds]
+          capabilities = [.maxZoom, .bounds, .data]
         default: capabilities = []
       }
       
@@ -95,6 +96,7 @@ extension Style {
       case minZoom
       case maxZoom
       case bounds
+      case data
     }
   }
   
