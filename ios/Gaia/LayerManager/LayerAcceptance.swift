@@ -2,7 +2,8 @@ import Foundation
 
 enum LayerAcceptanceMethod {
   case add
-  case update(Layer? = nil)
+  case update(overrideData: Bool = false)
+  case updateWithRequiredLayer(Layer, overrideData: Bool = false)
 }
 
 struct LayerAcceptanceResult {
@@ -40,13 +41,21 @@ struct LayerAcceptanceResults {
   }
   
   var updated: [LayerAcceptanceResult] {
-    accepted.filter({if case .update = $0.method {return true} else {return false}})
+    accepted.filter({
+      switch $0.method {
+        case .updateWithRequiredLayer(_, overrideData: _): return true
+        case .update(overrideData: _): return true
+        default: return false
+      }
+    })
   }
 }
 
 enum LayerAcceptanceError {
   case layerExistsWithId(String)
   case noLayerExistsWithId(String)
+  
+  case existingLayerContainsData(String)
 
   case unexplained
 }

@@ -86,8 +86,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     defer { url.stopAccessingSecurityScopedResource() }
     
     if let data = try? Data(contentsOf: url) {
-      var message: HUDMessage = .syntaxError
-      
       if let coordinate = CLLocationCoordinate2D(image: data) {
         MapViewController.shared.openLocationInfoPanel(location: .map(coordinate))
         return
@@ -95,19 +93,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       
       MapViewController.shared.toggleLayerSelectPanel(keepOpen: true)
       
-      if let results = (MapViewController.shared.lsfpc.contentViewController as? LayerSelectPanelViewController)?.coordinatorView.acceptLayerDefinitions(from: data) {
-        if(results.rejected.isEmpty){
-          UINotificationFeedbackGenerator().notificationOccurred(.success)
-          HUDManager.shared.displayMessage(message: .layersAccepted(results))
-          
-          return
-        } else {
-          message = .layerRejected(results, importing: true)
-        }
-      }
+      let results = (MapViewController.shared.lsfpc.contentViewController as? LayerSelectPanelViewController)?.coordinatorView.acceptLayerDefinitions(from: data)
       
-      UINotificationFeedbackGenerator().notificationOccurred(.error)
-      HUDManager.shared.displayMessage(message: message)
+      UINotificationFeedbackGenerator().notificationOccurred(results?.rejected.isEmpty == true ? .success : .error)
+      HUDManager.shared.displayMessage(message: results != nil ? .layersResults(results!, importing: true) : .syntaxError)
     }
   }
 }

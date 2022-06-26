@@ -181,7 +181,10 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
     
     if(text == initialText){
       switch request! {
-        case .edit: handleError(message: .layerNotModified)
+        case .edit:
+          UINotificationFeedbackGenerator().notificationOccurred(.error)
+          HUDManager.shared.displayMessage(message: .layerNotModified)
+          handleError()
         default: ()
       }
       
@@ -198,31 +201,22 @@ class LayerSelectEdit: UIView, CoordinatedView, UITextViewDelegate {
       case .new, .duplicate:
         results = coordinatorView.acceptLayerDefinitions(from: data, methods: [.add])
       case .edit(let layer):
-        results = coordinatorView.acceptLayerDefinitions(from: data, metadata: LayerDefinition.Metadata(layer: layer), methods: [.update(layer)])
+        results = coordinatorView.acceptLayerDefinitions(from: data, metadata: LayerDefinition.Metadata(layer: layer), methods: [.updateWithRequiredLayer(layer, overrideData: true)])
     }
- 
-    if(results == nil){
-      return self.handleError(message: .syntaxError)
-     }
     
-    if(results!.rejected.isEmpty) {
-      UINotificationFeedbackGenerator().notificationOccurred(.success)
-      HUDManager.shared.displayMessage(message: .layersAccepted(results!))
+    UINotificationFeedbackGenerator().notificationOccurred(results?.rejected.isEmpty == true ? .success : .error)
+    HUDManager.shared.displayMessage(message: results != nil ? .layersResults(results!, importing: false) : .syntaxError)
 
+    if(results?.rejected.isEmpty == true) {
       coordinatorView.goTo(0)
     } else {
-      return handleError(message: .layerRejected(results!))
+      handleError()
     }
-    
   }
   
-  func handleError(message: HUDMessage){
+  func handleError(){
     acceptButton?.isEnabled = false
     helpButton?.isPulsing = true
-    
-    UINotificationFeedbackGenerator().notificationOccurred(.error)
-    
-    HUDManager.shared.displayMessage(message: message)
   }
   
   func textViewDidChange(_ textView: UITextView){

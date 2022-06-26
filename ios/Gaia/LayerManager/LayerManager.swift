@@ -129,39 +129,45 @@ class LayerManager: SettingsManagerDelegate {
   }
   
   func accept(layerDefinition: LayerDefinition, methods: [LayerAcceptanceMethod]? = nil) -> LayerAcceptanceResult {
-    let acceptanceMethods = (methods?.isEmpty ?? false ? nil : methods) ?? [.update(), .add]
+    print("accept", methods)
+    let acceptanceMethods = (methods?.isEmpty ?? false ? nil : methods) ?? [.add, .update(overrideData: false)]
     
     var error: LayerAcceptanceResult = .error(.unexplained)
  
     for method in acceptanceMethods {
       switch method {
-        case .update(let required):
-         
-          // updating specified layer: required != nil && existingWithRequiredId != nil && layerDefinition.metadata.id == required!.id
-          // importing and override: ||
-          
+        case .updateWithRequiredLayer(let required, let overrideData):
           let existingWithEditedId = layers.first(where: {$0.id == layerDefinition.metadata.id})
           
-          if(required != nil){
-            if let existing = layers.first(where: {$0.id == required!.id}),
-              existingWithEditedId == nil || existingWithEditedId == existing {
+          if let existing = layers.first(where: {$0.id == required.id}),
+            existingWithEditedId == nil || existingWithEditedId == existing {
+            
+            if(!existing.style.hasData || (existing.style.hasData && overrideData)) {
               existing.update(layerDefinition)
               print("yes we are updating required", existing)
               
               return .accepted(method)
             }
             
-            error = .error(.layerExistsWithId(layerDefinition.metadata.id))
+            error = .error(.existingLayerContainsData(existing.id))
           } else {
-            if let existing = existingWithEditedId {
+            error = .error(.layerExistsWithId(layerDefinition.metadata.id))
+          }
+        case .update(let overrideData):
+          let existingWithEditedId = layers.first(where: {$0.id == layerDefinition.metadata.id})
+          
+          if let existing = existingWithEditedId {
+            if(!existing.style.hasData || (existing.style.hasData && overrideData)) {
               existing.update(layerDefinition)
               print("yes we are updating edited", existing)
               
               return .accepted(method)
             }
-            
+            error = .error(.existingLayerContainsData(existing.id))
+          } else {
             error = .error(.noLayerExistsWithId(layerDefinition.metadata.id))
           }
+          
         case .add:
           let existing = layers.first(where: {$0.id == layerDefinition.metadata.id})
           

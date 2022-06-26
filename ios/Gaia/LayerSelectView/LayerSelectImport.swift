@@ -93,20 +93,14 @@ class LayerSelectImport: UIView, CoordinatedView {
     return .notValid
   }
   
-  func handleError(message: HUDMessage){
+  func handleError(){
     let acceptButton = self.coordinatorView.panelViewController.getPanelButton(.accept)
     acceptButton.isEnabled = false
-    
-    UINotificationFeedbackGenerator().notificationOccurred(.error)
-    HUDManager.shared.displayMessage(message: message)
   }
   
-  func handleSuccess(results: LayerAcceptanceResults){
+  func handleSuccess(){
     self.urlInput.resignFirstResponder()
     self.urlInput.text = ""
-    
-    UINotificationFeedbackGenerator().notificationOccurred(.success)
-    HUDManager.shared.displayMessage(message: .layersAccepted(results))
     
     coordinatorView.goTo(0)
   }
@@ -135,18 +129,26 @@ class LayerSelectImport: UIView, CoordinatedView {
       case .validAsIs: ()
       case .validIfEncoded(let encoded):
         requestURL = encoded
-      case .notValid: return handleError(message: .urlInvalid)
+      case .notValid:
+        UINotificationFeedbackGenerator().notificationOccurred(.error)
+        HUDManager.shared.displayMessage(message: .urlInvalid)
+        
+        handleError()
+        
+        return
     }
     
     URLSession.shared.dataTask(with: URL(string: requestURL)!) {data, response, error in
       DispatchQueue.main.async {
         let results = self.coordinatorView.acceptLayerDefinitions(from: data, url: rawURL)
-        if(results == nil){
-          self.handleError(message: .syntaxError)
-        } else if(results!.rejected.isEmpty){
-          self.handleSuccess(results: results!)
+        
+        UINotificationFeedbackGenerator().notificationOccurred(results?.rejected.isEmpty == true ? .success : .error)
+        HUDManager.shared.displayMessage(message: results != nil ? .layersResults(results!, importing: true) : .syntaxError)
+        
+        if(results?.rejected.isEmpty == true){
+          self.handleSuccess()
         } else {
-          self.handleError(message: .layerRejected(results!, importing: true))
+          self.handleError()
         }
       }
     }.resume()

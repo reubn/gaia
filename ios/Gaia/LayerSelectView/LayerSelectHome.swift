@@ -23,17 +23,8 @@ class LayerSelectHome: UIView, CoordinatedView, UIDocumentPickerDelegate, LayerE
       }
     }
     
-    if(results?.rejected.isEmpty ?? false) {
-      UINotificationFeedbackGenerator().notificationOccurred(.success)
-      HUDManager.shared.displayMessage(message: .layersAccepted(results!))
-    } else {
-      UINotificationFeedbackGenerator().notificationOccurred(.error)
-      HUDManager.shared.displayMessage(
-        message: results != nil
-          ? .layerRejected(results!, importing: true)
-          : .syntaxError
-      )
-    }
+    UINotificationFeedbackGenerator().notificationOccurred(results?.rejected.isEmpty == true ? .success : .error)
+    HUDManager.shared.displayMessage(message: results != nil ? .layersResults(results!, importing: true) : .syntaxError)
   }
 
   init(coordinatorView: LayerSelectCoordinatorView){
