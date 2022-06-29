@@ -20,7 +20,7 @@ class Section: UIStackView {
 
   let tableView = SectionTableView()
   
-  unowned let scrollView: LayerSelectView
+  weak var scrollView: LayerSelectView?
 
   var layers: [Layer]
   var ready = false
@@ -170,7 +170,7 @@ class Section: UIStackView {
     
     if(!first) {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // needs more delay
-        self.scrollView.heightDidChange()
+        self.scrollView?.heightDidChange()
       }
     }
   }
@@ -358,7 +358,9 @@ extension Section: UITableViewDataSource, UITableViewDragDelegate, UITableViewDr
       accessory = .normal
     }
 
-    cell.update(_layer: _layer, layerSelectConfig: layerSelectConfig, scrollView: scrollView, accessory: accessory)
+    if let scrollView = scrollView {
+      cell.update(_layer: _layer, layerSelectConfig: layerSelectConfig, scrollView: scrollView, accessory: accessory)
+    }
     
     let cellGR = UITapGestureRecognizer(target: self, action: #selector(self.tableViewLabelClick))
     cell.isUserInteractionEnabled = true
