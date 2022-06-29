@@ -3,6 +3,8 @@ import UIKit
 
 import Mapbox
 
+let filterFn: (Layer) -> Bool = {!$0.style.hasData}
+
 class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelDelegate {
   unowned let coordinatorView: OfflineSelectCoordinatorView
     
@@ -10,7 +12,8 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
     mutuallyExclusive: false,
     layerContextActions: false,
     reorderLayers: false,
-    showPinned: true
+    showPinned: true,
+    filter: filterFn
   )
 
   lazy var layerSelectView = LayerSelectView(layerSelectConfig: layerSelectConfig)
@@ -33,6 +36,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
     print("enter OSL")
     
     LayerManager.shared.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
+    LayerManager.shared.filter({$0.visible && filterFn($0)})
 
     MapViewController.shared.osfpc.move(to: .full, animated: true)
     coordinatorView.panelViewController.panelButtons = [.previous, .next]
@@ -70,7 +74,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
   
   func panelButtonTapped(button: PanelButtonType){
     if(button == .next){
-      coordinatorView.selectedLayers = LayerManager.shared.compositeStyle.sortedLayers
+      coordinatorView.selectedLayers = LayerManager.shared.compositeStyle.sortedLayers.filter(filterFn)
       coordinatorView.forward()
     } else if(button == .previous){
       coordinatorView.back()
