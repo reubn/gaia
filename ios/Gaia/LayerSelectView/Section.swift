@@ -6,6 +6,10 @@ import Mapbox
 
 var cellReuseCache: [String: LayerCell] = [:]
 
+fileprivate func getLayers(layerSelectConfig: LayerSelectConfig, group: LayerGroup) -> [Layer]{
+  return layerSelectConfig.filter != nil ? group.getLayers().filter(layerSelectConfig.filter!) : group.getLayers()
+}
+
 class Section: UIStackView {
   let group: LayerGroup
   let layerSelectConfig: LayerSelectConfig
@@ -76,7 +80,7 @@ class Section: UIStackView {
     self.scrollView = scrollView
     self.normallyCollapsed = normallyCollapsed
     
-    self.layers = group.getLayers()
+    self.layers = getLayers(layerSelectConfig: layerSelectConfig, group: group)
     
     self.layerCanDrop = layerCanDrop
     self.layerDidDrag = layerDidDrag
@@ -192,8 +196,8 @@ class Section: UIStackView {
     
     DispatchQueue.global(qos: .userInteractive).async {[self] in
       self.layers = SettingsManager.shared.showDisabledLayers.value
-        ? group.getLayers().sorted(by: LayerManager.shared.layerSortingFunction)
-        : group.getLayers().filter({$0.enabled}).sorted(by: LayerManager.shared.layerSortingFunction)
+        ? getLayers(layerSelectConfig: layerSelectConfig, group: group).sorted(by: LayerManager.shared.layerSortingFunction)
+        : getLayers(layerSelectConfig: layerSelectConfig, group: group).filter({$0.enabled}).sorted(by: LayerManager.shared.layerSortingFunction)
       self.ready = true
       
       DispatchQueue.main.async { [self] in

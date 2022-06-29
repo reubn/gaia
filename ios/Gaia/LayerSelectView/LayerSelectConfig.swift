@@ -9,6 +9,8 @@ struct LayerSelectConfig {
   var showPinned = true
   var showUngrouped = true
   
+  var filter: ((Layer) -> Bool)? = nil
+  
   unowned var layerEditDelegate: LayerEditDelegate? = nil
 }
 
