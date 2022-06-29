@@ -3,7 +3,7 @@ import UIKit
 
 import Mapbox
 
-let filterFn: (Layer) -> Bool = {!$0.style.hasData}
+let filterFn: (Layer) -> Bool = {$0.style.hasNetworkDependencies}
 
 class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelDelegate {
   unowned let coordinatorView: OfflineSelectCoordinatorView

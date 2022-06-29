@@ -95,6 +95,14 @@ struct Style: Codable, Equatable, Hashable {
     interfacedSources.contains(where: {$0.capabilities.contains(.data)})
   }
   
+  var hasNetworkDependencies: Bool {
+    return (
+      sprite != nil ||
+      glyphs != nil ||
+      interfacedSources.contains(where: {!$0.capabilities.contains(.data)})
+    )
+  }
+  
   struct BoundsInfo {
     let individual: [MGLCoordinateBounds]
     let superbound: MGLCoordinateBounds?
