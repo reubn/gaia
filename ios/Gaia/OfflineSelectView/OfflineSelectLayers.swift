@@ -7,6 +7,8 @@ let filterFn: (Layer) -> Bool = {$0.style.hasNetworkDependencies}
 
 class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelDelegate {
   unowned let coordinatorView: OfflineSelectCoordinatorView
+  
+  var startingLayers: [Layer] = []
     
   lazy var layerSelectConfig = LayerSelectConfig(
     mutuallyExclusive: false,
@@ -36,6 +38,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
     print("enter OSL")
     
     LayerManager.shared.multicastCompositeStyleDidChangeDelegate.add(delegate: self)
+    startingLayers = LayerManager.shared.visibleLayers
     LayerManager.shared.filter({$0.visible && filterFn($0)})
 
     MapViewController.shared.osfpc.move(to: .full, animated: true)
@@ -52,6 +55,7 @@ class OfflineSelectLayers: UIView, CoordinatedView, LayerManagerDelegate, PanelD
     print("exit OSL")
     
     LayerManager.shared.multicastCompositeStyleDidChangeDelegate.remove(delegate: self)
+    LayerManager.shared.filter({startingLayers.contains($0)})
   }
   
   func compositeStyleDidChange(to _: CompositeStyle, from _: CompositeStyle?) {
