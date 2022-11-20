@@ -349,7 +349,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     
     let bounds = mapView.convert(rect, toCoordinateBoundsFrom: mapView)
 
-    let markers = MarkerManager.shared.markers(in: bounds)
+    let markers = MarkerManager.shared.visibleMarkers(in: bounds)
     
     if let userLocation = mapView.userLocation?.coordinate,
       bounds.contains(coordinate: userLocation){

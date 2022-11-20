@@ -13,7 +13,7 @@ class MarkerManager {
 
   var markers: [Marker] {
     get {
-      guard let markerLayer = markerLayer, markerLayer.visible else {
+      guard let markerLayer = markerLayer else {
         return []
       }
       
@@ -52,8 +52,12 @@ class MarkerManager {
     return []
   }
   
-  func markers(in bounds: MGLCoordinateBounds) -> [Marker] {
+  func visibleMarkers(in bounds: MGLCoordinateBounds) -> [Marker] {
     let center = bounds.center
+    
+    if(markerLayer?.visible) != true {
+      return []
+    }
     
     return markers.filter({bounds.contains(coordinate: $0.coordinate)}).sorted(by: {lhs, rhs in
       lhs.coordinate.distance(to: center) < rhs.coordinate.distance(to: center)
