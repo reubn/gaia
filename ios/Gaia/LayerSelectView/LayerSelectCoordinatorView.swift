@@ -68,7 +68,7 @@ class LayerSelectCoordinatorView: CoordinatorView, PanelDelegate {
     let gpxSingleAttempt = geoJSONSingleAttempt ?? {() -> [LayerDefinition]? in
       print("gpxSingleAttempt")
       guard let decodeAttempt = GPXParser(withData: data).parsedData(),
-            decodeAttempt.tracks.count + decodeAttempt.waypoints.count != 0 else {
+            decodeAttempt.tracks.count + decodeAttempt.routes.count + decodeAttempt.waypoints.count != 0 else {
         return nil
       }
       

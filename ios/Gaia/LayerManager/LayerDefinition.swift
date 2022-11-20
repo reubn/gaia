@@ -122,6 +122,18 @@ extension LayerDefinition {
       }
     }
     
+    let routes = gpx.routes.map {route in
+      [
+        "type": "Feature",
+        "geometry": [
+          "type": "LineString",
+          "coordinates": route.points.map {routePoint in
+            [routePoint.longitude!, routePoint.latitude!]
+          }
+        ]
+      ]
+    }
+    
     let waypoints = gpx.waypoints.map {waypoint in
       [
         "type": "Feature",
@@ -134,7 +146,7 @@ extension LayerDefinition {
     
     let features: AnyCodable = [
       "type": "FeatureCollection",
-      "features": tracks + waypoints
+      "features": tracks + routes + waypoints
     ]
 
     self.init(geoJSON: features, metadata: metadata)
