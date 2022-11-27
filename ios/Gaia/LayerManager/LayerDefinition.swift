@@ -16,6 +16,8 @@ struct LayerDefinition: Codable, Hashable {
     var overrideUIMode: String? = nil
     
     var attribution: String? = nil
+    
+    var legend: URL? = nil
   }
   
   struct User: Codable, Hashable {
@@ -35,7 +37,8 @@ extension LayerDefinition.Metadata {
       name: layer.name,
       group: layer.group,
       overrideUIMode: layer.overrideUIMode,
-      attribution: layer.attribution
+      attribution: layer.attribution,
+      legend: layer.legend
     )
   }
   

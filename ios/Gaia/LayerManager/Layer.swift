@@ -19,6 +19,7 @@ public class Layer: NSManagedObject {
   @NSManaged public var id: String
   @NSManaged public var name: String
   @NSManaged public var attribution: String?
+  @NSManaged public var legend: URL?
   @NSManaged public var overrideUIMode: String?
   
   @NSManaged private var styleString: String
@@ -78,6 +79,7 @@ extension Layer {
     self.group = layerDefinition.metadata.group
     self.overrideUIMode = layerDefinition.metadata.overrideUIMode
     self.attribution = layerDefinition.metadata.attribution
+    self.legend = layerDefinition.metadata.legend
     
     if let user = layerDefinition.user {
       self.groupIndex = Int16(user.groupIndex)

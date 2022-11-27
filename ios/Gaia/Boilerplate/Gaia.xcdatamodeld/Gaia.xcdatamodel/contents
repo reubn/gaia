@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21512" systemVersion="22A380" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Layer" representedClassName="Layer" syncable="YES">
         <attribute name="attribution" optional="YES" attributeType="String"/>
         <attribute name="enabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="group" attributeType="String"/>
         <attribute name="groupIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="String"/>
+        <attribute name="legend" optional="YES" attributeType="URI"/>
+        <attribute name="markerLayer" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="overrideUIMode" optional="YES" attributeType="String"/>
         <attribute name="pinned" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="quickToggle" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="markerLayer" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="styleString" optional="YES" attributeType="String"/>
         <attribute name="visible" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
     </entity>
-    <elements>
-        <element name="Layer" positionX="0" positionY="0" width="128" height="208"/>
-    </elements>
 </model>

@@ -1,4 +1,5 @@
 import UIKit
+import SafariServices
 import Mapbox
 import FloatingPanel
 
@@ -121,10 +122,22 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
     button.addTarget(self, action: #selector(layersButtonTapped), for: .touchUpInside)
     button.accessibilityLabel = "Layers"
     
-    let longPress = UILongPressGestureRecognizer(target: self, action: #selector(quickToggleLongPress))
-    longPress.minimumPressDuration = 0.4
-    button.addGestureRecognizer(longPress)
+    let menuItems = UIDeferredMenuElement.uncached { completion in
+      let legendElements: [UIAction] = LayerManager.shared.visibleLayers.compactMap({
+        guard let legendURL = $0.legend else {return nil}
+
+        return UIAction(title: $0.name, image: UIImage(systemName: "arrow.up.forward.square"), handler: {_ in
+          let vc = SFSafariViewController(url: legendURL)
+          vc.modalPresentationStyle = .popover
+          self.present(vc, animated: true)
+        })
+      })
+      
+      completion(legendElements)
+    }
     
+    button.menu =  UIMenu(title: "Legends", children: [menuItems])
+   
     return button
   }()
   
