@@ -91,6 +91,20 @@ extension MGLCoordinateBounds: Codable, Equatable, Hashable {
   public init(from bounds: Self) {
     self.init(sw: bounds.sw, ne: bounds.ne)
   }
+  
+  public init?(from coordinates: [CLLocationCoordinate2D]?){
+    guard let coordinates = coordinates,
+          let first = coordinates.first else {
+      return nil
+    }
+    
+    let extended = coordinates[1...].reduce(Self(sw: first, ne: first), {bounds, coordinate in
+      bounds.extend(with: coordinate)
+    })
+    
+    self.init(from: extended)
+  }
+  
   public var jsonArray: AnyCodable {
     [sw.longitude, sw.latitude, ne.longitude, ne.latitude]
   }
