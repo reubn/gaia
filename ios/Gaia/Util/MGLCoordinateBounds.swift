@@ -43,6 +43,19 @@ extension MGLCoordinateBounds: Codable, Equatable, Hashable {
     MGLCoordinateBoundsIntersectsCoordinateBounds(self, with)
   }
   
+  public func extend(with: CLLocationCoordinate2D) -> Self {
+    let minLat = min(sw.latitude, with.latitude)
+    let minLon = min(sw.longitude, with.longitude)
+    
+    let maxLat = max(ne.latitude, with.latitude)
+    let maxLon = max(ne.longitude, with.longitude)
+    
+    let swNew = CLLocationCoordinate2D(latitude: minLat, longitude: minLon)
+    let neNew = CLLocationCoordinate2D(latitude: maxLat, longitude: maxLon)
+    
+    return Self(sw: swNew, ne: neNew)
+  }
+  
   public func extend(with: Self) -> Self {
     let minLat = min(sw.latitude, with.sw.latitude)
     let minLon = min(sw.longitude, with.sw.longitude)
