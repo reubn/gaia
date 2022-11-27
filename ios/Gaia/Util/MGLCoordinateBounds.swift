@@ -88,6 +88,9 @@ extension MGLCoordinateBounds: Codable, Equatable, Hashable {
     self.init(sw: sw, ne: ne)
   }
   
+  public init(from bounds: Self) {
+    self.init(sw: bounds.sw, ne: bounds.ne)
+  }
   public var jsonArray: AnyCodable {
     [sw.longitude, sw.latitude, ne.longitude, ne.latitude]
   }
