@@ -103,6 +103,10 @@ struct Style: Codable, Equatable, Hashable {
     )
   }
   
+  var interfacedSourcesContainingData: [InterfacedSource] {
+    interfacedSources.filter({$0.capabilities.contains(.data)})
+  }
+  
   struct BoundsInfo {
     let individual: [MGLCoordinateBounds]
     let superbound: MGLCoordinateBounds?
