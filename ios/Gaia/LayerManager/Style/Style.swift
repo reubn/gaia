@@ -1,4 +1,5 @@
 import Foundation
+import Turf
 import Mapbox
 
 let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
@@ -114,6 +115,29 @@ struct Style: Codable, Equatable, Hashable {
         
         return hasDataContainingSource ? layer.id : nil
       })
+  }
+  
+  var geoJSONIdentifiableFeatures: [String: Feature] {
+    let geoJSONFeaturesTuple: [(String, Feature)] = interfacedSourcesContainingData.flatMap({(source) -> [(String, Feature)] in
+      let geoJSONData = source.geoJSONData
+
+      guard let geoJSON = GeoJSONObject.from(anyCodable: geoJSONData)?.geoJSONObject
+      else {return []}
+      
+//      guard let data = try? JSONEncoder().encode(geoJSONData),
+//            let geoJSON = try? JSONDecoder().decode(GeoJSONObject.self, from: data)
+//      else {return []}
+    
+      
+      return geoJSON.flattenFeatures().compactMap(({feature -> (String, Feature)? in
+        switch feature.identifier {
+          case .string(let string): return (string, feature)
+          default: return nil
+        }
+      }))
+    })
+    
+    return Dictionary(uniqueKeysWithValues: geoJSONFeaturesTuple)
   }
   
   struct BoundsInfo {
