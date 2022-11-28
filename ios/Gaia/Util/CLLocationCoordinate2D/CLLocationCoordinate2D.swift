@@ -113,6 +113,13 @@ extension CLLocationCoordinate2D: Codable, Hashable {
     }
   }
   
+  init?(anyCodable: AnyCodable){
+    let array = anyCodable.value as? [NSNumber] as? [CLLocationDegrees]
+    guard let latitude = array?[1], let longitude = array?[0] else {return nil}
+    
+    self.init(latitude: latitude, longitude: longitude)
+  }
+  
   init(clone: CLLocationCoordinate2D) {
     self.init()
     
