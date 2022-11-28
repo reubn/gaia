@@ -6,6 +6,8 @@ extension Style {
     let id: String
     let type: String
     
+    let source: String?
+    
     let capabilities: Set<Capability>
     
     var colour: UIColor?
@@ -135,9 +137,12 @@ extension Style {
       let opacity = opacityValue ?? opacityFromColourValue
       let colour = colourBeforeOpacityModification?.withAlphaComponent(opacity)
       
+      let source = layer.source?.value as? String
+      
       let interfacedLayer = InterfacedLayer(
         id: id,
         type: type,
+        source: source,
         capabilities: capabilities,
         colour: colour,
         opacity: opacity,
