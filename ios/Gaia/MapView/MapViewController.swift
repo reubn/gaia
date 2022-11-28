@@ -377,6 +377,26 @@ class MapViewController: UIViewController, MGLMapViewDelegate, LayerManagerDeleg
       self.openLocationInfoPanel(location: .marker(marker))
       singleTapHandled = true
     } else {
+      
+      let style = LayerManager.shared.compositeStyle.toStyle()
+      let layerIdentifiers = style.identifiersOfLayersWithDataContainingSources
+      let geoJSONDictionary = style.geoJSONIdentifiableFeatures
+//
+//      print("layerIdentifiers", layerIdentifiers)
+//      print("geoJSONFeatures", geoJSONDictionary)
+//
+      let featuresInRect = mapView.visibleFeatures(in: rect, styleLayerIdentifiers: Set(layerIdentifiers))
+      
+//      print("featuresInRec", featuresInRect)
+      
+      if let firstTappable = featuresInRect.firstMap({LocationInfoFeature(feature: $0, geoJSONDictionary: geoJSONDictionary)}){
+//        print("firstTappable", firstTappable)
+           self.openLocationInfoPanel(location: .feature(firstTappable))
+           singleTapHandled = true
+        
+           return
+      }
+      
       let isMe = presentedViewController == lifpc
       if(isMe) {
         presentedViewController!.dismiss(animated: false, completion: nil)
