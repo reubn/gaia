@@ -46,6 +46,7 @@ const Map = ({lat, lng, zoom, bearing, pitch, style, darkMode}) => {
     <>
       <div className={`${mapStyle} ${darkMode ? dark : light}`} ref={mapContainer} />
       <KeyCombo combo="`" handler={() => map.resetNorthPitch()} />
+      <KeyCombo combo="ctrl+g" handler={() => map.streetViewMode = true} />
     </>
 
   )

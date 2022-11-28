@@ -30,6 +30,11 @@ class SuperMap extends mapboxgl.Map {
 
       localStorage.setItem('state', JSON.stringify(state))
     })
+
+    map.on('click', ({lngLat: {lat, lng}}) => {
+      if(map.streetViewMode) window.open(`http://maps.google.com/maps?q=&layer=c&cbll=${lat},${lng}&cbp=11,0,0,0,0`)
+      map.streetViewMode = false
+    })
   }
 }
 
