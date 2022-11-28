@@ -9,11 +9,11 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
   unowned let panelViewController: LocationInfoPanelViewController
   
   var location: LocationInfoType
-  var coordinate: CLLocationCoordinate2D {
+  var position: LocationInfoPosition {
     switch location {
-      case .user: return MapViewController.shared.mapView.userLocation!.coordinate
-      case .map(let coordinate):  return coordinate
-      case .marker(let marker): return marker.coordinate
+      case .user: return .coordinate(MapViewController.shared.mapView.userLocation!.coordinate)
+      case .map(let coordinate):  return .coordinate(coordinate)
+      case .marker(let marker): return .coordinate(marker.coordinate)
     }
   }
   
@@ -138,6 +138,10 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
   }
 
   func showBubble(firstTime: Bool = true){
+    guard case .coordinate(let coordinate) = position else {
+      return
+    }
+    
     let colour: UIColor
     
     if case .marker(let marker) = location {
@@ -185,6 +189,11 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+}
+ 
+enum LocationInfoPosition: Hashable {
+  case coordinate(CLLocationCoordinate2D)
+  case multiPoint([CLLocationCoordinate2D])
 }
 
 enum LocationInfoType: Hashable {

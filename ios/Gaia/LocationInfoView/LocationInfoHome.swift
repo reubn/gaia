@@ -16,25 +16,43 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
     coordinatorView.location
   }
   
-  var coordinate: CLLocationCoordinate2D {
-    coordinatorView.coordinate
+  var position: LocationInfoPosition {
+    coordinatorView.position
   }
   
   var titleContent: TitleFormat? {
     didSet {
-      switch titleContent! {
-        case .coordinate(.decimal):
-          coordinatorView.panelViewController.popoverTitle.text = coordinate.format(.decimal(.low))
-          coordinatorView.panelViewController.popoverTitle.selectionText = coordinate.format(.decimal(.high))
-        case .coordinate(.sexagesimal):
-          coordinatorView.panelViewController.popoverTitle.text = coordinate.format(.sexagesimal(.low))
-          coordinatorView.panelViewController.popoverTitle.selectionText = coordinatorView.panelViewController.popoverTitle.text
-        case .coordinate(.gridReference):
-          coordinatorView.panelViewController.popoverTitle.text = coordinate.format(.gridReference(.low, space: true))
-          coordinatorView.panelViewController.popoverTitle.selectionText = coordinate.format(.gridReference(.high))
-        case .title(let marker):
-          coordinatorView.panelViewController.popoverTitle.text = marker.title ?? "Untitled"
-          coordinatorView.panelViewController.popoverTitle.selectionText = coordinatorView.panelViewController.popoverTitle.text
+      switch position {
+        case .coordinate(let coordinate):
+          switch titleContent! {
+            case .coordinate(.decimal):
+              coordinatorView.panelViewController.popoverTitle.text = coordinate.format(.decimal(.low))
+              coordinatorView.panelViewController.popoverTitle.selectionText = coordinate.format(.decimal(.high))
+            case .coordinate(.sexagesimal):
+              coordinatorView.panelViewController.popoverTitle.text = coordinate.format(.sexagesimal(.low))
+              coordinatorView.panelViewController.popoverTitle.selectionText = coordinatorView.panelViewController.popoverTitle.text
+            case .coordinate(.gridReference):
+              coordinatorView.panelViewController.popoverTitle.text = coordinate.format(.gridReference(.low, space: true))
+              coordinatorView.panelViewController.popoverTitle.selectionText = coordinate.format(.gridReference(.high))
+            case .markerTitle(let marker):
+              coordinatorView.panelViewController.popoverTitle.text = marker.title ?? "Untitled"
+              coordinatorView.panelViewController.popoverTitle.selectionText = coordinatorView.panelViewController.popoverTitle.text
+          }
+        case .multiPoint(let coordinates):
+          switch titleContent! {
+            case .coordinate(.decimal):
+              coordinatorView.panelViewController.popoverTitle.text = "Not Implemented"
+              coordinatorView.panelViewController.popoverTitle.selectionText = "Not Implemented"
+            case .coordinate(.sexagesimal):
+              coordinatorView.panelViewController.popoverTitle.text = "Not Implemented"
+              coordinatorView.panelViewController.popoverTitle.selectionText = "Not Implemented"
+            case .coordinate(.gridReference):
+              coordinatorView.panelViewController.popoverTitle.text = "Not Implemented"
+              coordinatorView.panelViewController.popoverTitle.selectionText = "Not Implemented"
+            case .markerTitle(let marker):
+              coordinatorView.panelViewController.popoverTitle.text = marker.title ?? "Untitled"
+              coordinatorView.panelViewController.popoverTitle.selectionText = coordinatorView.panelViewController.popoverTitle.text
+          }
       }
     }
   }
@@ -130,8 +148,12 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
       
       switch self.location {
         case .user, .map:
-          actions = makeColourActions(nil) {colour in
-            self.coordinatorView.addMarker(coordinate: self.coordinate, colour: colour)
+          switch position {
+            case .coordinate(let coordinate):
+              actions = makeColourActions(nil) {colour in
+                self.coordinatorView.addMarker(coordinate: coordinate, colour: colour)
+              }
+            case .multiPoint(let coordinates): actions = []
           }
         case .marker(let marker):
           let removePin = UIAction(
@@ -252,15 +274,19 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
         }
     }
   
-    metricDisplays = [bearingDisplay, distanceDisplay]
-    
-    var distanceValue = (distanceDisplay.value as! CoordinatePair)
-    distanceValue.a = coordinate
-    distanceDisplay.value = distanceValue
-    
-    var bearingValue = (bearingDisplay.value as! CoordinatePair)
-    bearingValue.a = coordinate
-    bearingDisplay.value = bearingValue
+    switch position {
+      case .coordinate(let coordinate):
+        metricDisplays = [bearingDisplay, distanceDisplay]
+        
+        var distanceValue = (distanceDisplay.value as! CoordinatePair)
+        distanceValue.a = coordinate
+        distanceDisplay.value = distanceValue
+        
+        var bearingValue = (bearingDisplay.value as! CoordinatePair)
+        bearingValue.a = coordinate
+        bearingDisplay.value = bearingValue
+      case .multiPoint(let coordinates):
+    }
   }
   
  
