@@ -187,7 +187,7 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
   }
 }
 
-enum LocationInfoType: Equatable {
+enum LocationInfoType: Hashable {
   case user
   case map(CLLocationCoordinate2D)
   case marker(Marker)
