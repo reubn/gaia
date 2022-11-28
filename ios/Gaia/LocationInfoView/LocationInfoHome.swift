@@ -263,7 +263,7 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
 
   func update(data: Any?){
     if let location = data as? LocationInfoType {
-      print("location update", location)
+//      print("location update", location)
       updateMarkerButton()
       
       switch location {
