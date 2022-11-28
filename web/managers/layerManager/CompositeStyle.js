@@ -34,7 +34,7 @@ export default class CompositeStyle {
               [key]: key === 'maxzoom' && maxTileZoom !== null ? Math.min(maxTileZoom, value) : value
             }), {})
         }), sources)
-      layers = [...layers, ...style.layers]
+      layers = [...layers, ...style?.layers ?? []]
 
       sprite = sprite || style.sprite
       glyphs = glyphs || style.glyphs
