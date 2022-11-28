@@ -41,6 +41,11 @@ extension LocationInfoHome {
         coordinate = MapViewController.shared.mapView.userLocation!.coordinate
       case .marker(let marker):
         coordinate = marker.coordinate
+      case .feature(let feature):
+        switch feature.position {
+          case .coordinate(let _coordinate): coordinate = _coordinate
+          case .multiPoint(let coordinates): coordinate = coordinates.first ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)
+        }
       case .map(let coord):
         coordinate = coord
     }

@@ -14,6 +14,7 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
       case .user: return .coordinate(MapViewController.shared.mapView.userLocation!.coordinate)
       case .map(let coordinate):  return .coordinate(coordinate)
       case .marker(let marker): return .coordinate(marker.coordinate)
+      case .feature(let feature): return feature.position
     }
   }
   
@@ -75,6 +76,7 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
     switch location {
       case .user: hideBubble()
       case .marker, .map: showBubble(firstTime: true)
+      case .feature(let feature): showFeature(feature: feature)
     }
 
     currentChapter?.update(data: location)
@@ -177,6 +179,18 @@ class LocationInfoCoordinatorView: CoordinatorView, PanelDelegate, MapViewStyleD
     bubbleLayer.iconScale = NSExpression(forConstantValue: 0.5)
   }
   
+  func showFeature(feature: LocationInfoFeature){
+    self.hideBubble()
+    
+    switch feature.position {
+      case .coordinate(let coordinate): MapViewController.shared.mapView.setCenter(coordinate, animated: true)
+      case .multiPoint(let coordinates):
+        if let bounds = MGLCoordinateBounds(from: coordinates) {
+          MapViewController.shared.mapView.setVisibleCoordinateBounds(bounds, sensible: true, animated: true)
+        }
+    }
+  }
+  
   func hideBubble(){
     MapViewController.shared.mapView.style?.removeSource(bubbleSource)
     MapViewController.shared.mapView.style?.removeLayer(bubbleLayer)
@@ -200,4 +214,5 @@ enum LocationInfoType: Hashable {
   case user
   case map(CLLocationCoordinate2D)
   case marker(Marker)
+  case feature(LocationInfoFeature)
 }

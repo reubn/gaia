@@ -77,6 +77,7 @@
 		1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */; };
 		1B96FF342663F6E4002E685D /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96FF332663F6E4002E685D /* SettingsManager.swift */; };
 		1B96FF362663FD75002E685D /* UIAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96FF352663FD75002E685D /* UIAction.swift */; };
+		1B981EA62933D533000626BC /* LocationInfoFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B981EA52933D533000626BC /* LocationInfoFeature.swift */; };
 		1B981EA82933D5B1000626BC /* PathLengthDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B981EA72933D5B1000626BC /* PathLengthDisplay.swift */; };
 		1B981EAA2933D5EF000626BC /* NumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B981EA92933D5EF000626BC /* NumberFormatter.swift */; };
 		1B981EAD2933D8B2000626BC /* Turf in Frameworks */ = {isa = PBXBuildFile; productRef = 1B981EAC2933D8B2000626BC /* Turf */; };
@@ -248,6 +249,7 @@
 		1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectHomeEmpty.swift; sourceTree = "<group>"; };
 		1B96FF332663F6E4002E685D /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		1B96FF352663FD75002E685D /* UIAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAction.swift; sourceTree = "<group>"; };
+		1B981EA52933D533000626BC /* LocationInfoFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoFeature.swift; sourceTree = "<group>"; };
 		1B981EA72933D5B1000626BC /* PathLengthDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathLengthDisplay.swift; sourceTree = "<group>"; };
 		1B981EA92933D5EF000626BC /* NumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatter.swift; sourceTree = "<group>"; };
 		1B981EAE29342A93000626BC /* PathDistanceAlongDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathDistanceAlongDisplay.swift; sourceTree = "<group>"; };
@@ -548,6 +550,7 @@
 				1B8C078C25C48245008C08B2 /* LocationInfoPanelLayout.swift */,
 				1BD40D93280AD61F002E45E7 /* LocationInfoPanelViewController.swift */,
 				1BD40D95280AD690002E45E7 /* LocationInfoCoordinatorView.swift */,
+				1B981EA52933D533000626BC /* LocationInfoFeature.swift */,
 				1B8C078D25C48245008C08B2 /* LocationInfoHome.swift */,
 				1BD40D97280ADD5C002E45E7 /* LayerInfoMarkerRename.swift */,
 				1BD6A3B92600DF25001E503D /* LocationInfoPanelShare.swift */,
@@ -871,6 +874,7 @@
 				1BD40D9A280C0AE1002E45E7 /* SetAlgebra.swift in Sources */,
 				1BD6A3BC2600E2E1001E503D /* BearingDisplay.swift in Sources */,
 				1BBD3FF525B70C06007B8BC7 /* OfflineSelectPanelLayout.swift in Sources */,
+				1B981EA62933D533000626BC /* LocationInfoFeature.swift in Sources */,
 				1B6638AA25B10B530071F03D /* SceneDelegate.swift in Sources */,
 				1B2F9091267FCBDF00D275CB /* InterfacedLayer.swift in Sources */,
 				1B8C078F25C48245008C08B2 /* LocationInfoHome.swift in Sources */,

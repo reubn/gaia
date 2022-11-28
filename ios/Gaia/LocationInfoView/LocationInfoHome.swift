@@ -37,6 +37,9 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
             case .markerTitle(let marker):
               coordinatorView.panelViewController.popoverTitle.text = marker.title ?? "Untitled"
               coordinatorView.panelViewController.popoverTitle.selectionText = coordinatorView.panelViewController.popoverTitle.text
+            case .featureTitle(let feature):
+              coordinatorView.panelViewController.popoverTitle.text = feature.title ?? "Untitled"
+              coordinatorView.panelViewController.popoverTitle.selectionText = coordinatorView.panelViewController.popoverTitle.text
           }
         case .multiPoint(let coordinates):
           switch titleContent! {
@@ -51,6 +54,9 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
               coordinatorView.panelViewController.popoverTitle.selectionText = "Not Implemented"
             case .markerTitle(let marker):
               coordinatorView.panelViewController.popoverTitle.text = marker.title ?? "Untitled"
+              coordinatorView.panelViewController.popoverTitle.selectionText = coordinatorView.panelViewController.popoverTitle.text
+            case .featureTitle(let feature):
+              coordinatorView.panelViewController.popoverTitle.text = feature.title ?? "Untitled"
               coordinatorView.panelViewController.popoverTitle.selectionText = coordinatorView.panelViewController.popoverTitle.text
           }
       }
@@ -171,7 +177,7 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
       let actions: [UIMenuElement]
       
       switch self.location {
-        case .user, .map:
+        case .user, .map, .feature:
           switch position {
             case .coordinate(let coordinate):
               actions = makeColourActions(nil) {colour in
@@ -265,7 +271,7 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
           metricDisplays = [headingDisplay, elevationDisplay]
           
           userLocationDidUpdate()
-        case .marker, .map:
+        case .marker, .map, .feature:
           nonUserLocationDidUpdate()
       }
     }
@@ -277,7 +283,7 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
     let menuTitle: String
     
     switch location {
-      case .user, .map:
+      case .user, .map, .feature:
         menuTitle = "Add Marker"
         markerButton.setDisplayConfig(.init(icon: .systemName("plus"), colour: MarkerManager.shared.latestColour))
       case .marker(let marker):
@@ -290,10 +296,11 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
   
   func nonUserLocationDidUpdate() {
     switch location {
-      case .marker(let marker) where marker.title != nil: titleContent = .title(marker)
+      case .marker(let marker) where marker.title != nil: titleContent = .markerTitle(marker)
+      case .feature(let feature) where feature.title != nil: titleContent = .featureTitle(feature)
       default:
         switch titleContent {
-          case .title, .none: titleContent = .coordinate(.decimal)
+          case .markerTitle, .none, .featureTitle: titleContent = .coordinate(.decimal)
           default: titleContent = titleContent!
         }
     }
@@ -334,7 +341,7 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
     
     if case .user = self.location {
       switch titleContent {
-        case .title: titleContent = .coordinate(.decimal)
+        case .markerTitle: titleContent = .coordinate(.decimal)
         default: titleContent = titleContent ?? .coordinate(.decimal)
       }
     } else {
@@ -375,10 +382,11 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
       case .coordinate(.sexagesimal): titleContent = .coordinate(.gridReference)
       case .coordinate(.gridReference):
         switch location {
-          case .marker(let marker) where marker.title != nil: titleContent = .title(marker)
+          case .marker(let marker) where marker.title != nil: titleContent = .markerTitle(marker)
           default: titleContent = .coordinate(.decimal)
         }
-      case .title: titleContent = .coordinate(.decimal)
+      case .markerTitle: titleContent = .coordinate(.decimal)
+      case .featureTitle: ()//titleContent = .coordinate(.decimal)
     }
   }
   
@@ -388,7 +396,8 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
 }
 
 enum TitleFormat {
-  case title(Marker)
+  case markerTitle(Marker)
+  case featureTitle(LocationInfoFeature)
   case coordinate(CoordinateFormat)
 }
 
