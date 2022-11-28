@@ -109,7 +109,31 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
     return display
   }()
   
-  lazy var _allMetricDisplays = [headingDisplay, elevationDisplay, bearingDisplay, distanceDisplay]
+  lazy var pathLengthDisplay: PathLengthDisplay = {
+    let display = PathLengthDisplay()
+    
+    mainView.addSubview(display)
+    
+    display.translatesAutoresizingMaskIntoConstraints = false
+    display.leftAnchor.constraint(equalTo: mainView.leftAnchor).isActive = true
+    display.topAnchor.constraint(equalTo: mainView.topAnchor).isActive = true
+    
+    return display
+  }()
+  
+  lazy var pathDistanceAlongDisplay: PathDistanceAlongDisplay = {
+    let display = PathDistanceAlongDisplay()
+    
+    mainView.addSubview(display)
+    
+    display.translatesAutoresizingMaskIntoConstraints = false
+    display.leftAnchor.constraint(equalTo: pathLengthDisplay.rightAnchor, constant: 8).isActive = true
+    display.topAnchor.constraint(equalTo: mainView.topAnchor).isActive = true
+    
+    return display
+  }()
+  
+  lazy var _allMetricDisplays = [headingDisplay, elevationDisplay, bearingDisplay, distanceDisplay, pathLengthDisplay, pathDistanceAlongDisplay]
   lazy var metricDisplays: [MetricDisplay] = [] {
     didSet {
       for metricDisplay in _allMetricDisplays {
@@ -286,6 +310,15 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
         bearingValue.a = coordinate
         bearingDisplay.value = bearingValue
       case .multiPoint(let coordinates):
+        metricDisplays = [pathLengthDisplay, pathDistanceAlongDisplay]
+
+        pathLengthDisplay.value = coordinates
+        
+        print("pld", pathDistanceAlongDisplay.value)
+        
+        var pathDistanceAlongValue = (pathDistanceAlongDisplay.value as! CoordinateArrayWithCoordinate)
+        pathDistanceAlongValue.coordinateArray = coordinates
+        pathDistanceAlongDisplay.value = pathDistanceAlongValue
     }
   }
   
@@ -312,6 +345,10 @@ class LocationInfoHome: UIView, CoordinatedView, UserLocationDidUpdateDelegate, 
       var bearingValue = (bearingDisplay.value as! CoordinatePair)
       bearingValue.b = coordinate
       bearingDisplay.value = bearingValue
+      
+      var pathDistanceAlongValue = (pathDistanceAlongDisplay.value as! CoordinateArrayWithCoordinate)
+      pathDistanceAlongValue.coordinate = coordinate
+      pathDistanceAlongDisplay.value = pathDistanceAlongValue
     }
     
     self.headingDisplay.value = heading

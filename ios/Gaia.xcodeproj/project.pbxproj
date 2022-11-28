@@ -77,8 +77,10 @@
 		1B96529425D7E6680017A43E /* OfflineSelectHomeEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */; };
 		1B96FF342663F6E4002E685D /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96FF332663F6E4002E685D /* SettingsManager.swift */; };
 		1B96FF362663FD75002E685D /* UIAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B96FF352663FD75002E685D /* UIAction.swift */; };
+		1B981EA82933D5B1000626BC /* PathLengthDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B981EA72933D5B1000626BC /* PathLengthDisplay.swift */; };
 		1B981EAA2933D5EF000626BC /* NumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B981EA92933D5EF000626BC /* NumberFormatter.swift */; };
 		1B981EAD2933D8B2000626BC /* Turf in Frameworks */ = {isa = PBXBuildFile; productRef = 1B981EAC2933D8B2000626BC /* Turf */; };
+		1B981EAF29342A93000626BC /* PathDistanceAlongDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B981EAE29342A93000626BC /* PathDistanceAlongDisplay.swift */; };
 		1B99746C266A45BB00420B0F /* LayerCellMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B99746B266A45BB00420B0F /* LayerCellMenu.swift */; };
 		1B998756266126CE002595DD /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B998755266126CE002595DD /* Double.swift */; };
 		1B9D5A2C2695F5530034088E /* ZippyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 1B9D5A2B2695F5530034088E /* ZippyJSON */; };
@@ -246,7 +248,9 @@
 		1B96529325D7E6680017A43E /* OfflineSelectHomeEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSelectHomeEmpty.swift; sourceTree = "<group>"; };
 		1B96FF332663F6E4002E685D /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		1B96FF352663FD75002E685D /* UIAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAction.swift; sourceTree = "<group>"; };
+		1B981EA72933D5B1000626BC /* PathLengthDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathLengthDisplay.swift; sourceTree = "<group>"; };
 		1B981EA92933D5EF000626BC /* NumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatter.swift; sourceTree = "<group>"; };
+		1B981EAE29342A93000626BC /* PathDistanceAlongDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathDistanceAlongDisplay.swift; sourceTree = "<group>"; };
 		1B99746B266A45BB00420B0F /* LayerCellMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerCellMenu.swift; sourceTree = "<group>"; };
 		1B998755266126CE002595DD /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		1B9D5A2E2697571D0034088E /* gridReferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gridReferences.swift; sourceTree = "<group>"; };
@@ -633,6 +637,8 @@
 				1BEE8D5D25C599B3004260C1 /* HeadingDisplay.swift */,
 				1BEE8D5F25C59A4D004260C1 /* ElevationDisplay.swift */,
 				1BA03E3925DEB9BE00EE273C /* DistanceDisplay.swift */,
+				1B981EA72933D5B1000626BC /* PathLengthDisplay.swift */,
+				1B981EAE29342A93000626BC /* PathDistanceAlongDisplay.swift */,
 				1BD6A3BB2600E2E1001E503D /* BearingDisplay.swift */,
 			);
 			path = MetricDisplay;
@@ -844,6 +850,7 @@
 				1B981EAA2933D5EF000626BC /* NumberFormatter.swift in Sources */,
 				1BBD3FF325B708A6007B8BC7 /* PanelViewController.swift in Sources */,
 				1B7644C125CAFA2F00572A70 /* LayerDefinition.swift in Sources */,
+				1B981EAF29342A93000626BC /* PathDistanceAlongDisplay.swift in Sources */,
 				1B93A9CF27F09F4D00497DB4 /* sexagesimal.swift in Sources */,
 				1B0D09B925E6C1CA00ED5345 /* HUDView.swift in Sources */,
 				1B3401CC25B473E40091FA3B /* LayerCell.swift in Sources */,
@@ -888,6 +895,7 @@
 				1B47B96D25FBB2D500504761 /* BUNDLE_ID_SUFFIX.swift in Sources */,
 				1B0D09B725E6B0B900ED5345 /* HUDManager.swift in Sources */,
 				1B47B96925FA16EE00504761 /* URLInterface.swift in Sources */,
+				1B981EA82933D5B1000626BC /* PathLengthDisplay.swift in Sources */,
 				1B545D662667DF270024BE67 /* geoJSON.swift in Sources */,
 				1B99746C266A45BB00420B0F /* LayerCellMenu.swift in Sources */,
 				1BBD3FFF25B8B0B5007B8BC7 /* CompositeStyle.swift in Sources */,
