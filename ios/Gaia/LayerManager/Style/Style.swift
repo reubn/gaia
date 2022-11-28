@@ -107,6 +107,15 @@ struct Style: Codable, Equatable, Hashable {
     interfacedSources.filter({$0.capabilities.contains(.data)})
   }
   
+  var identifiersOfLayersWithDataContainingSources: [String] {
+    interfacedLayers
+      .compactMap({layer in
+        let hasDataContainingSource = interfacedSourcesContainingData.contains(where: {source in source.id == layer.source})
+        
+        return hasDataContainingSource ? layer.id : nil
+      })
+  }
+  
   struct BoundsInfo {
     let individual: [MGLCoordinateBounds]
     let superbound: MGLCoordinateBounds?
