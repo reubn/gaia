@@ -5,9 +5,41 @@ import Mapbox
 
 class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingDelegate, OfflineModeDelegate {
   unowned let coordinatorView: OfflineSelectCoordinatorView
+  
+  var selectionMode: ToOrFrom {
+    didSet {
+      switch selectionMode {
+        case .to:
+          if let to = selectedTo {
+            MapViewController.shared.mapView.setZoomLevel(to, animated: true)
+          } else if let from = selectedFrom {
+            MapViewController.shared.mapView.setZoomLevel(from + 2, animated: true)
+          }
+          selectedTo = nil
+          coordinatorView.panelViewController.panelButtons = [.previous, .accept]
+        case .from:
+          if let from = selectedFrom {
+            MapViewController.shared.mapView.setZoomLevel(from, animated: true)
+          } else if let to = selectedTo {
+            MapViewController.shared.mapView.setZoomLevel(to - 2, animated: true)
+          }
+          selectedFrom = nil
+          coordinatorView.panelViewController.panelButtons = [.previous, .next]
+      }
+      
+      parentMapViewRegionIsChanging()
+    }
+  }
+  var selectedFrom: Double?
+  var selectedTo: Double?
 
   init(coordinatorView: OfflineSelectCoordinatorView){
     self.coordinatorView = coordinatorView
+    
+    self.selectionMode = .from
+    self.selectedFrom = nil
+    self.selectedTo = nil
+    
     super.init(frame: CGRect())
   }
   
@@ -15,8 +47,7 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
     print("enter OSZ")
     
     MapViewController.shared.osfpc.move(to: .tip, animated: true)
-    coordinatorView.panelViewController.title = "Select Zoom"
-    coordinatorView.panelViewController.panelButtons = [.previous, .accept]
+    coordinatorView.panelViewController.panelButtons = [.previous, .next]
     
     MapViewController.shared.mapView.isScrollEnabled = false
     MapViewController.shared.mapView.isRotateEnabled = false
@@ -30,6 +61,8 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
     offlineModeDidChange(offline: OfflineManager.shared.offlineMode)
     
     coordinatorView.selectedZoom = nil
+    
+    selectionMode = .from
   }
   
   func update(data: Any?) {}
@@ -44,20 +77,37 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
     
     MapViewController.shared.multicastParentMapViewRegionIsChangingDelegate.remove(delegate: self)
   }
-  
+
   func panelButtonTapped(button: PanelButtonType){
-    if(button == .accept){
-      let to = MapViewController.shared.mapView.zoomLevel.rounded(.up)
-      coordinatorView.selectedZoom = .init(from: to - 2, to: to)
-      
-      coordinatorView.forward()
+    if(button == .next){
+      if selectionMode == .from {
+        selectedFrom = MapViewController.shared.mapView.zoomLevel.rounded(.down)
+        selectionMode = .to
+      }
     } else if(button == .previous){
-      coordinatorView.back()
+      switch self.selectionMode {
+        case .from: coordinatorView.back()
+        case .to: selectionMode = .from
+      }
+    } else if(button == .accept) {
+      if selectionMode == .to {
+        selectedTo = MapViewController.shared.mapView.zoomLevel.rounded(.up)
+      }
+      
+      if let from = selectedFrom,
+         let to = selectedTo {
+        coordinatorView.selectedZoom = .init(from: from, to: to)
+        
+        coordinatorView.forward()
+      }
     }
   }
   
   func parentMapViewRegionIsChanging() {
-    coordinatorView.panelViewController.title = "Select Zoom: \(Int(MapViewController.shared.mapView.zoomLevel.rounded(.up)))"
+    switch selectionMode {
+      case .from: coordinatorView.panelViewController.title = "Select Min Zoom: \(Int(MapViewController.shared.mapView.zoomLevel.rounded(.down)))"
+      case .to: coordinatorView.panelViewController.title = "Select Max Zoom: \(Int(MapViewController.shared.mapView.zoomLevel.rounded(.up)))"
+    }
   }
   
   func offlineModeDidChange(offline: Bool) {
@@ -70,3 +120,7 @@ class OfflineSelectZoom: UIView, CoordinatedView, ParentMapViewRegionIsChangingD
   }
 }
 
+enum ToOrFrom {
+  case to
+  case from
+}
